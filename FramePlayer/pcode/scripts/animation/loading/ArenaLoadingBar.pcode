@@ -1,0 +1,1312 @@
+package animation.loading
+{
+   import animation.common.IconDisplay;
+   import animation.common.PetIconDisplay;
+   import data.pet.PetData;
+   import data.pet.TeamData;
+   import flash.display.MovieClip;
+   import flash.display.Shape;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.filters.BlurFilter;
+   import flash.text.TextField;
+   import flash.text.TextFormat;
+   import flash.utils.clearInterval;
+   import flash.utils.setInterval;
+   import ui.splash.UI_FightLoading;
+   import ui.splash.UI_FightLoading_An;
+   import utils.NumberUtil;
+   import utils.an.DisplayObjectUtil;
+   
+   public class ArenaLoadingBar extends Sprite
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _isLoaded:Boolean;
+      
+      private var _loadingBar:MovieClip;
+      
+      private var _digitalVec:Vector.<MovieClip>;
+      
+      private var _infoHolder:MovieClip;
+      
+      private var _animation:UI_FightLoading_An;
+      
+      private var _leftFighterNameTxt:TextField;
+      
+      private var _leftLevelTxt:TextField;
+      
+      private var _leftIconDisplayer:PetIconDisplay;
+      
+      private var _leftPetTypeIcon:IconDisplay;
+      
+      private var _leftIconHolder:MovieClip;
+      
+      private var _rightFighterNameTxt:TextField;
+      
+      private var _rightLevelTxt:TextField;
+      
+      private var _rightIconDisplayer:PetIconDisplay;
+      
+      private var _rightPetTypeIcon:IconDisplay;
+      
+      private var _rightIconHolder:MovieClip;
+      
+      private var _lHolder:MovieClip;
+      
+      private var _leftSubIconHolder:MovieClip;
+      
+      private var _leftSubIconDisplayer:IconDisplay;
+      
+      private var _rHolder:MovieClip;
+      
+      private var _rightSubIconHolder:MovieClip;
+      
+      private var _rightSubIconDisplayer:IconDisplay;
+      
+      private var _TipTxt:TextField;
+      
+      private var _format:TextFormat;
+      
+      private var _tipList:Vector.<String>;
+      
+      private var _tipInterval:int;
+      
+      private var _curIndex:int = -1;
+      
+      public function ArenaLoadingBar()
+      {
+         method
+            name "ArenaLoadingBar"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  getlocal0
+                  constructsuper 0
+                  getlocal0
+                  callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"initialize"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function initData(param1:TeamData, param2:TeamData, param3:Vector.<String>) : void
+      {
+         trait method QName(PackageNamespace(""),"initData")
+            dispid 0
+            method
+               name "initData"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace("data.pet"),"TeamData")
+               param QName(PackageNamespace("data.pet"),"TeamData")
+               param TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace(""),"String")>)
+               paramname "left"
+               paramname "right"
+               paramname "tips"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 5
+                  localcount 4
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     getlocal0
+                     getlocal1
+                     getproperty QName(PackageNamespace(""),"master")
+                     getlocal1
+                     getproperty QName(PackageNamespace(""),"slave")
+                     iffalse ofs0017
+                     getlocal1
+                     getproperty QName(PackageNamespace(""),"slave")
+                     jump ofs0019
+            ofs0017:
+                     pushnull
+                     coerce_a
+            ofs0019:
+                     callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"setLeftFighterInfo"), 2
+                     getlocal0
+                     getlocal2
+                     getproperty QName(PackageNamespace(""),"master")
+                     getlocal2
+                     getproperty QName(PackageNamespace(""),"slave")
+                     iffalse ofs0032
+                     getlocal2
+                     getproperty QName(PackageNamespace(""),"slave")
+                     jump ofs0034
+            ofs0032:
+                     pushnull
+                     coerce_a
+            ofs0034:
+                     callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"setRightFighterInfo"), 2
+                     getlocal0
+                     getlocal1
+                     getproperty QName(PackageNamespace(""),"master")
+                     getlocal1
+                     getproperty QName(PackageNamespace(""),"slave")
+                     iffalse ofs004d
+                     getlocal1
+                     getproperty QName(PackageNamespace(""),"slave")
+                     jump ofs004f
+            ofs004d:
+                     pushnull
+                     coerce_a
+            ofs004f:
+                     getlocal2
+                     getproperty QName(PackageNamespace(""),"master")
+                     getlocal2
+                     getproperty QName(PackageNamespace(""),"slave")
+                     iffalse ofs0063
+                     getlocal2
+                     getproperty QName(PackageNamespace(""),"slave")
+                     jump ofs0065
+            ofs0063:
+                     pushnull
+                     coerce_a
+            ofs0065:
+                     callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"setFightPress"), 4
+                     getlocal0
+                     getlocal3
+                     setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_tipList")
+                     getlocal0
+                     pushbyte -1
+                     setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                     getlocal0
+                     callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateTip"), 0
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function initialize() : void
+         {
+            trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"initialize")
+               dispid 0
+               method
+                  name "initialize"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 2
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        getlex QName(PackageNamespace("utils.an"),"DisplayObjectUtil")
+                        getlocal0
+                        callpropvoid QName(PackageNamespace(""),"disableSprite"), 1
+                        getlocal0
+                        pushfalse
+                        setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_isLoaded")
+                        getlocal0
+                        callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"createChildren"), 0
+                        getlocal0
+                        callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"addAnimationEventListener"), 0
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function createChildren() : void
+            {
+               trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"createChildren")
+                  dispid 0
+                  method
+                     name "createChildren"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 7
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           getlocal0
+                           findpropstrict QName(PackageNamespace("ui.splash"),"UI_FightLoading")
+                           constructprop QName(PackageNamespace("ui.splash"),"UI_FightLoading"), 0
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_loadingBar")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_loadingBar")
+                           pushstring "animation"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_animation")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_loadingBar")
+                           pushstring "fighterInfoHolder"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"visible")
+                           getlocal0
+                           getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                           getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                           applytype 1
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_loadingBar")
+                           pushstring "digital0"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_loadingBar")
+                           pushstring "digital1"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_loadingBar")
+                           pushstring "digital2"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           newarray 3
+                           call 1
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_digitalVec")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "leftNameTxt"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftFighterNameTxt")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "rightNameTxt"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightFighterNameTxt")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "leftLevelTxt"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftLevelTxt")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "rightLevelTxt"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightLevelTxt")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "leftIconHolder"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftIconHolder")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "rightSubIconHolder"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightSubIconHolder")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "rightIconHolder"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightIconHolder")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "leftSubIconHolder"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftSubIconHolder")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightIconHolder")
+                           pushbyte -1
+                           setproperty QName(PackageNamespace(""),"scaleX")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightSubIconHolder")
+                           pushbyte -1
+                           setproperty QName(PackageNamespace(""),"scaleX")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "lHolder"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_lHolder")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                           pushstring "rHolder"
+                           getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rHolder")
+                           findpropstrict QName(PackageNamespace(""),"addChild")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_loadingBar")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_digitalVec")
+                           pushbyte 0
+                           callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateDigitalVec"), 2
+                           getlocal0
+                           findpropstrict QName(PackageNamespace("flash.text"),"TextField")
+                           constructprop QName(PackageNamespace("flash.text"),"TextField"), 0
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           getlocal0
+                           findpropstrict QName(PackageNamespace("flash.text"),"TextFormat")
+                           pushstring "_sans"
+                           constructprop QName(PackageNamespace("flash.text"),"TextFormat"), 1
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_format")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_format")
+                           pushbyte 14
+                           setproperty QName(PackageNamespace(""),"size")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_format")
+                           pushstring "center"
+                           setproperty QName(PackageNamespace(""),"align")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_format")
+                           setproperty QName(PackageNamespace(""),"defaultTextFormat")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           pushtrue
+                           setproperty QName(PackageNamespace(""),"selectable")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           pushtrue
+                           setproperty QName(PackageNamespace(""),"wordWrap")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           pushtrue
+                           setproperty QName(PackageNamespace(""),"multiline")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           pushshort 338
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           pushbyte 56
+                           setproperty QName(PackageNamespace(""),"y")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           pushshort 488
+                           setproperty QName(PackageNamespace(""),"width")
+                           getlocal0
+                           getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                           getlex QName(PackageNamespace(""),"String")
+                           applytype 1
+                           construct 0
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_tipList")
+                           getlocal0
+                           callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateTip"), 0
+                           getlocal0
+                           getlex QName(PackageNamespace("flash.utils"),"setInterval")
+                           getglobalscope
+                           getlex QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateTip")
+                           pushshort 3000
+                           call 2
+                           setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_tipInterval")
+                           findpropstrict QName(PackageNamespace(""),"addChild")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function RGB(param1:uint, param2:uint, param3:uint) : uint
+               {
+                  trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"RGB")
+                     dispid 0
+                     method
+                        name "RGB"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"uint")
+                        param QName(PackageNamespace(""),"uint")
+                        param QName(PackageNamespace(""),"uint")
+                        paramname "param1"
+                        paramname "param2"
+                        paramname "param3"
+                        returns QName(PackageNamespace(""),"uint")
+                        
+                        body
+                           maxstack 3
+                           localcount 4
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              getlocal1
+                              pushbyte 16
+                              lshift
+                              getlocal2
+                              pushbyte 8
+                              lshift
+                              bitor
+                              getlocal3
+                              bitor
+                              returnvalue
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function updateTip() : void
+                  {
+                     trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateTip")
+                        dispid 0
+                        method
+                           name "updateTip"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 pushbyte 0
+                                 convert_u
+                                 setlocal1
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                                 pushbyte -1
+                                 ifne ofs002d
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_tipList")
+                                 getproperty QName(PackageNamespace(""),"length")
+                                 getlex QName(PackageNamespace(""),"Math")
+                                 callproperty QName(PackageNamespace(""),"random"), 0
+                                 multiply
+                                 convert_u
+                                 setlocal1
+                                 getlocal0
+                                 getlocal1
+                                 setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                                 getlocal0
+                                 callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateTxt"), 0
+                                 jump ofs0063
+                        ofs002d:
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                                 pushbyte 1
+                                 add
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_tipList")
+                                 getproperty QName(PackageNamespace(""),"length")
+                                 ifnlt ofs0055
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                                 pushbyte 1
+                                 add
+                                 convert_u
+                                 setlocal1
+                                 getlocal0
+                                 getlocal1
+                                 setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                                 getlocal0
+                                 callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateTxt"), 0
+                                 jump ofs0063
+                        ofs0055:
+                                 pushbyte 0
+                                 convert_u
+                                 setlocal1
+                                 getlocal0
+                                 getlocal1
+                                 setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                                 getlocal0
+                                 callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateTxt"), 0
+                        ofs0063:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function updateTxt() : void
+                     {
+                        trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateTxt")
+                           dispid 0
+                           method
+                              name "updateTxt"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 6
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    pushundefined
+                                    setlocal1
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_format")
+                                    getlocal0
+                                    pushshort 255
+                                    pushshort 255
+                                    getlex QName(PackageNamespace(""),"Math")
+                                    callproperty QName(PackageNamespace(""),"random"), 0
+                                    multiply
+                                    convert_u
+                                    pushshort 255
+                                    getlex QName(PackageNamespace(""),"Math")
+                                    callproperty QName(PackageNamespace(""),"random"), 0
+                                    multiply
+                                    convert_u
+                                    callproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"RGB"), 3
+                                    setproperty QName(PackageNamespace(""),"color")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_format")
+                                    pushint 16777062
+                                    setproperty QName(PackageNamespace(""),"color")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_format")
+                                    setproperty QName(PackageNamespace(""),"defaultTextFormat")
+                                    getlex QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                                    getlex QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_tipList")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    ifnge ofs0057
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                                    pushstring "<a href=\'https://github.com/arcadia-star/seer2-fight-ui\' target=\'_blank\'>https://github.com/arcadia-star/seer2-fight-ui</a>"
+                                    setproperty QName(PackageNamespace(""),"htmlText")
+                                    jump ofs006f
+                           ofs0057:
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_tipList")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_curIndex")
+                                    getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setlocal1
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_TipTxt")
+                                    pushstring "<font color=\'#FFFF66\'>小贴士:</font>"
+                                    getlocal1
+                                    add
+                                    setproperty QName(PackageNamespace(""),"htmlText")
+                           ofs006f:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function setLeftFighterInfo(param1:PetData, param2:PetData) : void
+                        {
+                           trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"setLeftFighterInfo")
+                              dispid 0
+                              method
+                                 name "setLeftFighterInfo"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("data.pet"),"PetData")
+                                 param QName(PackageNamespace("data.pet"),"PetData")
+                                 paramname "param1"
+                                 paramname "param2"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 7
+                                    localcount 3
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftFighterNameTxt")
+                                       getlocal1
+                                       getproperty QName(PackageNamespace(""),"name")
+                                       setproperty QName(PackageNamespace(""),"text")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftLevelTxt")
+                                       getlocal1
+                                       getproperty QName(PackageNamespace(""),"level")
+                                       callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                       setproperty QName(PackageNamespace(""),"text")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftIconDisplayer")
+                                       pushnull
+                                       ifne ofs002b
+                                       getlocal0
+                                       findpropstrict QName(PackageNamespace("animation.common"),"PetIconDisplay")
+                                       constructprop QName(PackageNamespace("animation.common"),"PetIconDisplay"), 0
+                                       setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftIconDisplayer")
+                              ofs002b:
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftPetTypeIcon")
+                                       pushnull
+                                       ifne ofs004d
+                                       getlocal0
+                                       findpropstrict QName(PackageNamespace("animation.common"),"IconDisplay")
+                                       constructprop QName(PackageNamespace("animation.common"),"IconDisplay"), 0
+                                       setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftPetTypeIcon")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftPetTypeIcon")
+                                       pushbyte 60
+                                       setproperty QName(PackageNamespace(""),"x")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftPetTypeIcon")
+                                       pushbyte 65
+                                       setproperty QName(PackageNamespace(""),"y")
+                              ofs004d:
+                                       getlocal0
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftIconHolder")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftIconDisplayer")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftPetTypeIcon")
+                                       getlocal1
+                                       pushbyte -5
+                                       pushbyte -8
+                                       callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"pushIcon"), 6
+                                       getlocal2
+                                       pushnull
+                                       ifeq ofs009c
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_lHolder")
+                                       pushtrue
+                                       setproperty QName(PackageNamespace(""),"visible")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftSubIconDisplayer")
+                                       pushnull
+                                       ifne ofs0082
+                                       getlocal0
+                                       findpropstrict QName(PackageNamespace("animation.common"),"IconDisplay")
+                                       constructprop QName(PackageNamespace("animation.common"),"IconDisplay"), 0
+                                       setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftSubIconDisplayer")
+                              ofs0082:
+                                       getlocal0
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftSubIconHolder")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftSubIconDisplayer")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_leftPetTypeIcon")
+                                       getlocal2
+                                       pushbyte 3
+                                       pushbyte -8
+                                       callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"pushIcon"), 6
+                                       jump ofs00a3
+                              ofs009c:
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_lHolder")
+                                       pushfalse
+                                       setproperty QName(PackageNamespace(""),"visible")
+                              ofs00a3:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function pushIcon(param1:MovieClip, param2:IconDisplay, param3:IconDisplay, param4:PetData, param5:int = 3, param6:int = -8) : void
+                           {
+                              trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"pushIcon")
+                                 dispid 0
+                                 method
+                                    name "pushIcon"
+                                    flag HAS_OPTIONAL
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.display"),"MovieClip")
+                                    param QName(PackageNamespace("animation.common"),"IconDisplay")
+                                    param QName(PackageNamespace("animation.common"),"IconDisplay")
+                                    param QName(PackageNamespace("data.pet"),"PetData")
+                                    param QName(PackageNamespace(""),"int")
+                                    param QName(PackageNamespace(""),"int")
+                                    paramname "param1"
+                                    paramname "param2"
+                                    paramname "param3"
+                                    paramname "param4"
+                                    paramname "param5"
+                                    paramname "param6"
+                                    optional Integer(3)
+                                    optional Integer(-8)
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 4
+                                       localcount 8
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          getlocal2
+                                          getlocal 5
+                                          setproperty QName(PackageNamespace(""),"x")
+                                          getlocal2
+                                          pushbyte 2
+                                          setproperty QName(PackageNamespace(""),"y")
+                                          getlocal2
+                                          getlocal2
+                                          pushdouble 1.5
+                                          dup
+                                          setlocal 7
+                                          setproperty QName(PackageNamespace(""),"scaleY")
+                                          getlocal 7
+                                          setproperty QName(PackageNamespace(""),"scaleX")
+                                          getlocal1
+                                          getlocal2
+                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                          getlocal3
+                                          getlocal 4
+                                          getproperty QName(PackageNamespace(""),"typeIcon")
+                                          callpropvoid QName(PackageNamespace(""),"initData"), 1
+                                          getlocal1
+                                          getlocal3
+                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                          getlocal2
+                                          getlocal 4
+                                          getproperty QName(PackageNamespace(""),"petIcon")
+                                          callpropvoid QName(PackageNamespace(""),"initData"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function setRightFighterInfo(param1:PetData, param2:PetData) : void
+                              {
+                                 trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"setRightFighterInfo")
+                                    dispid 0
+                                    method
+                                       name "setRightFighterInfo"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("data.pet"),"PetData")
+                                       param QName(PackageNamespace("data.pet"),"PetData")
+                                       paramname "param1"
+                                       paramname "param2"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 7
+                                          localcount 3
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightFighterNameTxt")
+                                             getlocal1
+                                             getproperty QName(PackageNamespace(""),"name")
+                                             setproperty QName(PackageNamespace(""),"text")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightLevelTxt")
+                                             getlocal1
+                                             getproperty QName(PackageNamespace(""),"level")
+                                             callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                             setproperty QName(PackageNamespace(""),"text")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightIconDisplayer")
+                                             pushnull
+                                             ifne ofs002b
+                                             getlocal0
+                                             findpropstrict QName(PackageNamespace("animation.common"),"PetIconDisplay")
+                                             constructprop QName(PackageNamespace("animation.common"),"PetIconDisplay"), 0
+                                             setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightIconDisplayer")
+                                    ofs002b:
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightPetTypeIcon")
+                                             pushnull
+                                             ifne ofs004d
+                                             getlocal0
+                                             findpropstrict QName(PackageNamespace("animation.common"),"IconDisplay")
+                                             constructprop QName(PackageNamespace("animation.common"),"IconDisplay"), 0
+                                             setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightPetTypeIcon")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightPetTypeIcon")
+                                             pushbyte 70
+                                             setproperty QName(PackageNamespace(""),"x")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightPetTypeIcon")
+                                             pushbyte 56
+                                             setproperty QName(PackageNamespace(""),"y")
+                                    ofs004d:
+                                             getlocal0
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightIconHolder")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightIconDisplayer")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightPetTypeIcon")
+                                             getlocal1
+                                             pushbyte 8
+                                             pushbyte 8
+                                             callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"pushIcon"), 6
+                                             getlocal2
+                                             pushnull
+                                             ifeq ofs009c
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rHolder")
+                                             pushtrue
+                                             setproperty QName(PackageNamespace(""),"visible")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightSubIconDisplayer")
+                                             pushnull
+                                             ifne ofs0082
+                                             getlocal0
+                                             findpropstrict QName(PackageNamespace("animation.common"),"IconDisplay")
+                                             constructprop QName(PackageNamespace("animation.common"),"IconDisplay"), 0
+                                             setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightSubIconDisplayer")
+                                    ofs0082:
+                                             getlocal0
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightSubIconHolder")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightSubIconDisplayer")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rightPetTypeIcon")
+                                             getlocal2
+                                             pushbyte 3
+                                             pushbyte 8
+                                             callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"pushIcon"), 6
+                                             jump ofs00a3
+                                    ofs009c:
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_rHolder")
+                                             pushfalse
+                                             setproperty QName(PackageNamespace(""),"visible")
+                                    ofs00a3:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function setFightPress(param1:PetData, param2:PetData, param3:PetData, param4:PetData) : void
+                                 {
+                                    trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"setFightPress")
+                                       dispid 0
+                                       method
+                                          name "setFightPress"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace("data.pet"),"PetData")
+                                          param QName(PackageNamespace("data.pet"),"PetData")
+                                          param QName(PackageNamespace("data.pet"),"PetData")
+                                          param QName(PackageNamespace("data.pet"),"PetData")
+                                          paramname "param1"
+                                          paramname "param2"
+                                          paramname "param3"
+                                          paramname "param4"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 1
+                                             localcount 5
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function createShape(param1:int, param2:MovieClip) : void
+                                    {
+                                       trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"createShape")
+                                          dispid 0
+                                          method
+                                             name "createShape"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace(""),"int")
+                                             param QName(PackageNamespace("flash.display"),"MovieClip")
+                                             paramname "param1"
+                                             paramname "param2"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 6
+                                                localcount 4
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   findpropstrict QName(PackageNamespace("flash.display"),"Shape")
+                                                   constructprop QName(PackageNamespace("flash.display"),"Shape"), 0
+                                                   coerce QName(PackageNamespace("flash.display"),"Shape")
+                                                   setlocal3
+                                                   getlocal3
+                                                   getproperty QName(PackageNamespace(""),"graphics")
+                                                   getlocal1
+                                                   callpropvoid QName(PackageNamespace(""),"beginFill"), 1
+                                                   getlocal3
+                                                   getproperty QName(PackageNamespace(""),"graphics")
+                                                   pushbyte 2
+                                                   pushbyte 2
+                                                   getlocal2
+                                                   getproperty QName(PackageNamespace(""),"width")
+                                                   pushbyte 2
+                                                   subtract
+                                                   getlocal2
+                                                   getproperty QName(PackageNamespace(""),"height")
+                                                   pushbyte 2
+                                                   subtract
+                                                   callpropvoid QName(PackageNamespace(""),"drawRect"), 4
+                                                   getlocal3
+                                                   findpropstrict QName(PackageNamespace("flash.filters"),"BlurFilter")
+                                                   constructprop QName(PackageNamespace("flash.filters"),"BlurFilter"), 0
+                                                   newarray 1
+                                                   setproperty QName(PackageNamespace(""),"filters")
+                                                   getlocal3
+                                                   getproperty QName(PackageNamespace(""),"graphics")
+                                                   callpropvoid QName(PackageNamespace(""),"endFill"), 0
+                                                   getlocal2
+                                                   getlocal3
+                                                   getlocal2
+                                                   getproperty QName(PackageNamespace(""),"numChildren")
+                                                   pushbyte 1
+                                                   subtract
+                                                   callpropvoid QName(PackageNamespace(""),"addChildAt"), 2
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function addAnimationEventListener() : void
+                                       {
+                                          trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"addAnimationEventListener")
+                                             dispid 0
+                                             method
+                                                name "addAnimationEventListener"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_animation")
+                                                      pushstring "enterFrame"
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"onEnterFrame")
+                                                      callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function onEnterFrame(param1:Event) : void
+                                          {
+                                             trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"onEnterFrame")
+                                                dispid 0
+                                                method
+                                                   name "onEnterFrame"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace("flash.events"),"Event")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_animation")
+                                                         getproperty QName(PackageNamespace(""),"currentFrame")
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_animation")
+                                                         getproperty QName(PackageNamespace(""),"totalFrames")
+                                                         ifne ofs0030
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_animation")
+                                                         pushstring "enterFrame"
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"onEnterFrame")
+                                                         callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                         findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                                         findpropstrict QName(PackageNamespace("flash.events"),"Event")
+                                                         pushstring "close"
+                                                         constructprop QName(PackageNamespace("flash.events"),"Event"), 1
+                                                         callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                         jump ofs0043
+                                                ofs0030:
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_animation")
+                                                         getproperty QName(PackageNamespace(""),"currentFrame")
+                                                         pushbyte 40
+                                                         ifne ofs0043
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                                                         pushtrue
+                                                         setproperty QName(PackageNamespace(""),"visible")
+                                                ofs0043:
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function updateDigitalVec(param1:Vector.<MovieClip>, param2:int) : void
+                                             {
+                                                trait method QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateDigitalVec")
+                                                   dispid 0
+                                                   method
+                                                      name "updateDigitalVec"
+                                                      flag HAS_PARAM_NAMES
+                                                      param TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("flash.display"),"MovieClip")>)
+                                                      param QName(PackageNamespace(""),"int")
+                                                      paramname "param1"
+                                                      paramname "param2"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 8
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            pushundefined
+                                                            setlocal 6
+                                                            pushnull
+                                                            coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                                            setlocal 5
+                                                            getlocal1
+                                                            getproperty QName(PackageNamespace(""),"length")
+                                                            convert_i
+                                                            setlocal 7
+                                                            getlex QName(PackageNamespace("utils"),"NumberUtil")
+                                                            getlocal2
+                                                            callproperty QName(PackageNamespace(""),"parseNumberToDigitVec"), 1
+                                                            dup
+                                                            coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace(""),"int")>)
+                                                            setlocal 6
+                                                            getproperty QName(PackageNamespace(""),"length")
+                                                            pushbyte 1
+                                                            subtract
+                                                            convert_i
+                                                            setlocal 4
+                                                            getlocal 7
+                                                            pushbyte 1
+                                                            subtract
+                                                            convert_i
+                                                            setlocal3
+                                                            jump ofs0066
+                                                   ofs0031:
+                                                            label
+                                                            getlocal1
+                                                            getlocal3
+                                                            getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            dup
+                                                            coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                                            setlocal 5
+                                                            pushbyte 1
+                                                            callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                            getlocal 5
+                                                            pushfalse
+                                                            setproperty QName(PackageNamespace(""),"visible")
+                                                            getlocal 4
+                                                            pushbyte 0
+                                                            ifnge ofs0064
+                                                            getlocal 5
+                                                            getlocal 6
+                                                            getlocal 4
+                                                            getproperty MultinameL([PrivateNamespace("animation.loading:ArenaLoadingBar"),ProtectedNamespace("animation.loading:ArenaLoadingBar"),StaticProtectedNs("animation.loading:ArenaLoadingBar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.loading"),PackageInternalNs("animation.loading"),PrivateNamespace("FilePrivateNS:ArenaLoadingBar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            pushbyte 1
+                                                            add
+                                                            callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                            getlocal 5
+                                                            pushtrue
+                                                            setproperty QName(PackageNamespace(""),"visible")
+                                                            declocal_i 4
+                                                   ofs0064:
+                                                            declocal_i 3
+                                                   ofs0066:
+                                                            getlocal3
+                                                            pushbyte 0
+                                                            ifge ofs0031
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                public function updateProgress(param1:int) : void
+                                                {
+                                                   trait method QName(PackageNamespace(""),"updateProgress")
+                                                      dispid 0
+                                                      method
+                                                         name "updateProgress"
+                                                         flag HAS_PARAM_NAMES
+                                                         param QName(PackageNamespace(""),"int")
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               getlocal0
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_digitalVec")
+                                                               getlocal1
+                                                               callpropvoid QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"updateDigitalVec"), 2
+                                                               getlocal1
+                                                               pushbyte 100
+                                                               equals
+                                                               dup
+                                                               iffalse ofs001b
+                                                               pop
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_isLoaded")
+                                                               not
+                                                      ofs001b:
+                                                               iffalse ofs0036
+                                                               getlocal0
+                                                               pushtrue
+                                                               setproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_isLoaded")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_animation")
+                                                               pushstring "vanish"
+                                                               callpropvoid QName(PackageNamespace(""),"gotoAndPlay"), 1
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_infoHolder")
+                                                               pushfalse
+                                                               setproperty QName(PackageNamespace(""),"visible")
+                                                      ofs0036:
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   public function dispose() : void
+                                                   {
+                                                      trait method QName(PackageNamespace(""),"dispose")
+                                                         dispid 0
+                                                         method
+                                                            name "dispose"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 3
+                                                               localcount 1
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  getlex QName(PackageNamespace("utils.an"),"DisplayObjectUtil")
+                                                                  getlocal0
+                                                                  callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                                                  getlex QName(PackageNamespace("flash.utils"),"clearInterval")
+                                                                  getglobalscope
+                                                                  getlex QName(PrivateNamespace("animation.loading:ArenaLoadingBar"),"_tipInterval")
+                                                                  call 1
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                   }
+                                                }
+                                                
+                                                method
+                                                   name null
+                                                   returns null
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 7
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         getscopeobject 0
+                                                         getlex QName(PackageNamespace(""),"Object")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                         dup
+                                                         pushscope
+                                                         newclass 33
+                                                         popscope
+                                                         popscope
+                                                         popscope
+                                                         popscope
+                                                         popscope
+                                                         popscope
+                                                         initproperty QName(PackageNamespace("animation.loading"),"ArenaLoadingBar")
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                                

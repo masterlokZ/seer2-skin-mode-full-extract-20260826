@@ -1,0 +1,805 @@
+package com.taomee.seer2.app.manager
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.info.RankInfo;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.parser.Parser_1521;
+   import com.taomee.seer2.app.net.parser.baseData.RankServerInfo;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import flash.utils.IDataInput;
+   
+   public class RankManager
+   {
+      
+      private static var _waitVec:Vector.<RankInfo>;
+      
+      private static var _isBusy:Boolean = false;
+      
+      private static var _callBack:Function;
+      
+      private static var _currentInfo:RankInfo;
+      
+      private static var _actorCallBack:Function;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 2
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 1
+            
+            code
+               getlocal0
+               pushscope
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+               debugline 14
+               getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+               getlex QName(PackageNamespace("com.taomee.seer2.app.info"),"RankInfo")
+               debugline 14
+               applytype 1
+               debugline 14
+               construct 0
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_waitVec")
+               swap
+               setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_waitVec")
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      public function RankManager()
+      {
+         method
+            name "RankManager"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                  debugline 26
+                  getlocal0
+                  debugline 26
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getRankList(param1:int, param2:Function, param3:int = 0, param4:int = 100) : void
+      {
+         trait method QName(PackageNamespace(""),"getRankList")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "825"
+            end ; metadata
+            dispid 0
+            method
+               name "getRankList"
+               flag HAS_OPTIONAL
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace(""),"int")
+               param QName(PackageNamespace(""),"Function")
+               param QName(PackageNamespace(""),"int")
+               param QName(PackageNamespace(""),"int")
+               paramname "param1"
+               paramname "param2"
+               paramname "param3"
+               paramname "param4"
+               optional Integer(0)
+               optional Integer(100)
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 2
+                  localcount 6
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                     debug 1, "_loc5_", 4, 0
+                     debug 1, "param3", 2, 0
+                     debug 1, "param4", 3, 0
+                     debug 1, "param1", 0, 0
+                     debug 1, "param2", 1, 0
+                     pushnull
+                     setlocal 5
+                     findpropstrict QName(PackageNamespace("com.taomee.seer2.app.info"),"RankInfo")
+                     debugline 31
+                     constructprop QName(PackageNamespace("com.taomee.seer2.app.info"),"RankInfo"), 0
+                     dup
+                     coerce QName(PackageNamespace("com.taomee.seer2.app.info"),"RankInfo")
+                     setlocal 5
+                     getlocal1
+                     setproperty QName(PackageNamespace(""),"rankId")
+                     getlocal 5
+                     getlocal2
+                     debugline 32
+                     setproperty QName(PackageNamespace(""),"callBack")
+                     getlocal 5
+                     getlocal3
+                     debugline 33
+                     setproperty QName(PackageNamespace(""),"min")
+                     getlocal 5
+                     getlocal 4
+                     debugline 34
+                     setproperty QName(PackageNamespace(""),"max")
+                     debugline 35
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_waitVec")
+                     getlocal 5
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                     debugline 36
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_isBusy")
+                     pushfalse
+                     ifne ofs005e
+                     findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer")
+                     debugline 37
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer"), 0
+            ofs005e:
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public static function getBeforeRank(param1:int, param2:Function, param3:int, param4:int, param5:uint, param6:uint) : void
+         {
+            trait method QName(PackageNamespace(""),"getBeforeRank")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "1227"
+               end ; metadata
+               dispid 0
+               method
+                  name "getBeforeRank"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace(""),"int")
+                  param QName(PackageNamespace(""),"Function")
+                  param QName(PackageNamespace(""),"int")
+                  param QName(PackageNamespace(""),"int")
+                  param QName(PackageNamespace(""),"uint")
+                  param QName(PackageNamespace(""),"uint")
+                  paramname "param1"
+                  paramname "param2"
+                  paramname "param3"
+                  paramname "param4"
+                  paramname "param5"
+                  paramname "param6"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 2
+                     localcount 8
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                        debug 1, "param5", 4, 0
+                        debug 1, "param6", 5, 0
+                        debug 1, "_loc7_", 6, 0
+                        debug 1, "param3", 2, 0
+                        debug 1, "param4", 3, 0
+                        debug 1, "param1", 0, 0
+                        debug 1, "param2", 1, 0
+                        pushnull
+                        setlocal 7
+                        findpropstrict QName(PackageNamespace("com.taomee.seer2.app.info"),"RankInfo")
+                        debugline 43
+                        constructprop QName(PackageNamespace("com.taomee.seer2.app.info"),"RankInfo"), 0
+                        dup
+                        coerce QName(PackageNamespace("com.taomee.seer2.app.info"),"RankInfo")
+                        setlocal 7
+                        getlocal1
+                        setproperty QName(PackageNamespace(""),"rankId")
+                        getlocal 7
+                        getlocal2
+                        debugline 44
+                        setproperty QName(PackageNamespace(""),"callBack")
+                        getlocal 7
+                        getlocal3
+                        debugline 45
+                        setproperty QName(PackageNamespace(""),"min")
+                        getlocal 7
+                        getlocal 4
+                        debugline 46
+                        setproperty QName(PackageNamespace(""),"max")
+                        getlocal 7
+                        getlocal 5
+                        debugline 47
+                        setproperty QName(PackageNamespace(""),"startTime")
+                        getlocal 7
+                        getlocal 6
+                        debugline 48
+                        setproperty QName(PackageNamespace(""),"endTime")
+                        debugline 49
+                        getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_waitVec")
+                        getlocal 7
+                        callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                        debugline 50
+                        getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_isBusy")
+                        pushfalse
+                        ifne ofs0078
+                        findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer")
+                        debugline 51
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer"), 0
+               ofs0078:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private static function connectServer() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer")
+                  dispid 0
+                  method
+                     name "connectServer"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 7
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                           debugline 56
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_waitVec")
+                           getproperty QName(PackageNamespace(""),"length")
+                           pushbyte 1
+                           ifnge ofs00af
+                           debugline 57
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_waitVec")
+                           callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"shift"), 0
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           swap
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           debugline 58
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"callBack")
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_callBack")
+                           swap
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_callBack")
+                           debugline 59
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"startTime")
+                           pushbyte 0
+                           equals
+                           not
+                           debugline 59
+                           iffalse ofs0078
+                           debugline 60
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"CLI_GET_RANK_BEFORE_1545")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetRank")
+                           callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                           debugline 61
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"CLI_GET_RANK_BEFORE_1545")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetDoCountError")
+                           callpropvoid QName(PackageNamespace(""),"addErrorHandler"), 2
+                           debugline 62
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"CLI_GET_RANK_BEFORE_1545")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"rankId")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"min")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"max")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"startTime")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"endTime")
+                           callpropvoid QName(PackageNamespace(""),"send"), 6
+                           debugline 59
+                           jump ofs00a9
+                           debugline 64
+                  ofs0078:
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"GET_RANK_LIST_1521")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetRank")
+                           callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                           debugline 65
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"GET_RANK_LIST_1521")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetDoCountError")
+                           callpropvoid QName(PackageNamespace(""),"addErrorHandler"), 2
+                           debugline 66
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"GET_RANK_LIST_1521")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"rankId")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"min")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_currentInfo")
+                           getproperty QName(PackageNamespace(""),"max")
+                           callpropvoid QName(PackageNamespace(""),"send"), 4
+                           debugline 68
+                  ofs00a9:
+                           pushtrue
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_isBusy")
+                           swap
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_isBusy")
+                  ofs00af:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private static function onGetRank(param1:MessageEvent) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetRank")
+                     dispid 0
+                     method
+                        name "onGetRank"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 3
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                              debug 1, "_loc2_", 1, 0
+                              debug 1, "param1", 0, 0
+                              getlocal1
+                              debugline 73
+                              getproperty QName(PackageNamespace(""),"message")
+                              getproperty QName(PackageNamespace(""),"commandId")
+                              pushshort 1521
+                              equals
+                              debugline 73
+                              iffalse ofs0041
+                              debugline 74
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                              getproperty QName(PackageNamespace(""),"GET_RANK_LIST_1521")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetRank")
+                              callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                              debugline 75
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                              getproperty QName(PackageNamespace(""),"GET_RANK_LIST_1521")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetDoCountError")
+                              callpropvoid QName(PackageNamespace(""),"removeErrorHandler"), 2
+                              debugline 73
+                              jump ofs0059
+                              debugline 77
+                     ofs0041:
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                              getproperty QName(PackageNamespace(""),"CLI_GET_RANK_BEFORE_1545")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetRank")
+                              callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                              debugline 78
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                              getproperty QName(PackageNamespace(""),"CLI_GET_RANK_BEFORE_1545")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetDoCountError")
+                              callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                     ofs0059:
+                              findpropstrict QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1521")
+                              getlocal1
+                              debugline 80
+                              getproperty QName(PackageNamespace(""),"message")
+                              callproperty QName(PackageNamespace(""),"getRawDataCopy"), 0
+                              constructprop QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1521"), 1
+                              coerce QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1521")
+                              setlocal2
+                              debugline 81
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_callBack")
+                              debugline 81
+                              getglobalscope
+                              getlocal2
+                              debugline 81
+                              call 1
+                              debugline 81
+                              pop
+                              debugline 82
+                              pushnull
+                              findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_callBack")
+                              swap
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_callBack")
+                              debugline 83
+                              pushfalse
+                              findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_isBusy")
+                              swap
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_isBusy")
+                              findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer")
+                              debugline 84
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private static function onGetDoCountError(param1:MessageEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetDoCountError")
+                        dispid 0
+                        method
+                           name "onGetDoCountError"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                                 debug 1, "param1", 0, 0
+                                 debugline 88
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                 getproperty QName(PackageNamespace(""),"GET_RANK_LIST_1521")
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetRank")
+                                 callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                 debugline 89
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                 getproperty QName(PackageNamespace(""),"GET_RANK_LIST_1521")
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetDoCountError")
+                                 callpropvoid QName(PackageNamespace(""),"removeErrorHandler"), 2
+                                 debugline 90
+                                 pushfalse
+                                 findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_isBusy")
+                                 swap
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_isBusy")
+                                 findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer")
+                                 debugline 91
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"connectServer"), 0
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public static function getActorRank(param1:uint, param2:Function, param3:int = 0) : void
+                     {
+                        trait method QName(PackageNamespace(""),"getActorRank")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "3749"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "getActorRank"
+                              flag HAS_OPTIONAL
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace(""),"uint")
+                              param QName(PackageNamespace(""),"Function")
+                              param QName(PackageNamespace(""),"int")
+                              paramname "param1"
+                              paramname "param2"
+                              paramname "param3"
+                              optional Integer(0)
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 4
+                                 localcount 4
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                                    debug 1, "param3", 2, 0
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "param2", 1, 0
+                                    getlocal2
+                                    findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_actorCallBack")
+                                    debugline 95
+                                    swap
+                                    debugline 95
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_actorCallBack")
+                                    debugline 96
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                    getproperty QName(PackageNamespace(""),"GET_ACTOR_RANK_1522")
+                                    getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetActorRank")
+                                    callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                    debugline 97
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                    getproperty QName(PackageNamespace(""),"GET_ACTOR_RANK_1522")
+                                    getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetActorError")
+                                    callpropvoid QName(PackageNamespace(""),"addErrorHandler"), 2
+                                    getlocal3
+                                    debugline 98
+                                    pushbyte 0
+                                    equals
+                                    not
+                                    debugline 98
+                                    iffalse ofs005a
+                                    debugline 99
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                    getproperty QName(PackageNamespace(""),"GET_ACTOR_RANK_1522")
+                                    getlocal1
+                                    getlocal3
+                                    convert_u
+                                    callpropvoid QName(PackageNamespace(""),"send"), 3
+                                    debugline 98
+                                    jump ofs006b
+                                    debugline 101
+                           ofs005a:
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                    getproperty QName(PackageNamespace(""),"GET_ACTOR_RANK_1522")
+                                    getlocal1
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                    getproperty QName(PackageNamespace(""),"actorInfo")
+                                    getproperty QName(PackageNamespace(""),"id")
+                                    convert_u
+                                    callpropvoid QName(PackageNamespace(""),"send"), 3
+                           ofs006b:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private static function onGetActorRank(param1:MessageEvent) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetActorRank")
+                              dispid 0
+                              method
+                                 name "onGetActorRank"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 11
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                                       debug 1, "_loc9_", 1, 0
+                                       debug 1, "_loc6_", 2, 0
+                                       debug 1, "_loc5_", 3, 0
+                                       debug 1, "_loc10_", 4, 0
+                                       debug 1, "_loc8_", 5, 0
+                                       debug 1, "_loc7_", 6, 0
+                                       debug 1, "_loc2_", 7, 0
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "_loc4_", 8, 0
+                                       debug 1, "_loc3_", 9, 0
+                                       pushnull
+                                       setlocal3
+                                       pushbyte 0
+                                       setlocal2
+                                       debugline 106
+                                       pushnull
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       setlocal 5
+                                       debugline 107
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                       getproperty QName(PackageNamespace(""),"GET_ACTOR_RANK_1522")
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetActorRank")
+                                       callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                       debugline 108
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                       getproperty QName(PackageNamespace(""),"GET_ACTOR_RANK_1522")
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetActorError")
+                                       callpropvoid QName(PackageNamespace(""),"removeErrorHandler"), 2
+                                       getlocal1
+                                       debugline 109
+                                       getproperty QName(PackageNamespace(""),"message")
+                                       callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                       coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                                       dup
+                                       setlocal 8
+                                       debugline 110
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       convert_u
+                                       setlocal 10
+                                       getlocal 8
+                                       debugline 111
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       convert_u
+                                       setlocal 9
+                                       getlocal 8
+                                       debugline 112
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       convert_u
+                                       setlocal 4
+                                       findpropstrict QName(PackageNamespace("com.taomee.seer2.app.net.parser.baseData"),"RankServerInfo")
+                                       debugline 114
+                                       constructprop QName(PackageNamespace("com.taomee.seer2.app.net.parser.baseData"),"RankServerInfo"), 0
+                                       dup
+                                       coerce QName(PackageNamespace("com.taomee.seer2.app.net.parser.baseData"),"RankServerInfo")
+                                       setlocal3
+                                       getlocal 8
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       setproperty QName(PackageNamespace(""),"userId")
+                                       getlocal 8
+                                       debugline 115
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       convert_u
+                                       setlocal 7
+                                       getlocal3
+                                       getlocal 8
+                                       debugline 116
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       setproperty QName(PackageNamespace(""),"currRank")
+                                       getlocal 8
+                                       debugline 117
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       convert_u
+                                       setlocal 6
+                                       getlocal3
+                                       getlocal 8
+                                       debugline 118
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       setproperty QName(PackageNamespace(""),"scoreTime")
+                                       getlocal3
+                                       getlocal 8
+                                       debugline 119
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       setproperty QName(PackageNamespace(""),"score")
+                                       getlocal 8
+                                       debugline 121
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                       convert_u
+                                       dup
+                                       convert_u
+                                       setlocal2
+                                       pushbyte 0
+                                       ifeq ofs00e7
+                                       getlocal3
+                                       getlocal 8
+                                       getlocal2
+                                       debugline 122
+                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUTFBytes"), 1
+                                       setproperty QName(PackageNamespace(""),"nick")
+                                       debugline 124
+                              ofs00e7:
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_actorCallBack")
+                                       pushnull
+                                       ifeq ofs010d
+                                       debugline 125
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_actorCallBack")
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       setlocal 5
+                                       debugline 126
+                                       pushnull
+                                       findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_actorCallBack")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"_actorCallBack")
+                                       debugline 127
+                                       getlocal 5
+                                       debugline 127
+                                       getlocal0
+                                       getlocal3
+                                       debugline 127
+                                       call 1
+                                       debugline 127
+                                       pop
+                              ofs010d:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private static function onGetActorError(param1:MessageEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetActorError")
+                                 dispid 0
+                                 method
+                                    name "onGetActorError"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;RankManager.as"
+                                          debug 1, "param1", 0, 0
+                                          debugline 132
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                          getproperty QName(PackageNamespace(""),"GET_ACTOR_RANK_1522")
+                                          getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetActorRank")
+                                          callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                          debugline 133
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                          getproperty QName(PackageNamespace(""),"GET_ACTOR_RANK_1522")
+                                          getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:RankManager"),"onGetActorError")
+                                          callpropvoid QName(PackageNamespace(""),"removeErrorHandler"), 2
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                           }
+                        }
+                        
+                        method
+                           name null
+                           returns null
+                           
+                           body
+                              maxstack 3
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 2
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 getscopeobject 0
+                                 getlex QName(PackageNamespace(""),"Object")
+                                 dup
+                                 pushscope
+                                 newclass 0
+                                 popscope
+                                 initproperty QName(PackageNamespace("com.taomee.seer2.app.manager"),"RankManager")
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                        

@@ -1,0 +1,1327 @@
+package com.taomee.seer2.module.app.versionOnePetBagPanel
+{
+   import com.greensock.TweenNano;
+   import com.taomee.seer2.app.config.PetConfig;
+   import com.taomee.seer2.app.config.skill.PetSkillSettingDefinition;
+   import com.taomee.seer2.app.controls.MapTitlePanel;
+   import com.taomee.seer2.app.inventory.ItemManager;
+   import com.taomee.seer2.app.inventory.events.ItemEvent;
+   import com.taomee.seer2.app.manager.StatisticsManager;
+   import com.taomee.seer2.app.net.Command;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.pet.data.PetItemInfo;
+   import com.taomee.seer2.app.pet.events.PetInfoEvent;
+   import com.taomee.seer2.app.serverBuffer.ServerBuffer;
+   import com.taomee.seer2.app.serverBuffer.ServerBufferManager;
+   import com.taomee.seer2.app.utils.PetUtil;
+   import com.taomee.seer2.core.module.Module;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.module.app.petBag.data.PetBagDataService;
+   import com.taomee.seer2.module.app.petBag.event.PetBagEvent;
+   import com.taomee.seer2.module.app.versionOnePetBagPanel.petSkillPanel.selectSkillPanel.GraspHideSkillPanel;
+   import flash.geom.Point;
+   import flash.utils.IDataInput;
+   
+   public class PetBagPanel extends Module
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 1
+            localcount 1
+            initscopedepth 9
+            maxscopedepth 10
+            
+            code
+               getlocal0
+               pushscope
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _petDemoPanel:PetDemoPanel;
+      
+      private var _petListPanel:PetListPanel;
+      
+      private var _petTabPanel:PetTabPanel;
+      
+      private var _dataService:PetBagDataService;
+      
+      private var _currPetInfo:PetInfo;
+      
+      public function PetBagPanel()
+      {
+         method
+            name null
+            returns null
+            
+            body
+               maxstack 2
+               localcount 1
+               initscopedepth 10
+               maxscopedepth 11
+               
+               code
+                  getlocal0
+                  pushscope
+                  getlocal0
+                  constructsuper 0
+                  findproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_lifecycleType")
+                  pushstring "global"
+                  initproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_lifecycleType")
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      override public function setup() : void
+      {
+         trait method QName(PackageNamespace(""),"setup")
+            flag OVERRIDE
+            dispid 0
+            method
+               name null
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 10
+                  maxscopedepth 11
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     findpropstrict QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"setMainUI")
+                     findpropstrict QName(PackageNamespace(""),"PetBagBgUI")
+                     constructprop QName(PackageNamespace(""),"PetBagBgUI"), 0
+                     callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"setMainUI"), 1
+                     getlocal0
+                     callpropvoid QName(PrivateNamespace(null,"8"),"initSet"), 0
+                     getlocal0
+                     callpropvoid QName(PrivateNamespace(null,"8"),"initEvent"), 0
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         override public function init(param1:Object) : void
+         {
+            trait method QName(PackageNamespace(""),"init")
+               flag OVERRIDE
+               dispid 0
+               method
+                  name null
+                  flag NEED_ACTIVATION
+                  param QName(PackageNamespace(""),"Object")
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 3
+                     initscopedepth 11
+                     maxscopedepth 13
+                     trait slot QName(PackageInternalNs("com.taomee.seer2.module.app.versionOnePetBagPanel"),"data")
+                        slotid 1
+                        type QName(PackageNamespace(""),"Object")
+                     end ; trait
+                     trait slot QName(PackageInternalNs("com.taomee.seer2.module.app.versionOnePetBagPanel"),"type")
+                        slotid 2
+                        type QName(PackageNamespace(""),"int")
+                     end ; trait
+                     trait slot QName(PackageInternalNs("com.taomee.seer2.module.app.versionOnePetBagPanel"),"subType")
+                        slotid 3
+                        type QName(PackageNamespace(""),"int")
+                     end ; trait
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        newactivation
+                        dup
+                        setlocal2
+                        pushscope
+                        getscopeobject 1
+                        pushbyte 0
+                        setslot 2
+                        getscopeobject 1
+                        pushbyte 0
+                        setslot 3
+                        getscopeobject 1
+                        getlocal1
+                        setslot 1
+                        getscopeobject 1
+                        pushbyte 0
+                        setslot 2
+                        getscopeobject 1
+                        pushbyte 0
+                        setslot 3
+                        findpropstrict QName(PackageNamespace(""),"Boolean")
+                        getscopeobject 1
+                        getslot 1
+                        callproperty QName(PackageNamespace(""),"Boolean"), 1
+                        iffalse ofs0069
+                        getscopeobject 1
+                        findpropstrict QName(PackageNamespace(""),"int")
+                        getscopeobject 1
+                        getslot 1
+                        getproperty Multiname("type",[PrivateNamespace(null,"8"),PackageNamespace(""),PackageInternalNs("com.taomee.seer2.module.app.versionOnePetBagPanel"),PrivateNamespace(null,"26"),PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel:PetBagPanel"),StaticProtectedNs("com.taomee.seer2.module.app.versionOnePetBagPanel:PetBagPanel"),StaticProtectedNs("com.taomee.seer2.core.module:Module"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        callproperty QName(PackageNamespace(""),"int"), 1
+                        convert_i
+                        setslot 2
+                        getscopeobject 1
+                        findpropstrict QName(PackageNamespace(""),"int")
+                        getscopeobject 1
+                        getslot 1
+                        getproperty Multiname("subType",[PrivateNamespace(null,"8"),PackageNamespace(""),PackageInternalNs("com.taomee.seer2.module.app.versionOnePetBagPanel"),PrivateNamespace(null,"26"),PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel:PetBagPanel"),StaticProtectedNs("com.taomee.seer2.module.app.versionOnePetBagPanel:PetBagPanel"),StaticProtectedNs("com.taomee.seer2.core.module:Module"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        callproperty QName(PackageNamespace(""),"int"), 1
+                        convert_i
+                        setslot 3
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"8"),"_petTabPanel")
+                        getscopeobject 1
+                        getslot 2
+                        callpropvoid QName(PackageNamespace(""),"changeTab"), 1
+                        getlex QName(PackageNamespace("com.greensock"),"TweenNano")
+                        pushdouble 0.1
+                        newfunction 41
+                        callpropvoid QName(PackageNamespace(""),"delayedCall"), 2
+               ofs0069:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            override public function show() : void
+            {
+               trait method QName(PackageNamespace(""),"show")
+                  flag OVERRIDE
+                  dispid 0
+                  method
+                     name null
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 10
+                        maxscopedepth 11
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           getlocal0
+                           callsupervoid QName(PackageNamespace(""),"show"), 0
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"StatisticsManager")
+                           pushstring "0x10033859"
+                           callpropvoid QName(PackageNamespace(""),"sendNovice"), 1
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                           pushstring "requestSpecialItemSuccess"
+                           getlocal0
+                           getproperty QName(PrivateNamespace(null,"8"),"onSeer")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener1"), 2
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                           callpropvoid QName(PackageNamespace(""),"requestSpecialItemList"), 0
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               override public function hide() : void
+               {
+                  trait method QName(PackageNamespace(""),"hide")
+                     flag OVERRIDE
+                     dispid 0
+                     method
+                        name null
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 1
+                           initscopedepth 10
+                           maxscopedepth 11
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                              pushstring "petFightItem"
+                              getlocal0
+                              getproperty QName(PrivateNamespace(null,"8"),"petFightItem")
+                              callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                              getlocal0
+                              getproperty QName(PrivateNamespace(null,"8"),"_dataService")
+                              callpropvoid QName(PackageNamespace(""),"clearEventListener"), 0
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"MapTitlePanel")
+                              callpropvoid QName(PackageNamespace(""),"show"), 0
+                              getlocal0
+                              callsupervoid QName(PackageNamespace(""),"hide"), 0
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                              callpropvoid QName(PackageNamespace(""),"resetOperation"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function initSet() : void
+                  {
+                     trait method QName(PrivateNamespace(null,"8"),"initSet")
+                        dispid 0
+                        method
+                           name null
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 1
+                              initscopedepth 10
+                              maxscopedepth 11
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 getlocal0
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),"PetDemoPanel")
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),"PetDemoPanel"), 0
+                                 setproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                 findpropstrict QName(PackageNamespace(""),"addChild")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                 callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                 pushshort 284
+                                 setproperty QName(PackageNamespace(""),"x")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                 pushbyte 100
+                                 setproperty QName(PackageNamespace(""),"y")
+                                 getlocal0
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),"PetListPanel")
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),"PetListPanel"), 0
+                                 setproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                 findpropstrict QName(PackageNamespace(""),"addChild")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                 callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                 pushbyte 52
+                                 setproperty QName(PackageNamespace(""),"x")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                 pushbyte 74
+                                 setproperty QName(PackageNamespace(""),"y")
+                                 getlocal0
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),"PetTabPanel")
+                                 getlocal0
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),"PetTabPanel"), 1
+                                 setproperty QName(PrivateNamespace(null,"8"),"_petTabPanel")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace(null,"8"),"_petTabPanel")
+                                 pushbyte 10
+                                 setproperty QName(PackageNamespace(""),"y")
+                                 findpropstrict QName(PackageNamespace(""),"addChild")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace(null,"8"),"_petTabPanel")
+                                 callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                 getlocal0
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.module.app.petBag.data"),"PetBagDataService")
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.module.app.petBag.data"),"PetBagDataService"), 0
+                                 setproperty QName(PrivateNamespace(null,"8"),"_dataService")
+                                 getlocal0
+                                 callpropvoid QName(PrivateNamespace(null,"8"),"liftOuterCloseButton"), 0
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function liftOuterCloseButton() : void
+                     {
+                        trait method QName(PrivateNamespace(null,"8"),"liftOuterCloseButton")
+                           dispid 0
+                           method
+                              name null
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 4
+                                 localcount 3
+                                 initscopedepth 10
+                                 maxscopedepth 11
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    pushnull
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal1
+                                    pushnull
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal2
+                                    getlocal0
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_closeBtn")
+                                    pushnull
+                                    equals
+                                    dup
+                                    iftrue ofs001f
+                                    pop
+                                    getlocal0
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_closeBtn")
+                                    getproperty QName(PackageNamespace(""),"parent")
+                                    getlocal0
+                                    equals
+                           ofs001f:
+                                    iffalse ofs0024
+                                    returnvoid
+                           ofs0024:
+                                    getlocal0
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_closeBtn")
+                                    findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                    pushbyte 0
+                                    dup
+                                    constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                    callproperty QName(PackageNamespace(""),"localToGlobal"), 1
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal1
+                                    getlocal0
+                                    getlocal0
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_closeBtn")
+                                    callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                    getlocal0
+                                    getlocal1
+                                    callproperty QName(PackageNamespace(""),"globalToLocal"), 1
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal2
+                                    getlocal0
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_closeBtn")
+                                    getlocal2
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    setproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_closeBtn")
+                                    getlocal2
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    setproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getlocal0
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.core.module:Module"),"_closeBtn")
+                                    getlocal0
+                                    getproperty QName(PackageNamespace(""),"numChildren")
+                                    decrement
+                                    callpropvoid QName(PackageNamespace(""),"setChildIndex"), 2
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function initEvent() : void
+                        {
+                           trait method QName(PrivateNamespace(null,"8"),"initEvent")
+                              dispid 0
+                              method
+                                 name null
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 10
+                                    maxscopedepth 11
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                       pushstring "petSelected"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"onPetSelected")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"_dataService")
+                                       pushstring "petAddedHp"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"onPetAddedHp")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Command")
+                                       pushshort 1215
+                                       callproperty QName(PackageNamespace(""),"getCommand"), 1
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"onPetAddedHp2")
+                                       callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"_dataService")
+                                       pushstring "petDataChange"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"onPetDataChange")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"_dataService")
+                                       pushstring "petTrainingError"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"8"),"onPetTrainingError")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onPetAddedHp(param1:PetBagEvent) : void
+                           {
+                              trait method QName(PrivateNamespace(null,"8"),"onPetAddedHp")
+                                 dispid 0
+                                 method
+                                    name null
+                                    param QName(PackageNamespace("com.taomee.seer2.module.app.petBag.event"),"PetBagEvent")
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 2
+                                       initscopedepth 10
+                                       maxscopedepth 11
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          getlocal1
+                                          callpropvoid QName(PackageNamespace(""),"stopPropagation"), 0
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                          callpropvoid QName(PackageNamespace(""),"updateDisplay"), 0
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                          getlocal1
+                                          getproperty QName(PackageNamespace(""),"petInfo")
+                                          callpropvoid QName(PackageNamespace(""),"showHpAnnimation"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function onPetAddedHp2(param1:MessageEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace(null,"8"),"onPetAddedHp2")
+                                    dispid 0
+                                    method
+                                       name null
+                                       param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 1
+                                          localcount 2
+                                          initscopedepth 10
+                                          maxscopedepth 11
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                             callpropvoid QName(PackageNamespace(""),"updateDisplay"), 0
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                             callpropvoid QName(PackageNamespace(""),"showHpAnnimation"), 0
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function onPetDataChange(param1:PetBagEvent) : void
+                                 {
+                                    trait method QName(PrivateNamespace(null,"8"),"onPetDataChange")
+                                       dispid 0
+                                       method
+                                          name null
+                                          param QName(PackageNamespace("com.taomee.seer2.module.app.petBag.event"),"PetBagEvent")
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 1
+                                             localcount 2
+                                             initscopedepth 10
+                                             maxscopedepth 11
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                getlocal0
+                                                callpropvoid QName(PrivateNamespace(null,"8"),"updatePanel"), 0
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function onPetTrainingError(param1:PetBagEvent) : void
+                                    {
+                                       trait method QName(PrivateNamespace(null,"8"),"onPetTrainingError")
+                                          dispid 0
+                                          method
+                                             name null
+                                             param QName(PackageNamespace("com.taomee.seer2.module.app.petBag.event"),"PetBagEvent")
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 1
+                                                localcount 2
+                                                initscopedepth 10
+                                                maxscopedepth 11
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   getlocal1
+                                                   callpropvoid QName(PackageNamespace(""),"stopPropagation"), 0
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                                   callpropvoid QName(PackageNamespace(""),"updateButtonStatus"), 0
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onPetSelected(param1:PetBagEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace(null,"8"),"onPetSelected")
+                                             dispid 0
+                                             method
+                                                name null
+                                                param QName(PackageNamespace("com.taomee.seer2.module.app.petBag.event"),"PetBagEvent")
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 2
+                                                   localcount 2
+                                                   initscopedepth 10
+                                                   maxscopedepth 11
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      getlocal1
+                                                      callpropvoid QName(PackageNamespace(""),"stopPropagation"), 0
+                                                      getlocal0
+                                                      getlocal1
+                                                      getproperty QName(PackageNamespace(""),"petInfo")
+                                                      setproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                      getproperty QName(PackageNamespace(""),"level")
+                                                      pushbyte 60
+                                                      greaterequals
+                                                      dup
+                                                      iffalse ofs0028
+                                                      pop
+                                                      getlocal0
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                      callproperty QName(PrivateNamespace(null,"8"),"getPetHideSkillCount"), 1
+                                                      convert_b
+                                             ofs0028:
+                                                      dup
+                                                      iffalse ofs0038
+                                                      pop
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                      getproperty QName(PackageNamespace(""),"resourceId")
+                                                      pushbyte 91
+                                                      equals
+                                                      not
+                                             ofs0038:
+                                                      dup
+                                                      iffalse ofs004a
+                                                      pop
+                                                      getlocal0
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                      callproperty QName(PrivateNamespace(null,"8"),"getPetHideCount"), 1
+                                                      pushbyte 0
+                                                      greaterthan
+                                             ofs004a:
+                                                      iffalse ofs0057
+                                                      getlocal0
+                                                      callpropvoid QName(PrivateNamespace(null,"8"),"checkBuff"), 0
+                                                      jump ofs006d
+                                             ofs0057:
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                      callpropvoid QName(PackageNamespace(""),"setData"), 1
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"8"),"_petTabPanel")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                      callpropvoid QName(PackageNamespace(""),"setData"), 1
+                                             ofs006d:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function getPetHideSkillCount(param1:PetInfo) : Boolean
+                                          {
+                                             trait method QName(PrivateNamespace(null,"8"),"getPetHideSkillCount")
+                                                dispid 0
+                                                method
+                                                   name null
+                                                   param QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                   returns QName(PackageNamespace(""),"Boolean")
+                                                   
+                                                   body
+                                                      maxstack 2
+                                                      localcount 2
+                                                      initscopedepth 10
+                                                      maxscopedepth 11
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"PetUtil")
+                                                         getlocal1
+                                                         getproperty QName(PackageNamespace(""),"bunchId")
+                                                         callproperty QName(PackageNamespace(""),"getMaxStatusPet"), 1
+                                                         getproperty QName(PackageNamespace(""),"resId")
+                                                         getlocal1
+                                                         getproperty QName(PackageNamespace(""),"resourceId")
+                                                         ifne ofs0019
+                                                         pushtrue
+                                                         returnvalue
+                                                ofs0019:
+                                                         pushfalse
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function getPetHideCount(param1:PetInfo) : uint
+                                             {
+                                                trait method QName(PrivateNamespace(null,"8"),"getPetHideCount")
+                                                   dispid 0
+                                                   method
+                                                      name null
+                                                      param QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                      returns QName(PackageNamespace(""),"uint")
+                                                      
+                                                      body
+                                                         maxstack 2
+                                                         localcount 6
+                                                         initscopedepth 10
+                                                         maxscopedepth 11
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            pushnull
+                                                            coerce QName(PackageNamespace("com.taomee.seer2.app.config.skill"),"PetSkillSettingDefinition")
+                                                            setlocal2
+                                                            pushbyte 0
+                                                            convert_u
+                                                            setlocal3
+                                                            pushbyte 0
+                                                            setlocal 4
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"PetConfig")
+                                                            getlocal1
+                                                            getproperty QName(PackageNamespace(""),"bunchId")
+                                                            callproperty QName(PackageNamespace(""),"getPetSkillSettingDefinitionVec"), 1
+                                                            coerce_a
+                                                            setlocal 5
+                                                            jump ofs0037
+                                                   ofs0020:
+                                                            label
+                                                            getlocal 5
+                                                            getlocal 4
+                                                            nextvalue
+                                                            coerce QName(PackageNamespace("com.taomee.seer2.app.config.skill"),"PetSkillSettingDefinition")
+                                                            setlocal2
+                                                            getlocal2
+                                                            getproperty QName(PackageNamespace(""),"learningLv")
+                                                            pushbyte 100
+                                                            ifngt ofs0037
+                                                            getlocal3
+                                                            increment
+                                                            convert_u
+                                                            setlocal3
+                                                   ofs0037:
+                                                            hasnext2 5, 4
+                                                            iftrue ofs0020
+                                                            kill 5
+                                                            kill 4
+                                                            getlocal3
+                                                            returnvalue
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function checkBuff() : void
+                                                {
+                                                   trait method QName(PrivateNamespace(null,"8"),"checkBuff")
+                                                      dispid 0
+                                                      method
+                                                         name null
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 1
+                                                            initscopedepth 10
+                                                            maxscopedepth 11
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                                                               pushbyte 76
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace(null,"8"),"onUpdateServerBuf")
+                                                               callpropvoid QName(PackageNamespace(""),"getServerBuffer"), 2
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function onUpdateServerBuf(param1:ServerBuffer) : void
+                                                   {
+                                                      trait method QName(PrivateNamespace(null,"8"),"onUpdateServerBuf")
+                                                         dispid 0
+                                                         method
+                                                            name null
+                                                            param QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBuffer")
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 2
+                                                               localcount 2
+                                                               initscopedepth 10
+                                                               maxscopedepth 11
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel.petSkillPanel.selectSkillPanel"),"GraspHideSkillPanel")
+                                                                  pushfalse
+                                                                  setproperty QName(PackageNamespace(""),"newGuideOpen")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                                  callpropvoid QName(PackageNamespace(""),"setData"), 1
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace(null,"8"),"_petTabPanel")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                                  callpropvoid QName(PackageNamespace(""),"setData"), 1
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      public function updatePetInfoByPetInfoChange(param1:PetInfo) : void
+                                                      {
+                                                         trait method QName(PackageNamespace(""),"updatePetInfoByPetInfoChange")
+                                                            dispid 0
+                                                            method
+                                                               name null
+                                                               param QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 2
+                                                                  localcount 2
+                                                                  initscopedepth 10
+                                                                  maxscopedepth 11
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     getlocal0
+                                                                     getlocal1
+                                                                     setproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                                     getlocal0
+                                                                     callpropvoid QName(PrivateNamespace(null,"8"),"updatePanel"), 0
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function updatePanel() : void
+                                                         {
+                                                            trait method QName(PrivateNamespace(null,"8"),"updatePanel")
+                                                               dispid 0
+                                                               method
+                                                                  name null
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 3
+                                                                     localcount 1
+                                                                     initscopedepth 10
+                                                                     maxscopedepth 11
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"8"),"_dataService")
+                                                                        getproperty QName(PackageNamespace(""),"petInfoVec")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"8"),"_dataService")
+                                                                        getproperty QName(PackageNamespace(""),"petInfoStorageVec")
+                                                                        callpropvoid QName(PackageNamespace(""),"setData"), 2
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                                        callpropvoid QName(PackageNamespace(""),"setData"), 1
+                                                                        findpropstrict QName(PackageNamespace(""),"Boolean")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                                        callproperty QName(PackageNamespace(""),"Boolean"), 1
+                                                                        iffalse ofs003a
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"8"),"_petTabPanel")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"8"),"_currPetInfo")
+                                                                        callpropvoid QName(PackageNamespace(""),"setData"), 1
+                                                               ofs003a:
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function onSeer(param1:ItemEvent) : void
+                                                            {
+                                                               trait method QName(PrivateNamespace(null,"8"),"onSeer")
+                                                                  dispid 0
+                                                                  method
+                                                                     name null
+                                                                     param QName(PackageNamespace("com.taomee.seer2.app.inventory.events"),"ItemEvent")
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 2
+                                                                        initscopedepth 10
+                                                                        maxscopedepth 11
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                           pushstring "requestSpecialItemSuccess"
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace(null,"8"),"onSeer")
+                                                                           callpropvoid QName(PackageNamespace(""),"removeEventListener1"), 2
+                                                                           getlocal0
+                                                                           callpropvoid QName(PrivateNamespace(null,"8"),"getPetItemList"), 0
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                                           pushstring "petFightItem"
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace(null,"8"),"petFightItem")
+                                                                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                                           callpropvoid QName(PackageNamespace(""),"focusOnUILayer"), 0
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function getPetItemList() : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace(null,"8"),"getPetItemList")
+                                                                     dispid 0
+                                                                     method
+                                                                        name null
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 3
+                                                                           localcount 1
+                                                                           initscopedepth 10
+                                                                           maxscopedepth 11
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                              getproperty QName(PackageNamespace(""),"GET_PET_ITEM_INFO_1234")
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace(null,"8"),"onGetPetItemList")
+                                                                              callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                              getproperty QName(PackageNamespace(""),"GET_PET_ITEM_INFO_1234")
+                                                                              callpropvoid QName(PackageNamespace(""),"send"), 1
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function petFightItem(param1:PetInfoEvent) : void
+                                                                  {
+                                                                     trait method QName(PrivateNamespace(null,"8"),"petFightItem")
+                                                                        dispid 0
+                                                                        method
+                                                                           name null
+                                                                           param QName(PackageNamespace("com.taomee.seer2.app.pet.events"),"PetInfoEvent")
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 2
+                                                                              localcount 2
+                                                                              initscopedepth 10
+                                                                              maxscopedepth 11
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                                                                 getproperty QName(PackageNamespace(""),"petInfo")
+                                                                                 getproperty QName(PackageNamespace(""),"catchTime")
+                                                                                 getlocal1
+                                                                                 getproperty QName(PackageNamespace(""),"info")
+                                                                                 getproperty QName(PackageNamespace(""),"catchTime")
+                                                                                 ifne ofs0020
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                                                                 getlocal1
+                                                                                 getproperty QName(PackageNamespace(""),"info")
+                                                                                 callpropvoid QName(PackageNamespace(""),"setData"), 1
+                                                                        ofs0020:
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private function onGetPetItemList(param1:MessageEvent) : void
+                                                                     {
+                                                                        trait method QName(PrivateNamespace(null,"8"),"onGetPetItemList")
+                                                                           dispid 0
+                                                                           method
+                                                                              name null
+                                                                              param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 3
+                                                                                 localcount 9
+                                                                                 initscopedepth 10
+                                                                                 maxscopedepth 11
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    pushnull
+                                                                                    coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                                                    setlocal2
+                                                                                    pushbyte 0
+                                                                                    convert_u
+                                                                                    setlocal3
+                                                                                    pushbyte 0
+                                                                                    setlocal 4
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                                    getproperty QName(PackageNamespace(""),"GET_PET_ITEM_INFO_1234")
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace(null,"8"),"onGetPetItemList")
+                                                                                    callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                                                    getlocal1
+                                                                                    getproperty QName(PackageNamespace(""),"message")
+                                                                                    callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                                                                    coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                                                    setlocal 5
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                                                    callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                                                                    coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                                                                    setlocal 6
+                                                                                    pushbyte 0
+                                                                                    setlocal 7
+                                                                                    getlocal 6
+                                                                                    coerce_a
+                                                                                    setlocal 8
+                                                                                    jump ofs0057
+                                                                           ofs0040:
+                                                                                    label
+                                                                                    getlocal 8
+                                                                                    getlocal 7
+                                                                                    nextvalue
+                                                                                    coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                                                    setlocal2
+                                                                                    getlocal2
+                                                                                    getlex Multiname("Vector",[PrivateNamespace(null,"8"),PackageNamespace(""),PackageInternalNs("com.taomee.seer2.module.app.versionOnePetBagPanel"),PrivateNamespace(null,"26"),PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel:PetBagPanel"),StaticProtectedNs("com.taomee.seer2.module.app.versionOnePetBagPanel:PetBagPanel"),StaticProtectedNs("com.taomee.seer2.core.module:Module"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PackageNamespace("__AS3__.vec")])
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetItemInfo")
+                                                                                    applytype 1
+                                                                                    construct 0
+                                                                                    setproperty QName(PackageNamespace(""),"itemList")
+                                                                           ofs0057:
+                                                                                    hasnext2 8, 7
+                                                                                    iftrue ofs0040
+                                                                                    kill 8
+                                                                                    kill 7
+                                                                                    getlocal 5
+                                                                                    callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                                                                    convert_u
+                                                                                    setlocal3
+                                                                                    pushbyte 0
+                                                                                    setlocal 4
+                                                                                    jump ofs007c
+                                                                           ofs0072:
+                                                                                    label
+                                                                                    getlocal0
+                                                                                    getlocal 5
+                                                                                    callpropvoid QName(PrivateNamespace(null,"8"),"updatePetItem"), 1
+                                                                                    inclocal_i 4
+                                                                           ofs007c:
+                                                                                    getlocal 4
+                                                                                    getlocal3
+                                                                                    iflt ofs0072
+                                                                                    getlocal0
+                                                                                    callpropvoid QName(PackageNamespace(""),"reset"), 0
+                                                                                    getlocal0
+                                                                                    callpropvoid QName(PrivateNamespace(null,"8"),"updatePanel"), 0
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        private function updatePetItem(param1:IDataInput) : void
+                                                                        {
+                                                                           trait method QName(PrivateNamespace(null,"8"),"updatePetItem")
+                                                                              dispid 0
+                                                                              method
+                                                                                 name null
+                                                                                 param QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                                                 returns QName(PackageNamespace(""),"void")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 2
+                                                                                    localcount 10
+                                                                                    initscopedepth 10
+                                                                                    maxscopedepth 11
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       pushnull
+                                                                                       coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                                                       setlocal2
+                                                                                       pushbyte 0
+                                                                                       convert_u
+                                                                                       setlocal3
+                                                                                       pushnull
+                                                                                       coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetItemInfo")
+                                                                                       setlocal 4
+                                                                                       pushbyte 0
+                                                                                       setlocal 5
+                                                                                       getlocal1
+                                                                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                                                                       convert_u
+                                                                                       setlocal 6
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                                                       callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                                                                       coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                                                                       setlocal 7
+                                                                                       pushbyte 0
+                                                                                       setlocal 8
+                                                                                       getlocal 7
+                                                                                       coerce_a
+                                                                                       setlocal 9
+                                                                                       jump ofs0089
+                                                                              ofs0034:
+                                                                                       label
+                                                                                       getlocal 9
+                                                                                       getlocal 8
+                                                                                       nextvalue
+                                                                                       coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                                                       setlocal2
+                                                                                       getlocal2
+                                                                                       getproperty QName(PackageNamespace(""),"catchTime")
+                                                                                       getlocal 6
+                                                                                       ifne ofs0089
+                                                                                       getlocal1
+                                                                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                                                                       convert_u
+                                                                                       setlocal3
+                                                                                       pushbyte 0
+                                                                                       setlocal 5
+                                                                                       jump ofs0081
+                                                                              ofs0055:
+                                                                                       label
+                                                                                       findpropstrict QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetItemInfo")
+                                                                                       constructprop QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetItemInfo"), 0
+                                                                                       coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetItemInfo")
+                                                                                       setlocal 4
+                                                                                       getlocal 4
+                                                                                       getlocal1
+                                                                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                                                                       setproperty QName(PackageNamespace(""),"itemId")
+                                                                                       getlocal 4
+                                                                                       getlocal1
+                                                                                       callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                                                                       setproperty QName(PackageNamespace(""),"itemCurrCount")
+                                                                                       getlocal2
+                                                                                       getproperty QName(PackageNamespace(""),"itemList")
+                                                                                       getlocal 4
+                                                                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                                                                       inclocal_i 5
+                                                                              ofs0081:
+                                                                                       getlocal 5
+                                                                                       getlocal3
+                                                                                       iflt ofs0055
+                                                                                       returnvoid
+                                                                              ofs0089:
+                                                                                       hasnext2 9, 8
+                                                                                       iftrue ofs0034
+                                                                                       kill 9
+                                                                                       kill 8
+                                                                                       returnvoid
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                           
+                                                                           public function reset() : void
+                                                                           {
+                                                                              trait method QName(PackageNamespace(""),"reset")
+                                                                                 dispid 0
+                                                                                 method
+                                                                                    name null
+                                                                                    returns QName(PackageNamespace(""),"void")
+                                                                                    
+                                                                                    body
+                                                                                       maxstack 1
+                                                                                       localcount 1
+                                                                                       initscopedepth 10
+                                                                                       maxscopedepth 11
+                                                                                       
+                                                                                       code
+                                                                                          getlocal0
+                                                                                          pushscope
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                                                                          callpropvoid QName(PackageNamespace(""),"reset"), 0
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                                                                          callpropvoid QName(PackageNamespace(""),"reset"), 0
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace(null,"8"),"_dataService")
+                                                                                          callpropvoid QName(PackageNamespace(""),"reloadEventListener"), 0
+                                                                                          returnvoid
+                                                                                       end ; code
+                                                                                    end ; body
+                                                                                 end ; method
+                                                                              }
+                                                                              
+                                                                              public function updateSelectedPet() : void
+                                                                              {
+                                                                                 trait method QName(PackageNamespace(""),"updateSelectedPet")
+                                                                                    dispid 0
+                                                                                    method
+                                                                                       name null
+                                                                                       returns QName(PackageNamespace(""),"void")
+                                                                                       
+                                                                                       body
+                                                                                          maxstack 1
+                                                                                          localcount 1
+                                                                                          initscopedepth 10
+                                                                                          maxscopedepth 11
+                                                                                          
+                                                                                          code
+                                                                                             getlocal0
+                                                                                             pushscope
+                                                                                             getlocal0
+                                                                                             getproperty QName(PrivateNamespace(null,"8"),"_petDemoPanel")
+                                                                                             callpropvoid QName(PackageNamespace(""),"updateDisplay"), 0
+                                                                                             getlocal0
+                                                                                             getproperty QName(PrivateNamespace(null,"8"),"_petListPanel")
+                                                                                             callpropvoid QName(PackageNamespace(""),"updateDisplay"), 0
+                                                                                             returnvoid
+                                                                                          end ; code
+                                                                                       end ; body
+                                                                                    end ; method
+                                                                                 }
+                                                                              }
+                                                                           }
+                                                                           
+                                                                           method
+                                                                              name null
+                                                                              returns null
+                                                                              
+                                                                              body
+                                                                                 maxstack 2
+                                                                                 localcount 1
+                                                                                 initscopedepth 1
+                                                                                 maxscopedepth 9
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    findpropstrict Multiname("PetBagPanel",[PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel")])
+                                                                                    getlex QName(PackageNamespace(""),"Object")
+                                                                                    pushscope
+                                                                                    getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                                                    pushscope
+                                                                                    getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                                    pushscope
+                                                                                    getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                                                    pushscope
+                                                                                    getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                                                    pushscope
+                                                                                    getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                                                    pushscope
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"Module")
+                                                                                    pushscope
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"Module")
+                                                                                    newclass 74
+                                                                                    popscope
+                                                                                    popscope
+                                                                                    popscope
+                                                                                    popscope
+                                                                                    popscope
+                                                                                    popscope
+                                                                                    popscope
+                                                                                    initproperty QName(PackageNamespace("com.taomee.seer2.module.app.versionOnePetBagPanel"),"PetBagPanel")
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                           

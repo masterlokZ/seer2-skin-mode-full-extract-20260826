@@ -1,0 +1,1444 @@
+package com.taomee.seer2.app.dragonPanel
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.config.ItemConfig;
+   import com.taomee.seer2.app.inventory.ItemManager;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.popup.ServerMessager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.core.map.ResourceLibrary;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.text.TextField;
+   import flash.ui.Mouse;
+   import flash.utils.IDataInput;
+   import flash.utils.clearTimeout;
+   import flash.utils.setTimeout;
+   import org.taomee.utils.DisplayUtil;
+   
+   public class DragonGameStart extends Sprite
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _libs:ResourceLibrary;
+      
+      private var _itemTxt:TextField;
+      
+      private var _dragonTxt:TextField;
+      
+      private var _sorr:MovieClip;
+      
+      private const swapList:Vector.<uint>;
+      
+      private var _count:uint;
+      
+      private var _mainUI:MovieClip;
+      
+      private var _pai:MovieClip;
+      
+      private var _currType:int;
+      
+      private var _time:uint;
+      
+      private var _timeCount:uint;
+      
+      private var _timeOut:uint;
+      
+      private var _isStop:Boolean;
+      
+      private var _downList:Vector.<DragonDownItem>;
+      
+      private var _closeBtn:SimpleButton;
+      
+      private var _tipMC:MovieClip;
+      
+      private var _goBtn:SimpleButton;
+      
+      private var _startTimeOut:uint;
+      
+      public function DragonGameStart(param1:ResourceLibrary, param2:uint)
+      {
+         method
+            name "DragonGameStart"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.core.map"),"ResourceLibrary")
+            param QName(PackageNamespace(""),"uint")
+            paramname "param1"
+            paramname "param2"
+            returns null
+            
+            body
+               maxstack 8
+               localcount 3
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                  debug 1, "param1", 0, 0
+                  debug 1, "param2", 1, 0
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                  debugline 46
+                  getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                  getlex QName(PackageNamespace(""),"uint")
+                  applytype 1
+                  getlocal0
+                  pushshort 1441
+                  pushshort 1428
+                  pushshort 1429
+                  pushshort 1430
+                  pushshort 1431
+                  pushshort 1432
+                  newarray 6
+                  call 1
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"swapList")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"swapList")
+                  debugline 75
+                  getlocal0
+                  debugline 75
+                  constructsuper 0
+                  getlocal0
+                  getlocal1
+                  debugline 76
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_libs")
+                  getlocal0
+                  getlocal2
+                  debugline 77
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                  getlocal0
+                  debugline 78
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"initMC"), 0
+                  getlocal0
+                  debugline 79
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"updateStatus"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      private function initMC() : void
+      {
+         trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"initMC")
+            dispid 0
+            method
+               name "initMC"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 4
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                     getlocal0
+                     getlocal0
+                     debugline 83
+                     pushstring "mainUI"
+                     callproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"getMcFromLib"), 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     findpropstrict QName(PackageNamespace(""),"addChild")
+                     getlocal0
+                     debugline 84
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                     getlocal0
+                     getlocal0
+                     debugline 85
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     pushstring "itemTxt"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_itemTxt")
+                     getlocal0
+                     getlocal0
+                     debugline 86
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     pushstring "dragonTxt"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_dragonTxt")
+                     getlocal0
+                     getlocal0
+                     debugline 87
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     pushstring "sorr"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_sorr")
+                     getlocal0
+                     getlocal0
+                     debugline 88
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     pushstring "pai"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_pai")
+                     getlocal0
+                     getlocal0
+                     debugline 89
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     pushstring "closeBtn"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_closeBtn")
+                     getlocal0
+                     getlocal0
+                     debugline 90
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     pushstring "tipMC"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_tipMC")
+                     getlocal0
+                     getlocal0
+                     debugline 91
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                     pushstring "goBtn"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_goBtn")
+                     getlocal0
+                     debugline 92
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_tipMC")
+                     pushtrue
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlocal0
+                     debugline 93
+                     pushfalse
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_isStop")
+                     getlocal0
+                     debugline 94
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_pai")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"mouseChildren")
+                     getlocal0
+                     debugline 95
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_pai")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"mouseEnabled")
+                     getlocal0
+                     debugline 96
+                     getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                     applytype 1
+                     getlocal0
+                     newarray 0
+                     call 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_downList")
+                     getlocal0
+                     debugline 97
+                     pushshort 2500
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_time")
+                     getlocal0
+                     debugline 98
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_goBtn")
+                     pushtrue
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlocal0
+                     debugline 99
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_goBtn")
+                     pushstring "click"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onGo")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     getlocal0
+                     debugline 100
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"initEvent"), 0
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function onGo(param1:MouseEvent) : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onGo")
+               dispid 0
+               method
+                  name "onGo"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("flash.events"),"MouseEvent")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                        debug 1, "param1", 0, 0
+                        debugline 104
+                        getlex QName(PackageNamespace("flash.utils"),"clearTimeout")
+                        getglobalscope
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_startTimeOut")
+                        call 1
+                        pop
+                        getlocal0
+                        debugline 105
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onStart"), 0
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function initEvent() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"initEvent")
+                  dispid 0
+                  method
+                     name "initEvent"
+                     flag NEED_ACTIVATION
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 5
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 2
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                           newactivation
+                           pushscope
+                           getlocal0
+                           debugline 109
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_closeBtn")
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"mouseEnabled")
+                           getlocal0
+                           debugline 110
+                           getlex QName(PackageNamespace("flash.utils"),"setTimeout")
+                           debugline 110
+                           getglobalscope
+                           newfunction 4
+                           debugline 112
+                           pushshort 9000
+                           debugline 110
+                           call 2
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_startTimeOut")
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onStart() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onStart")
+                     dispid 0
+                     method
+                        name "onStart"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                              debugline 116
+                              getlex QName(PackageNamespace("flash.ui"),"Mouse")
+                              callpropvoid QName(PackageNamespace(""),"hide"), 0
+                              getlocal0
+                              debugline 117
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_goBtn")
+                              pushfalse
+                              setproperty QName(PackageNamespace(""),"visible")
+                              getlocal0
+                              debugline 118
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_tipMC")
+                              pushfalse
+                              setproperty QName(PackageNamespace(""),"visible")
+                              getlocal0
+                              debugline 119
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_closeBtn")
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"mouseEnabled")
+                              getlocal0
+                              debugline 120
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                              pushstring "enterFrame"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onEnterFrame")
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                              getlocal0
+                              debugline 121
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_closeBtn")
+                              pushstring "click"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onClose")
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                              getlocal0
+                              debugline 122
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"startTimeOut"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function startTimeOut() : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"startTimeOut")
+                        dispid 0
+                        method
+                           name "startTimeOut"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 5
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                 getlocal0
+                                 debugline 126
+                                 getlex QName(PackageNamespace("flash.utils"),"setTimeout")
+                                 getglobalscope
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onTime")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_time")
+                                 call 2
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeOut")
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onTime() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onTime")
+                           dispid 0
+                           method
+                              name "onTime"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                    getlocal0
+                                    debugline 130
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_isStop")
+                                    iffalse ofs0012
+                                    debugline 131
+                                    returnvoid
+                           ofs0012:
+                                    getlocal0
+                                    debugline 133
+                                    dup
+                                    debugline 133
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeCount")
+                                    debugline 133
+                                    increment
+                                    debugline 133
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeCount")
+                                    getlocal0
+                                    debugline 134
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeCount")
+                                    pushbyte 7
+                                    greaterequals
+                                    dup
+                                    iffalse ofs003d
+                                    pop
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeCount")
+                                    pushbyte 15
+                                    lessthan
+                                    debugline 134
+                           ofs003d:
+                                    iffalse ofs0051
+                                    getlocal0
+                                    debugline 135
+                                    pushshort 1500
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_time")
+                                    debugline 134
+                                    jump ofs0096
+                           ofs0051:
+                                    getlocal0
+                                    debugline 136
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeCount")
+                                    pushbyte 15
+                                    greaterequals
+                                    dup
+                                    iffalse ofs0069
+                                    pop
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeCount")
+                                    pushbyte 30
+                                    lessthan
+                                    debugline 134
+                           ofs0069:
+                                    iffalse ofs007d
+                                    getlocal0
+                                    debugline 137
+                                    pushshort 1200
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_time")
+                                    debugline 134
+                                    jump ofs0096
+                           ofs007d:
+                                    getlocal0
+                                    debugline 138
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeCount")
+                                    pushbyte 30
+                                    greaterequals
+                                    debugline 134
+                                    iffalse ofs0096
+                                    getlocal0
+                                    debugline 139
+                                    pushshort 1000
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_time")
+                           ofs0096:
+                                    getlocal0
+                                    debugline 141
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"itemDown"), 0
+                                    getlocal0
+                                    debugline 142
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"startTimeOut"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function itemDown() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"itemDown")
+                              dispid 0
+                              method
+                                 name "itemDown"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                       debug 1, "_loc1_", 0, 0
+                                       getlocal0
+                                       getlocal0
+                                       debugline 146
+                                       callproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"typeRan"), 0
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_currType")
+                                       findpropstrict QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                                       getlocal0
+                                       debugline 147
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_currType")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_libs")
+                                       constructprop QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem"), 2
+                                       coerce QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                                       setlocal1
+                                       getlocal0
+                                       debugline 148
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                                       getlocal1
+                                       callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                       getlocal0
+                                       debugline 149
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_downList")
+                                       getlocal1
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                       getlocal0
+                                       getlocal1
+                                       debugline 150
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"dragonPoint"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function dragonPoint(param1:DragonDownItem) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"dragonPoint")
+                                 dispid 0
+                                 method
+                                    name "dragonPoint"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                          debug 1, "_loc2_", 1, 0
+                                          debug 1, "param1", 0, 0
+                                          debugline 154
+                                          getlex QName(PackageNamespace(""),"Math")
+                                          callproperty QName(PackageNamespace(""),"random"), 0
+                                          pushshort 700
+                                          multiply
+                                          convert_d
+                                          setlocal2
+                                          getlocal1
+                                          getlocal2
+                                          debugline 155
+                                          setproperty QName(PackageNamespace(""),"x")
+                                          getlocal1
+                                          debugline 156
+                                          pushbyte -50
+                                          setproperty QName(PackageNamespace(""),"y")
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function typeRan() : uint
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"typeRan")
+                                    dispid 0
+                                    method
+                                       name "typeRan"
+                                       returns QName(PackageNamespace(""),"uint")
+                                       
+                                       body
+                                          maxstack 2
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                             debug 1, "_loc1_", 0, 0
+                                             debugline 160
+                                             getlex QName(PackageNamespace(""),"Math")
+                                             callproperty QName(PackageNamespace(""),"random"), 0
+                                             pushbyte 100
+                                             multiply
+                                             convert_d
+                                             setlocal1
+                                             getlocal1
+                                             debugline 161
+                                             pushbyte 15
+                                             ifnle ofs0028
+                                             getlocal0
+                                             debugline 162
+                                             callproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"typeRan2"), 0
+                                             returnvalue
+                                    ofs0028:
+                                             getlocal1
+                                             debugline 164
+                                             pushbyte 15
+                                             greaterthan
+                                             dup
+                                             iffalse ofs0039
+                                             pop
+                                             getlocal1
+                                             pushbyte 20
+                                             lessequals
+                                    ofs0039:
+                                             iffalse ofs0043
+                                             debugline 165
+                                             pushbyte 2
+                                             returnvalue
+                                    ofs0043:
+                                             getlocal1
+                                             debugline 167
+                                             pushbyte 20
+                                             greaterthan
+                                             dup
+                                             iffalse ofs0054
+                                             pop
+                                             getlocal1
+                                             pushbyte 50
+                                             lessequals
+                                    ofs0054:
+                                             iffalse ofs005e
+                                             debugline 168
+                                             pushbyte 3
+                                             returnvalue
+                                    ofs005e:
+                                             getlocal1
+                                             debugline 170
+                                             pushbyte 50
+                                             greaterthan
+                                             dup
+                                             iffalse ofs006f
+                                             pop
+                                             getlocal1
+                                             pushbyte 70
+                                             lessequals
+                                    ofs006f:
+                                             iffalse ofs007c
+                                             debugline 171
+                                             pushbyte 4
+                                             returnvalue
+                                             debugline 173
+                                    ofs007c:
+                                             pushbyte 5
+                                             returnvalue
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function typeRan2() : uint
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"typeRan2")
+                                       dispid 0
+                                       method
+                                          name "typeRan2"
+                                          returns QName(PackageNamespace(""),"uint")
+                                          
+                                          body
+                                             maxstack 2
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                                debug 1, "_loc1_", 0, 0
+                                                debugline 177
+                                                getlex QName(PackageNamespace(""),"Math")
+                                                callproperty QName(PackageNamespace(""),"random"), 0
+                                                pushbyte 100
+                                                multiply
+                                                convert_d
+                                                setlocal1
+                                                getlocal1
+                                                debugline 178
+                                                pushbyte 20
+                                                ifnlt ofs0029
+                                                debugline 179
+                                                pushbyte 0
+                                                returnvalue
+                                                debugline 181
+                                       ofs0029:
+                                                pushbyte 1
+                                                returnvalue
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function onEnterFrame(param1:Event) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onEnterFrame")
+                                          dispid 0
+                                          method
+                                             name "onEnterFrame"
+                                             flag HAS_PARAM_NAMES
+                                             flag NEED_ACTIVATION
+                                             param QName(PackageNamespace("flash.events"),"Event")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 4
+                                                localcount 5
+                                                initscopedepth 0
+                                                maxscopedepth 2
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"param1")
+                                                   slotid 1
+                                                   type QName(PackageNamespace("flash.events"),"Event")
+                                                end ; trait
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   slotid 2
+                                                   type QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                                                end ; trait
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"event")
+                                                   slotid 3
+                                                   type QName(PackageNamespace("flash.events"),"Event")
+                                                end ; trait
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                                   newactivation
+                                                   dup
+                                                   setlocal2
+                                                   pushscope
+                                                   findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"param1")
+                                                   getlocal1
+                                                   setproperty QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"param1")
+                                                   debug 1, "param1", 0, 0
+                                                   debug 1, "onEnterFrame$0", 1, 0
+                                                   debugline 185
+                                                   pushnull
+                                                   coerce QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                                                   getlocal2
+                                                   swap
+                                                   setslot 2
+                                                   debugline 186
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"param1")
+                                                   coerce QName(PackageNamespace("flash.events"),"Event")
+                                                   getlocal2
+                                                   swap
+                                                   setslot 3
+                                                   getlocal0
+                                                   debugline 187
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_isStop")
+                                                   iffalse ofs003b
+                                                   debugline 188
+                                                   returnvoid
+                                          ofs003b:
+                                                   getlocal0
+                                                   debugline 190
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_pai")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                                                   getproperty QName(PackageNamespace(""),"mouseX")
+                                                   setproperty QName(PackageNamespace(""),"x")
+                                                   getlocal0
+                                                   debugline 191
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_pai")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                                                   getproperty QName(PackageNamespace(""),"mouseY")
+                                                   setproperty QName(PackageNamespace(""),"y")
+                                                   pushbyte 0
+                                                   setlocal 4
+                                                   getlocal0
+                                                   debugline 192
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_downList")
+                                                   setlocal3
+                                                   jump ofs0106
+                                          ofs0064:
+                                                   label
+                                                   getlocal3
+                                                   getlocal 4
+                                                   nextvalue
+                                                   coerce QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                                                   getlocal2
+                                                   swap
+                                                   setslot 2
+                                                   debugline 193
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   getproperty QName(PackageNamespace(""),"y")
+                                                   pushshort 526
+                                                   greaterequals
+                                                   debugline 193
+                                                   iffalse ofs00ad
+                                                   debugline 194
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                   debugline 195
+                                                   getlex QName(PackageNamespace("org.taomee.utils"),"DisplayUtil")
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   callpropvoid QName(PackageNamespace(""),"removeForParent"), 1
+                                                   getlocal0
+                                                   debugline 196
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_downList")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_downList")
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                   pushbyte 1
+                                                   callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 2
+                                                   debugline 193
+                                                   jump ofs0106
+                                          ofs00ad:
+                                                   getlocal0
+                                                   debugline 197
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_pai")
+                                                   pushstring "hitTest"
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   callproperty Multiname("hitTestObject",[PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                                                   debugline 193
+                                                   iffalse ofs0106
+                                                   debugline 198
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_pai")
+                                                   pushstring "hitTest"
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   getproperty QName(PackageNamespace(""),"type")
+                                                   newfunction 13
+                                                   callpropvoid QName(PackageNamespace(""),"hitTestO"), 3
+                                                   getlocal0
+                                                   debugline 201
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_downList")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_downList")
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                   pushbyte 1
+                                                   callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 2
+                                                   debugline 202
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"swapList")
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"dragon")
+                                                   getproperty QName(PackageNamespace(""),"type")
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),ProtectedNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("com.taomee.seer2.app.dragonPanel:DragonGameStart"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.dragonPanel"),PackageInternalNs("com.taomee.seer2.app.dragonPanel"),PrivateNamespace("FilePrivateNS:DragonGameStart"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   pushbyte 1
+                                                   newfunction 14
+                                                   callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                   jump ofs010d
+                                          ofs0106:
+                                                   hasnext2 3, 4
+                                                   iftrue ofs0064
+                                          ofs010d:
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onAddAllPetBlood(param1:MessageEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onAddAllPetBlood")
+                                             dispid 0
+                                             method
+                                                name "onAddAllPetBlood"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 7
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                                      debug 1, "_loc2_", 1, 0
+                                                      debug 1, "param1", 0, 0
+                                                      debug 1, "_loc4_", 2, 0
+                                                      debug 1, "_loc3_", 3, 0
+                                                      debugline 231
+                                                      pushnull
+                                                      coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                      setlocal 4
+                                                      debugline 232
+                                                      pushbyte 0
+                                                      setlocal3
+                                                      debugline 233
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                      getproperty QName(PackageNamespace(""),"TREAT_ALL_PET_1215")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onAddAllPetBlood")
+                                                      callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                      debugline 234
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                      callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                                      coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                                      setlocal2
+                                                      pushbyte 0
+                                                      setlocal 6
+                                                      getlocal2
+                                                      setlocal 5
+                                                      jump ofs006d
+                                             ofs004d:
+                                                      label
+                                                      getlocal 5
+                                                      getlocal 6
+                                                      nextvalue
+                                                      coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                      dup
+                                                      dup
+                                                      setlocal 4
+                                                      debugline 236
+                                                      getproperty QName(PackageNamespace(""),"maxHp")
+                                                      setproperty QName(PackageNamespace(""),"hp")
+                                                      debugline 237
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                      pushstring "petPropertiesChange"
+                                                      getlocal 4
+                                                      callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 2
+                                             ofs006d:
+                                                      hasnext2 5, 6
+                                                      iftrue ofs004d
+                                                      getlocal1
+                                                      debugline 239
+                                                      getproperty QName(PackageNamespace(""),"message")
+                                                      callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                                      callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                                      convert_i
+                                                      setlocal3
+                                                      debugline 240
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                      getproperty QName(PackageNamespace(""),"actorInfo")
+                                                      getlocal3
+                                                      setproperty QName(PackageNamespace(""),"coins")
+                                                      getlocal0
+                                                      debugline 241
+                                                      callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onHide"), 0
+                                                      getlocal0
+                                                      debugline 242
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                      pushbyte 9
+                                                      lessthan
+                                                      debugline 242
+                                                      iffalse ofs00b2
+                                                      getlocal0
+                                                      debugline 243
+                                                      pushbyte 0
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                      debugline 242
+                                                      jump ofs00c2
+                                             ofs00b2:
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                      debugline 245
+                                                      pushbyte 9
+                                                      subtract
+                                                      getlocal0
+                                                      swap
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                      debugline 247
+                                             ofs00c2:
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                      pushshort 442
+                                                      callpropvoid QName(PackageNamespace(""),"startFightWithWild"), 1
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function onClose(param1:MouseEvent) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onClose")
+                                                dispid 0
+                                                method
+                                                   name "onClose"
+                                                   flag HAS_PARAM_NAMES
+                                                   flag NEED_ACTIVATION
+                                                   param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 4
+                                                      localcount 3
+                                                      initscopedepth 0
+                                                      maxscopedepth 2
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"param1")
+                                                         slotid 1
+                                                         type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      end ; trait
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"event")
+                                                         slotid 2
+                                                         type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      end ; trait
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                                         newactivation
+                                                         dup
+                                                         setlocal2
+                                                         pushscope
+                                                         findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"param1")
+                                                         getlocal1
+                                                         setproperty QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"param1")
+                                                         debug 1, "param1", 0, 0
+                                                         debug 1, "onClose$0", 1, 0
+                                                         debugline 251
+                                                         getlex QName(PackageInternalNs("com.taomee.seer2.app.dragonPanel"),"param1")
+                                                         coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                         getlocal2
+                                                         swap
+                                                         setslot 2
+                                                         debugline 252
+                                                         getlex QName(PackageNamespace("flash.ui"),"Mouse")
+                                                         callpropvoid QName(PackageNamespace(""),"show"), 0
+                                                         getlocal0
+                                                         debugline 253
+                                                         pushtrue
+                                                         setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_isStop")
+                                                         debugline 254
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                         pushstring "你确定结束这次捕蜻蜓了吗？"
+                                                         newfunction 17
+                                                         newfunction 18
+                                                         callpropvoid QName(PackageNamespace(""),"showConfirm"), 3
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function onHide() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onHide")
+                                                   dispid 0
+                                                   method
+                                                      name "onHide"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 4
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                                            debug 1, "_loc1_", 0, 0
+                                                            debugline 265
+                                                            pushnull
+                                                            coerce QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                                                            setlocal1
+                                                            debugline 266
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                            getproperty QName(PackageNamespace(""),"TREAT_ALL_PET_1215")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onAddAllPetBlood")
+                                                            callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                            getlocal0
+                                                            debugline 267
+                                                            pushtrue
+                                                            setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_isStop")
+                                                            debugline 268
+                                                            getlex QName(PackageNamespace("flash.utils"),"clearTimeout")
+                                                            getglobalscope
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_timeOut")
+                                                            call 1
+                                                            pop
+                                                            debugline 269
+                                                            getlex QName(PackageNamespace("flash.utils"),"clearTimeout")
+                                                            getglobalscope
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_startTimeOut")
+                                                            call 1
+                                                            pop
+                                                            debugline 270
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                                                            callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                                            pushbyte 0
+                                                            setlocal3
+                                                            getlocal0
+                                                            debugline 271
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_downList")
+                                                            setlocal2
+                                                            jump ofs006e
+                                                   ofs0057:
+                                                            label
+                                                            getlocal2
+                                                            getlocal3
+                                                            nextvalue
+                                                            coerce QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonDownItem")
+                                                            setlocal1
+                                                            getlocal1
+                                                            debugline 272
+                                                            callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                            debugline 273
+                                                            getlex QName(PackageNamespace("org.taomee.utils"),"DisplayUtil")
+                                                            getlocal1
+                                                            callpropvoid QName(PackageNamespace(""),"removeForParent"), 1
+                                                   ofs006e:
+                                                            hasnext2 2, 3
+                                                            iftrue ofs0057
+                                                            debugline 275
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                            callpropvoid QName(PackageNamespace(""),"showMap"), 0
+                                                            debugline 276
+                                                            getlex QName(PackageNamespace("flash.ui"),"Mouse")
+                                                            callpropvoid QName(PackageNamespace(""),"show"), 0
+                                                            getlocal0
+                                                            debugline 277
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_mainUI")
+                                                            pushstring "enterFrame"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onEnterFrame")
+                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function updateStatus() : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"updateStatus")
+                                                      dispid 0
+                                                      method
+                                                         name "updateStatus"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                                               debug 1, "_loc1_", 0, 0
+                                                               debugline 281
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                               pushint 400299
+                                                               callproperty QName(PackageNamespace(""),"getItemQuantityByReferenceId"), 1
+                                                               convert_i
+                                                               setlocal1
+                                                               getlocal0
+                                                               debugline 282
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                               pushbyte 10
+                                                               modulo
+                                                               pushbyte 0
+                                                               greaterthan
+                                                               debugline 282
+                                                               iffalse ofs003f
+                                                               getlocal0
+                                                               debugline 283
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_itemTxt")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                               pushbyte 10
+                                                               divide
+                                                               convert_i
+                                                               convert_s
+                                                               setproperty QName(PackageNamespace(""),"text")
+                                                               debugline 282
+                                                               jump ofs0052
+                                                      ofs003f:
+                                                               getlocal0
+                                                               debugline 285
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_itemTxt")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                               pushbyte 10
+                                                               divide
+                                                               convert_i
+                                                               pushbyte 1
+                                                               subtract
+                                                               convert_s
+                                                               setproperty QName(PackageNamespace(""),"text")
+                                                      ofs0052:
+                                                               getlocal0
+                                                               debugline 287
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                               pushbyte 10
+                                                               modulo
+                                                               pushbyte 0
+                                                               greaterthan
+                                                               debugline 287
+                                                               iffalse ofs007d
+                                                               getlocal0
+                                                               debugline 288
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_sorr")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                               pushbyte 10
+                                                               modulo
+                                                               pushdouble 0.1
+                                                               multiply
+                                                               setproperty QName(PackageNamespace(""),"scaleX")
+                                                               debugline 287
+                                                               jump ofs00a8
+                                                      ofs007d:
+                                                               getlocal0
+                                                               debugline 289
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                               pushbyte 0
+                                                               equals
+                                                               debugline 287
+                                                               iffalse ofs009e
+                                                               getlocal0
+                                                               debugline 290
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_sorr")
+                                                               pushbyte 0
+                                                               setproperty QName(PackageNamespace(""),"scaleX")
+                                                               debugline 287
+                                                               jump ofs00a8
+                                                      ofs009e:
+                                                               getlocal0
+                                                               debugline 292
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_sorr")
+                                                               pushbyte 1
+                                                               setproperty QName(PackageNamespace(""),"scaleX")
+                                                      ofs00a8:
+                                                               getlocal0
+                                                               debugline 294
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_dragonTxt")
+                                                               getlocal1
+                                                               callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                               setproperty QName(PackageNamespace(""),"text")
+                                                               getlocal0
+                                                               debugline 295
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_count")
+                                                               pushbyte 0
+                                                               ifnle ofs00e2
+                                                               getlocal0
+                                                               debugline 296
+                                                               pushtrue
+                                                               setproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_isStop")
+                                                               getlocal0
+                                                               debugline 297
+                                                               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"onHide"), 0
+                                                               debugline 298
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                               pushstring "DragonTipPanel"
+                                                               callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                               pushstring "正在打开..."
+                                                               callpropvoid QName(PackageNamespace(""),"toggleModule"), 2
+                                                      ofs00e2:
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function getMcFromLib(param1:String) : MovieClip
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"getMcFromLib")
+                                                         dispid 0
+                                                         method
+                                                            name "getMcFromLib"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace(""),"String")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace("flash.display"),"MovieClip")
+                                                            
+                                                            body
+                                                               maxstack 2
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\dragonPanel;DragonGameStart.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  getlocal0
+                                                                  debugline 303
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.dragonPanel:DragonGameStart"),"_libs")
+                                                                  getlocal1
+                                                                  callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                                                  getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                                                  astypelate
+                                                                  returnvalue
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                   }
+                                                }
+                                                
+                                                method
+                                                   name null
+                                                   returns null
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 7
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         getscopeobject 0
+                                                         getlex QName(PackageNamespace(""),"Object")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                         dup
+                                                         pushscope
+                                                         newclass 0
+                                                         popscope
+                                                         popscope
+                                                         popscope
+                                                         popscope
+                                                         popscope
+                                                         popscope
+                                                         initproperty QName(PackageNamespace("com.taomee.seer2.app.dragonPanel"),"DragonGameStart")
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                                

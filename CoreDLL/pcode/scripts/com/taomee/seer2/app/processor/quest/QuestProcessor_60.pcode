@@ -1,0 +1,2083 @@
+package com.taomee.seer2.app.processor.quest
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.entity.Teleport;
+   import com.taomee.seer2.app.guide.manager.GuideManager;
+   import com.taomee.seer2.app.inventory.ItemManager;
+   import com.taomee.seer2.app.inventory.events.ItemEvent;
+   import com.taomee.seer2.app.plant.event.PlantEvent;
+   import com.taomee.seer2.app.plant.event.PlantEventControl;
+   import com.taomee.seer2.app.plant.panelControl.PlantPanelControl;
+   import com.taomee.seer2.app.plantSystem.PlantManager;
+   import com.taomee.seer2.app.quest.QuestManager;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.core.entity.AnimateElementManager;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.map.ResourceLibrary;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.quest.Quest;
+   import com.taomee.seer2.core.quest.events.QuestEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.events.SceneEvent;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.geom.Point;
+   import flash.geom.Rectangle;
+   import org.taomee.filter.ColorFilter;
+   import org.taomee.utils.DisplayUtil;
+   
+   public class QuestProcessor_60 extends QuestProcessor
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _playMC:MovieClip;
+      
+      public function QuestProcessor_60(param1:Quest)
+      {
+         method
+            name "QuestProcessor_60"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.core.quest"),"Quest")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 3
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                  debug 1, "param1", 0, 0
+                  debugline 44
+                  getlocal0
+                  getlocal1
+                  debugline 44
+                  constructsuper 1
+                  debugline 45
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                  pushstring "switchStart"
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onMapStart")
+                  callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                  debugline 46
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                  pushstring "switchComplete"
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onMapComplete")
+                  callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      private function onMapComplete(param1:SceneEvent) : void
+      {
+         trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onMapComplete")
+            dispid 0
+            method
+               name "onMapComplete"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+               paramname "param1"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 4
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                     debug 1, "param1", 0, 0
+                     debugline 50
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                     getproperty QName(PackageNamespace(""),"active")
+                     getproperty QName(PackageNamespace(""),"mapID")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                     getproperty QName(PackageNamespace(""),"actorInfo")
+                     getproperty QName(PackageNamespace(""),"id")
+                     equals
+                     dup
+                     iffalse ofs0027
+                     pop
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                     getproperty QName(PackageNamespace(""),"active")
+                     getproperty QName(PackageNamespace(""),"type")
+                     pushbyte 8
+                     equals
+            ofs0027:
+                     iffalse ofs005e
+                     debugline 51
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushbyte 60
+                     callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                     dup
+                     iftrue ofs0042
+                     pop
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushbyte 60
+                     callproperty QName(PackageNamespace(""),"isCanAccepted"), 1
+                     convert_b
+            ofs0042:
+                     iffalse ofs005e
+                     debugline 52
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                     pushstring "sceneAnimation/"
+                     getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                     getproperty QName(PackageNamespace(""),"id")
+                     add
+                     callproperty QName(PackageNamespace(""),"getQuestAnimation"), 1
+                     pushstring "domain"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"loadComplete")
+                     callpropvoid QName(PackageNamespace(""),"load"), 3
+            ofs005e:
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function onMapStart(param1:SceneEvent) : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onMapStart")
+               dispid 0
+               method
+                  name "onMapStart"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                        debug 1, "param1", 0, 0
+                        findpropstrict QName(PackageNamespace(""),"hideMouseClickHint")
+                        debugline 58
+                        callpropvoid QName(PackageNamespace(""),"hideMouseClickHint"), 0
+                        debugline 59
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEventControl")
+                        pushstring "seedStatusChange"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSeedStatusChange")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function loadComplete(param1:ContentInfo) : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"loadComplete")
+                  dispid 0
+                  method
+                     name "loadComplete"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace("com.taomee.seer2.core.loader"),"ContentInfo")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                           debug 1, "param1", 0, 0
+                           debugline 63
+                           pushfalse
+                           findproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_isLoadResLib")
+                           swap
+                           setproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_isLoadResLib")
+                           debugline 64
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapModel")
+                           findproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_mapModel")
+                           swap
+                           setproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_mapModel")
+                           findpropstrict QName(PackageNamespace("com.taomee.seer2.core.map"),"ResourceLibrary")
+                           getlocal1
+                           debugline 65
+                           getproperty QName(PackageNamespace(""),"content")
+                           constructprop QName(PackageNamespace("com.taomee.seer2.core.map"),"ResourceLibrary"), 1
+                           findproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_resLib")
+                           swap
+                           setproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_resLib")
+                           debugline 66
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                           pushstring "requestSpecialItemSuccess"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onGetItem")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener1"), 2
+                           debugline 67
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                           callpropvoid QName(PackageNamespace(""),"requestSpecialItemList"), 0
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onGetItem(param1:ItemEvent) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onGetItem")
+                     dispid 0
+                     method
+                        name "onGetItem"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("com.taomee.seer2.app.inventory.events"),"ItemEvent")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                              debug 1, "param1", 0, 0
+                              debugline 71
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                              pushstring "requestSpecialItemSuccess"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onGetItem")
+                              callpropvoid QName(PackageNamespace(""),"removeEventListener1"), 2
+                              getlocal0
+                              debugline 72
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"nextProcessor"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function nextProcessor() : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"nextProcessor")
+                        dispid 0
+                        method
+                           name "nextProcessor"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                 debugline 76
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callproperty QName(PackageNamespace(""),"isCanAccepted"), 1
+                                 debugline 76
+                                 iffalse ofs0034
+                                 debugline 77
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 pushstring "accept"
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onAccept")
+                                 callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                 debugline 78
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callpropvoid QName(PackageNamespace(""),"accept"), 1
+                                 debugline 76
+                                 jump ofs00ec
+                                 debugline 79
+                        ofs0034:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                 dup
+                                 iffalse ofs0052
+                                 pop
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 pushbyte 1
+                                 callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                 pushfalse
+                                 equals
+                                 debugline 76
+                        ofs0052:
+                                 iffalse ofs0064
+                                 getlocal0
+                                 debugline 80
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next1"), 0
+                                 debugline 76
+                                 jump ofs00ec
+                                 debugline 81
+                        ofs0064:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                 dup
+                                 iffalse ofs0082
+                                 pop
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 pushbyte 2
+                                 callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                 pushfalse
+                                 equals
+                                 debugline 76
+                        ofs0082:
+                                 iffalse ofs0094
+                                 getlocal0
+                                 debugline 82
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next2"), 0
+                                 debugline 76
+                                 jump ofs00ec
+                                 debugline 83
+                        ofs0094:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                 dup
+                                 iffalse ofs00b2
+                                 pop
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 pushbyte 3
+                                 callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                 pushfalse
+                                 equals
+                                 debugline 76
+                        ofs00b2:
+                                 iffalse ofs00c4
+                                 getlocal0
+                                 debugline 84
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next3"), 0
+                                 debugline 76
+                                 jump ofs00ec
+                                 debugline 85
+                        ofs00c4:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                 dup
+                                 iffalse ofs00e2
+                                 pop
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 pushbyte 4
+                                 callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                 pushfalse
+                                 equals
+                                 debugline 76
+                        ofs00e2:
+                                 iffalse ofs00ec
+                                 getlocal0
+                                 debugline 86
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next4"), 0
+                        ofs00ec:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onAccept(param1:QuestEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onAccept")
+                           dispid 0
+                           method
+                              name "onAccept"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                    debug 1, "param1", 0, 0
+                                    debugline 91
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                    pushstring "accept"
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onAccept")
+                                    callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                    getlocal0
+                                    debugline 92
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next1"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function next1() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next1")
+                              dispid 0
+                              method
+                                 name "next1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 5
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                       debugline 96
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.plant.panelControl"),"PlantPanelControl")
+                                       callproperty QName(PackageNamespace(""),"getSidBar"), 0
+                                       getproperty QName(PackageNamespace(""),"warehouse")
+                                       pushfalse
+                                       setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                       debugline 97
+                                       getlex QName(PackageNamespace("org.taomee.filter"),"ColorFilter")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.plant.panelControl"),"PlantPanelControl")
+                                       callproperty QName(PackageNamespace(""),"getSidBar"), 0
+                                       getproperty QName(PackageNamespace(""),"warehouse")
+                                       callpropvoid QName(PackageNamespace(""),"setGrayscale"), 1
+                                       findpropstrict QName(PackageNamespace(""),"showMouseHintAt")
+                                       debugline 98
+                                       pushshort 170
+                                       pushshort 290
+                                       callpropvoid QName(PackageNamespace(""),"showMouseHintAt"), 2
+                                       debugline 99
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                       getproperty QName(PackageNamespace(""),"active")
+                                       getproperty QName(PackageNamespace(""),"mapModel")
+                                       getproperty QName(PackageNamespace(""),"content")
+                                       pushstring "land0"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand")
+                                       pushfalse
+                                       pushbyte 1
+                                       callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 4
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onLand(param1:MouseEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand")
+                                 dispid 0
+                                 method
+                                    name "onLand"
+                                    flag HAS_PARAM_NAMES
+                                    flag NEED_ACTIVATION
+                                    param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 6
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 2
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                          slotid 1
+                                          type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       end ; trait
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"event")
+                                          slotid 2
+                                          type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       end ; trait
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                          newactivation
+                                          dup
+                                          setlocal2
+                                          pushscope
+                                          findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                          getlocal1
+                                          setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                          debug 1, "param1", 0, 0
+                                          debug 1, "onLand$0", 1, 0
+                                          debugline 103
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                          coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          getlocal2
+                                          swap
+                                          setslot 2
+                                          debugline 104
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"event")
+                                          callpropvoid QName(PackageNamespace(""),"stopImmediatePropagation"), 0
+                                          debugline 105
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.plant.panelControl"),"PlantPanelControl")
+                                          callproperty QName(PackageNamespace(""),"getSidBar"), 0
+                                          getproperty QName(PackageNamespace(""),"warehouse")
+                                          pushtrue
+                                          setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                          debugline 106
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.plant.panelControl"),"PlantPanelControl")
+                                          callproperty QName(PackageNamespace(""),"getSidBar"), 0
+                                          getproperty QName(PackageNamespace(""),"warehouse")
+                                          newarray 0
+                                          setproperty QName(PackageNamespace(""),"filters")
+                                          findpropstrict QName(PackageNamespace(""),"hideMouseClickHint")
+                                          debugline 107
+                                          callpropvoid QName(PackageNamespace(""),"hideMouseClickHint"), 0
+                                          debugline 108
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                          getproperty QName(PackageNamespace(""),"active")
+                                          getproperty QName(PackageNamespace(""),"mapModel")
+                                          getproperty QName(PackageNamespace(""),"content")
+                                          pushstring "land0"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          pushstring "click"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand")
+                                          callpropvoid Multiname("removeEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                                          getlocal0
+                                          debugline 109
+                                          getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_resLib")
+                                          pushstring "landAnimation"
+                                          callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                          debugline 110
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                          getproperty QName(PackageNamespace(""),"topLayer")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                          debugline 111
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.plantSystem"),"PlantManager")
+                                          pushtrue
+                                          setproperty QName(PackageNamespace(""),"isQuest")
+                                          debugline 112
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                          pushbyte 2
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                          getproperty QName(PackageNamespace(""),"totalFrames")
+                                          newfunction 9
+                                          debugline 117
+                                          pushtrue
+                                          debugline 112
+                                          callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function onStepComplete(param1:QuestEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onStepComplete")
+                                    dispid 0
+                                    method
+                                       name "onStepComplete"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 4
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                             debug 1, "_loc2_", 1, 0
+                                             debug 1, "param1", 0, 0
+                                             debug 1, "_loc3_", 2, 0
+                                             debugline 121
+                                             pushnull
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                             setlocal2
+                                             debugline 122
+                                             pushnull
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                             setlocal3
+                                             debugline 123
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                             pushstring "stepComplete"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onStepComplete")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             getlocal1
+                                             debugline 124
+                                             getproperty QName(PackageNamespace(""),"stepId")
+                                             pushbyte 1
+                                             equals
+                                             debugline 124
+                                             iffalse ofs0047
+                                             getlocal0
+                                             debugline 125
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next2"), 0
+                                             debugline 124
+                                             jump ofs00ba
+                                    ofs0047:
+                                             getlocal1
+                                             debugline 126
+                                             getproperty QName(PackageNamespace(""),"stepId")
+                                             pushbyte 2
+                                             equals
+                                             debugline 124
+                                             iffalse ofs0061
+                                             getlocal0
+                                             debugline 127
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next3"), 0
+                                             debugline 124
+                                             jump ofs00ba
+                                    ofs0061:
+                                             getlocal1
+                                             debugline 128
+                                             getproperty QName(PackageNamespace(""),"stepId")
+                                             pushbyte 3
+                                             equals
+                                             debugline 124
+                                             iffalse ofs007d
+                                             getlocal0
+                                             debugline 129
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next4"), 0
+                                             debugline 124
+                                             jump ofs00ba
+                                    ofs007d:
+                                             getlocal1
+                                             debugline 130
+                                             getproperty QName(PackageNamespace(""),"stepId")
+                                             pushbyte 4
+                                             equals
+                                             debugline 124
+                                             iffalse ofs00ba
+                                             debugline 131
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"AnimateElementManager")
+                                             pushbyte 1
+                                             callproperty QName(PackageNamespace(""),"getElement"), 1
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                             astypelate
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                             setlocal2
+                                             getlocal2
+                                             debugline 132
+                                             pushtrue
+                                             setproperty QName(PackageNamespace(""),"visible")
+                                             debugline 133
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"AnimateElementManager")
+                                             pushbyte 2
+                                             callproperty QName(PackageNamespace(""),"getElement"), 1
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                             astypelate
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                             setlocal3
+                                             getlocal3
+                                             debugline 134
+                                             pushtrue
+                                             setproperty QName(PackageNamespace(""),"visible")
+                                    ofs00ba:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function next2() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next2")
+                                       dispid 0
+                                       method
+                                          name "next2"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 10
+                                             localcount 3
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                debug 1, "_loc2_", 0, 0
+                                                debug 1, "_loc1_", 1, 0
+                                                debugline 139
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                pushint 601455
+                                                callproperty QName(PackageNamespace(""),"getSpecialItem"), 1
+                                                pushnull
+                                                ifne ofs002a
+                                                getlocal0
+                                                debugline 140
+                                                callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"questComplete"), 0
+                                                debugline 141
+                                                returnvoid
+                                       ofs002a:
+                                                findpropstrict QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                debugline 143
+                                                pushbyte 0
+                                                pushbyte 0
+                                                pushbyte 68
+                                                pushbyte 68
+                                                constructprop QName(PackageNamespace("flash.geom"),"Rectangle"), 4
+                                                coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                setlocal2
+                                                debugline 144
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                getproperty QName(PackageNamespace(""),"instance")
+                                                getlocal2
+                                                pushbyte 0
+                                                callpropvoid QName(PackageNamespace(""),"addTarget"), 2
+                                                debugline 145
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                getproperty QName(PackageNamespace(""),"instance")
+                                                getlocal2
+                                                pushbyte 0
+                                                pushbyte 0
+                                                findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                pushshort 805
+                                                pushshort 226
+                                                constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                pushfalse
+                                                pushfalse
+                                                pushbyte 9
+                                                pushfalse
+                                                pushtrue
+                                                callpropvoid QName(PackageNamespace(""),"addGuide2Target"), 9
+                                                debugline 146
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                getproperty QName(PackageNamespace(""),"instance")
+                                                pushbyte 0
+                                                callpropvoid QName(PackageNamespace(""),"startGuide"), 1
+                                                debugline 147
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEventControl")
+                                                pushstring "selectItem"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectItem")
+                                                callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                debugline 148
+                                                newobject 0
+                                                coerce QName(PackageNamespace(""),"Object")
+                                                setlocal1
+                                                getlocal1
+                                                debugline 149
+                                                pushtrue
+                                                setproperty Multiname("isQuest",[PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                debugline 150
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                pushstring "PlantLibraryPanel"
+                                                callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                pushstring "正在打开仓库..."
+                                                getlocal1
+                                                callpropvoid QName(PackageNamespace(""),"toggleModule"), 3
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function onSelectItem(param1:PlantEvent) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectItem")
+                                          dispid 0
+                                          method
+                                             name "onSelectItem"
+                                             flag HAS_PARAM_NAMES
+                                             flag NEED_ACTIVATION
+                                             param QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 6
+                                                localcount 3
+                                                initscopedepth 0
+                                                maxscopedepth 2
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                   slotid 1
+                                                   type QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                end ; trait
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"event")
+                                                   slotid 2
+                                                   type QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                end ; trait
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                   newactivation
+                                                   dup
+                                                   setlocal2
+                                                   pushscope
+                                                   findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                   getlocal1
+                                                   setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                   debug 1, "param1", 0, 0
+                                                   debug 1, "onSelectItem$0", 1, 0
+                                                   debugline 154
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                   coerce QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                   getlocal2
+                                                   swap
+                                                   setslot 2
+                                                   debugline 155
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEventControl")
+                                                   pushstring "selectItem"
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectItem")
+                                                   callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                   debugline 156
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                   getproperty QName(PackageNamespace(""),"instance")
+                                                   callpropvoid QName(PackageNamespace(""),"pause"), 0
+                                                   getlocal0
+                                                   debugline 157
+                                                   getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_resLib")
+                                                   pushstring "selectSeed"
+                                                   callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                   debugline 158
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                   getproperty QName(PackageNamespace(""),"topLayer")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                   callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                   debugline 159
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.plantSystem"),"PlantManager")
+                                                   pushtrue
+                                                   setproperty QName(PackageNamespace(""),"isQuest")
+                                                   debugline 160
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                   pushbyte 2
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                   getproperty QName(PackageNamespace(""),"totalFrames")
+                                                   newfunction 13
+                                                   debugline 169
+                                                   pushtrue
+                                                   debugline 160
+                                                   callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onLand2(param1:MouseEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand2")
+                                             dispid 0
+                                             method
+                                                name "onLand2"
+                                                flag HAS_PARAM_NAMES
+                                                flag NEED_ACTIVATION
+                                                param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 6
+                                                   localcount 3
+                                                   initscopedepth 0
+                                                   maxscopedepth 2
+                                                   trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                      slotid 1
+                                                      type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                   end ; trait
+                                                   trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"event")
+                                                      slotid 2
+                                                      type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                   end ; trait
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                      newactivation
+                                                      dup
+                                                      setlocal2
+                                                      pushscope
+                                                      findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                      getlocal1
+                                                      setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                      debug 1, "param1", 0, 0
+                                                      debug 1, "onLand2$0", 1, 0
+                                                      debugline 173
+                                                      getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                      coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      getlocal2
+                                                      swap
+                                                      setslot 2
+                                                      debugline 174
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                      getproperty QName(PackageNamespace(""),"active")
+                                                      getproperty QName(PackageNamespace(""),"mapModel")
+                                                      getproperty QName(PackageNamespace(""),"content")
+                                                      pushstring "land0"
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      pushstring "click"
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand2")
+                                                      callpropvoid Multiname("removeEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                                                      debugline 175
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                      getproperty QName(PackageNamespace(""),"instance")
+                                                      callpropvoid QName(PackageNamespace(""),"pause"), 0
+                                                      getlocal0
+                                                      debugline 176
+                                                      getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_resLib")
+                                                      pushstring "diandi"
+                                                      callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                      debugline 177
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                      getproperty QName(PackageNamespace(""),"topLayer")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                      callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                      debugline 178
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                      pushbyte 2
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                      getproperty QName(PackageNamespace(""),"totalFrames")
+                                                      newfunction 15
+                                                      debugline 184
+                                                      pushtrue
+                                                      debugline 178
+                                                      callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function next3() : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next3")
+                                                dispid 0
+                                                method
+                                                   name "next3"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 11
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                         debug 1, "_loc1_", 0, 0
+                                                         debugline 188
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                         pushint 602400
+                                                         callproperty QName(PackageNamespace(""),"getSpecialItem"), 1
+                                                         pushnull
+                                                         ifne ofs0024
+                                                         getlocal0
+                                                         debugline 189
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"questComplete"), 0
+                                                         debugline 190
+                                                         returnvoid
+                                                ofs0024:
+                                                         findpropstrict QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                         debugline 192
+                                                         pushbyte 0
+                                                         pushbyte 0
+                                                         pushbyte 54
+                                                         pushbyte 45
+                                                         constructprop QName(PackageNamespace("flash.geom"),"Rectangle"), 4
+                                                         coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                         setlocal1
+                                                         debugline 193
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                         getproperty QName(PackageNamespace(""),"instance")
+                                                         getlocal1
+                                                         pushbyte 0
+                                                         callpropvoid QName(PackageNamespace(""),"addTarget"), 2
+                                                         debugline 194
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                         getproperty QName(PackageNamespace(""),"instance")
+                                                         getlocal1
+                                                         pushbyte 0
+                                                         pushbyte 0
+                                                         findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                         pushshort 1132
+                                                         pushshort 139
+                                                         constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                         pushfalse
+                                                         pushfalse
+                                                         pushbyte 9
+                                                         pushtrue
+                                                         pushfalse
+                                                         pushfalse
+                                                         callpropvoid QName(PackageNamespace(""),"addGuide2Target"), 10
+                                                         debugline 195
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                         getproperty QName(PackageNamespace(""),"instance")
+                                                         pushbyte 0
+                                                         callpropvoid QName(PackageNamespace(""),"startGuide"), 1
+                                                         debugline 196
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.plantSystem"),"PlantManager")
+                                                         pushtrue
+                                                         setproperty QName(PackageNamespace(""),"isShow")
+                                                         debugline 197
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                         pushstring "PlantLibraryPanel"
+                                                         pushstring "show"
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"showLibrary")
+                                                         callpropvoid QName(PackageNamespace(""),"addEventListener"), 3
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function questComplete() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"questComplete")
+                                                   dispid 0
+                                                   method
+                                                      name "questComplete"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                            debugline 201
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushstring "stepComplete"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onStepComplete")
+                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                            debugline 202
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushbyte 60
+                                                            callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                                            dup
+                                                            iffalse ofs002f
+                                                            pop
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushbyte 60
+                                                            pushbyte 1
+                                                            callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                            pushfalse
+                                                            equals
+                                                            debugline 202
+                                                   ofs002f:
+                                                            iffalse ofs0046
+                                                            getlocal0
+                                                            debugline 203
+                                                            pushbyte 1
+                                                            callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"questCompleteNext"), 1
+                                                            debugline 202
+                                                            jump ofs00d2
+                                                            debugline 204
+                                                   ofs0046:
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushbyte 60
+                                                            callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                                            dup
+                                                            iffalse ofs0061
+                                                            pop
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushbyte 60
+                                                            pushbyte 2
+                                                            callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                            pushfalse
+                                                            equals
+                                                            debugline 202
+                                                   ofs0061:
+                                                            iffalse ofs0078
+                                                            getlocal0
+                                                            debugline 205
+                                                            pushbyte 2
+                                                            callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"questCompleteNext"), 1
+                                                            debugline 202
+                                                            jump ofs00d2
+                                                            debugline 206
+                                                   ofs0078:
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushbyte 60
+                                                            callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                                            dup
+                                                            iffalse ofs0093
+                                                            pop
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushbyte 60
+                                                            pushbyte 3
+                                                            callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                            pushfalse
+                                                            equals
+                                                            debugline 202
+                                                   ofs0093:
+                                                            iffalse ofs00aa
+                                                            getlocal0
+                                                            debugline 207
+                                                            pushbyte 3
+                                                            callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"questCompleteNext"), 1
+                                                            debugline 202
+                                                            jump ofs00d2
+                                                            debugline 208
+                                                   ofs00aa:
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushbyte 60
+                                                            callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                                            dup
+                                                            iffalse ofs00c5
+                                                            pop
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushbyte 60
+                                                            pushbyte 4
+                                                            callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                            pushfalse
+                                                            equals
+                                                            debugline 202
+                                                   ofs00c5:
+                                                            iffalse ofs00d2
+                                                            getlocal0
+                                                            debugline 209
+                                                            pushbyte 4
+                                                            callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"questCompleteNext"), 1
+                                                   ofs00d2:
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function questCompleteNext(param1:int) : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"questCompleteNext")
+                                                      dispid 0
+                                                      method
+                                                         name "questCompleteNext"
+                                                         flag HAS_PARAM_NAMES
+                                                         param QName(PackageNamespace(""),"int")
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                               debug 1, "param1", 0, 0
+                                                               debugline 214
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                               pushstring "stepComplete"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onNextStepComplete")
+                                                               callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                               debugline 215
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                               pushbyte 60
+                                                               getlocal1
+                                                               callpropvoid QName(PackageNamespace(""),"completeStep"), 2
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function onNextStepComplete(param1:QuestEvent) : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onNextStepComplete")
+                                                         dispid 0
+                                                         method
+                                                            name "onNextStepComplete"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 4
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  debugline 219
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushstring "stepComplete"
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onNextStepComplete")
+                                                                  callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                  getlocal1
+                                                                  debugline 220
+                                                                  getproperty QName(PackageNamespace(""),"stepId")
+                                                                  pushbyte 4
+                                                                  equals
+                                                                  not
+                                                                  debugline 220
+                                                                  iffalse ofs004b
+                                                                  debugline 221
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushstring "stepComplete"
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onNextStepComplete")
+                                                                  callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                  debugline 222
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushbyte 60
+                                                                  getlocal1
+                                                                  getproperty QName(PackageNamespace(""),"stepId")
+                                                                  pushbyte 1
+                                                                  add
+                                                                  callpropvoid QName(PackageNamespace(""),"completeStep"), 2
+                                                                  debugline 220
+                                                                  jump ofs0079
+                                                         ofs004b:
+                                                                  getlocal1
+                                                                  debugline 223
+                                                                  getproperty QName(PackageNamespace(""),"stepId")
+                                                                  pushbyte 3
+                                                                  equals
+                                                                  debugline 220
+                                                                  iffalse ofs0079
+                                                                  debugline 224
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushstring "complete"
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onComplete")
+                                                                  callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                  debugline 225
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushbyte 60
+                                                                  getlocal1
+                                                                  getproperty QName(PackageNamespace(""),"stepId")
+                                                                  pushbyte 1
+                                                                  add
+                                                                  callpropvoid QName(PackageNamespace(""),"completeStep"), 2
+                                                         ofs0079:
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function showLibrary(param1:Event) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"showLibrary")
+                                                            dispid 0
+                                                            method
+                                                               name "showLibrary"
+                                                               flag HAS_PARAM_NAMES
+                                                               param QName(PackageNamespace("flash.events"),"Event")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 10
+                                                                  localcount 3
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                     debug 1, "_loc2_", 1, 0
+                                                                     debug 1, "param1", 0, 0
+                                                                     debugline 230
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                     getproperty QName(PackageNamespace(""),"instance")
+                                                                     callpropvoid QName(PackageNamespace(""),"pause"), 0
+                                                                     debugline 231
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                     pushstring "PlantLibraryPanel"
+                                                                     pushstring "show"
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"showLibrary")
+                                                                     callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                                     findpropstrict QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                     debugline 232
+                                                                     pushbyte 0
+                                                                     pushbyte 0
+                                                                     pushbyte 76
+                                                                     pushbyte 26
+                                                                     constructprop QName(PackageNamespace("flash.geom"),"Rectangle"), 4
+                                                                     coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                     setlocal2
+                                                                     debugline 233
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                     getproperty QName(PackageNamespace(""),"instance")
+                                                                     getlocal2
+                                                                     pushbyte 0
+                                                                     callpropvoid QName(PackageNamespace(""),"addTarget"), 2
+                                                                     debugline 234
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                     getproperty QName(PackageNamespace(""),"instance")
+                                                                     getlocal2
+                                                                     pushbyte 0
+                                                                     pushbyte 0
+                                                                     findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                                     pushshort 973
+                                                                     pushshort 195
+                                                                     constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                                     pushfalse
+                                                                     pushfalse
+                                                                     pushbyte 9
+                                                                     pushfalse
+                                                                     pushtrue
+                                                                     callpropvoid QName(PackageNamespace(""),"addGuide2Target"), 9
+                                                                     debugline 235
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                     getproperty QName(PackageNamespace(""),"instance")
+                                                                     pushbyte 0
+                                                                     callpropvoid QName(PackageNamespace(""),"startGuide"), 1
+                                                                     debugline 236
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEventControl")
+                                                                     pushstring "selectTab"
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectTab")
+                                                                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function onSelectTab(param1:PlantEvent) : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectTab")
+                                                               dispid 0
+                                                               method
+                                                                  name "onSelectTab"
+                                                                  flag HAS_PARAM_NAMES
+                                                                  param QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                                  paramname "param1"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 10
+                                                                     localcount 3
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                        debug 1, "_loc2_", 1, 0
+                                                                        debug 1, "param1", 0, 0
+                                                                        debugline 240
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEventControl")
+                                                                        pushstring "selectTab"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectTab")
+                                                                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                        debugline 241
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                        getproperty QName(PackageNamespace(""),"instance")
+                                                                        callpropvoid QName(PackageNamespace(""),"pause"), 0
+                                                                        findpropstrict QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                        debugline 242
+                                                                        pushbyte 0
+                                                                        pushbyte 0
+                                                                        pushbyte 68
+                                                                        pushbyte 68
+                                                                        constructprop QName(PackageNamespace("flash.geom"),"Rectangle"), 4
+                                                                        coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                        setlocal2
+                                                                        debugline 243
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                        getproperty QName(PackageNamespace(""),"instance")
+                                                                        getlocal2
+                                                                        pushbyte 0
+                                                                        callpropvoid QName(PackageNamespace(""),"addTarget"), 2
+                                                                        debugline 244
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                        getproperty QName(PackageNamespace(""),"instance")
+                                                                        getlocal2
+                                                                        pushbyte 0
+                                                                        pushbyte 0
+                                                                        findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                                        pushshort 803
+                                                                        pushshort 227
+                                                                        constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                                        pushfalse
+                                                                        pushfalse
+                                                                        pushbyte 9
+                                                                        pushfalse
+                                                                        pushtrue
+                                                                        callpropvoid QName(PackageNamespace(""),"addGuide2Target"), 9
+                                                                        debugline 245
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                        getproperty QName(PackageNamespace(""),"instance")
+                                                                        pushbyte 0
+                                                                        callpropvoid QName(PackageNamespace(""),"startGuide"), 1
+                                                                        debugline 246
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEventControl")
+                                                                        pushstring "selectItem"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectItem2")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function onSelectItem2(param1:PlantEvent) : void
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectItem2")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "onSelectItem2"
+                                                                     flag HAS_PARAM_NAMES
+                                                                     flag NEED_ACTIVATION
+                                                                     param QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                                     paramname "param1"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 6
+                                                                        localcount 3
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 2
+                                                                        trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                           slotid 1
+                                                                           type QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                                        end ; trait
+                                                                        trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"event")
+                                                                           slotid 2
+                                                                           type QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                                        end ; trait
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                           newactivation
+                                                                           dup
+                                                                           setlocal2
+                                                                           pushscope
+                                                                           findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                           getlocal1
+                                                                           setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                           debug 1, "param1", 0, 0
+                                                                           debug 1, "onSelectItem2$0", 1, 0
+                                                                           debugline 250
+                                                                           getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                           coerce QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                                           getlocal2
+                                                                           swap
+                                                                           setslot 2
+                                                                           debugline 251
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEventControl")
+                                                                           pushstring "selectItem"
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSelectItem2")
+                                                                           callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                           debugline 252
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                           getproperty QName(PackageNamespace(""),"instance")
+                                                                           callpropvoid QName(PackageNamespace(""),"pause"), 0
+                                                                           debugline 253
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.plantSystem"),"PlantManager")
+                                                                           pushfalse
+                                                                           setproperty QName(PackageNamespace(""),"isShow")
+                                                                           getlocal0
+                                                                           debugline 254
+                                                                           getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_resLib")
+                                                                           pushstring "shifei"
+                                                                           callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                                                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                           debugline 255
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                                           getproperty QName(PackageNamespace(""),"topLayer")
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                                           debugline 256
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.plantSystem"),"PlantManager")
+                                                                           pushtrue
+                                                                           setproperty QName(PackageNamespace(""),"isQuest")
+                                                                           debugline 257
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                           pushbyte 2
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                           getproperty QName(PackageNamespace(""),"totalFrames")
+                                                                           newfunction 23
+                                                                           debugline 266
+                                                                           pushtrue
+                                                                           debugline 257
+                                                                           callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function onLand3(param1:MouseEvent) : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand3")
+                                                                     dispid 0
+                                                                     method
+                                                                        name "onLand3"
+                                                                        flag HAS_PARAM_NAMES
+                                                                        flag NEED_ACTIVATION
+                                                                        param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                        paramname "param1"
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 6
+                                                                           localcount 3
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 2
+                                                                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                              slotid 1
+                                                                              type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                           end ; trait
+                                                                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"event")
+                                                                              slotid 2
+                                                                              type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                           end ; trait
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                              newactivation
+                                                                              dup
+                                                                              setlocal2
+                                                                              pushscope
+                                                                              findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                              getlocal1
+                                                                              setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                              debug 1, "param1", 0, 0
+                                                                              debug 1, "onLand3$0", 1, 0
+                                                                              debugline 270
+                                                                              getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                              coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                              getlocal2
+                                                                              swap
+                                                                              setslot 2
+                                                                              debugline 271
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                              getproperty QName(PackageNamespace(""),"instance")
+                                                                              callpropvoid QName(PackageNamespace(""),"pause"), 0
+                                                                              debugline 272
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.plantSystem"),"PlantManager")
+                                                                              pushtrue
+                                                                              setproperty QName(PackageNamespace(""),"isQuest3")
+                                                                              debugline 273
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                              getproperty QName(PackageNamespace(""),"active")
+                                                                              getproperty QName(PackageNamespace(""),"mapModel")
+                                                                              getproperty QName(PackageNamespace(""),"content")
+                                                                              pushstring "land0"
+                                                                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                              pushstring "click"
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand3")
+                                                                              callpropvoid Multiname("removeEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                                                                              getlocal0
+                                                                              debugline 274
+                                                                              getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_resLib")
+                                                                              pushstring "loading"
+                                                                              callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                                                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                              debugline 275
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                                              getproperty QName(PackageNamespace(""),"topLayer")
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                              callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                                              debugline 276
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                              pushstring "stepComplete"
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onStepComplete")
+                                                                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                              debugline 277
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                              getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                                                              getproperty QName(PackageNamespace(""),"id")
+                                                                              pushbyte 3
+                                                                              callpropvoid QName(PackageNamespace(""),"completeStep"), 2
+                                                                              debugline 278
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                              pushbyte 2
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                              getproperty QName(PackageNamespace(""),"totalFrames")
+                                                                              newfunction 25
+                                                                              debugline 283
+                                                                              pushtrue
+                                                                              debugline 278
+                                                                              callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function next4() : void
+                                                                  {
+                                                                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"next4")
+                                                                        dispid 0
+                                                                        method
+                                                                           name "next4"
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 8
+                                                                              localcount 2
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                                 debug 1, "_loc1_", 0, 0
+                                                                                 findpropstrict QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                                 debugline 287
+                                                                                 pushbyte 0
+                                                                                 pushbyte 0
+                                                                                 pushbyte 80
+                                                                                 pushbyte 50
+                                                                                 constructprop QName(PackageNamespace("flash.geom"),"Rectangle"), 4
+                                                                                 coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                                 setlocal1
+                                                                                 debugline 288
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                                 getproperty QName(PackageNamespace(""),"instance")
+                                                                                 getlocal1
+                                                                                 pushbyte 0
+                                                                                 callpropvoid QName(PackageNamespace(""),"addTarget"), 2
+                                                                                 debugline 289
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                                 getproperty QName(PackageNamespace(""),"instance")
+                                                                                 getlocal1
+                                                                                 pushbyte 0
+                                                                                 pushbyte 0
+                                                                                 findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                                                 pushshort 280
+                                                                                 pushshort 338
+                                                                                 constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                                                 pushfalse
+                                                                                 pushfalse
+                                                                                 pushbyte 9
+                                                                                 callpropvoid QName(PackageNamespace(""),"addGuide2Target"), 7
+                                                                                 debugline 290
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                                 getproperty QName(PackageNamespace(""),"instance")
+                                                                                 pushbyte 0
+                                                                                 callpropvoid QName(PackageNamespace(""),"startGuide"), 1
+                                                                                 debugline 291
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                 getproperty QName(PackageNamespace(""),"active")
+                                                                                 getproperty QName(PackageNamespace(""),"mapModel")
+                                                                                 getproperty QName(PackageNamespace(""),"content")
+                                                                                 pushstring "land0"
+                                                                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                 pushstring "click"
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand4")
+                                                                                 callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private function onSeedStatusChange(param1:PlantEvent) : void
+                                                                     {
+                                                                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSeedStatusChange")
+                                                                           dispid 0
+                                                                           method
+                                                                              name "onSeedStatusChange"
+                                                                              flag HAS_PARAM_NAMES
+                                                                              param QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEvent")
+                                                                              paramname "param1"
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 8
+                                                                                 localcount 3
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 1
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                                    debug 1, "_loc2_", 1, 0
+                                                                                    debug 1, "param1", 0, 0
+                                                                                    debugline 295
+                                                                                    pushnull
+                                                                                    coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                                    setlocal2
+                                                                                    getlocal1
+                                                                                    debugline 296
+                                                                                    getproperty QName(PackageNamespace(""),"status")
+                                                                                    convert_i
+                                                                                    pushbyte 4
+                                                                                    ifne ofs0091
+                                                                                    debugline 297
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.plant.event"),"PlantEventControl")
+                                                                                    pushstring "seedStatusChange"
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onSeedStatusChange")
+                                                                                    callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                    findpropstrict QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                                    debugline 298
+                                                                                    pushbyte 0
+                                                                                    pushbyte 0
+                                                                                    pushbyte 80
+                                                                                    pushbyte 50
+                                                                                    constructprop QName(PackageNamespace("flash.geom"),"Rectangle"), 4
+                                                                                    coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                                                    setlocal2
+                                                                                    debugline 299
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                                    getproperty QName(PackageNamespace(""),"instance")
+                                                                                    getlocal2
+                                                                                    pushbyte 0
+                                                                                    callpropvoid QName(PackageNamespace(""),"addTarget"), 2
+                                                                                    debugline 300
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                                    getproperty QName(PackageNamespace(""),"instance")
+                                                                                    getlocal2
+                                                                                    pushbyte 0
+                                                                                    pushbyte 0
+                                                                                    findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                                                    pushshort 280
+                                                                                    pushshort 338
+                                                                                    constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                                                    pushfalse
+                                                                                    pushfalse
+                                                                                    pushbyte 9
+                                                                                    callpropvoid QName(PackageNamespace(""),"addGuide2Target"), 7
+                                                                                    debugline 301
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                                    getproperty QName(PackageNamespace(""),"instance")
+                                                                                    pushbyte 0
+                                                                                    callpropvoid QName(PackageNamespace(""),"startGuide"), 1
+                                                                                    debugline 302
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                    getproperty QName(PackageNamespace(""),"active")
+                                                                                    getproperty QName(PackageNamespace(""),"mapModel")
+                                                                                    getproperty QName(PackageNamespace(""),"content")
+                                                                                    pushstring "land0"
+                                                                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                    pushstring "click"
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand4")
+                                                                                    callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                                                                           ofs0091:
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        private function onLand4(param1:MouseEvent) : void
+                                                                        {
+                                                                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand4")
+                                                                              dispid 0
+                                                                              method
+                                                                                 name "onLand4"
+                                                                                 flag HAS_PARAM_NAMES
+                                                                                 param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                                 paramname "param1"
+                                                                                 returns QName(PackageNamespace(""),"void")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 3
+                                                                                    localcount 2
+                                                                                    initscopedepth 0
+                                                                                    maxscopedepth 1
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                                       debug 1, "param1", 0, 0
+                                                                                       debugline 307
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                                       pushstring "complete"
+                                                                                       getlocal0
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onComplete")
+                                                                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                                       debugline 308
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                                       getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_quest")
+                                                                                       getproperty QName(PackageNamespace(""),"id")
+                                                                                       pushbyte 4
+                                                                                       callpropvoid QName(PackageNamespace(""),"completeStep"), 2
+                                                                                       debugline 309
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.app.guide.manager"),"GuideManager")
+                                                                                       getproperty QName(PackageNamespace(""),"instance")
+                                                                                       callpropvoid QName(PackageNamespace(""),"pause"), 0
+                                                                                       debugline 310
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                       getproperty QName(PackageNamespace(""),"active")
+                                                                                       getproperty QName(PackageNamespace(""),"mapModel")
+                                                                                       getproperty QName(PackageNamespace(""),"content")
+                                                                                       pushstring "land0"
+                                                                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                       pushstring "click"
+                                                                                       getlocal0
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onLand4")
+                                                                                       callpropvoid Multiname("removeEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),StaticProtectedNs("com.taomee.seer2.app.processor.quest:QuestProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.quest"),PackageInternalNs("com.taomee.seer2.app.processor.quest"),PrivateNamespace("FilePrivateNS:QuestProcessor_60"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                                                                                       returnvoid
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                           
+                                                                           private function onComplete(param1:QuestEvent) : void
+                                                                           {
+                                                                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onComplete")
+                                                                                 dispid 0
+                                                                                 method
+                                                                                    name "onComplete"
+                                                                                    flag HAS_PARAM_NAMES
+                                                                                    flag NEED_ACTIVATION
+                                                                                    param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                                                    paramname "param1"
+                                                                                    returns QName(PackageNamespace(""),"void")
+                                                                                    
+                                                                                    body
+                                                                                       maxstack 6
+                                                                                       localcount 3
+                                                                                       initscopedepth 0
+                                                                                       maxscopedepth 2
+                                                                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                                          slotid 1
+                                                                                          type QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                                                       end ; trait
+                                                                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"teleport")
+                                                                                          slotid 2
+                                                                                          type QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                                                                       end ; trait
+                                                                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"teleport2")
+                                                                                          slotid 3
+                                                                                          type QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                                                                       end ; trait
+                                                                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"event")
+                                                                                          slotid 4
+                                                                                          type QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                                                       end ; trait
+                                                                                       
+                                                                                       code
+                                                                                          getlocal0
+                                                                                          pushscope
+                                                                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\quest;QuestProcessor_60.as"
+                                                                                          newactivation
+                                                                                          dup
+                                                                                          setlocal2
+                                                                                          pushscope
+                                                                                          findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                                          getlocal1
+                                                                                          setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                                          debug 1, "param1", 0, 0
+                                                                                          debug 1, "onComplete$0", 1, 0
+                                                                                          debugline 316
+                                                                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"param1")
+                                                                                          coerce QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                                                          getlocal2
+                                                                                          swap
+                                                                                          setslot 4
+                                                                                          debugline 317
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                                          pushstring "complete"
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"onComplete")
+                                                                                          callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                          getlocal0
+                                                                                          debugline 318
+                                                                                          getlex QName(ProtectedNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor"),"_resLib")
+                                                                                          pushstring "complete"
+                                                                                          callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                                                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                                          debugline 319
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                                                          getproperty QName(PackageNamespace(""),"topLayer")
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                                                          debugline 320
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"AnimateElementManager")
+                                                                                          pushbyte 1
+                                                                                          callproperty QName(PackageNamespace(""),"getElement"), 1
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                                                                          astypelate
+                                                                                          coerce QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                                                                          getlocal2
+                                                                                          swap
+                                                                                          setslot 2
+                                                                                          debugline 321
+                                                                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"teleport")
+                                                                                          pushtrue
+                                                                                          setproperty QName(PackageNamespace(""),"visible")
+                                                                                          debugline 322
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"AnimateElementManager")
+                                                                                          pushbyte 2
+                                                                                          callproperty QName(PackageNamespace(""),"getElement"), 1
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                                                                          astypelate
+                                                                                          coerce QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                                                                                          getlocal2
+                                                                                          swap
+                                                                                          setslot 3
+                                                                                          debugline 323
+                                                                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.quest"),"teleport2")
+                                                                                          pushtrue
+                                                                                          setproperty QName(PackageNamespace(""),"visible")
+                                                                                          debugline 324
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                                          pushbyte 2
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.quest:QuestProcessor_60"),"_playMC")
+                                                                                          getproperty QName(PackageNamespace(""),"totalFrames")
+                                                                                          newfunction 30
+                                                                                          debugline 327
+                                                                                          pushtrue
+                                                                                          debugline 324
+                                                                                          callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                                                                          returnvoid
+                                                                                       end ; code
+                                                                                    end ; body
+                                                                                 end ; method
+                                                                              }
+                                                                           }
+                                                                        }
+                                                                        
+                                                                        method
+                                                                           name null
+                                                                           returns null
+                                                                           
+                                                                           body
+                                                                              maxstack 3
+                                                                              localcount 1
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 3
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 getscopeobject 0
+                                                                                 getlex QName(PackageNamespace(""),"Object")
+                                                                                 pushscope
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.processor.quest"),"QuestProcessor")
+                                                                                 dup
+                                                                                 pushscope
+                                                                                 newclass 0
+                                                                                 popscope
+                                                                                 popscope
+                                                                                 initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.quest"),"QuestProcessor_60")
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                        

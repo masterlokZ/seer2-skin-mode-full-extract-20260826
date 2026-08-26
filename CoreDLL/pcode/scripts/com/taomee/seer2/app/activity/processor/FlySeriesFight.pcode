@@ -1,0 +1,1036 @@
+package com.taomee.seer2.app.activity.processor
+{
+   import com.taomee.seer2.app.activity.data.ActivityDefinition;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.arena.ui.ButtonPanelData;
+   import com.taomee.seer2.app.dialog.DialogPanel;
+   import com.taomee.seer2.app.dialog.DialogPanelEventData;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.dialog.events.DialogPanelEvent;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.parser.Parser_1140;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.events.SceneEvent;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   
+   public class FlySeriesFight extends ActivityProcessor
+   {
+      
+      private static const NORMAL_FIGHT_INDEX:uint = 50;
+      
+      private static const SPECIAL_FIGHT_INDEX:uint = 51;
+      
+      private static const DUALPET_FIGHT_INDEX:uint = 56;
+      
+      private static const DUALPET_SUPER_FIGHT_INDEX:uint = 1833;
+      
+      private static const EVENT_ID:uint = 14;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _map:MapModel;
+      
+      private var _sceneAnimation:MovieClip;
+      
+      private var _isDualPet:Boolean;
+      
+      private var _isSuper:Boolean;
+      
+      public function FlySeriesFight(param1:ActivityDefinition)
+      {
+         method
+            name "FlySeriesFight"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.app.activity.data"),"ActivityDefinition")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                  debug 1, "param1", 0, 0
+                  debugline 49
+                  getlocal0
+                  getlocal1
+                  debugline 49
+                  constructsuper 1
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      override public function start() : void
+      {
+         trait method QName(PackageNamespace(""),"start")
+            flag OVERRIDE
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1840"
+            end ; metadata
+            dispid 0
+            method
+               name "start"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 1
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                     getlocal0
+                     debugline 53
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"initEventListener"), 0
+                     debugline 54
+                     getlocal0
+                     debugline 54
+                     callsupervoid QName(PackageNamespace(""),"start"), 0
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         override protected function onMapStart(param1:SceneEvent) : void
+         {
+            trait method QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onMapStart")
+               flag OVERRIDE
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "1956"
+               end ; metadata
+               dispid 0
+               method
+                  name "onMapStart"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                        debug 1, "param1", 0, 0
+                        getlocal0
+                        debugline 58
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"clearScene"), 0
+                        debugline 59
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanel")
+                        pushstring "customUnitClick"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onActivityUnitClick")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            override protected function onMapComplete(param1:SceneEvent) : void
+            {
+               trait method QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onMapComplete")
+                  flag OVERRIDE
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "2167"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "onMapComplete"
+                     flag HAS_PARAM_NAMES
+                     flag NEED_ACTIVATION
+                     param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 7
+                        localcount 3
+                        initscopedepth 0
+                        maxscopedepth 2
+                        trait slot QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                           slotid 1
+                           type QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                        end ; trait
+                        trait slot QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"btnData")
+                           slotid 2
+                           type QName(PackageNamespace("com.taomee.seer2.app.arena.ui"),"ButtonPanelData")
+                        end ; trait
+                        trait slot QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"evt")
+                           slotid 3
+                           type QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                        end ; trait
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                           newactivation
+                           dup
+                           setlocal2
+                           pushscope
+                           findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                           getlocal1
+                           setproperty QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                           debug 1, "param1", 0, 0
+                           debug 1, "onMapComplete$0", 1, 0
+                           debugline 63
+                           pushnull
+                           coerce QName(PackageNamespace("com.taomee.seer2.app.arena.ui"),"ButtonPanelData")
+                           getlocal2
+                           swap
+                           setslot 2
+                           debugline 64
+                           getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                           coerce QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                           getlocal2
+                           swap
+                           setslot 3
+                           debugline 65
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           convert_b
+                           dup
+                           iffalse ofs0041
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapID")
+                           pushshort 770
+                           equals
+                  ofs0041:
+                           iffalse ofs0160
+                           findpropstrict QName(PackageNamespace("com.taomee.seer2.app.arena.ui"),"ButtonPanelData")
+                           debugline 66
+                           constructprop QName(PackageNamespace("com.taomee.seer2.app.arena.ui"),"ButtonPanelData"), 0
+                           coerce QName(PackageNamespace("com.taomee.seer2.app.arena.ui"),"ButtonPanelData")
+                           getlocal2
+                           swap
+                           setslot 2
+                           debugline 67
+                           getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"btnData")
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"catchEnabled")
+                           debugline 68
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"prevSceneType")
+                           pushbyte 2
+                           equals
+                           dup
+                           iffalse ofs006d
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"currentFightRecord")
+                           coerce_a
+                  ofs006d:
+                           dup
+                           iffalse ofs007a
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"currentFightRecord")
+                           getproperty QName(PackageNamespace(""),"initData")
+                           coerce_a
+                  ofs007a:
+                           dup
+                           iffalse ofs0089
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"currentFightRecord")
+                           getproperty QName(PackageNamespace(""),"initData")
+                           getproperty Multiname("positionIndex",[PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:FlySeriesFight"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           coerce_a
+                  ofs0089:
+                           dup
+                           iffalse ofs009b
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"currentFightRecord")
+                           getproperty QName(PackageNamespace(""),"initData")
+                           getproperty Multiname("positionIndex",[PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:FlySeriesFight"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushbyte 50
+                           equals
+                           coerce_a
+                  ofs009b:
+                           dup
+                           iffalse ofs00ac
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"fightWinnerSide")
+                           pushbyte 1
+                           equals
+                           not
+                           coerce_a
+                           debugline 68
+                  ofs00ac:
+                           iffalse ofs00d6
+                           debugline 69
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                           pushbyte 80
+                           pushstring "葛蕾芬兵团长"
+                           pushbyte 3
+                           pushstring "放弃吧！葛蕾芬兵团是不可战胜的！"
+                           newarray 2
+                           newarray 1
+                           pushstring "哎……那我还是走了"
+                           pushstring "继续挑战！"
+                           newarray 2
+                           pushnull
+                           newfunction 4
+                           newarray 2
+                           callpropvoid QName(PackageNamespace(""),"show"), 5
+                           debugline 68
+                           jump ofs0149
+                           debugline 72
+                  ofs00d6:
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"prevSceneType")
+                           pushbyte 2
+                           equals
+                           dup
+                           iffalse ofs00e8
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"currentFightRecord")
+                           coerce_a
+                  ofs00e8:
+                           dup
+                           iffalse ofs00f5
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"currentFightRecord")
+                           getproperty QName(PackageNamespace(""),"initData")
+                           coerce_a
+                  ofs00f5:
+                           dup
+                           iffalse ofs0104
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"currentFightRecord")
+                           getproperty QName(PackageNamespace(""),"initData")
+                           getproperty Multiname("positionIndex",[PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:FlySeriesFight"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           coerce_a
+                  ofs0104:
+                           dup
+                           iffalse ofs0116
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"currentFightRecord")
+                           getproperty QName(PackageNamespace(""),"initData")
+                           getproperty Multiname("positionIndex",[PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:FlySeriesFight"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushbyte 56
+                           equals
+                           coerce_a
+                  ofs0116:
+                           dup
+                           iffalse ofs0127
+                           pop
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                           getproperty QName(PackageNamespace(""),"fightWinnerSide")
+                           pushbyte 1
+                           equals
+                           not
+                           coerce_a
+                           debugline 68
+                  ofs0127:
+                           iffalse ofs0149
+                           debugline 73
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                           pushbyte 80
+                           pushstring "葛蕾芬兵团长"
+                           pushbyte 3
+                           pushstring "再来多少次结果都是一样的！"
+                           newarray 2
+                           newarray 1
+                           pushstring "哎……那我还是走了"
+                           pushstring "继续挑战！"
+                           newarray 2
+                           pushnull
+                           newfunction 5
+                           newarray 2
+                           callpropvoid QName(PackageNamespace(""),"show"), 5
+                  ofs0149:
+                           getlocal0
+                           debugline 77
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapModel")
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_map")
+                           debugline 78
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanel")
+                           pushstring "customUnitClick"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onActivityUnitClick")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                  ofs0160:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function initEventListener() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"initEventListener")
+                     dispid 0
+                     method
+                        name "initEventListener"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                              debugline 83
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                              getproperty QName(PackageNamespace(""),"RANDOM_EVENT_1140")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onEventStart")
+                              callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onEventStart(param1:MessageEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onEventStart")
+                        dispid 0
+                        method
+                           name "onEventStart"
+                           flag HAS_PARAM_NAMES
+                           flag NEED_ACTIVATION
+                           param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 6
+                              localcount 3
+                              initscopedepth 0
+                              maxscopedepth 2
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                                 slotid 1
+                                 type QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"evt")
+                                 slotid 2
+                                 type QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"parser")
+                                 slotid 3
+                                 type QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1140")
+                              end ; trait
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                 newactivation
+                                 dup
+                                 setlocal2
+                                 pushscope
+                                 findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                                 getlocal1
+                                 setproperty QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "onEventStart$0", 1, 0
+                                 debugline 87
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                                 coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                 getlocal2
+                                 swap
+                                 setslot 2
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1140")
+                                 debugline 88
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"evt")
+                                 getproperty QName(PackageNamespace(""),"message")
+                                 callproperty QName(PackageNamespace(""),"getRawDataCopy"), 0
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1140"), 1
+                                 coerce QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1140")
+                                 getlocal2
+                                 swap
+                                 setslot 3
+                                 debugline 89
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"parser")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 pushbyte 14
+                                 equals
+                                 dup
+                                 iffalse ofs004b
+                                 pop
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"parser")
+                                 getproperty QName(PackageNamespace(""),"index")
+                                 pushbyte 14
+                                 equals
+                        ofs004b:
+                                 iffalse ofs006b
+                                 debugline 90
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                 pushshort 461
+                                 pushstring "受伤的葛蕾芬"
+                                 pushbyte 0
+                                 pushstring "我的出生就是为葛蕾芬兵团获取胜利的荣光！既然不能完成这个使命……那就杀了我吧！"
+                                 newarray 2
+                                 newarray 1
+                                 pushstring "杀戮不能解决任何问题！"
+                                 newarray 1
+                                 newfunction 8
+                                 newarray 1
+                                 callpropvoid QName(PackageNamespace(""),"show"), 5
+                        ofs006b:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onActivityUnitClick(param1:DialogPanelEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onActivityUnitClick")
+                           dispid 0
+                           method
+                              name "onActivityUnitClick"
+                              flag HAS_PARAM_NAMES
+                              flag NEED_ACTIVATION
+                              param QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 7
+                                 localcount 3
+                                 initscopedepth 0
+                                 maxscopedepth 2
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                                    slotid 1
+                                    type QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"evt")
+                                    slotid 2
+                                    type QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                                 end ; trait
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                    newactivation
+                                    dup
+                                    setlocal2
+                                    pushscope
+                                    findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                                    getlocal1
+                                    setproperty QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "onActivityUnitClick$0", 1, 0
+                                    debugline 99
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"param1")
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                                    getlocal2
+                                    swap
+                                    setslot 2
+                                    debugline 100
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"evt")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanelEventData")
+                                    astypelate
+                                    getproperty QName(PackageNamespace(""),"params")
+                                    pushstring "fight_single_npc_770"
+                                    equals
+                                    debugline 100
+                                    iffalse ofs005c
+                                    debugline 101
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                    pushbyte 80
+                                    pushstring "葛蕾芬兵团长"
+                                    pushbyte 3
+                                    pushstring "飞翼氏族与地面各部族早已没有任何联系！请不要做无望的挣扎！"
+                                    newarray 2
+                                    newarray 1
+                                    pushstring "我不是坏人……我为和平而来……"
+                                    newarray 1
+                                    newfunction 11
+                                    newarray 1
+                                    callpropvoid QName(PackageNamespace(""),"show"), 5
+                                    debugline 100
+                                    jump ofs00c6
+                                    debugline 107
+                           ofs005c:
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"evt")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanelEventData")
+                                    astypelate
+                                    getproperty QName(PackageNamespace(""),"params")
+                                    pushstring "fight_dual_npc_770"
+                                    equals
+                                    debugline 100
+                                    iffalse ofs0097
+                                    debugline 108
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                    pushbyte 80
+                                    pushstring "葛蕾芬兵团长"
+                                    pushbyte 3
+                                    pushstring "双精灵？呵呵……受过统一军事化训练的葛蕾芬兵团不会出任何差池。你是想挨打……还是想挨打？"
+                                    newarray 2
+                                    newarray 1
+                                    pushstring "我不想挨打……"
+                                    pushstring "不试试看怎么知道！"
+                                    newarray 2
+                                    pushnull
+                                    newfunction 13
+                                    newarray 2
+                                    callpropvoid QName(PackageNamespace(""),"show"), 5
+                                    debugline 100
+                                    jump ofs00c6
+                                    debugline 112
+                           ofs0097:
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.activity.processor"),"evt")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanelEventData")
+                                    astypelate
+                                    getproperty QName(PackageNamespace(""),"params")
+                                    pushstring "fight_super_dual_npc_770"
+                                    equals
+                                    debugline 100
+                                    iffalse ofs00c6
+                                    debugline 113
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                    pushbyte 80
+                                    pushstring "葛蕾芬兵团长"
+                                    pushbyte 0
+                                    pushstring "好久不见了，强大的星际使者。你是来寻求挑战的吗？"
+                                    newarray 2
+                                    newarray 1
+                                    pushstring "......"
+                                    newarray 1
+                                    newfunction 14
+                                    newarray 1
+                                    callpropvoid QName(PackageNamespace(""),"show"), 5
+                           ofs00c6:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function playSceneAnimation() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"playSceneAnimation")
+                              dispid 0
+                              method
+                                 name "playSceneAnimation"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 4
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                       getlocal0
+                                       debugline 131
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_sceneAnimation")
+                                       pushnull
+                                       equals
+                                       debugline 131
+                                       iffalse ofs0030
+                                       debugline 132
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                       pushstring "flySeriesFight/1"
+                                       callproperty QName(PackageNamespace(""),"getActivityAnimation"), 1
+                                       pushstring "swf"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onSceneAnimationLoaded")
+                                       callpropvoid QName(PackageNamespace(""),"load"), 3
+                                       debugline 131
+                                       jump ofs0037
+                              ofs0030:
+                                       getlocal0
+                                       debugline 134
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"showSceneAnimation"), 0
+                              ofs0037:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onSceneAnimationLoaded(param1:ContentInfo) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onSceneAnimationLoaded")
+                                 dispid 0
+                                 method
+                                    name "onSceneAnimationLoaded"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("com.taomee.seer2.core.loader"),"ContentInfo")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                          debug 1, "param1", 0, 0
+                                          getlocal0
+                                          getlocal1
+                                          debugline 139
+                                          getproperty QName(PackageNamespace(""),"content")
+                                          getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                          astypelate
+                                          pushstring "soldiers"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:FlySeriesFight"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:FlySeriesFight"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_sceneAnimation")
+                                          getlocal0
+                                          debugline 140
+                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"showSceneAnimation"), 0
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function showSceneAnimation() : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"showSceneAnimation")
+                                    dispid 0
+                                    method
+                                       name "showSceneAnimation"
+                                       flag NEED_ACTIVATION
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 6
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 2
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                             newactivation
+                                             pushscope
+                                             getlocal0
+                                             debugline 144
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_map")
+                                             getproperty QName(PackageNamespace(""),"front")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_sceneAnimation")
+                                             callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                             debugline 145
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_sceneAnimation")
+                                             pushbyte 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_sceneAnimation")
+                                             getproperty QName(PackageNamespace(""),"totalFrames")
+                                             newfunction 23
+                                             debugline 147
+                                             pushtrue
+                                             debugline 145
+                                             callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function startFightAfterAnimation() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"startFightAfterAnimation")
+                                       dispid 0
+                                       method
+                                          name "startFightAfterAnimation"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 5
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                                debug 1, "_loc1_", 0, 0
+                                                findpropstrict QName(PackageNamespace("com.taomee.seer2.app.arena.ui"),"ButtonPanelData")
+                                                debugline 151
+                                                constructprop QName(PackageNamespace("com.taomee.seer2.app.arena.ui"),"ButtonPanelData"), 0
+                                                coerce QName(PackageNamespace("com.taomee.seer2.app.arena.ui"),"ButtonPanelData")
+                                                setlocal1
+                                                getlocal1
+                                                debugline 152
+                                                pushfalse
+                                                setproperty QName(PackageNamespace(""),"catchEnabled")
+                                                getlocal0
+                                                debugline 153
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_isDualPet")
+                                                debugline 153
+                                                iffalse ofs003d
+                                                debugline 154
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                pushbyte 56
+                                                pushnull
+                                                pushnull
+                                                getlocal1
+                                                callpropvoid QName(PackageNamespace(""),"startFightBinaryWild"), 4
+                                                debugline 153
+                                                jump ofs006c
+                                       ofs003d:
+                                                getlocal0
+                                                debugline 155
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_isSuper")
+                                                debugline 153
+                                                iffalse ofs0062
+                                                debugline 156
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                pushshort 1833
+                                                pushnull
+                                                pushnull
+                                                getlocal1
+                                                callpropvoid QName(PackageNamespace(""),"startFightBinaryWild"), 4
+                                                debugline 153
+                                                jump ofs006c
+                                                debugline 158
+                                       ofs0062:
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                pushbyte 50
+                                                pushnull
+                                                pushnull
+                                                getlocal1
+                                                callpropvoid QName(PackageNamespace(""),"startFightWithWild"), 4
+                                       ofs006c:
+                                                getlocal0
+                                                debugline 160
+                                                pushfalse
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_isDualPet")
+                                                getlocal0
+                                                debugline 161
+                                                pushfalse
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_isSuper")
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function clearScene() : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"clearScene")
+                                          dispid 0
+                                          method
+                                             name "clearScene"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                                   debugline 165
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                   pushstring "flySeriesFight/1"
+                                                   callproperty QName(PackageNamespace(""),"getActivityAnimation"), 1
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onSceneAnimationLoaded")
+                                                   callpropvoid QName(PackageNamespace(""),"cancel"), 2
+                                                   getlocal0
+                                                   debugline 166
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_sceneAnimation")
+                                                   iffalse ofs0033
+                                                   debugline 167
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_sceneAnimation")
+                                                   callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                                   getlocal0
+                                                   debugline 168
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_sceneAnimation")
+                                          ofs0033:
+                                                   getlocal0
+                                                   debugline 170
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"_map")
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       override public function refresh() : void
+                                       {
+                                          trait method QName(PackageNamespace(""),"refresh")
+                                             flag OVERRIDE
+                                             flag METADATA
+                                             metadata "__go_to_definition_help"
+                                                item "pos" "8431"
+                                             end ; metadata
+                                             dispid 0
+                                             method
+                                                name "refresh"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 1
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          override public function dispose() : void
+                                          {
+                                             trait method QName(PackageNamespace(""),"dispose")
+                                                flag OVERRIDE
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "8487"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "dispose"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;FlySeriesFight.as"
+                                                         getlocal0
+                                                         debugline 177
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"clearScene"), 0
+                                                         debugline 178
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanel")
+                                                         pushstring "customUnitClick"
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onActivityUnitClick")
+                                                         callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                         debugline 179
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                         getproperty QName(PackageNamespace(""),"RANDOM_EVENT_1140")
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:FlySeriesFight"),"onEventStart")
+                                                         callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                         debugline 180
+                                                         getlocal0
+                                                         debugline 180
+                                                         callsupervoid QName(PackageNamespace(""),"dispose"), 0
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                          }
+                                       }
+                                       
+                                       method
+                                          name null
+                                          returns null
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 3
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                getscopeobject 0
+                                                getlex QName(PackageNamespace(""),"Object")
+                                                pushscope
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.activity.processor"),"ActivityProcessor")
+                                                dup
+                                                pushscope
+                                                newclass 0
+                                                popscope
+                                                popscope
+                                                initproperty QName(PackageNamespace("com.taomee.seer2.app.activity.processor"),"FlySeriesFight")
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                       

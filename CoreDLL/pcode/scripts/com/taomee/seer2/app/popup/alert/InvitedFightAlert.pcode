@@ -1,0 +1,1338 @@
+package com.taomee.seer2.app.popup.alert
+{
+   import com.taomee.seer2.app.actor.data.UserInfo;
+   import com.taomee.seer2.app.actor.preview.ActorPreview;
+   import com.taomee.seer2.app.common.ResourceLibraryLoader;
+   import com.taomee.seer2.app.gameRule.behavior.MultiPetSelectSupport;
+   import com.taomee.seer2.app.gameRule.behavior.SOMultiBehavior;
+   import com.taomee.seer2.app.gameRule.data.FighterSelectPanelVO;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.helper.UserInfoParseHelper;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.popup.AlertInfo;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.core.map.ResourceLibrary;
+   import com.taomee.seer2.core.net.LittleEndianByteArray;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.text.TextField;
+   import flash.utils.ByteArray;
+   import flash.utils.IDataInput;
+   import flash.utils.clearInterval;
+   import flash.utils.setInterval;
+   
+   public class InvitedFightAlert extends Sprite implements IAlert
+   {
+      
+      private static const COUNT_DOWN_TIME:uint = 15;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _timerIndex:int;
+      
+      private var _intervalIndex:uint = 0;
+      
+      private var _ui:MovieClip;
+      
+      private var _cacelButton:SimpleButton;
+      
+      private var _petLevel:TextField;
+      
+      private var _trainerLevel:TextField;
+      
+      private var _oppositeMC:MovieClip;
+      
+      private var _trainerExpMc:MovieClip;
+      
+      private var _trainerExpTxt:TextField;
+      
+      private var _trainerExpBar:MovieClip;
+      
+      private var _timeTxt:TextField;
+      
+      private var _inviteType:TextField;
+      
+      private var _actorPreCantainer:MovieClip;
+      
+      private var _actorPreview:ActorPreview;
+      
+      private var _userId:uint;
+      
+      private var _fightMode:uint;
+      
+      private var _userInfo:UserInfo;
+      
+      private var _supportBehavior:MultiPetSelectSupport;
+      
+      private var _resLoader:ResourceLibraryLoader;
+      
+      private var _info:AlertInfo;
+      
+      public function InvitedFightAlert()
+      {
+         method
+            name "InvitedFightAlert"
+            returns null
+            
+            body
+               maxstack 4
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                  debugline 79
+                  getlocal0
+                  debugline 79
+                  constructsuper 0
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.common"),"ResourceLibraryLoader")
+                  debugline 80
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                  pushstring "publicRes/inviteFight.swf"
+                  callproperty QName(PackageNamespace(""),"getRes"), 1
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.common"),"ResourceLibraryLoader"), 1
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_resLoader")
+                  getlocal0
+                  debugline 81
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_resLoader")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"onGetLib")
+                  callpropvoid QName(PackageNamespace(""),"getLib"), 1
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      private function onGetLib(param1:ResourceLibrary) : void
+      {
+         trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"onGetLib")
+            dispid 0
+            method
+               name "onGetLib"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace("com.taomee.seer2.core.map"),"ResourceLibrary")
+               paramname "param1"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                     debug 1, "param1", 0, 0
+                     getlocal0
+                     getlocal1
+                     debugline 85
+                     pushstring "UI_InvitedSkin"
+                     callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     findpropstrict QName(PackageNamespace(""),"addChild")
+                     getlocal0
+                     debugline 86
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                     getlocal0
+                     getlocal0
+                     debugline 87
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     pushstring "noBtn"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_cacelButton")
+                     getlocal0
+                     debugline 88
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_cacelButton")
+                     pushstring "click"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"cancelHandler")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     getlocal0
+                     getlocal0
+                     debugline 89
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     pushstring "petLevel"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_petLevel")
+                     getlocal0
+                     getlocal0
+                     debugline 90
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     pushstring "trainerLevel"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerLevel")
+                     getlocal0
+                     getlocal0
+                     debugline 91
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     pushstring "trainerExpMC"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerExpMc")
+                     getlocal0
+                     getlocal0
+                     debugline 92
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerExpMc")
+                     pushstring "trainerExpBar"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerExpBar")
+                     getlocal0
+                     getlocal0
+                     debugline 93
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerExpMc")
+                     pushstring "trainerExpTxt"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerExpTxt")
+                     getlocal0
+                     getlocal0
+                     debugline 94
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     pushstring "oppositeMC"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_oppositeMC")
+                     getlocal0
+                     getlocal0
+                     debugline 95
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     pushstring "timeTxt"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_timeTxt")
+                     getlocal0
+                     getlocal0
+                     debugline 96
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     pushstring "fightTxt"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_inviteType")
+                     getlocal0
+                     getlocal0
+                     debugline 97
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_oppositeMC")
+                     pushstring "actorPreCantainer"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreCantainer")
+                     getlocal0
+                     findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.behavior"),"MultiPetSelectSupport")
+                     debugline 98
+                     constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.behavior"),"MultiPetSelectSupport"), 0
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_supportBehavior")
+                     getlocal0
+                     debugline 99
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_supportBehavior")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                     callpropvoid QName(PackageNamespace(""),"setUpMainUI"), 1
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function updateInfo() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"updateInfo")
+               dispid 0
+               method
+                  name "updateInfo"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 4
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                        getlocal0
+                        debugline 103
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_petLevel")
+                        pushstring ""
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                        getproperty QName(PackageNamespace(""),"highestPetLevel")
+                        add
+                        setproperty QName(PackageNamespace(""),"text")
+                        getlocal0
+                        debugline 104
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerLevel")
+                        pushstring ""
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                        getproperty QName(PackageNamespace(""),"trainerLevel")
+                        add
+                        setproperty QName(PackageNamespace(""),"text")
+                        getlocal0
+                        debugline 105
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerExpTxt")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                        getproperty QName(PackageNamespace(""),"currentLevelExp")
+                        convert_s
+                        pushstring "/"
+                        add
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                        getproperty QName(PackageNamespace(""),"nextLevelNeedExp")
+                        convert_s
+                        add
+                        setproperty QName(PackageNamespace(""),"text")
+                        getlocal0
+                        debugline 106
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_trainerExpBar")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                        getproperty QName(PackageNamespace(""),"currentLevelExp")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                        getproperty QName(PackageNamespace(""),"nextLevelNeedExp")
+                        divide
+                        setproperty QName(PackageNamespace(""),"scaleX")
+                        debugline 107
+                        getlex QName(PackageNamespace("flash.text"),"TextField")
+                        getglobalscope
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_oppositeMC")
+                        pushstring "userName"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        call 1
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                        getproperty QName(PackageNamespace(""),"nick")
+                        setproperty QName(PackageNamespace(""),"text")
+                        getlocal0
+                        debugline 108
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"addPreview"), 0
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function cancelHandler(param1:MouseEvent) : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"cancelHandler")
+                  dispid 0
+                  method
+                     name "cancelHandler"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace("flash.events"),"MouseEvent")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 3
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                           debug 1, "_loc2_", 1, 0
+                           debug 1, "param1", 0, 0
+                           findpropstrict QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                           debugline 112
+                           constructprop QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray"), 0
+                           coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                           setlocal2
+                           getlocal2
+                           getlocal0
+                           debugline 113
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userId")
+                           callpropvoid QName(PackageNamespace(""),"writeUnsignedInt"), 1
+                           getlocal2
+                           debugline 114
+                           pushbyte 0
+                           callpropvoid QName(PackageNamespace(""),"writeUnsignedInt"), 1
+                           getlocal2
+                           debugline 115
+                           pushbyte 0
+                           callpropvoid QName(PackageNamespace(""),"writeUnsignedInt"), 1
+                           debugline 116
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"FIGHT_ACCEPT_PVP_1513")
+                           getlocal2
+                           callpropvoid QName(PackageNamespace(""),"send"), 2
+                           getlocal0
+                           debugline 117
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"stopInterval"), 0
+                           getlocal0
+                           debugline 118
+                           callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                           getlocal1
+                           debugline 119
+                           callpropvoid QName(PackageNamespace(""),"stopImmediatePropagation"), 0
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public function show(param1:AlertInfo) : void
+               {
+                  trait method QName(PackageNamespace(""),"show")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "4495"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "show"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertInfo")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 4
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              getlocal1
+                              debugline 123
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_info")
+                              getlocal0
+                              findpropstrict QName(PackageNamespace("com.taomee.seer2.app.common"),"ResourceLibraryLoader")
+                              debugline 124
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                              pushstring "publicRes/inviteFight.swf"
+                              callproperty QName(PackageNamespace(""),"getRes"), 1
+                              constructprop QName(PackageNamespace("com.taomee.seer2.app.common"),"ResourceLibraryLoader"), 1
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_resLoader")
+                              getlocal0
+                              debugline 125
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_resLoader")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"onGetLib_1")
+                              callpropvoid QName(PackageNamespace(""),"getLib"), 1
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onGetLib_1(param1:ResourceLibrary) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"onGetLib_1")
+                        dispid 0
+                        method
+                           name "onGetLib_1"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("com.taomee.seer2.core.map"),"ResourceLibrary")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 getlocal1
+                                 debugline 129
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"onGetLib"), 1
+                                 getlocal0
+                                 debugline 130
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"showPanel"), 0
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function showPanel() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"showPanel")
+                           dispid 0
+                           method
+                              name "showPanel"
+                              flag NEED_ACTIVATION
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 5
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 2
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    slotid 1
+                                    type QName(PackageNamespace("com.taomee.seer2.app.gameRule.data"),"FighterSelectPanelVO")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"confirmHandler")
+                                    slotid 2
+                                    type QName(PackageNamespace(""),"Function")
+                                 end ; trait
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                    newactivation
+                                    dup
+                                    setlocal1
+                                    pushscope
+                                    debug 1, "showPanel$0", 0, 0
+                                    debugline 135
+                                    pushnull
+                                    coerce QName(PackageNamespace(""),"Function")
+                                    getlocal1
+                                    swap
+                                    setslot 2
+                                    newfunction 7
+                                    debugline 136
+                                    coerce QName(PackageNamespace(""),"Function")
+                                    debugline 136
+                                    getlocal1
+                                    debugline 136
+                                    swap
+                                    debugline 136
+                                    setslot 2
+                                    getlocal0
+                                    getlocal0
+                                    debugline 158
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_info")
+                                    getproperty QName(PackageNamespace(""),"initInfo")
+                                    getproperty QName(PackageNamespace(""),"userId")
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 159
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_info")
+                                    getproperty QName(PackageNamespace(""),"initInfo")
+                                    getproperty QName(PackageNamespace(""),"mode")
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_fightMode")
+                                    debugline 160
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_info")
+                                    getlocal0
+                                    callpropvoid QName(PackageNamespace(""),"addPopUp"), 2
+                                    getlocal0
+                                    debugline 161
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"requestUserInfo"), 0
+                                    getlocal0
+                                    debugline 162
+                                    pushbyte 0
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_intervalIndex")
+                                    getlocal0
+                                    debugline 163
+                                    getlex QName(PackageNamespace("flash.utils"),"setInterval")
+                                    getglobalscope
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"intervalHandler")
+                                    pushshort 1000
+                                    call 2
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_timerIndex")
+                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.data"),"FighterSelectPanelVO")
+                                    debugline 164
+                                    constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.data"),"FighterSelectPanelVO"), 0
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.gameRule.data"),"FighterSelectPanelVO")
+                                    getlocal1
+                                    swap
+                                    setslot 1
+                                    debugline 165
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    getlocal0
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_fightMode")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                    callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                    callproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"getDefaultPets"), 2
+                                    setproperty QName(PackageNamespace(""),"defaultPets")
+                                    debugline 166
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                    callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                    setproperty QName(PackageNamespace(""),"pets")
+                                    getlocal0
+                                    debugline 167
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_fightMode")
+                                    pushbyte 105
+                                    equals
+                                    debugline 167
+                                    iffalse ofs00d3
+                                    getlocal0
+                                    debugline 168
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_inviteType")
+                                    pushstring "邀请你单只精灵对战"
+                                    setproperty QName(PackageNamespace(""),"text")
+                                    debugline 169
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    pushbyte 1
+                                    setproperty QName(PackageNamespace(""),"minSelectedPetCount")
+                                    debugline 170
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    pushbyte 1
+                                    setproperty QName(PackageNamespace(""),"maxSelectedPetCount")
+                                    debugline 167
+                                    jump ofs015d
+                           ofs00d3:
+                                    getlocal0
+                                    debugline 171
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_fightMode")
+                                    pushbyte 106
+                                    equals
+                                    debugline 167
+                                    iffalse ofs010f
+                                    getlocal0
+                                    debugline 172
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_inviteType")
+                                    pushstring "邀请你多只精灵对战"
+                                    setproperty QName(PackageNamespace(""),"text")
+                                    debugline 173
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    pushbyte 1
+                                    setproperty QName(PackageNamespace(""),"minSelectedPetCount")
+                                    debugline 174
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    pushbyte 6
+                                    setproperty QName(PackageNamespace(""),"maxSelectedPetCount")
+                                    debugline 175
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    pushfalse
+                                    setproperty QName(PackageNamespace(""),"selectable")
+                                    debugline 167
+                                    jump ofs015d
+                           ofs010f:
+                                    getlocal0
+                                    debugline 176
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_fightMode")
+                                    pushbyte 107
+                                    equals
+                                    debugline 167
+                                    iffalse ofs015d
+                                    getlocal0
+                                    debugline 177
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_inviteType")
+                                    pushstring "邀请你双精灵对战"
+                                    setproperty QName(PackageNamespace(""),"text")
+                                    debugline 178
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    pushbyte 2
+                                    setproperty QName(PackageNamespace(""),"minSelectedPetCount")
+                                    debugline 179
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    pushbyte 2
+                                    setproperty QName(PackageNamespace(""),"maxSelectedPetCount")
+                                    debugline 180
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    getproperty QName(PackageNamespace(""),"pets")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    pushbyte 2
+                                    ifnlt ofs015d
+                                    debugline 181
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                    pushstring "您背包中的精灵少于2只！"
+                                    callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                                    debugline 182
+                                    returnvoid
+                                    debugline 185
+                           ofs015d:
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"confirmHandler")
+                                    setproperty QName(PackageNamespace(""),"onComplete")
+                                    getlocal0
+                                    debugline 186
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_supportBehavior")
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"initData")
+                                    callpropvoid QName(PackageNamespace(""),"init"), 1
+                                    getlocal0
+                                    debugline 187
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_timeTxt")
+                                    pushtrue
+                                    setproperty QName(PackageNamespace(""),"visible")
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function getDefaultPets(param1:uint, param2:Vector.<PetInfo>) : Vector.<PetInfo>
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"getDefaultPets")
+                              dispid 0
+                              method
+                                 name "getDefaultPets"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace(""),"uint")
+                                 param TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                 paramname "param1"
+                                 paramname "param2"
+                                 returns TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 11
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                       debug 1, "_loc9_", 2, 0
+                                       debug 1, "_loc6_", 3, 0
+                                       debug 1, "_loc5_", 4, 0
+                                       debug 1, "_loc8_", 5, 0
+                                       debug 1, "_loc10_", 6, 0
+                                       debug 1, "_loc7_", 7, 0
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "_loc4_", 8, 0
+                                       debug 1, "param2", 1, 0
+                                       debug 1, "_loc3_", 9, 0
+                                       debugline 191
+                                       pushbyte 0
+                                       convert_u
+                                       setlocal 4
+                                       debugline 192
+                                       pushnull
+                                       coerce QName(PackageNamespace(""),"Array")
+                                       setlocal 8
+                                       debugline 193
+                                       pushbyte 0
+                                       convert_u
+                                       setlocal 6
+                                       debugline 194
+                                       pushbyte 0
+                                       convert_u
+                                       setlocal3
+                                       debugline 195
+                                       pushbyte 0
+                                       convert_u
+                                       setlocal 7
+                                       debugline 196
+                                       getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                       debugline 196
+                                       applytype 1
+                                       debugline 196
+                                       construct 0
+                                       coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                       setlocal 10
+                                       debugline 197
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.behavior"),"SOMultiBehavior")
+                                       getlocal1
+                                       callproperty QName(PackageNamespace(""),"getKey"), 1
+                                       coerce_s
+                                       setlocal 9
+                                       debugline 198
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.behavior"),"SOMultiBehavior")
+                                       getlocal 9
+                                       callproperty QName(PackageNamespace(""),"readDefaultPets"), 1
+                                       coerce QName(PackageNamespace(""),"Array")
+                                       setlocal 5
+                                       getlocal1
+                                       pushbyte 106
+                                       equals
+                                       debugline 199
+                                       iffalse ofs00af
+                                       debugline 200
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                       callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                       coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                       setlocal 10
+                                       debugline 199
+                                       jump ofs01b4
+                              ofs00af:
+                                       getlocal 5
+                                       debugline 202
+                                       pushnull
+                                       ifeq ofs0108
+                                       getlocal2
+                                       debugline 203
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       convert_u
+                                       setlocal3
+                                       jump ofs00fe
+                              ofs00c5:
+                                       label
+                                       getlocal 5
+                                       getlocal2
+                                       getlocal 7
+                                       debugline 205
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getproperty Multiname("catchTime",[PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                       pushbyte -1
+                                       ifeq ofs00eb
+                                       getlocal 10
+                                       getlocal2
+                                       getlocal 7
+                                       debugline 206
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                       debugline 208
+                              ofs00eb:
+                                       getlocal 7
+                                       debugline 208
+                                       convert_d
+                                       debugline 208
+                                       increment
+                                       debugline 208
+                                       convert_u
+                                       debugline 208
+                                       setlocal 7
+                              ofs00fe:
+                                       getlocal 7
+                                       getlocal3
+                                       debugline 204
+                                       iflt ofs00c5
+                              ofs0108:
+                                       getlocal 10
+                                       debugline 211
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       pushbyte 0
+                                       ifne ofs0157
+                                       getlocal1
+                                       pushbyte 105
+                                       equals
+                                       debugline 212
+                                       iffalse ofs013e
+                                       debugline 213
+                                       getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                       applytype 1
+                                       getlocal0
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                       callproperty QName(PackageNamespace(""),"getFirstPetInfo"), 0
+                                       newarray 1
+                                       call 1
+                                       coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                       setlocal 10
+                                       debugline 212
+                                       jump ofs0157
+                              ofs013e:
+                                       getlocal1
+                                       pushbyte 107
+                                       equals
+                                       debugline 212
+                                       iffalse ofs0157
+                                       debugline 215
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                       pushbyte 2
+                                       callproperty QName(PackageNamespace(""),"getRandomFightPetInfo"), 1
+                                       coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                       setlocal 10
+                              ofs0157:
+                                       getlocal 10
+                                       debugline 218
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       convert_u
+                                       setlocal 4
+                                       debugline 219
+                                       newarray 0
+                                       coerce QName(PackageNamespace(""),"Array")
+                                       setlocal 8
+                                       debugline 220
+                                       pushbyte 0
+                                       convert_u
+                                       setlocal 6
+                                       jump ofs019d
+                              ofs0176:
+                                       label
+                                       getlocal 8
+                                       getlocal 10
+                                       getlocal 6
+                                       debugline 222
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getproperty Multiname("catchTime",[PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:InvitedFightAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                       debugline 223
+                                       getlocal 6
+                                       debugline 223
+                                       convert_d
+                                       debugline 223
+                                       increment
+                                       debugline 223
+                                       convert_u
+                                       debugline 223
+                                       setlocal 6
+                              ofs019d:
+                                       getlocal 6
+                                       getlocal 4
+                                       debugline 221
+                                       iflt ofs0176
+                                       debugline 225
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.behavior"),"SOMultiBehavior")
+                                       getlocal 9
+                                       getlocal 8
+                                       callpropvoid QName(PackageNamespace(""),"writeDefaultPets"), 2
+                              ofs01b4:
+                                       getlocal 10
+                                       debugline 227
+                                       returnvalue
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function stopInterval() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"stopInterval")
+                                 dispid 0
+                                 method
+                                    name "stopInterval"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                          getlocal0
+                                          debugline 231
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_timerIndex")
+                                          pushbyte 0
+                                          ifeq ofs0024
+                                          debugline 232
+                                          getlex QName(PackageNamespace("flash.utils"),"clearInterval")
+                                          getglobalscope
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_timerIndex")
+                                          call 1
+                                          pop
+                                          getlocal0
+                                          debugline 233
+                                          pushbyte 0
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_timerIndex")
+                                 ofs0024:
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function intervalHandler() : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"intervalHandler")
+                                    dispid 0
+                                    method
+                                       name "intervalHandler"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                             debug 1, "_loc1_", 0, 0
+                                             debugline 238
+                                             pushnull
+                                             coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                                             setlocal1
+                                             getlocal0
+                                             debugline 239
+                                             dup
+                                             debugline 239
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_intervalIndex")
+                                             debugline 239
+                                             increment
+                                             debugline 239
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_intervalIndex")
+                                             getlocal0
+                                             debugline 240
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_timeTxt")
+                                             pushbyte 15
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_intervalIndex")
+                                             subtract
+                                             convert_s
+                                             setproperty QName(PackageNamespace(""),"text")
+                                             getlocal0
+                                             debugline 241
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_intervalIndex")
+                                             pushbyte 15
+                                             ifnge ofs0089
+                                             getlocal0
+                                             debugline 242
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"stopInterval"), 0
+                                             getlocal0
+                                             debugline 243
+                                             pushbyte 0
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_timerIndex")
+                                             findpropstrict QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                                             debugline 244
+                                             constructprop QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray"), 0
+                                             coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                                             setlocal1
+                                             getlocal1
+                                             getlocal0
+                                             debugline 245
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userId")
+                                             callpropvoid QName(PackageNamespace(""),"writeUnsignedInt"), 1
+                                             getlocal1
+                                             debugline 246
+                                             pushbyte 0
+                                             callpropvoid QName(PackageNamespace(""),"writeUnsignedInt"), 1
+                                             getlocal1
+                                             debugline 247
+                                             pushbyte 0
+                                             callpropvoid QName(PackageNamespace(""),"writeUnsignedInt"), 1
+                                             debugline 248
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                             getproperty QName(PackageNamespace(""),"FIGHT_ACCEPT_PVP_1513")
+                                             getlocal1
+                                             callpropvoid QName(PackageNamespace(""),"send"), 2
+                                             getlocal0
+                                             debugline 249
+                                             callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                    ofs0089:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function addPreview() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"addPreview")
+                                       dispid 0
+                                       method
+                                          name "addPreview"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 4
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                                getlocal0
+                                                findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.preview"),"ActorPreview")
+                                                debugline 254
+                                                constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.preview"),"ActorPreview"), 0
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                getlocal0
+                                                debugline 255
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                                                callpropvoid QName(PackageNamespace(""),"setData"), 1
+                                                getlocal0
+                                                debugline 256
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                pushdouble 0.5
+                                                dup
+                                                setlocal1
+                                                setproperty QName(PackageNamespace(""),"scaleY")
+                                                getlocal1
+                                                setproperty QName(PackageNamespace(""),"scaleX")
+                                                getlocal0
+                                                debugline 257
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                pushbyte 30
+                                                setproperty QName(PackageNamespace(""),"x")
+                                                getlocal0
+                                                debugline 258
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                pushbyte 70
+                                                setproperty QName(PackageNamespace(""),"y")
+                                                getlocal0
+                                                debugline 259
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreCantainer")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    public function dispose() : void
+                                    {
+                                       trait method QName(PackageNamespace(""),"dispose")
+                                          flag METADATA
+                                          metadata "__go_to_definition_help"
+                                             item "pos" "10230"
+                                          end ; metadata
+                                          dispid 0
+                                          method
+                                             name "dispose"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                                   getlocal0
+                                                   debugline 263
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_resLoader")
+                                                   callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                   getlocal0
+                                                   debugline 264
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_supportBehavior")
+                                                   pushnull
+                                                   ifeq ofs0028
+                                                   getlocal0
+                                                   debugline 265
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_supportBehavior")
+                                                   callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                   getlocal0
+                                                   debugline 266
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_supportBehavior")
+                                          ofs0028:
+                                                   getlocal0
+                                                   debugline 268
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                   pushnull
+                                                   ifeq ofs003c
+                                                   getlocal0
+                                                   debugline 269
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreview")
+                                                   callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                          ofs003c:
+                                                   getlocal0
+                                                   debugline 271
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_ui")
+                                                   getlocal0
+                                                   debugline 272
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_actorPreCantainer")
+                                                   debugline 273
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                   getlocal0
+                                                   callpropvoid QName(PackageNamespace(""),"removePopUp"), 1
+                                                   debugline 274
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                   callpropvoid QName(PackageNamespace(""),"resetOperation"), 0
+                                                   getlocal0
+                                                   findpropstrict QName(PackageNamespace("flash.events"),"Event")
+                                                   pushstring "close"
+                                                   constructprop QName(PackageNamespace("flash.events"),"Event"), 1
+                                                   callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function requestUserInfo() : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"requestUserInfo")
+                                             dispid 0
+                                             method
+                                                name "requestUserInfo"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                                      debugline 279
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                      getproperty QName(PackageNamespace(""),"USER_GET_DETAIL_INFO_1010")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"onGetDetailInfo")
+                                                      callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                                      debugline 280
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                      getproperty QName(PackageNamespace(""),"USER_GET_DETAIL_INFO_1010")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userId")
+                                                      callpropvoid QName(PackageNamespace(""),"send"), 2
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function onGetDetailInfo(param1:MessageEvent) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"onGetDetailInfo")
+                                                dispid 0
+                                                method
+                                                   name "onGetDetailInfo"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 4
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;InvitedFightAlert.as"
+                                                         debug 1, "_loc2_", 1, 0
+                                                         debug 1, "param1", 0, 0
+                                                         debug 1, "_loc3_", 2, 0
+                                                         getlocal1
+                                                         debugline 284
+                                                         getproperty QName(PackageNamespace(""),"message")
+                                                         callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                                         coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                         setlocal2
+                                                         getlocal2
+                                                         debugline 285
+                                                         callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                                         convert_u
+                                                         setlocal3
+                                                         getlocal3
+                                                         getlocal0
+                                                         debugline 286
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userId")
+                                                         ifne ofs0075
+                                                         debugline 287
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                         getproperty QName(PackageNamespace(""),"USER_GET_DETAIL_INFO_1010")
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"onGetDetailInfo")
+                                                         callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                         debugline 288
+                                                         getlex QName(PackageNamespace("flash.utils"),"ByteArray")
+                                                         debugline 288
+                                                         getglobalscope
+                                                         getlocal2
+                                                         debugline 288
+                                                         call 1
+                                                         pushbyte 0
+                                                         setproperty QName(PackageNamespace(""),"position")
+                                                         getlocal0
+                                                         findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                                         debugline 289
+                                                         constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo"), 0
+                                                         setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                                                         debugline 290
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.net.helper"),"UserInfoParseHelper")
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"_userInfo")
+                                                         getlocal2
+                                                         callpropvoid QName(PackageNamespace(""),"parseUserDetailInfo"), 2
+                                                         getlocal0
+                                                         debugline 291
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:InvitedFightAlert"),"updateInfo"), 0
+                                                ofs0075:
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                          }
+                                       }
+                                       
+                                       method
+                                          name null
+                                          returns null
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 7
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                getscopeobject 0
+                                                getlex QName(PackageNamespace(""),"Object")
+                                                pushscope
+                                                getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                pushscope
+                                                getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                pushscope
+                                                getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                pushscope
+                                                getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                pushscope
+                                                getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                dup
+                                                pushscope
+                                                newclass 0
+                                                popscope
+                                                popscope
+                                                popscope
+                                                popscope
+                                                popscope
+                                                popscope
+                                                initproperty QName(PackageNamespace("com.taomee.seer2.app.popup.alert"),"InvitedFightAlert")
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                       

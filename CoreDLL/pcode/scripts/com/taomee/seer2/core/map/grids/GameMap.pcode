@@ -1,0 +1,2108 @@
+package com.taomee.seer2.core.map.grids
+{
+   import com.taomee.seer2.core.entity.PathMobile;
+   import com.taomee.seer2.core.scene.BaseMapLoader;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import flash.display.BitmapData;
+   import flash.display.DisplayObject;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.geom.Point;
+   
+   public class GameMap extends BaseDisplayObject
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      public var playerList:Array;
+      
+      private var _player:HeptaFishCharacter;
+      
+      private var _mapWidth:Number;
+      
+      private var _mapHeight:Number;
+      
+      private var _cellWidth:Number;
+      
+      private var _cellHeight:Number;
+      
+      private var _itemArr:Array;
+      
+      private var _mapArr:Array;
+      
+      private var _mapDArr:Array;
+      
+      private var _mapXML:XML;
+      
+      private var _row:int;
+      
+      private var _col:int;
+      
+      private var _pathIndex:int;
+      
+      private var _mapLayer:MapLayer;
+      
+      private var _buildLayer:BuildingLayer;
+      
+      private var _gridLayer:GridLayer;
+      
+      private var _roadPointLayer:RoadPointLayer;
+      
+      private var _initPlayerPoint:Point;
+      
+      private var _roadSeeker:RoadSeeker;
+      
+      private var _roadArr:Array;
+      
+      private var _roadMap:HashMap;
+      
+      private var _app:Sprite;
+      
+      private var _bitmapData:BitmapData;
+      
+      private var _targetPoint:Point;
+      
+      private var _curtPoint:Point;
+      
+      public function GameMap(param1:BaseMapLoader, param2:Point = null)
+      {
+         method
+            name "GameMap"
+            flag HAS_OPTIONAL
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.core.scene"),"BaseMapLoader")
+            param QName(PackageNamespace("flash.geom"),"Point")
+            paramname "param1"
+            paramname "param2"
+            optional Null()
+            returns null
+            
+            body
+               maxstack 6
+               localcount 3
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                  debug 1, "param1", 0, 0
+                  debug 1, "param2", 1, 0
+                  getlocal0
+                  debugline 66
+                  newarray 0
+                  setproperty QName(PackageNamespace(""),"playerList")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"HashMap")
+                  debugline 67
+                  constructprop QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"HashMap"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadMap")
+                  debugline 68
+                  getlocal0
+                  debugline 68
+                  constructsuper 0
+                  getlocal0
+                  debugline 69
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                  getproperty QName(PackageNamespace(""),"root")
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_app")
+                  getlocal0
+                  getlocal1
+                  debugline 70
+                  getproperty QName(PackageNamespace(""),"dataXml")
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getlocal0
+                  getlocal1
+                  debugline 71
+                  getproperty QName(PackageNamespace(""),"mapBitmapData")
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_bitmapData")
+                  getlocal0
+                  getlocal0
+                  debugline 72
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getproperty MultinameA("name",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  setproperty QName(PackageNamespace(""),"name")
+                  getlocal0
+                  getlocal2
+                  dup
+                  iftrue ofs005f
+                  pop
+                  findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                  debugline 73
+                  pushbyte 30
+                  pushbyte 80
+                  constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                  coerce QName(PackageNamespace("flash.geom"),"Point")
+         ofs005f:
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_initPlayerPoint")
+                  getlocal0
+                  getlocal0
+                  debugline 74
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getproperty MultinameA("mapwidth",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapWidth")
+                  getlocal0
+                  getlocal0
+                  debugline 75
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getproperty MultinameA("mapheight",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapHeight")
+                  getlocal0
+                  getlocal0
+                  debugline 76
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getproperty Multiname("floor",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty MultinameA("tileWidth",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                  getlocal0
+                  getlocal0
+                  debugline 77
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getproperty Multiname("floor",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty MultinameA("tileHeight",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                  getlocal0
+                  debugline 78
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getproperty Multiname("floor",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getproperty Multiname("floor",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty MultinameA("col",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                  getproperty Multiname("floor",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty MultinameA("row",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  callproperty QName(PackageNamespace(""),"getArrByStr"), 3
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapArr")
+                  getlocal0
+                  getlocal0
+                  debugline 79
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapArr")
+                  getproperty QName(PackageNamespace(""),"length")
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                  getlocal0
+                  getlocal0
+                  debugline 80
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapArr")
+                  pushbyte 0
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty Multiname("length",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_col")
+                  getlocal0
+                  debugline 81
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapArr")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_col")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadMap")
+                  callproperty QName(PackageNamespace(""),"getDArrayByArr"), 4
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapDArr")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"RoadSeeker")
+                  getlocal0
+                  debugline 82
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapDArr")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                  pushbyte 2
+                  multiply
+                  constructprop QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"RoadSeeker"), 3
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function initMap() : void
+      {
+         trait method QName(PackageNamespace(""),"initMap")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2420"
+            end ; metadata
+            dispid 0
+            method
+               name "initMap"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                     getlocal0
+                     findpropstrict QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"MapLayer")
+                     getlocal0
+                     debugline 86
+                     constructprop QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"MapLayer"), 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapLayer")
+                     getlocal0
+                     findpropstrict QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"BuildingLayer")
+                     getlocal0
+                     debugline 87
+                     constructprop QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"BuildingLayer"), 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                     getlocal0
+                     debugline 88
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"mouseEnabled")
+                     getlocal0
+                     debugline 89
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"mouseChildren")
+                     getlocal0
+                     debugline 90
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapLayer")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_bitmapData")
+                     callpropvoid QName(PackageNamespace(""),"initMapLayer"), 1
+                     getlocal0
+                     debugline 91
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                     callpropvoid QName(PackageNamespace(""),"drawByXml"), 1
+                     getlocal0
+                     debugline 92
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"sortBuild"), 0
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function sortBuild() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"sortBuild")
+               dispid 0
+               method
+                  name "sortBuild"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 4
+                     localcount 5
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                        debug 1, "_loc2_", 0, 0
+                        debug 1, "_loc1_", 1, 0
+                        debug 1, "_loc4_", 2, 0
+                        debug 1, "_loc3_", 3, 0
+                        debugline 96
+                        pushnull
+                        coerce QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapItem")
+                        setlocal1
+                        debugline 97
+                        pushbyte 0
+                        setlocal 4
+                        debugline 98
+                        pushnull
+                        coerce QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapItem")
+                        setlocal3
+                        debugline 99
+                        pushbyte 0
+                        setlocal2
+                        jump ofs00d1
+               ofs0033:
+                        label
+                        getlocal0
+                        debugline 101
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getproperty QName(PackageNamespace(""),"buildingArray")
+                        getlocal2
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        coerce QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapItem")
+                        setlocal1
+                        debugline 102
+                        pushbyte 0
+                        setlocal 4
+                        jump ofs00be
+               ofs004b:
+                        label
+                        getlocal0
+                        debugline 104
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getproperty QName(PackageNamespace(""),"buildingArray")
+                        getlocal 4
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        coerce QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapItem")
+                        setlocal3
+                        getlocal1
+                        debugline 105
+                        getproperty QName(PackageNamespace(""),"y")
+                        getlocal3
+                        getproperty QName(PackageNamespace(""),"y")
+                        greaterthan
+                        debugline 105
+                        iffalse ofs0093
+                        getlocal0
+                        debugline 106
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getlocal1
+                        getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                        astypelate
+                        callproperty QName(PackageNamespace(""),"getChildIndex"), 1
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getlocal3
+                        getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                        astypelate
+                        callproperty QName(PackageNamespace(""),"getChildIndex"), 1
+                        ifnlt ofs008f
+                        getlocal0
+                        debugline 107
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getlocal1
+                        getlocal3
+                        callpropvoid QName(PackageNamespace(""),"swapChildren"), 2
+                        debugline 105
+               ofs008f:
+                        jump ofs00bc
+               ofs0093:
+                        getlocal0
+                        debugline 109
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getlocal1
+                        getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                        astypelate
+                        callproperty QName(PackageNamespace(""),"getChildIndex"), 1
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getlocal3
+                        getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                        astypelate
+                        callproperty QName(PackageNamespace(""),"getChildIndex"), 1
+                        greaterthan
+                        debugline 105
+                        iffalse ofs00bc
+                        getlocal0
+                        debugline 110
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getlocal1
+                        getlocal3
+                        callpropvoid QName(PackageNamespace(""),"swapChildren"), 2
+                        debugline 112
+               ofs00bc:
+                        inclocal_i 4
+               ofs00be:
+                        getlocal 4
+                        getlocal0
+                        debugline 103
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getproperty QName(PackageNamespace(""),"buildingArray")
+                        getproperty QName(PackageNamespace(""),"length")
+                        iflt ofs004b
+                        debugline 114
+                        inclocal_i 2
+               ofs00d1:
+                        getlocal2
+                        getlocal0
+                        debugline 100
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                        getproperty QName(PackageNamespace(""),"buildingArray")
+                        getproperty QName(PackageNamespace(""),"length")
+                        iflt ofs0033
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function setControlPlayer(param1:int = 0) : void
+            {
+               trait method QName(PackageNamespace(""),"setControlPlayer")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "3863"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "setControlPlayer"
+                     flag HAS_OPTIONAL
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace(""),"int")
+                     paramname "param1"
+                     optional Integer(0)
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                           debug 1, "param1", 0, 0
+                           getlocal0
+                           debugline 119
+                           getproperty QName(PackageNamespace(""),"playerList")
+                           getproperty QName(PackageNamespace(""),"length")
+                           pushbyte 0
+                           ifngt ofs0041
+                           getlocal0
+                           getlocal0
+                           debugline 120
+                           getproperty QName(PackageNamespace(""),"playerList")
+                           getlocal1
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_player")
+                           getlocal0
+                           debugline 121
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_player")
+                           getlocal0
+                           setproperty QName(PackageNamespace(""),"mapEle")
+                           getlocal0
+                           debugline 122
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_player")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_initPlayerPoint")
+                           getproperty QName(PackageNamespace(""),"x")
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           debugline 123
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_player")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_initPlayerPoint")
+                           getproperty QName(PackageNamespace(""),"y")
+                           setproperty QName(PackageNamespace(""),"y")
+                  ofs0041:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public function addPlayer(param1:HeptaFishCharacter) : void
+               {
+                  trait method QName(PackageNamespace(""),"addPlayer")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "4191"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "addPlayer"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"HeptaFishCharacter")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              debugline 128
+                              getproperty QName(PackageNamespace(""),"playerList")
+                              getlocal1
+                              callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                              getlocal1
+                              getlocal0
+                              debugline 129
+                              setproperty QName(PackageNamespace(""),"mapEle")
+                              getlocal1
+                              getlocal0
+                              debugline 130
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_initPlayerPoint")
+                              getproperty QName(PackageNamespace(""),"x")
+                              setproperty QName(PackageNamespace(""),"x")
+                              getlocal1
+                              getlocal0
+                              debugline 131
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_initPlayerPoint")
+                              getproperty QName(PackageNamespace(""),"y")
+                              setproperty QName(PackageNamespace(""),"y")
+                              getlocal0
+                              debugline 132
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                              getlocal1
+                              getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                              astypelate
+                              callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function mapLayerLoaded(param1:Event) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"mapLayerLoaded")
+                        dispid 0
+                        method
+                           name "mapLayerLoaded"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("flash.events"),"Event")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 1
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                 debug 1, "param1", 0, 0
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public function walk(param1:PathMobile, param2:Point, param3:Point) : void
+                     {
+                        trait method QName(PackageNamespace(""),"walk")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "4553"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "walk"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("com.taomee.seer2.core.entity"),"PathMobile")
+                              param QName(PackageNamespace("flash.geom"),"Point")
+                              param QName(PackageNamespace("flash.geom"),"Point")
+                              paramname "param1"
+                              paramname "param2"
+                              paramname "param3"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 14
+                                 localcount 18
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                    debug 1, "_loc9_", 3, 0
+                                    debug 1, "_loc6_", 4, 0
+                                    debug 1, "_loc5_", 5, 0
+                                    debug 1, "_loc8_", 6, 0
+                                    debug 1, "_loc7_", 7, 0
+                                    debug 1, "param3", 2, 0
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "_loc4_", 8, 0
+                                    debug 1, "param2", 1, 0
+                                    debug 1, "_loc12_", 9, 0
+                                    debug 1, "_loc13_", 10, 0
+                                    debug 1, "_loc10_", 11, 0
+                                    debug 1, "_loc11_", 12, 0
+                                    debug 1, "_loc16_", 13, 0
+                                    debug 1, "_loc17_", 14, 0
+                                    debug 1, "_loc14_", 15, 0
+                                    debug 1, "_loc15_", 16, 0
+                                    pushnull
+                                    setlocal 9
+                                    pushnull
+                                    setlocal 8
+                                    debugline 139
+                                    pushbyte 0
+                                    setlocal 12
+                                    debugline 140
+                                    pushnull
+                                    coerce QName(PackageNamespace(""),"Array")
+                                    setlocal 10
+                                    debugline 141
+                                    pushbyte 0
+                                    setlocal 11
+                                    debugline 142
+                                    pushnull
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal 16
+                                    debugline 143
+                                    pushbyte 0
+                                    setlocal 17
+                                    debugline 144
+                                    pushbyte 0
+                                    setlocal 14
+                                    debugline 145
+                                    pushnull
+                                    coerce QName(PackageNamespace(""),"Array")
+                                    setlocal 15
+                                    getlocal0
+                                    getlocal2
+                                    debugline 146
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_curtPoint")
+                                    getlocal0
+                                    getlocal3
+                                    debugline 147
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_targetPoint")
+                                    debugline 149
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal3
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal3
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    dup
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal 9
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    convert_i
+                                    setlocal 6
+                                    getlocal 9
+                                    debugline 150
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    convert_i
+                                    setlocal 5
+                                    debugline 152
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    dup
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal 8
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    convert_i
+                                    setlocal 7
+                                    getlocal 8
+                                    debugline 153
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    convert_i
+                                    setlocal 4
+                                    debugline 154
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_col")
+                                    callproperty QName(PackageNamespace(""),"getMaxDirectPoint"), 2
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal 13
+                                    getlocal 6
+                                    debugline 155
+                                    pushbyte 0
+                                    greaterequals
+                                    dup
+                                    iffalse ofs012b
+                                    pop
+                                    getlocal 6
+                                    getlocal 13
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    lessthan
+                           ofs012b:
+                                    dup
+                                    iffalse ofs0136
+                                    pop
+                                    getlocal 5
+                                    pushbyte 0
+                                    greaterequals
+                           ofs0136:
+                                    dup
+                                    iffalse ofs0143
+                                    pop
+                                    getlocal 5
+                                    getlocal 13
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    lessthan
+                           ofs0143:
+                                    dup
+                                    iffalse ofs0156
+                                    pop
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                    getlocal 6
+                                    getlocal 5
+                                    callproperty QName(PackageNamespace(""),"value"), 2
+                                    pushbyte 0
+                                    equals
+                           ofs0156:
+                                    iffalse ofs034d
+                                    getlocal0
+                                    getlocal0
+                                    debugline 156
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                    findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                    getlocal 7
+                                    getlocal 4
+                                    constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                    findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                    getlocal 6
+                                    getlocal 5
+                                    constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                    callproperty QName(PackageNamespace(""),"path8"), 2
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadArr")
+                                    getlocal0
+                                    debugline 157
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                    getproperty QName(PackageNamespace(""),"path")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    convert_i
+                                    dup
+                                    convert_i
+                                    setlocal 12
+                                    pushbyte 0
+                                    greaterthan
+                                    debugline 157
+                                    iffalse ofs01ac
+                                    getlocal1
+                                    getlocal0
+                                    getlocal0
+                                    debugline 158
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadArr")
+                                    callproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"roadArrToPointArr"), 1
+                                    getlocal3
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal3
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    callpropvoid QName(PackageNamespace(""),"runInBigMapToLocation"), 3
+                                    debugline 157
+                                    jump ofs034d
+                           ofs01ac:
+                                    getlocal 12
+                                    debugline 159
+                                    pushbyte 0
+                                    equals
+                                    debugline 157
+                                    iffalse ofs034d
+                                    debugline 160
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    subtract
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    pushbyte 2
+                                    divide
+                                    subtract
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    pushbyte 2
+                                    divide
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    pushbyte 2
+                                    divide
+                                    add
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    pushbyte 2
+                                    divide
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    add
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    pushbyte 2
+                                    divide
+                                    add
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    pushbyte 2
+                                    divide
+                                    add
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    pushbyte 2
+                                    divide
+                                    add
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                    pushbyte 2
+                                    divide
+                                    subtract
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    subtract
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                    pushbyte 2
+                                    divide
+                                    add
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                    callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                    newarray 8
+                                    coerce QName(PackageNamespace(""),"Array")
+                                    setlocal 10
+                                    debugline 161
+                                    pushbyte 0
+                                    setlocal 11
+                                    jump ofs0334
+                           ofs02d2:
+                                    label
+                                    getlocal 10
+                                    getlocal 11
+                                    debugline 163
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setlocal 17
+                                    getlocal 10
+                                    getlocal 11
+                                    debugline 164
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setlocal 14
+                                    getlocal0
+                                    debugline 165
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                    findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                    getlocal 17
+                                    getlocal 14
+                                    constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                    findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                    getlocal 6
+                                    getlocal 5
+                                    constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                    callproperty QName(PackageNamespace(""),"path8"), 2
+                                    dup
+                                    coerce QName(PackageNamespace(""),"Array")
+                                    setlocal 15
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    pushbyte 0
+                                    ifngt ofs0332
+                                    getlocal1
+                                    getlocal0
+                                    getlocal0
+                                    debugline 166
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadArr")
+                                    callproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"roadArrToPointArr"), 1
+                                    getlocal3
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    getlocal3
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    callpropvoid QName(PackageNamespace(""),"runInBigMapToLocation"), 3
+                                    jump ofs0341
+                                    debugline 169
+                           ofs0332:
+                                    inclocal_i 11
+                           ofs0334:
+                                    getlocal 11
+                                    getlocal 10
+                                    debugline 162
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    iflt ofs02d2
+                           ofs0341:
+                                    findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                    debugline 171
+                                    constructprop QName(PackageNamespace("flash.geom"),"Point"), 0
+                                    coerce QName(PackageNamespace("flash.geom"),"Point")
+                                    setlocal 16
+                           ofs034d:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function roadArrToPointArr(param1:Array) : Array
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"roadArrToPointArr")
+                              dispid 0
+                              method
+                                 name "roadArrToPointArr"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace(""),"Array")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"Array")
+                                 
+                                 body
+                                    maxstack 5
+                                    localcount 7
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                       debug 1, "_loc6_", 1, 0
+                                       debug 1, "_loc5_", 2, 0
+                                       debug 1, "_loc2_", 3, 0
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "_loc4_", 4, 0
+                                       debug 1, "_loc3_", 5, 0
+                                       debugline 177
+                                       pushbyte 0
+                                       setlocal 5
+                                       debugline 178
+                                       pushbyte 0
+                                       setlocal3
+                                       debugline 179
+                                       pushnull
+                                       coerce QName(PackageNamespace("flash.geom"),"Point")
+                                       setlocal2
+                                       debugline 180
+                                       newarray 0
+                                       coerce QName(PackageNamespace(""),"Array")
+                                       setlocal 4
+                                       debugline 181
+                                       pushbyte 1
+                                       setlocal 6
+                                       jump ofs00cc
+                              ofs004a:
+                                       label
+                                       getlocal0
+                                       debugline 183
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadMap")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                       getproperty QName(PackageNamespace(""),"path")
+                                       getlocal 6
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "-"
+                                       add
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                       getproperty QName(PackageNamespace(""),"path")
+                                       getlocal 6
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       add
+                                       callproperty QName(PackageNamespace(""),"getValue"), 1
+                                       getproperty Multiname("px",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       convert_i
+                                       setlocal 5
+                                       getlocal0
+                                       debugline 184
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadMap")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                       getproperty QName(PackageNamespace(""),"path")
+                                       getlocal 6
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "-"
+                                       add
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                       getproperty QName(PackageNamespace(""),"path")
+                                       getlocal 6
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       add
+                                       callproperty QName(PackageNamespace(""),"getValue"), 1
+                                       getproperty Multiname("py",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       convert_i
+                                       setlocal3
+                                       debugline 185
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                       getlocal 5
+                                       getlocal3
+                                       callproperty QName(PackageNamespace(""),"getPixelPoint"), 4
+                                       coerce QName(PackageNamespace("flash.geom"),"Point")
+                                       setlocal2
+                                       getlocal 4
+                                       findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                       getlocal2
+                                       debugline 186
+                                       getproperty QName(PackageNamespace(""),"x")
+                                       getlocal2
+                                       getproperty QName(PackageNamespace(""),"y")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                       add
+                                       constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                       debugline 187
+                                       inclocal_i 6
+                              ofs00cc:
+                                       getlocal 6
+                                       getlocal1
+                                       debugline 182
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       pushbyte 1
+                                       subtract
+                                       iflt ofs004a
+                                       getlocal 4
+                                       getlocal0
+                                       debugline 189
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_curtPoint")
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"unshift"), 1
+                                       getlocal 4
+                                       getlocal0
+                                       debugline 190
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_targetPoint")
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                       getlocal 4
+                                       debugline 191
+                                       returnvalue
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function checkDiff(param1:int, param2:int) : int
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"checkDiff")
+                                 dispid 0
+                                 method
+                                    name "checkDiff"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace(""),"int")
+                                    param QName(PackageNamespace(""),"int")
+                                    paramname "param1"
+                                    paramname "param2"
+                                    returns QName(PackageNamespace(""),"int")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                          debug 1, "param1", 0, 0
+                                          debug 1, "param2", 1, 0
+                                          getlocal1
+                                          getlocal2
+                                          debugline 195
+                                          subtract
+                                          getlex QName(PackageNamespace(""),"Math")
+                                          pushdouble 0.5233333333333333
+                                          callproperty QName(PackageNamespace(""),"tan"), 1
+                                          multiply
+                                          convert_i
+                                          returnvalue
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public function canWalk(param1:int, param2:int) : Boolean
+                              {
+                                 trait method QName(PackageNamespace(""),"canWalk")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "8723"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "canWalk"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace(""),"int")
+                                       param QName(PackageNamespace(""),"int")
+                                       paramname "param1"
+                                       paramname "param2"
+                                       returns QName(PackageNamespace(""),"Boolean")
+                                       
+                                       body
+                                          maxstack 6
+                                          localcount 6
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                             debug 1, "_loc5_", 2, 0
+                                             debug 1, "param1", 0, 0
+                                             debug 1, "_loc4_", 3, 0
+                                             debug 1, "param2", 1, 0
+                                             debug 1, "_loc3_", 4, 0
+                                             debugline 199
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapUtils")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                             getlocal1
+                                             getlocal2
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_row")
+                                             callproperty QName(PackageNamespace(""),"getDirectPointByPixel"), 5
+                                             coerce QName(PackageNamespace("flash.geom"),"Point")
+                                             dup
+                                             setlocal 5
+                                             debugline 200
+                                             getproperty QName(PackageNamespace(""),"x")
+                                             convert_i
+                                             setlocal 4
+                                             getlocal 5
+                                             debugline 201
+                                             getproperty QName(PackageNamespace(""),"y")
+                                             convert_i
+                                             setlocal3
+                                             getlocal0
+                                             debugline 202
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_roadSeeker")
+                                             getlocal 4
+                                             getlocal3
+                                             callproperty QName(PackageNamespace(""),"value"), 2
+                                             pushbyte 0
+                                             ifne ofs005e
+                                             pushtrue
+                                             jump ofs005f
+                                    ofs005e:
+                                             pushfalse
+                                    ofs005f:
+                                             returnvalue
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 public function sortDepth(param1:Array) : void
+                                 {
+                                    trait method QName(PackageNamespace(""),"sortDepth")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "9069"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "sortDepth"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace(""),"Array")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 4
+                                             localcount 15
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                debug 1, "_loc9_", 1, 0
+                                                debug 1, "_loc6_", 2, 0
+                                                debug 1, "_loc12_", 3, 0
+                                                debug 1, "_loc5_", 4, 0
+                                                debug 1, "_loc8_", 5, 0
+                                                debug 1, "_loc10_", 6, 0
+                                                debug 1, "_loc11_", 7, 0
+                                                debug 1, "_loc7_", 8, 0
+                                                debug 1, "_loc2_", 9, 0
+                                                debug 1, "param1", 0, 0
+                                                debug 1, "_loc4_", 10, 0
+                                                debug 1, "_loc3_", 11, 0
+                                                debugline 206
+                                                pushnull
+                                                coerce QName(PackageNamespace("flash.geom"),"Point")
+                                                setlocal3
+                                                debugline 207
+                                                pushnull
+                                                coerce QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                setlocal 6
+                                                debugline 208
+                                                pushundefined
+                                                setlocal 7
+                                                debugline 209
+                                                pushbyte 0
+                                                setlocal 8
+                                                debugline 210
+                                                pushbyte 0
+                                                setlocal 4
+                                                debugline 211
+                                                pushbyte 0
+                                                setlocal 10
+                                                debugline 212
+                                                pushdouble 0
+                                                setlocal 12
+                                                debugline 213
+                                                pushdouble 0
+                                                setlocal 11
+                                                debugline 214
+                                                pushdouble 0
+                                                setlocal 5
+                                                debugline 215
+                                                pushfalse
+                                                setlocal 9
+                                                debugline 216
+                                                pushbyte 0
+                                                convert_u
+                                                setlocal2
+                                                jump ofs02ba
+                                       ofs0093:
+                                                label
+                                                getlocal1
+                                                getlocal2
+                                                debugline 218
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                coerce QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                setlocal 6
+                                                getlocal0
+                                                debugline 219
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                getlocal 6
+                                                getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                astypelate
+                                                callproperty QName(PackageNamespace(""),"hitTestObject"), 1
+                                                iffalse ofs02a9
+                                                pushbyte 0
+                                                setlocal 14
+                                                getlocal0
+                                                debugline 220
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                getproperty QName(PackageNamespace(""),"buildingArray")
+                                                setlocal 13
+                                                jump ofs029f
+                                       ofs00c3:
+                                                label
+                                                getlocal 13
+                                                getlocal 14
+                                                nextvalue
+                                                dup
+                                                setlocal 7
+                                                debugline 221
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMapItem")
+                                                istypelate
+                                                dup
+                                                iffalse ofs00dd
+                                                pop
+                                                getlocal 7
+                                                getproperty Multiname("bitMap",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                convert_b
+                                       ofs00dd:
+                                                iffalse ofs029f
+                                                getlocal 7
+                                                debugline 222
+                                                getproperty Multiname("bitMap",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal 6
+                                                getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                astypelate
+                                                callproperty Multiname("hitTestObject",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                                                iffalse ofs029f
+                                                getlocal 7
+                                                debugline 223
+                                                getproperty Multiname("configXml",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("walkable",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty MultinameA("left_k",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                pushnull
+                                                equals
+                                                not
+                                                dup
+                                                iffalse ofs0113
+                                                pop
+                                                getlocal 7
+                                                getproperty Multiname("configXml",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("walkable",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty MultinameA("right_k",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                pushnull
+                                                equals
+                                                not
+                                       ofs0113:
+                                                dup
+                                                iffalse ofs0124
+                                                pop
+                                                getlocal 7
+                                                getproperty Multiname("configXml",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("walkable",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty MultinameA("origin_x",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                pushnull
+                                                equals
+                                                not
+                                       ofs0124:
+                                                dup
+                                                iffalse ofs0136
+                                                pop
+                                                getlocal 7
+                                                getproperty Multiname("configXml",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("walkable",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty MultinameA("origin_y",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                convert_b
+                                                debugline 223
+                                       ofs0136:
+                                                iffalse ofs01a2
+                                                getlocal 7
+                                                debugline 224
+                                                getproperty Multiname("configXml",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("walkable",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty MultinameA("left_k",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                convert_d
+                                                setlocal 11
+                                                getlocal 7
+                                                debugline 225
+                                                getproperty Multiname("configXml",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("walkable",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty MultinameA("right_k",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                convert_d
+                                                setlocal 5
+                                                findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                getlocal 7
+                                                debugline 226
+                                                getproperty Multiname("configXml",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("walkable",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty MultinameA("origin_x",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                convert_d
+                                                getlocal 7
+                                                getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                add
+                                                getlocal 7
+                                                getproperty Multiname("configXml",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("walkable",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty MultinameA("origin_y",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                convert_d
+                                                getlocal 7
+                                                getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                add
+                                                constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                dup
+                                                coerce QName(PackageNamespace("flash.geom"),"Point")
+                                                setlocal3
+                                                getproperty QName(PackageNamespace(""),"y")
+                                                getlocal 6
+                                                getproperty QName(PackageNamespace(""),"y")
+                                                subtract
+                                                negate
+                                                getlocal3
+                                                getproperty QName(PackageNamespace(""),"x")
+                                                getlocal 6
+                                                getproperty QName(PackageNamespace(""),"x")
+                                                subtract
+                                                divide
+                                                convert_d
+                                                setlocal 12
+                                                debugline 227
+                                                pushtrue
+                                                setlocal 9
+                                                debugline 223
+                                                jump ofs01a5
+                                                debugline 229
+                                       ofs01a2:
+                                                pushfalse
+                                                setlocal 9
+                                       ofs01a5:
+                                                getlocal0
+                                                debugline 231
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                getlocal 6
+                                                getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                astypelate
+                                                callproperty QName(PackageNamespace(""),"getChildIndex"), 1
+                                                convert_i
+                                                setlocal 8
+                                                getlocal0
+                                                debugline 232
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                getlocal 7
+                                                callproperty QName(PackageNamespace(""),"getChildIndex"), 1
+                                                convert_i
+                                                setlocal 4
+                                                getlocal 6
+                                                debugline 233
+                                                getproperty QName(PackageNamespace(""),"y")
+                                                getlocal 7
+                                                getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal 7
+                                                getproperty Multiname("bitMap",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("height",[PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),ProtectedNamespace("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:GameMap"),StaticProtectedNs("com.taomee.seer2.core.map.grids:BaseDisplayObject"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:GameMap"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                add
+                                                lessthan
+                                                debugline 233
+                                                iffalse ofs0280
+                                                getlocal 9
+                                                debugline 234
+                                                iffalse ofs025d
+                                                getlocal 12
+                                                debugline 235
+                                                pushbyte 0
+                                                lessthan
+                                                dup
+                                                iffalse ofs01fa
+                                                pop
+                                                getlocal 12
+                                                getlocal 11
+                                                lessthan
+                                       ofs01fa:
+                                                dup
+                                                iftrue ofs0214
+                                                pop
+                                                getlocal 12
+                                                pushbyte 0
+                                                greaterthan
+                                                dup
+                                                iffalse ofs0210
+                                                pop
+                                                getlocal 12
+                                                getlocal 5
+                                                greaterthan
+                                       ofs0210:
+                                                convert_b
+                                                debugline 235
+                                       ofs0214:
+                                                iffalse ofs0237
+                                                getlocal 8
+                                                getlocal 4
+                                                debugline 236
+                                                ifngt ofs0233
+                                                getlocal0
+                                                debugline 237
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                getlocal 6
+                                                getlocal 4
+                                                callpropvoid QName(PackageNamespace(""),"addChildAt"), 2
+                                                debugline 235
+                                       ofs0233:
+                                                jump ofs0259
+                                       ofs0237:
+                                                getlocal 8
+                                                getlocal 4
+                                                debugline 239
+                                                lessthan
+                                                debugline 235
+                                                iffalse ofs0259
+                                                getlocal0
+                                                debugline 240
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                getlocal 6
+                                                getlocal 4
+                                                pushbyte 1
+                                                add
+                                                callpropvoid QName(PackageNamespace(""),"addChildAt"), 2
+                                                debugline 234
+                                       ofs0259:
+                                                jump ofs027c
+                                       ofs025d:
+                                                getlocal 8
+                                                getlocal 4
+                                                debugline 242
+                                                greaterthan
+                                                debugline 234
+                                                iffalse ofs027c
+                                                getlocal0
+                                                debugline 243
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                getlocal 6
+                                                getlocal 4
+                                                callpropvoid QName(PackageNamespace(""),"addChildAt"), 2
+                                                debugline 233
+                                       ofs027c:
+                                                jump ofs029f
+                                       ofs0280:
+                                                getlocal 8
+                                                getlocal 4
+                                                debugline 245
+                                                lessthan
+                                                debugline 233
+                                                iffalse ofs029f
+                                                getlocal0
+                                                debugline 246
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                getlocal 6
+                                                getlocal 4
+                                                pushbyte 1
+                                                add
+                                                callpropvoid QName(PackageNamespace(""),"addChildAt"), 2
+                                       ofs029f:
+                                                hasnext2 13, 14
+                                                iftrue ofs00c3
+                                                debugline 252
+                                       ofs02a9:
+                                                getlocal2
+                                                debugline 252
+                                                convert_d
+                                                debugline 252
+                                                increment
+                                                debugline 252
+                                                convert_u
+                                                debugline 252
+                                                setlocal2
+                                       ofs02ba:
+                                                getlocal2
+                                                getlocal1
+                                                debugline 217
+                                                getproperty QName(PackageNamespace(""),"length")
+                                                iflt ofs0093
+                                                getlocal1
+                                                debugline 254
+                                                pushbyte 0
+                                                setproperty QName(PackageNamespace(""),"length")
+                                                debugline 255
+                                                pushnull
+                                                coerce QName(PackageNamespace(""),"Array")
+                                                setlocal1
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    public function dispose() : void
+                                    {
+                                       trait method QName(PackageNamespace(""),"dispose")
+                                          flag METADATA
+                                          metadata "__go_to_definition_help"
+                                             item "pos" "12005"
+                                          end ; metadata
+                                          dispid 0
+                                          method
+                                             name "dispose"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 2
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                   getlocal0
+                                                   debugline 259
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_itemArr")
+                                                   pushbyte 0
+                                                   setproperty QName(PackageNamespace(""),"length")
+                                                   getlocal0
+                                                   debugline 260
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_itemArr")
+                                                   getlocal0
+                                                   debugline 261
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapArr")
+                                                   pushbyte 0
+                                                   setproperty QName(PackageNamespace(""),"length")
+                                                   getlocal0
+                                                   debugline 262
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapArr")
+                                                   getlocal0
+                                                   debugline 263
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapDArr")
+                                                   pushbyte 0
+                                                   setproperty QName(PackageNamespace(""),"length")
+                                                   getlocal0
+                                                   debugline 264
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapDArr")
+                                                   getlocal0
+                                                   debugline 265
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapLayer")
+                                                   callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                   getlocal0
+                                                   debugline 266
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                   callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                   getlocal0
+                                                   debugline 267
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_bitmapData")
+                                                   callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                   getlocal0
+                                                   debugline 268
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_bitmapData")
+                                                   getlocal0
+                                                   debugline 269
+                                                   pushnull
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       public function get cellWidth() : Number
+                                       {
+                                          trait getter QName(PackageNamespace(""),"cellWidth")
+                                             flag METADATA
+                                             metadata "__go_to_definition_help"
+                                                item "pos" "12425"
+                                             end ; metadata
+                                             dispid 0
+                                             method
+                                                name "cellWidth"
+                                                returns QName(PackageNamespace(""),"Number")
+                                                
+                                                body
+                                                   maxstack 1
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                      getlocal0
+                                                      debugline 273
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellWidth")
+                                                      returnvalue
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          public function get cellHeight() : Number
+                                          {
+                                             trait getter QName(PackageNamespace(""),"cellHeight")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "12513"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "cellHeight"
+                                                   returns QName(PackageNamespace(""),"Number")
+                                                   
+                                                   body
+                                                      maxstack 1
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                         getlocal0
+                                                         debugline 277
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_cellHeight")
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public function get mapWidth() : Number
+                                             {
+                                                trait getter QName(PackageNamespace(""),"mapWidth")
+                                                   flag METADATA
+                                                   metadata "__go_to_definition_help"
+                                                      item "pos" "12603"
+                                                   end ; metadata
+                                                   dispid 0
+                                                   method
+                                                      name "mapWidth"
+                                                      returns QName(PackageNamespace(""),"Number")
+                                                      
+                                                      body
+                                                         maxstack 1
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                            getlocal0
+                                                            debugline 281
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapWidth")
+                                                            returnvalue
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                public function get mapHeight() : Number
+                                                {
+                                                   trait getter QName(PackageNamespace(""),"mapHeight")
+                                                      flag METADATA
+                                                      metadata "__go_to_definition_help"
+                                                         item "pos" "12689"
+                                                      end ; metadata
+                                                      dispid 0
+                                                      method
+                                                         name "mapHeight"
+                                                         returns QName(PackageNamespace(""),"Number")
+                                                         
+                                                         body
+                                                            maxstack 1
+                                                            localcount 1
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                               getlocal0
+                                                               debugline 285
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapHeight")
+                                                               returnvalue
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   public function get mapXML() : XML
+                                                   {
+                                                      trait getter QName(PackageNamespace(""),"mapXML")
+                                                         flag METADATA
+                                                         metadata "__go_to_definition_help"
+                                                            item "pos" "12777"
+                                                         end ; metadata
+                                                         dispid 0
+                                                         method
+                                                            name "mapXML"
+                                                            returns QName(PackageNamespace(""),"XML")
+                                                            
+                                                            body
+                                                               maxstack 1
+                                                               localcount 1
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                                  getlocal0
+                                                                  debugline 289
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapXML")
+                                                                  returnvalue
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      public function get mapLayer() : MapLayer
+                                                      {
+                                                         trait getter QName(PackageNamespace(""),"mapLayer")
+                                                            flag METADATA
+                                                            metadata "__go_to_definition_help"
+                                                               item "pos" "12856"
+                                                            end ; metadata
+                                                            dispid 0
+                                                            method
+                                                               name "mapLayer"
+                                                               returns QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"MapLayer")
+                                                               
+                                                               body
+                                                                  maxstack 1
+                                                                  localcount 1
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                                     getlocal0
+                                                                     debugline 293
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_mapLayer")
+                                                                     returnvalue
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         public function get initPlayerPoint() : Point
+                                                         {
+                                                            trait getter QName(PackageNamespace(""),"initPlayerPoint")
+                                                               flag METADATA
+                                                               metadata "__go_to_definition_help"
+                                                                  item "pos" "12944"
+                                                               end ; metadata
+                                                               dispid 0
+                                                               method
+                                                                  name "initPlayerPoint"
+                                                                  returns QName(PackageNamespace("flash.geom"),"Point")
+                                                                  
+                                                                  body
+                                                                     maxstack 1
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                                        getlocal0
+                                                                        debugline 297
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_initPlayerPoint")
+                                                                        returnvalue
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            public function get app() : Sprite
+                                                            {
+                                                               trait getter QName(PackageNamespace(""),"app")
+                                                                  flag METADATA
+                                                                  metadata "__go_to_definition_help"
+                                                                     item "pos" "13043"
+                                                                  end ; metadata
+                                                                  dispid 0
+                                                                  method
+                                                                     name "app"
+                                                                     returns QName(PackageNamespace("flash.display"),"Sprite")
+                                                                     
+                                                                     body
+                                                                        maxstack 1
+                                                                        localcount 1
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                                           getlocal0
+                                                                           debugline 301
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_app")
+                                                                           returnvalue
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               public function get buildLayer() : BuildingLayer
+                                                               {
+                                                                  trait getter QName(PackageNamespace(""),"buildLayer")
+                                                                     flag METADATA
+                                                                     metadata "__go_to_definition_help"
+                                                                        item "pos" "13119"
+                                                                     end ; metadata
+                                                                     dispid 0
+                                                                     method
+                                                                        name "buildLayer"
+                                                                        returns QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"BuildingLayer")
+                                                                        
+                                                                        body
+                                                                           maxstack 1
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;GameMap.as"
+                                                                              getlocal0
+                                                                              debugline 305
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:GameMap"),"_buildLayer")
+                                                                              returnvalue
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                               }
+                                                            }
+                                                            
+                                                            method
+                                                               name null
+                                                               returns null
+                                                               
+                                                               body
+                                                                  maxstack 3
+                                                                  localcount 1
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 8
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     getscopeobject 0
+                                                                     getlex QName(PackageNamespace(""),"Object")
+                                                                     pushscope
+                                                                     getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                                     pushscope
+                                                                     getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                     pushscope
+                                                                     getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                                     pushscope
+                                                                     getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                                     pushscope
+                                                                     getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                                     pushscope
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"BaseDisplayObject")
+                                                                     dup
+                                                                     pushscope
+                                                                     newclass 0
+                                                                     popscope
+                                                                     popscope
+                                                                     popscope
+                                                                     popscope
+                                                                     popscope
+                                                                     popscope
+                                                                     popscope
+                                                                     initproperty QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"GameMap")
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                            

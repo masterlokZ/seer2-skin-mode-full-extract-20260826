@@ -1,0 +1,859 @@
+package animation.fight
+{
+   import animation.event.Events;
+   import com.greensock.TweenLite;
+   import com.greensock.easing.Expo;
+   import flash.display.MovieClip;
+   import flash.display.Sprite;
+   import ui.splash.UI_FightHurtTip;
+   import ui.splash.UI_FightSplash;
+   import ui.splash.UI_FightSplashMinus;
+   import ui.splash.UI_FightSplash_N;
+   import utils.NumberUtil;
+   import utils.an.DisplayUtil;
+   
+   public class HpDecreaseAnimation extends Sprite
+   {
+      
+      private static const DIGIT_WIDTH:int = 30;
+      
+      private static const DIGIT_HEIGHT:int = 38;
+      
+      private static const DIGIT_VERTICAL_GAP:int = 2;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _back:MovieClip;
+      
+      private var _digitSpriteVec:Vector.<MovieClip>;
+      
+      private var _digitResNameVec:Vector.<String>;
+      
+      private var _reducedHp:int;
+      
+      private var _fightSide:int;
+      
+      private var _isBaoJi:Boolean;
+      
+      private var _skillTypeRelation:uint;
+      
+      private var _isShowTip:Boolean;
+      
+      public function HpDecreaseAnimation()
+      {
+         method
+            name "HpDecreaseAnimation"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  getlocal0
+                  constructsuper 0
+                  getlocal0
+                  callpropvoid QName(PackageNamespace(""),"initialize"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function initData(param1:Object) : void
+      {
+         trait method QName(PackageNamespace(""),"initData")
+            dispid 0
+            method
+               name "initData"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace(""),"Object")
+               paramname "param1"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     getlocal0
+                     getlocal1
+                     pushstring "reducedHp"
+                     getproperty MultinameL([PrivateNamespace("animation.fight:HpDecreaseAnimation"),ProtectedNamespace("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.fight"),PackageInternalNs("animation.fight"),PrivateNamespace("FilePrivateNS:HpDecreaseAnimation"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_reducedHp")
+                     getlocal0
+                     getlocal1
+                     pushstring "fightSide"
+                     getproperty MultinameL([PrivateNamespace("animation.fight:HpDecreaseAnimation"),ProtectedNamespace("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.fight"),PackageInternalNs("animation.fight"),PrivateNamespace("FilePrivateNS:HpDecreaseAnimation"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_fightSide")
+                     getlocal0
+                     getlocal1
+                     pushstring "isBaoJi"
+                     getproperty MultinameL([PrivateNamespace("animation.fight:HpDecreaseAnimation"),ProtectedNamespace("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.fight"),PackageInternalNs("animation.fight"),PrivateNamespace("FilePrivateNS:HpDecreaseAnimation"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_isBaoJi")
+                     getlocal0
+                     getlocal1
+                     pushstring "skillTypeRelation"
+                     getproperty MultinameL([PrivateNamespace("animation.fight:HpDecreaseAnimation"),ProtectedNamespace("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.fight"),PackageInternalNs("animation.fight"),PrivateNamespace("FilePrivateNS:HpDecreaseAnimation"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_skillTypeRelation")
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function initialize() : void
+         {
+            trait method QName(PackageNamespace(""),"initialize")
+               dispid 0
+               method
+                  name "initialize"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 2
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        getlocal0
+                        findpropstrict QName(PackageNamespace("ui.splash"),"UI_FightSplash")
+                        constructprop QName(PackageNamespace("ui.splash"),"UI_FightSplash"), 0
+                        setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_back")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_back")
+                        pushbyte 1
+                        callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                        findpropstrict QName(PackageNamespace(""),"addChild")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_back")
+                        callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function play() : void
+            {
+               trait method QName(PackageNamespace(""),"play")
+                  dispid 0
+                  method
+                     name "play"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 15
+                        localcount 8
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           pushnan
+                           setlocal2
+                           getlocal0
+                           pushshort 200
+                           setproperty QName(PackageNamespace(""),"y")
+                           getlocal0
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_fightSide")
+                           pushbyte 1
+                           ifne ofs001c
+                           pushshort 200
+                           jump ofs0020
+                  ofs001c:
+                           pushshort 760
+                           convert_d
+                  ofs0020:
+                           setproperty QName(PackageNamespace(""),"x")
+                           pushbyte 1
+                           convert_u
+                           setlocal 5
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_skillTypeRelation")
+                           pushbyte 2
+                           ifne ofs003a
+                           pushbyte 2
+                           convert_u
+                           setlocal 5
+                           jump ofs0049
+                  ofs003a:
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_skillTypeRelation")
+                           pushbyte 1
+                           ifne ofs0049
+                           pushbyte 3
+                           convert_u
+                           setlocal 5
+                  ofs0049:
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_back")
+                           getlocal 5
+                           callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                           getlocal0
+                           getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                           getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                           applytype 1
+                           construct 0
+                           setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                           getlocal0
+                           getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                           getlex QName(PackageNamespace(""),"String")
+                           applytype 1
+                           construct 0
+                           setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitResNameVec")
+                           getlocal0
+                           callpropvoid QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"createHurtTip"), 0
+                           getlocal0
+                           callpropvoid QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"createDigitSpriteVec"), 0
+                           pushbyte 0
+                           setlocal 4
+                           pushbyte 0
+                           setlocal 7
+                           getlex QName(PackageNamespace(""),"Math")
+                           callproperty QName(PackageNamespace(""),"random"), 0
+                           pushbyte 100
+                           multiply
+                           convert_d
+                           setlocal 6
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_fightSide")
+                           pushbyte 1
+                           ifne ofs00e2
+                           pushshort 300
+                           convert_d
+                           setlocal2
+                           getlocal 6
+                           pushbyte 50
+                           greaterthan
+                           dup
+                           iffalse ofs00a7
+                           pop
+                           getlocal 6
+                           pushbyte 80
+                           lessthan
+                  ofs00a7:
+                           iffalse ofs00b4
+                           pushshort 200
+                           convert_d
+                           setlocal2
+                           jump ofs00c1
+                  ofs00b4:
+                           getlocal 6
+                           pushbyte 50
+                           ifnlt ofs00c1
+                           pushshort 350
+                           convert_d
+                           setlocal2
+                  ofs00c1:
+                           getlocal2
+                           getlex QName(PackageNamespace("utils"),"NumberUtil")
+                           pushbyte 80
+                           callproperty QName(PackageNamespace(""),"getRandomInt"), 1
+                           add
+                           convert_i
+                           setlocal 4
+                           pushbyte 75
+                           getlex QName(PackageNamespace("utils"),"NumberUtil")
+                           pushbyte 40
+                           callproperty QName(PackageNamespace(""),"getRandomInt"), 1
+                           add
+                           convert_i
+                           setlocal 7
+                           jump ofs014b
+                  ofs00e2:
+                           pushshort 500
+                           convert_d
+                           setlocal2
+                           getlocal 6
+                           pushbyte 30
+                           greaterthan
+                           dup
+                           iffalse ofs00f7
+                           pop
+                           getlocal 6
+                           pushbyte 60
+                           lessthan
+                  ofs00f7:
+                           iffalse ofs0104
+                           pushshort 600
+                           convert_d
+                           setlocal2
+                           jump ofs012e
+                  ofs0104:
+                           getlocal 6
+                           pushbyte 60
+                           greaterthan
+                           dup
+                           iffalse ofs0114
+                           pop
+                           getlocal 6
+                           pushbyte 80
+                           lessthan
+                  ofs0114:
+                           iffalse ofs0121
+                           pushshort 650
+                           convert_d
+                           setlocal2
+                           jump ofs012e
+                  ofs0121:
+                           getlocal 6
+                           pushbyte 80
+                           ifngt ofs012e
+                           pushshort 450
+                           convert_d
+                           setlocal2
+                  ofs012e:
+                           getlocal2
+                           getlex QName(PackageNamespace("utils"),"NumberUtil")
+                           pushbyte 80
+                           callproperty QName(PackageNamespace(""),"getRandomInt"), 1
+                           add
+                           convert_i
+                           setlocal 4
+                           pushbyte 75
+                           getlex QName(PackageNamespace("utils"),"NumberUtil")
+                           pushbyte 40
+                           callproperty QName(PackageNamespace(""),"getRandomInt"), 1
+                           add
+                           convert_i
+                           setlocal 7
+                  ofs014b:
+                           pushbyte 2
+                           convert_u
+                           setlocal1
+                           pushbyte 2
+                           convert_u
+                           setlocal3
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_isBaoJi")
+                           pushtrue
+                           ifne ofs0163
+                           pushbyte 3
+                           dup
+                           convert_u
+                           setlocal3
+                           convert_u
+                           setlocal1
+                  ofs0163:
+                           getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                           getlocal0
+                           pushdouble 0.5
+                           pushstring "x"
+                           getlocal 4
+                           pushstring "y"
+                           getlocal 7
+                           pushstring "scaleX"
+                           getlocal1
+                           pushstring "scaleY"
+                           getlocal3
+                           pushstring "ease"
+                           getlex QName(PackageNamespace("com.greensock.easing"),"Expo")
+                           getproperty QName(PackageNamespace(""),"easeOut")
+                           pushstring "onComplete"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"onAnimateComplete")
+                           newobject 6
+                           callpropvoid QName(PackageNamespace(""),"to"), 3
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onAnimateComplete() : void
+               {
+                  trait method QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"onAnimateComplete")
+                     dispid 0
+                     method
+                        name "onAnimateComplete"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 9
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                              getlocal0
+                              pushbyte 1
+                              pushstring "alpha"
+                              pushbyte 0
+                              pushstring "ease"
+                              getlex QName(PackageNamespace("com.greensock.easing"),"Expo")
+                              getproperty QName(PackageNamespace(""),"easeOut")
+                              pushstring "onComplete"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"onPlayComplete")
+                              newobject 3
+                              callpropvoid QName(PackageNamespace(""),"to"), 3
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onPlayComplete() : void
+                  {
+                     trait method QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"onPlayComplete")
+                        dispid 0
+                        method
+                           name "onPlayComplete"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                 getlex QName(PackageNamespace("animation.event"),"Events")
+                                 callproperty QName(PackageNamespace(""),"animationEnd"), 0
+                                 callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public function dispose() : void
+                     {
+                        trait method QName(PackageNamespace(""),"dispose")
+                           dispid 0
+                           method
+                              name "dispose"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 3
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    pushbyte 0
+                                    setlocal2
+                                    pushbyte 0
+                                    convert_u
+                                    setlocal1
+                                    getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                                    getlocal0
+                                    callpropvoid QName(PackageNamespace(""),"killTweensOf"), 1
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_back")
+                                    pushnull
+                                    ifeq ofs0028
+                                    getlex QName(PackageNamespace("utils.an"),"DisplayUtil")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_back")
+                                    callpropvoid QName(PackageNamespace(""),"removeForParent"), 1
+                                    getlocal0
+                                    pushnull
+                                    setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_back")
+                           ofs0028:
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                                    pushnull
+                                    ifeq ofs0060
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    convert_i
+                                    setlocal2
+                                    pushbyte 0
+                                    convert_u
+                                    setlocal1
+                                    jump ofs0055
+                           ofs0041:
+                                    label
+                                    getlex QName(PackageNamespace("utils.an"),"DisplayUtil")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("animation.fight:HpDecreaseAnimation"),ProtectedNamespace("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.fight"),PackageInternalNs("animation.fight"),PrivateNamespace("FilePrivateNS:HpDecreaseAnimation"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    callpropvoid QName(PackageNamespace(""),"removeForParent"), 1
+                                    getlocal1
+                                    convert_d
+                                    increment
+                                    convert_u
+                                    setlocal1
+                           ofs0055:
+                                    getlocal1
+                                    getlocal2
+                                    iflt ofs0041
+                                    getlocal0
+                                    pushnull
+                                    setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                           ofs0060:
+                                    getlocal0
+                                    pushnull
+                                    setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitResNameVec")
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function deployDigitSpriteVec() : void
+                        {
+                           trait method QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"deployDigitSpriteVec")
+                              dispid 0
+                              method
+                                 name "deployDigitSpriteVec"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 4
+                                    localcount 8
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       pushnull
+                                       coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                       setlocal3
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       convert_i
+                                       dup
+                                       setlocal 5
+                                       pushbyte 30
+                                       multiply
+                                       convert_i
+                                       setlocal 4
+                                       getlocal 5
+                                       pushbyte 2
+                                       multiply
+                                       pushbyte 38
+                                       add
+                                       convert_i
+                                       setlocal 7
+                                       pushbyte 100
+                                       getlocal 4
+                                       subtract
+                                       pushbyte 1
+                                       rshift
+                                       setlocal 6
+                                       pushbyte 100
+                                       getlocal 7
+                                       subtract
+                                       pushbyte 1
+                                       rshift
+                                       setlocal2
+                                       pushbyte 0
+                                       setlocal1
+                                       jump ofs0082
+                              ofs003b:
+                                       label
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                                       getlocal1
+                                       getproperty MultinameL([PrivateNamespace("animation.fight:HpDecreaseAnimation"),ProtectedNamespace("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.fight"),PackageInternalNs("animation.fight"),PrivateNamespace("FilePrivateNS:HpDecreaseAnimation"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                       setlocal3
+                                       getlocal1
+                                       pushbyte 0
+                                       equals
+                                       dup
+                                       iffalse ofs0056
+                                       pop
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_isShowTip")
+                                       convert_b
+                              ofs0056:
+                                       iffalse ofs006d
+                                       getlocal3
+                                       getlocal 6
+                                       pushbyte 10
+                                       subtract
+                                       setproperty QName(PackageNamespace(""),"x")
+                                       getlocal3
+                                       getlocal2
+                                       pushbyte 10
+                                       add
+                                       setproperty QName(PackageNamespace(""),"y")
+                                       jump ofs0080
+                              ofs006d:
+                                       getlocal3
+                                       getlocal 6
+                                       getlocal1
+                                       pushbyte 30
+                                       multiply
+                                       add
+                                       setproperty QName(PackageNamespace(""),"x")
+                                       getlocal3
+                                       getlocal2
+                                       getlocal1
+                                       pushbyte 2
+                                       multiply
+                                       add
+                                       setproperty QName(PackageNamespace(""),"y")
+                              ofs0080:
+                                       inclocal_i 1
+                              ofs0082:
+                                       getlocal1
+                                       getlocal 5
+                                       iflt ofs003b
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function createHurtTip() : void
+                           {
+                              trait method QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"createHurtTip")
+                                 dispid 0
+                                 method
+                                    name "createHurtTip"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          findpropstrict QName(PackageNamespace("ui.splash"),"UI_FightHurtTip")
+                                          constructprop QName(PackageNamespace("ui.splash"),"UI_FightHurtTip"), 0
+                                          coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                          setlocal2
+                                          pushbyte 1
+                                          setlocal1
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_isBaoJi")
+                                          iffalse ofs001e
+                                          pushbyte 4
+                                          setlocal1
+                                          jump ofs003c
+                                 ofs001e:
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_skillTypeRelation")
+                                          pushbyte 2
+                                          ifne ofs002f
+                                          pushbyte 2
+                                          setlocal1
+                                          jump ofs003c
+                                 ofs002f:
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_skillTypeRelation")
+                                          pushbyte 1
+                                          ifne ofs003c
+                                          pushbyte 3
+                                          setlocal1
+                                 ofs003c:
+                                          getlocal1
+                                          pushbyte 1
+                                          ifne ofs0044
+                                          returnvoid
+                                 ofs0044:
+                                          getlocal0
+                                          pushtrue
+                                          setproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_isShowTip")
+                                          getlocal2
+                                          getlocal1
+                                          callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                          getlocal2
+                                          getlocal2
+                                          getproperty QName(PackageNamespace(""),"width")
+                                          negate
+                                          setproperty QName(PackageNamespace(""),"x")
+                                          findpropstrict QName(PackageNamespace(""),"addChild")
+                                          getlocal2
+                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                                          getlocal2
+                                          callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitResNameVec")
+                                          pushstring "UI_FightHurtTip"
+                                          callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function createDigitSpriteVec(param1:uint = 1) : void
+                              {
+                                 trait method QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"createDigitSpriteVec")
+                                    dispid 0
+                                    method
+                                       name "createDigitSpriteVec"
+                                       flag HAS_OPTIONAL
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace(""),"uint")
+                                       paramname "param1"
+                                       optional Integer(1)
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 4
+                                          localcount 7
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             pushnull
+                                             coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                             setlocal2
+                                             findpropstrict QName(PackageNamespace("ui.splash"),"UI_FightSplashMinus")
+                                             constructprop QName(PackageNamespace("ui.splash"),"UI_FightSplashMinus"), 0
+                                             coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                             dup
+                                             setlocal 4
+                                             getlocal1
+                                             callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                                             getlocal 4
+                                             callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitResNameVec")
+                                             pushstring "UI_FightSplashMinus"
+                                             callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                             findpropstrict QName(PackageNamespace(""),"addChild")
+                                             getlocal 4
+                                             callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                             getlex QName(PackageNamespace("utils"),"NumberUtil")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_reducedHp")
+                                             callproperty QName(PackageNamespace(""),"parseNumberToDigitVec"), 1
+                                             coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace(""),"int")>)
+                                             dup
+                                             setlocal 6
+                                             getproperty QName(PackageNamespace(""),"length")
+                                             convert_i
+                                             setlocal 5
+                                             pushbyte 0
+                                             setlocal3
+                                             jump ofs0085
+                                    ofs004d:
+                                             label
+                                             getlex QName(PackageNamespace("ui.splash"),"UI_FightSplash_N")
+                                             getlocal 6
+                                             getlocal3
+                                             getproperty MultinameL([PrivateNamespace("animation.fight:HpDecreaseAnimation"),ProtectedNamespace("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.fight"),PackageInternalNs("animation.fight"),PrivateNamespace("FilePrivateNS:HpDecreaseAnimation"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             callproperty QName(PackageNamespace(""),"find"), 1
+                                             construct 0
+                                             dup
+                                             coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                             setlocal2
+                                             getlocal1
+                                             callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitSpriteVec")
+                                             getlocal2
+                                             callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"_digitResNameVec")
+                                             pushstring "UI_FightSplash"
+                                             getlocal 6
+                                             getlocal3
+                                             getproperty MultinameL([PrivateNamespace("animation.fight:HpDecreaseAnimation"),ProtectedNamespace("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("animation.fight:HpDecreaseAnimation"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("animation.fight"),PackageInternalNs("animation.fight"),PrivateNamespace("FilePrivateNS:HpDecreaseAnimation"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             add
+                                             callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                             findpropstrict QName(PackageNamespace(""),"addChild")
+                                             getlocal2
+                                             callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                             inclocal_i 3
+                                    ofs0085:
+                                             getlocal3
+                                             getlocal 5
+                                             iflt ofs004d
+                                             getlocal0
+                                             callpropvoid QName(PrivateNamespace("animation.fight:HpDecreaseAnimation"),"deployDigitSpriteVec"), 0
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                              }
+                           }
+                           
+                           method
+                              name null
+                              returns null
+                              
+                              body
+                                 maxstack 3
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 7
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    getscopeobject 0
+                                    getlex QName(PackageNamespace(""),"Object")
+                                    pushscope
+                                    getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                    pushscope
+                                    getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                    pushscope
+                                    getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                    pushscope
+                                    getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                    pushscope
+                                    getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                    dup
+                                    pushscope
+                                    newclass 41
+                                    popscope
+                                    popscope
+                                    popscope
+                                    popscope
+                                    popscope
+                                    popscope
+                                    initproperty QName(PackageNamespace("animation.fight"),"HpDecreaseAnimation")
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                           

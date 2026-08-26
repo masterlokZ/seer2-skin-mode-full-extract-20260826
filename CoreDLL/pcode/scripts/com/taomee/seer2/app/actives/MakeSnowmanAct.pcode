@@ -1,0 +1,1193 @@
+package com.taomee.seer2.app.actives
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.component.MouseClickHintSprite;
+   import com.taomee.seer2.app.config.TimeLimitConfig;
+   import com.taomee.seer2.app.dialog.DialogPanel;
+   import com.taomee.seer2.app.dialog.DialogPanelEventData;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.dialog.events.DialogPanelEvent;
+   import com.taomee.seer2.app.manager.DayLimitManager;
+   import com.taomee.seer2.app.npc.ActMobile;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.quest.mark.AcceptableMark;
+   import com.taomee.seer2.app.serverBuffer.ServerBuffer;
+   import com.taomee.seer2.app.serverBuffer.ServerBufferManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.core.manager.TimeManager;
+   import com.taomee.seer2.core.module.ModuleEvent;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.ui.toolTip.TooltipManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.events.MouseEvent;
+   import flash.geom.Point;
+   import org.taomee.utils.Tick;
+   
+   public class MakeSnowmanAct
+   {
+      
+      private static var _instance:MakeSnowmanAct;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var shovelMobile:ActMobile;
+      
+      private var snowmanMobile:ActMobile;
+      
+      private var snowpetMobile:ActMobile;
+      
+      private var fightId:uint = 246;
+      
+      private var startTime:uint;
+      
+      private var passTime:uint;
+      
+      private var mouseHit:MouseClickHintSprite;
+      
+      private var cap:MovieClip;
+      
+      private var mark:AcceptableMark;
+      
+      public function MakeSnowmanAct()
+      {
+         method
+            name "MakeSnowmanAct"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                  debugline 59
+                  getlocal0
+                  debugline 59
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : MakeSnowmanAct
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2106"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.actives"),"MakeSnowmanAct")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                     debugline 63
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"_instance")
+                     iftrue ofs001a
+                     debugline 64
+                     getlocal0
+                     debugline 64
+                     construct 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"_instance")
+                     debugline 66
+            ofs001a:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function setup() : void
+         {
+            trait method QName(PackageNamespace(""),"setup")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "2279"
+               end ; metadata
+               dispid 0
+               method
+                  name "setup"
+                  flag NEED_ACTIVATION
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 6
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 2
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                        newactivation
+                        pushscope
+                        getlocal0
+                        debugline 70
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"createNpc"), 0
+                        debugline 71
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        getproperty QName(PackageNamespace(""),"prevSceneType")
+                        pushbyte 2
+                        equals
+                        dup
+                        iffalse ofs0021
+                        pop
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                        callproperty QName(PackageNamespace(""),"isWinWar"), 0
+                        not
+               ofs0021:
+                        dup
+                        iffalse ofs0033
+                        pop
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                        getproperty QName(PackageNamespace(""),"currentFightRecord")
+                        getproperty QName(PackageNamespace(""),"initData")
+                        getproperty Multiname("positionIndex",[PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),ProtectedNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:MakeSnowmanAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"fightId")
+                        equals
+               ofs0033:
+                        iffalse ofs0057
+                        debugline 72
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                        pushshort 533
+                        pushstring "雪精灵"
+                        pushbyte 0
+                        pushstring "别放弃啊，继续！过会儿我就要走了，阳光会让我融化掉，抓紧时间哦。 "
+                        newarray 2
+                        newarray 1
+                        pushstring " 啊？那么继续！"
+                        pushstring "我……我……不知道该说什么了……"
+                        newarray 2
+                        newfunction 3
+                        newarray 1
+                        callpropvoid QName(PackageNamespace(""),"show"), 5
+                        debugline 80
+               ofs0057:
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanel")
+                        pushstring "customReplyClick"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"onReplayClick")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        getlocal0
+                        debugline 81
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        getproperty QName(PackageNamespace(""),"active")
+                        getproperty QName(PackageNamespace(""),"mapModel")
+                        getproperty QName(PackageNamespace(""),"content")
+                        pushstring "cap"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),ProtectedNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:MakeSnowmanAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                        getlocal0
+                        debugline 82
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                        getproperty QName(PackageNamespace(""),"totalFrames")
+                        getlex QName(PackageNamespace(""),"Math")
+                        callproperty QName(PackageNamespace(""),"random"), 0
+                        multiply
+                        convert_i
+                        pushbyte 1
+                        add
+                        callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                        debugline 83
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                        pushshort 569
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"getSwapCount")
+                        callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function onReplayClick(param1:DialogPanelEvent) : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"onReplayClick")
+                  dispid 0
+                  method
+                     name "onReplayClick"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                           debug 1, "param1", 0, 0
+                           getlocal1
+                           debugline 87
+                           getproperty QName(PackageNamespace(""),"content")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanelEventData")
+                           astypelate
+                           getproperty QName(PackageNamespace(""),"params")
+                           pushstring "showClickMouse"
+                           ifne ofs0066
+                           getlocal0
+                           debugline 88
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mouseHit")
+                           iftrue ofs002c
+                           getlocal0
+                           findpropstrict QName(PackageNamespace("com.taomee.seer2.app.component"),"MouseClickHintSprite")
+                           debugline 89
+                           constructprop QName(PackageNamespace("com.taomee.seer2.app.component"),"MouseClickHintSprite"), 0
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mouseHit")
+                  ofs002c:
+                           getlocal0
+                           debugline 91
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mouseHit")
+                           pushshort 790
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           debugline 92
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mouseHit")
+                           pushshort 130
+                           setproperty QName(PackageNamespace(""),"y")
+                           debugline 93
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapModel")
+                           getproperty QName(PackageNamespace(""),"content")
+                           pushstring "house"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),ProtectedNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:MakeSnowmanAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"hideTips")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),ProtectedNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:MakeSnowmanAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           debugline 94
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapModel")
+                           getproperty QName(PackageNamespace(""),"front")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mouseHit")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                  ofs0066:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function hideTips(param1:MouseEvent) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"hideTips")
+                     dispid 0
+                     method
+                        name "hideTips"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("flash.events"),"MouseEvent")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                              debug 1, "param1", 0, 0
+                              debugline 99
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                              getproperty QName(PackageNamespace(""),"active")
+                              getproperty QName(PackageNamespace(""),"mapModel")
+                              getproperty QName(PackageNamespace(""),"content")
+                              pushstring "house"
+                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),ProtectedNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:MakeSnowmanAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              pushstring "click"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"hideTips")
+                              callpropvoid Multiname("removeEventListener",[PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),ProtectedNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("com.taomee.seer2.app.actives:MakeSnowmanAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:MakeSnowmanAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                              debugline 100
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mouseHit")
+                              callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function getSwapCount(param1:int) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"getSwapCount")
+                        dispid 0
+                        method
+                           name "getSwapCount"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace(""),"int")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal1
+                                 debugline 104
+                                 pushbyte 0
+                                 equals
+                                 dup
+                                 iffalse ofs001b
+                                 pop
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                                 convert_b
+                                 debugline 104
+                        ofs001b:
+                                 iffalse ofs003a
+                                 getlocal0
+                                 debugline 105
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                                 pushtrue
+                                 setproperty QName(PackageNamespace(""),"buttonMode")
+                                 getlocal0
+                                 debugline 106
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                                 pushstring "click"
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"swapHandler")
+                                 callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                 debugline 104
+                                 jump ofs004f
+                        ofs003a:
+                                 getlocal0
+                                 debugline 107
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                                 debugline 104
+                                 iffalse ofs004f
+                                 debugline 108
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                                 callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                        ofs004f:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function swapHandler(param1:MouseEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"swapHandler")
+                           dispid 0
+                           method
+                              name "swapHandler"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("flash.events"),"MouseEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                    debug 1, "param1", 0, 0
+                                    debugline 113
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                    pushshort 856
+                                    callpropvoid QName(PackageNamespace(""),"swapItem"), 1
+                                    debugline 114
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"cap")
+                                    callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        public function dispose() : void
+                        {
+                           trait method QName(PackageNamespace(""),"dispose")
+                              flag METADATA
+                              metadata "__go_to_definition_help"
+                                 item "pos" "4477"
+                              end ; metadata
+                              dispid 0
+                              method
+                                 name "dispose"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                       getlocal0
+                                       debugline 118
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                       iffalse ofs002c
+                                       debugline 119
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.ui.toolTip"),"TooltipManager")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                       callpropvoid QName(PackageNamespace(""),"remove"), 1
+                                       getlocal0
+                                       debugline 120
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"clickShovel")
+                                       callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                       getlocal0
+                                       debugline 121
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                       callpropvoid QName(PackageNamespace(""),"clear"), 0
+                              ofs002c:
+                                       getlocal0
+                                       debugline 123
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                       iffalse ofs004a
+                                       getlocal0
+                                       debugline 124
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"toDia")
+                                       callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                       getlocal0
+                                       debugline 125
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                       callpropvoid QName(PackageNamespace(""),"clear"), 0
+                              ofs004a:
+                                       getlocal0
+                                       debugline 127
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowmanMobile")
+                                       iffalse ofs005c
+                                       getlocal0
+                                       debugline 128
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowmanMobile")
+                                       callpropvoid QName(PackageNamespace(""),"clear"), 0
+                              ofs005c:
+                                       getlocal0
+                                       debugline 130
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowmanMobile")
+                                       iffalse ofs0072
+                                       getlocal0
+                                       debugline 131
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowmanMobile")
+                                       callpropvoid QName(PackageNamespace(""),"clear"), 0
+                                       debugline 133
+                              ofs0072:
+                                       getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                                       getproperty QName(PackageNamespace(""),"instance")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"changTime")
+                                       callpropvoid QName(PackageNamespace(""),"removeRender"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function createNpc() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"createNpc")
+                                 dispid 0
+                                 method
+                                    name "createNpc"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 5
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                          getlocal0
+                                          debugline 137
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                          iftrue ofs0019
+                                          getlocal0
+                                          findpropstrict QName(PackageNamespace("com.taomee.seer2.app.npc"),"ActMobile")
+                                          debugline 138
+                                          constructprop QName(PackageNamespace("com.taomee.seer2.app.npc"),"ActMobile"), 0
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                 ofs0019:
+                                          getlocal0
+                                          debugline 140
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                          pushstring "Shovel"
+                                          callproperty QName(PackageNamespace(""),"getActivityMobile"), 1
+                                          findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                          pushshort 710
+                                          pushshort 420
+                                          constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                          callpropvoid QName(PackageNamespace(""),"showMobile"), 2
+                                          getlocal0
+                                          debugline 141
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mark")
+                                          iftrue ofs0053
+                                          getlocal0
+                                          findpropstrict QName(PackageNamespace("com.taomee.seer2.app.quest.mark"),"AcceptableMark")
+                                          debugline 142
+                                          constructprop QName(PackageNamespace("com.taomee.seer2.app.quest.mark"),"AcceptableMark"), 0
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mark")
+                                          getlocal0
+                                          debugline 143
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mark")
+                                          pushbyte -90
+                                          setproperty QName(PackageNamespace(""),"y")
+                                 ofs0053:
+                                          getlocal0
+                                          debugline 145
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"mark")
+                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                          getlocal0
+                                          debugline 146
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"shovelMobile")
+                                          pushstring "click"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"clickShovel")
+                                          callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                          debugline 147
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                          pushshort 576
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"getCount")
+                                          callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function getCount(param1:uint = 0) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"getCount")
+                                    dispid 0
+                                    method
+                                       name "getCount"
+                                       flag HAS_OPTIONAL
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace(""),"uint")
+                                       paramname "param1"
+                                       optional Integer(0)
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 5
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                             debug 1, "param1", 0, 0
+                                             getlocal1
+                                             debugline 151
+                                             pushbyte 1
+                                             ifnge ofs0052
+                                             getlocal0
+                                             debugline 152
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowmanMobile")
+                                             iftrue ofs0028
+                                             getlocal0
+                                             findpropstrict QName(PackageNamespace("com.taomee.seer2.app.npc"),"ActMobile")
+                                             debugline 153
+                                             constructprop QName(PackageNamespace("com.taomee.seer2.app.npc"),"ActMobile"), 0
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowmanMobile")
+                                    ofs0028:
+                                             getlocal0
+                                             debugline 155
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowmanMobile")
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                             pushstring "Snowman"
+                                             callproperty QName(PackageNamespace(""),"getActivityMobile"), 1
+                                             findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                             pushshort 382
+                                             pushshort 331
+                                             constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                             callpropvoid QName(PackageNamespace(""),"showMobile"), 2
+                                             debugline 156
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                             pushshort 577
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"getStartTime")
+                                             callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                    ofs0052:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function getStartTime(param1:uint) : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"getStartTime")
+                                       dispid 0
+                                       method
+                                          name "getStartTime"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace(""),"uint")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                                debug 1, "param1", 0, 0
+                                                getlocal0
+                                                getlocal1
+                                                debugline 161
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"startTime")
+                                                debugline 162
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                                pushshort 578
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"isGetHandler")
+                                                callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                                debugline 163
+                                                getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                                                getproperty QName(PackageNamespace(""),"instance")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"changTime")
+                                                pushshort 10000
+                                                callpropvoid QName(PackageNamespace(""),"addRender"), 2
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function changTime(param1:int) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"changTime")
+                                          dispid 0
+                                          method
+                                             name "changTime"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace(""),"int")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                                   debug 1, "param1", 0, 0
+                                                   getlocal0
+                                                   debugline 167
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                   callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"startTime")
+                                                   subtract
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"passTime")
+                                                   getlocal0
+                                                   debugline 168
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"passTime")
+                                                   pushshort 900
+                                                   ifnge ofs0045
+                                                   debugline 169
+                                                   getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                                                   getproperty QName(PackageNamespace(""),"instance")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"changTime")
+                                                   callpropvoid QName(PackageNamespace(""),"removeRender"), 1
+                                                   getlocal0
+                                                   debugline 170
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                                   iffalse ofs0045
+                                                   getlocal0
+                                                   debugline 171
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                                   callpropvoid QName(PackageNamespace(""),"clear"), 0
+                                          ofs0045:
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function isGetHandler(param1:uint = 0) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"isGetHandler")
+                                             dispid 0
+                                             method
+                                                name "isGetHandler"
+                                                flag HAS_OPTIONAL
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace(""),"uint")
+                                                paramname "param1"
+                                                optional Integer(0)
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 5
+                                                   localcount 2
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                                      debug 1, "param1", 0, 0
+                                                      getlocal0
+                                                      debugline 177
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                      callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"startTime")
+                                                      subtract
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"passTime")
+                                                      getlocal1
+                                                      debugline 178
+                                                      pushbyte 1
+                                                      greaterequals
+                                                      dup
+                                                      iftrue ofs002f
+                                                      pop
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"passTime")
+                                                      pushshort 900
+                                                      greaterequals
+                                                      debugline 178
+                                             ofs002f:
+                                                      iffalse ofs004d
+                                                      getlocal0
+                                                      debugline 179
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                                      iffalse ofs0049
+                                                      getlocal0
+                                                      debugline 180
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                                      callpropvoid QName(PackageNamespace(""),"clear"), 0
+                                                      debugline 178
+                                             ofs0049:
+                                                      jump ofs008c
+                                             ofs004d:
+                                                      getlocal0
+                                                      debugline 183
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                                      iftrue ofs0062
+                                                      getlocal0
+                                                      findpropstrict QName(PackageNamespace("com.taomee.seer2.app.npc"),"ActMobile")
+                                                      debugline 184
+                                                      constructprop QName(PackageNamespace("com.taomee.seer2.app.npc"),"ActMobile"), 0
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                             ofs0062:
+                                                      getlocal0
+                                                      debugline 186
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                      pushstring "SnowPet"
+                                                      callproperty QName(PackageNamespace(""),"getActivityMobile"), 1
+                                                      findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                      pushshort 341
+                                                      pushshort 360
+                                                      constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                      callpropvoid QName(PackageNamespace(""),"showMobile"), 2
+                                                      getlocal0
+                                                      debugline 187
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"snowpetMobile")
+                                                      pushstring "click"
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"toDia")
+                                                      callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                             ofs008c:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function toDia(param1:MouseEvent) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"toDia")
+                                                dispid 0
+                                                method
+                                                   name "toDia"
+                                                   flag HAS_PARAM_NAMES
+                                                   flag NEED_ACTIVATION
+                                                   param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 6
+                                                      localcount 3
+                                                      initscopedepth 0
+                                                      maxscopedepth 2
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                         slotid 1
+                                                         type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      end ; trait
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"event")
+                                                         slotid 2
+                                                         type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      end ; trait
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                                         newactivation
+                                                         dup
+                                                         setlocal2
+                                                         pushscope
+                                                         findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                         getlocal1
+                                                         setproperty QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                         debug 1, "param1", 0, 0
+                                                         debug 1, "toDia$0", 1, 0
+                                                         debugline 192
+                                                         getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                         coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                         getlocal2
+                                                         swap
+                                                         setslot 2
+                                                         debugline 193
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                         pushshort 533
+                                                         pushstring "雪精灵"
+                                                         pushbyte 0
+                                                         pushstring "哈哈~我来了~~~终于有孩子想到我了，好开心啊？你愿意陪我玩吗？ "
+                                                         newarray 2
+                                                         newarray 1
+                                                         pushstring " 我愿意！"
+                                                         pushstring "我……我……不知道该说什么了……!"
+                                                         newarray 2
+                                                         newfunction 15
+                                                         newarray 1
+                                                         callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function clickShovel(param1:MouseEvent) : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"clickShovel")
+                                                   dispid 0
+                                                   method
+                                                      name "clickShovel"
+                                                      flag HAS_PARAM_NAMES
+                                                      param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      paramname "param1"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 2
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                                            debug 1, "param1", 0, 0
+                                                            debugline 205
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                                                            pushbyte 57
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"getServerBuffer")
+                                                            callpropvoid QName(PackageNamespace(""),"getServerBuffer"), 2
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function getServerBuffer(param1:ServerBuffer) : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"getServerBuffer")
+                                                      dispid 0
+                                                      method
+                                                         name "getServerBuffer"
+                                                         flag HAS_PARAM_NAMES
+                                                         flag NEED_ACTIVATION
+                                                         param QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBuffer")
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 4
+                                                            localcount 3
+                                                            initscopedepth 0
+                                                            maxscopedepth 2
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                               slotid 1
+                                                               type QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBuffer")
+                                                            end ; trait
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"buffer")
+                                                               slotid 2
+                                                               type QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBuffer")
+                                                            end ; trait
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"isPlay")
+                                                               slotid 3
+                                                               type QName(PackageNamespace(""),"Boolean")
+                                                            end ; trait
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                                               newactivation
+                                                               dup
+                                                               setlocal2
+                                                               pushscope
+                                                               findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                               getlocal1
+                                                               setproperty QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                               debug 1, "param1", 0, 0
+                                                               debug 1, "getServerBuffer$0", 1, 0
+                                                               debugline 209
+                                                               getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                               coerce QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBuffer")
+                                                               getlocal2
+                                                               swap
+                                                               setslot 2
+                                                               debugline 210
+                                                               getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"buffer")
+                                                               pushbyte 6
+                                                               callproperty QName(PackageNamespace(""),"readDataAtPostion"), 1
+                                                               convert_b
+                                                               getlocal2
+                                                               swap
+                                                               setslot 3
+                                                               debugline 211
+                                                               getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"isPlay")
+                                                               debugline 211
+                                                               iffalse ofs0069
+                                                               debugline 212
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                               pushstring "startmake"
+                                                               pushstring "snowman"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"showComplete")
+                                                               callpropvoid QName(PackageNamespace(""),"addEventListener"), 3
+                                                               debugline 213
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                               pushstring "MakeSnowmanPanel"
+                                                               callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                               callpropvoid QName(PackageNamespace(""),"toggleModule"), 1
+                                                               debugline 211
+                                                               jump ofs0078
+                                                               debugline 215
+                                                      ofs0069:
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                               pushstring "MakeSnowmanFull"
+                                                               callproperty QName(PackageNamespace(""),"getActivityFullScreen"), 1
+                                                               newfunction 19
+                                                               callpropvoid QName(PackageNamespace(""),"playFullScreen"), 2
+                                                      ofs0078:
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function showComplete(param1:ModuleEvent) : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"showComplete")
+                                                         dispid 0
+                                                         method
+                                                            name "showComplete"
+                                                            flag HAS_PARAM_NAMES
+                                                            flag NEED_ACTIVATION
+                                                            param QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 7
+                                                               localcount 3
+                                                               initscopedepth 0
+                                                               maxscopedepth 2
+                                                               trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                                  slotid 1
+                                                                  type QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                               end ; trait
+                                                               trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"event")
+                                                                  slotid 2
+                                                                  type QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                               end ; trait
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;MakeSnowmanAct.as"
+                                                                  newactivation
+                                                                  dup
+                                                                  setlocal2
+                                                                  pushscope
+                                                                  findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                                  getlocal1
+                                                                  setproperty QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                                  debug 1, "param1", 0, 0
+                                                                  debug 1, "showComplete$0", 1, 0
+                                                                  debugline 224
+                                                                  getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                                                  coerce QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                                  getlocal2
+                                                                  swap
+                                                                  setslot 2
+                                                                  debugline 225
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                  pushstring "startmake"
+                                                                  pushstring "snowman"
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:MakeSnowmanAct"),"showComplete")
+                                                                  callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                                  debugline 226
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                  callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                  pushtrue
+                                                                  setproperty QName(PackageNamespace(""),"blockNoNo")
+                                                                  debugline 227
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                  callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                  pushtrue
+                                                                  setproperty QName(PackageNamespace(""),"blockFollowingPet")
+                                                                  debugline 228
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                  callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                  callpropvoid QName(PackageNamespace(""),"hide"), 0
+                                                                  debugline 229
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                  pushstring "makeSnowMan"
+                                                                  callproperty QName(PackageNamespace(""),"getActivityFullScreen"), 1
+                                                                  newfunction 21
+                                                                  debugline 244
+                                                                  pushfalse
+                                                                  pushfalse
+                                                                  pushbyte 1
+                                                                  pushfalse
+                                                                  debugline 229
+                                                                  callpropvoid QName(PackageNamespace(""),"playFullScreen"), 6
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                   }
+                                                }
+                                                
+                                                method
+                                                   name null
+                                                   returns null
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 2
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         getscopeobject 0
+                                                         getlex QName(PackageNamespace(""),"Object")
+                                                         dup
+                                                         pushscope
+                                                         newclass 0
+                                                         popscope
+                                                         initproperty QName(PackageNamespace("com.taomee.seer2.app.actives"),"MakeSnowmanAct")
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                                

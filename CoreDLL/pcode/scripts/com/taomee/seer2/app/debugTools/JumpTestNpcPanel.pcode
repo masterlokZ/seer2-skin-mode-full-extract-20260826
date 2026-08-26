@@ -1,0 +1,2215 @@
+package com.taomee.seer2.app.debugTools
+{
+   import com.adobe.serialization.json.JSON;
+   import com.greensock.TweenLite;
+   import com.taomee.seer2.app.component.Combobox;
+   import com.taomee.seer2.app.controls.TestAssistPanel;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.net.ErrorMap;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.processor.activity.npcPosHandle.NpcPosHandle;
+   import com.taomee.seer2.app.utils.ActsHelperUtil;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.ui.UIManager;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.events.HTTPStatusEvent;
+   import flash.events.IOErrorEvent;
+   import flash.events.KeyboardEvent;
+   import flash.events.MouseEvent;
+   import flash.net.URLLoader;
+   import flash.net.URLRequest;
+   import flash.net.URLVariables;
+   import flash.text.TextField;
+   
+   public class JumpTestNpcPanel extends Sprite
+   {
+      
+      public static var _instance:JumpTestNpcPanel;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _mainUI:MovieClip;
+      
+      private var _checkBoxMc:MovieClip;
+      
+      private var _crossSymbleMc:MovieClip;
+      
+      private var _tabMc:MovieClip;
+      
+      private var _selectedMc:MovieClip;
+      
+      private var _mapIdTxt:TextField;
+      
+      private var _idTxt:TextField;
+      
+      private var _countTxt:TextField;
+      
+      private var _panelJumpBtn:SimpleButton;
+      
+      private var _mapJumpBtn:SimpleButton;
+      
+      private var _npcDragSwitchBtn:SimpleButton;
+      
+      private var _confirmBtn:SimpleButton;
+      
+      private var _tabBtnList:Vector.<SimpleButton>;
+      
+      private const _configUrl:String = "http://10.1.1.159/cgi-bin/HelloWorld.exe";
+      
+      private const _savePanelAndMapUrl:String = "http://10.1.1.159/cgi-bin/SavePanelAndMap/DebugToolSavePanelAndMap.exe";
+      
+      private var _configLoader:URLLoader;
+      
+      private var _panelDataLoader:URLLoader;
+      
+      private var _userId:String;
+      
+      private var _curIndex:int = 0;
+      
+      private var _panelListMc:MovieClip;
+      
+      private var _panelItemMcList:Vector.<MovieClip>;
+      
+      private var _panelCombobox:Combobox = null;
+      
+      private var _panelItemArr:Array;
+      
+      public function JumpTestNpcPanel(param1:InterClass)
+      {
+         method
+            name "JumpTestNpcPanel"
+            flag HAS_PARAM_NAMES
+            param QName(PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),"InterClass")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 3
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                  debug 1, "param1", 0, 0
+                  getlocal0
+                  debugline 81
+                  newarray 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                  debugline 82
+                  getlocal0
+                  debugline 82
+                  constructsuper 0
+                  debugline 83
+                  getlex QName(PackageNamespace(""),"_instance")
+                  iffalse ofs002b
+                  findpropstrict QName(PackageNamespace(""),"Error")
+                  debugline 84
+                  pushstring "(跳转、测试、拖动NPC)重复实例化"
+                  constructprop QName(PackageNamespace(""),"Error"), 1
+                  throw
+         ofs002b:
+                  getlocal0
+                  debugline 86
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.ui"),"UIManager")
+                  pushstring "JumpTestNpcUI"
+                  callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                  findpropstrict QName(PackageNamespace(""),"addChild")
+                  getlocal0
+                  debugline 87
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                  callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                  getlocal0
+                  debugline 88
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"initset"), 0
+                  getlocal0
+                  debugline 89
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"initEvent"), 0
+                  getlocal0
+                  debugline 90
+                  pushbyte 0
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"updatePanelListItem"), 1
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function instance() : JumpTestNpcPanel
+      {
+         trait method QName(PackageNamespace(""),"instance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2717"
+            end ; metadata
+            dispid 0
+            method
+               name "instance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.debugTools"),"JumpTestNpcPanel")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                     debugline 94
+                     getlex QName(PackageNamespace(""),"_instance")
+                     pushnull
+                     ifne ofs001e
+                     getlocal0
+                     findpropstrict QName(PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),"InterClass")
+                     debugline 95
+                     constructprop QName(PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),"InterClass"), 0
+                     construct 1
+                     findproperty QName(PackageNamespace(""),"_instance")
+                     swap
+                     setproperty QName(PackageNamespace(""),"_instance")
+                     debugline 97
+            ofs001e:
+                     getlex QName(PackageNamespace(""),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function initset() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"initset")
+               dispid 0
+               method
+                  name "initset"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 4
+                     localcount 3
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                        debug 1, "_loc1_", 0, 0
+                        getlocal0
+                        getlocal0
+                        debugline 101
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "checkboxMc"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_checkBoxMc")
+                        getlocal0
+                        debugline 102
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_checkBoxMc")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_checkBoxMc")
+                        pushfalse
+                        dup
+                        setlocal2
+                        setproperty QName(PackageNamespace(""),"mouseEnabled")
+                        getlocal2
+                        setproperty QName(PackageNamespace(""),"mouseChildren")
+                        getlocal0
+                        getlocal0
+                        debugline 103
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "crossSymble"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_crossSymbleMc")
+                        getlocal0
+                        debugline 104
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_crossSymbleMc")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_crossSymbleMc")
+                        pushfalse
+                        dup
+                        setlocal2
+                        setproperty QName(PackageNamespace(""),"mouseEnabled")
+                        getlocal2
+                        setproperty QName(PackageNamespace(""),"mouseChildren")
+                        getlocal0
+                        getlocal0
+                        debugline 105
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "panelJumpBtn"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelJumpBtn")
+                        getlocal0
+                        getlocal0
+                        debugline 106
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "mapJumpBtn"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mapJumpBtn")
+                        getlocal0
+                        getlocal0
+                        debugline 107
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "npcDragSwitchBtn"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_npcDragSwitchBtn")
+                        getlocal0
+                        getlocal0
+                        debugline 108
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "confirmBtn"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_confirmBtn")
+                        getlocal0
+                        getlocal0
+                        debugline 109
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "mapIdTxt"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mapIdTxt")
+                        getlocal0
+                        debugline 110
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mapIdTxt")
+                        pushstring ""
+                        setproperty QName(PackageNamespace(""),"text")
+                        getlocal0
+                        getlocal0
+                        debugline 111
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "idTxt"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_idTxt")
+                        getlocal0
+                        debugline 112
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_idTxt")
+                        pushstring ""
+                        setproperty QName(PackageNamespace(""),"text")
+                        getlocal0
+                        getlocal0
+                        debugline 113
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "countTxt"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_countTxt")
+                        getlocal0
+                        debugline 114
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_countTxt")
+                        pushstring ""
+                        setproperty QName(PackageNamespace(""),"text")
+                        debugline 115
+                        pushbyte 0
+                        setlocal1
+                        getlocal0
+                        getlocal0
+                        debugline 116
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "mapDropboxMc"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        pushstring "listMc"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelListMc")
+                        getlocal0
+                        debugline 117
+                        getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                        getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                        debugline 117
+                        applytype 1
+                        debugline 117
+                        construct 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                        debugline 118
+                        pushbyte 0
+                        setlocal1
+                        jump ofs00f9
+               ofs00df:
+                        label
+                        getlocal0
+                        debugline 120
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelListMc")
+                        pushstring "contentMc"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        pushstring "itemMc"
+                        getlocal1
+                        add
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                        debugline 121
+                        inclocal_i 1
+               ofs00f9:
+                        getlocal1
+                        debugline 119
+                        pushbyte 8
+                        iflt ofs00df
+                        getlocal0
+                        findpropstrict QName(PackageNamespace("com.taomee.seer2.app.component"),"Combobox")
+                        getlocal0
+                        debugline 123
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "mapDropboxMc"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        constructprop QName(PackageNamespace("com.taomee.seer2.app.component"),"Combobox"), 1
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                        getlocal0
+                        debugline 124
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                        pushbyte 8
+                        setproperty QName(PackageNamespace(""),"pageSize")
+                        getlocal0
+                        getlocal0
+                        debugline 125
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                        pushstring "tabMc"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabMc")
+                        getlocal0
+                        getlocal0
+                        debugline 126
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabMc")
+                        pushstring "selectedMc"
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_selectedMc")
+                        getlocal0
+                        debugline 127
+                        getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                        getlex QName(PackageNamespace("flash.display"),"SimpleButton")
+                        debugline 127
+                        applytype 1
+                        debugline 127
+                        construct 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabBtnList")
+                        debugline 128
+                        pushbyte 0
+                        setlocal1
+                        jump ofs0167
+               ofs014f:
+                        label
+                        getlocal0
+                        debugline 130
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabBtnList")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabMc")
+                        pushstring "tabBtn"
+                        getlocal1
+                        add
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                        debugline 131
+                        inclocal_i 1
+               ofs0167:
+                        getlocal1
+                        debugline 129
+                        pushbyte 5
+                        iflt ofs014f
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function initEvent() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"initEvent")
+                  dispid 0
+                  method
+                     name "initEvent"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                           debug 1, "_loc1_", 0, 0
+                           getlocal0
+                           debugline 136
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelJumpBtn")
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onPanelJumpBtn")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           getlocal0
+                           debugline 137
+                           pushstring "XueyushengdianSwapPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 138
+                           pushstring "VIPDarkSeniorBoxPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 139
+                           pushstring "EnergyLotteryPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 140
+                           pushstring "ChristmasDayGiveHolyYitePanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 141
+                           pushstring "LeiYiWingFirstComePanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 142
+                           pushstring "XiaoMengSongXingZuanPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 143
+                           pushstring "Double11BuyPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 144
+                           pushstring "ShootDiceForRidesPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 145
+                           pushstring "SaDanProtectPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 146
+                           pushstring "OreSwapPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 147
+                           pushstring "ChuanShuoZhuiSuRewardPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 148
+                           pushstring "MidAutumnGiftPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 149
+                           pushstring "PetSmeltingActPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 150
+                           pushstring "SixStarPrizePanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 151
+                           pushstring "HunDunMirrorPanel"
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                           getlocal0
+                           debugline 152
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mapJumpBtn")
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onMapJumpBtn")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           getlocal0
+                           debugline 153
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_npcDragSwitchBtn")
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onNpcSwitchBtn")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           getlocal0
+                           debugline 154
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_confirmBtn")
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onConfirmBtn")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           getlocal0
+                           debugline 155
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_confirmBtn")
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"visible")
+                           getlocal0
+                           debugline 156
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                           pushstring "testDialogBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushfalse
+                           setproperty Multiname("visible",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           getlocal0
+                           debugline 157
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_selectedMc")
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"visible")
+                           getlocal0
+                           debugline 158
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                           pushstring "testDialogBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onTestDialogBtnClick")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           debugline 159
+                           pushbyte 0
+                           setlocal1
+                           debugline 160
+                           pushbyte 0
+                           setlocal1
+                           jump ofs012e
+                  ofs010b:
+                           label
+                           getlocal0
+                           debugline 162
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabBtnList")
+                           getlocal1
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"visible")
+                           getlocal0
+                           debugline 163
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabBtnList")
+                           getlocal1
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onTabBtn")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           debugline 164
+                           inclocal_i 1
+                  ofs012e:
+                           getlocal1
+                           getlocal0
+                           debugline 161
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabBtnList")
+                           getproperty QName(PackageNamespace(""),"length")
+                           iflt ofs010b
+                           getlocal0
+                           pushstring "keyDown"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onKeyDown")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           getlocal0
+                           debugline 167
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onScroll")
+                           callpropvoid QName(PackageNamespace(""),"addScrollerListener"), 1
+                           debugline 168
+                           pushbyte 0
+                           setlocal1
+                           jump ofs0172
+                  ofs015b:
+                           label
+                           getlocal0
+                           debugline 170
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                           getlocal1
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onPanelItemMc")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           debugline 171
+                           inclocal_i 1
+                  ofs0172:
+                           getlocal1
+                           getlocal0
+                           debugline 169
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                           getproperty QName(PackageNamespace(""),"length")
+                           iflt ofs015b
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public function getConfigData(param1:uint) : void
+               {
+                  trait method QName(PackageNamespace(""),"getConfigData")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "6573"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "getConfigData"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"uint")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 4
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                              debug 1, "_loc2_", 1, 0
+                              debug 1, "param1", 0, 0
+                              debug 1, "_loc3_", 2, 0
+                              findpropstrict QName(PackageNamespace("flash.net"),"URLRequest")
+                              debugline 176
+                              pushstring "http://10.1.1.159/cgi-bin/HelloWorld.exe"
+                              constructprop QName(PackageNamespace("flash.net"),"URLRequest"), 1
+                              coerce QName(PackageNamespace("flash.net"),"URLRequest")
+                              setlocal2
+                              findpropstrict QName(PackageNamespace("flash.net"),"URLVariables")
+                              debugline 177
+                              constructprop QName(PackageNamespace("flash.net"),"URLVariables"), 0
+                              coerce QName(PackageNamespace("flash.net"),"URLVariables")
+                              setlocal3
+                              getlocal0
+                              getlocal1
+                              debugline 178
+                              callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_userId")
+                              getlocal3
+                              debugline 179
+                              pushbyte 4
+                              setproperty Multiname("p0",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              getlocal3
+                              getlocal0
+                              debugline 180
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_userId")
+                              setproperty Multiname("p1",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              getlocal2
+                              getlocal3
+                              debugline 181
+                              setproperty QName(PackageNamespace(""),"data")
+                              getlocal2
+                              pushstring "POST"
+                              setproperty QName(PackageNamespace(""),"method")
+                              getlocal0
+                              debugline 183
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                              pushnull
+                              ifne ofs006c
+                              getlocal0
+                              findpropstrict QName(PackageNamespace("flash.net"),"URLLoader")
+                              debugline 184
+                              constructprop QName(PackageNamespace("flash.net"),"URLLoader"), 0
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                     ofs006c:
+                              getlocal0
+                              debugline 186
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                              pushstring "variables"
+                              setproperty QName(PackageNamespace(""),"dataFormat")
+                              getlocal0
+                              debugline 187
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                              pushstring "complete"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onUrlLoaderComplete")
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                              getlocal0
+                              debugline 188
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                              pushstring "ioError"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onIoError")
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                              getlocal0
+                              debugline 189
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                              pushstring "httpStatus"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onHttpStatus")
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                              getlocal0
+                              debugline 190
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                              getlocal2
+                              callpropvoid QName(PackageNamespace(""),"load"), 1
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function setConfigData(param1:String, param2:URLVariables) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"setConfigData")
+                        dispid 0
+                        method
+                           name "setConfigData"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace(""),"String")
+                           param QName(PackageNamespace("flash.net"),"URLVariables")
+                           paramname "param1"
+                           paramname "param2"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 4
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "param2", 1, 0
+                                 debug 1, "_loc3_", 2, 0
+                                 findpropstrict QName(PackageNamespace("flash.net"),"URLRequest")
+                                 getlocal1
+                                 debugline 194
+                                 constructprop QName(PackageNamespace("flash.net"),"URLRequest"), 1
+                                 coerce QName(PackageNamespace("flash.net"),"URLRequest")
+                                 setlocal3
+                                 getlocal3
+                                 getlocal2
+                                 debugline 195
+                                 setproperty QName(PackageNamespace(""),"data")
+                                 getlocal3
+                                 pushstring "POST"
+                                 setproperty QName(PackageNamespace(""),"method")
+                                 getlocal0
+                                 debugline 197
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                                 pushnull
+                                 ifne ofs0045
+                                 getlocal0
+                                 findpropstrict QName(PackageNamespace("flash.net"),"URLLoader")
+                                 debugline 198
+                                 constructprop QName(PackageNamespace("flash.net"),"URLLoader"), 0
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                        ofs0045:
+                                 getlocal0
+                                 debugline 200
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                                 pushstring "variables"
+                                 setproperty QName(PackageNamespace(""),"dataFormat")
+                                 getlocal0
+                                 debugline 201
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_configLoader")
+                                 getlocal3
+                                 callpropvoid QName(PackageNamespace(""),"load"), 1
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onUrlLoaderComplete(param1:Event) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onUrlLoaderComplete")
+                           dispid 0
+                           method
+                              name "onUrlLoaderComplete"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("flash.events"),"Event")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 4
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                    debug 1, "_loc2_", 1, 0
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "_loc3_", 2, 0
+                                    debugline 205
+                                    pushnull
+                                    coerce_s
+                                    setlocal3
+                                    debugline 206
+                                    getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                    getglobalscope
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"currentTarget")
+                                    call 1
+                                    pushstring "complete"
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onUrlLoaderComplete")
+                                    callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                    debugline 207
+                                    getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                    getglobalscope
+                                    getlocal1
+                                    getproperty QName(PackageNamespace(""),"currentTarget")
+                                    call 1
+                                    getproperty QName(PackageNamespace(""),"data")
+                                    coerce QName(PackageNamespace(""),"Object")
+                                    setlocal2
+                                    getlocal2
+                                    debugline 208
+                                    pushnull
+                                    ifne ofs004d
+                                    debugline 209
+                                    returnvoid
+                           ofs004d:
+                                    getlocal2
+                                    debugline 211
+                                    pushstring "p1"
+                                    callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"hasOwnProperty"), 1
+                                    iffalse ofs00a9
+                                    getlocal2
+                                    debugline 212
+                                    pushstring "p1"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushstring ""
+                                    equals
+                                    dup
+                                    iftrue ofs007a
+                                    pop
+                                    getlocal2
+                                    pushstring "p1"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushstring "0"
+                                    equals
+                                    debugline 212
+                           ofs007a:
+                                    iffalse ofs0097
+                                    getlocal0
+                                    debugline 213
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_crossSymbleMc")
+                                    pushfalse
+                                    setproperty QName(PackageNamespace(""),"visible")
+                                    debugline 214
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.processor.activity.npcPosHandle"),"NpcPosHandle")
+                                    pushfalse
+                                    callpropvoid QName(PackageNamespace(""),"setMovableState"), 1
+                                    debugline 212
+                                    jump ofs00a9
+                           ofs0097:
+                                    getlocal0
+                                    debugline 216
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_crossSymbleMc")
+                                    pushtrue
+                                    setproperty QName(PackageNamespace(""),"visible")
+                                    debugline 217
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.processor.activity.npcPosHandle"),"NpcPosHandle")
+                                    pushtrue
+                                    callpropvoid QName(PackageNamespace(""),"setMovableState"), 1
+                           ofs00a9:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function onPanelDataComplete(param1:Event) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onPanelDataComplete")
+                              dispid 0
+                              method
+                                 name "onPanelDataComplete"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("flash.events"),"Event")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 4
+                                    localcount 5
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                       debug 1, "_loc2_", 1, 0
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "_loc4_", 2, 0
+                                       debug 1, "_loc3_", 3, 0
+                                       debugline 223
+                                       pushnull
+                                       coerce_s
+                                       setlocal 4
+                                       debugline 224
+                                       getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                       getglobalscope
+                                       getlocal1
+                                       getproperty QName(PackageNamespace(""),"currentTarget")
+                                       call 1
+                                       pushstring "complete"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onPanelDataComplete")
+                                       callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                       debugline 225
+                                       getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                       getglobalscope
+                                       getlocal1
+                                       getproperty QName(PackageNamespace(""),"currentTarget")
+                                       call 1
+                                       getproperty QName(PackageNamespace(""),"data")
+                                       coerce QName(PackageNamespace(""),"Object")
+                                       setlocal2
+                                       getlocal2
+                                       debugline 226
+                                       pushnull
+                                       ifne ofs0054
+                                       debugline 227
+                                       returnvoid
+                              ofs0054:
+                                       getlocal0
+                                       debugline 229
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                       pushbyte 0
+                                       setproperty QName(PackageNamespace(""),"length")
+                                       debugline 230
+                                       pushbyte 0
+                                       setlocal3
+                                       debugline 231
+                                       pushbyte 1
+                                       setlocal3
+                                       jump ofs0095
+                              ofs006e:
+                                       label
+                                       getlocal2
+                                       debugline 233
+                                       pushstring "p"
+                                       getlocal3
+                                       add
+                                       callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"hasOwnProperty"), 1
+                                       iffalse ofs0093
+                                       getlocal0
+                                       debugline 234
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                       getlocal2
+                                       pushstring "p"
+                                       getlocal3
+                                       add
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                       debugline 236
+                              ofs0093:
+                                       inclocal_i 3
+                              ofs0095:
+                                       getlocal3
+                                       debugline 232
+                                       pushbyte 20
+                                       ifle ofs006e
+                                       getlocal0
+                                       debugline 238
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       pushbyte 0
+                                       ifngt ofs00c9
+                                       getlocal0
+                                       debugline 239
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                       pushbyte 0
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       setproperty QName(PackageNamespace(""),"editorTxt")
+                                       getlocal0
+                                       debugline 240
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       setproperty QName(PackageNamespace(""),"maxScrollPosition")
+                              ofs00c9:
+                                       getlocal0
+                                       debugline 242
+                                       pushbyte 0
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"updatePanelListItem"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onIoError(param1:IOErrorEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onIoError")
+                                 dispid 0
+                                 method
+                                    name "onIoError"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.events"),"IOErrorEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                          debug 1, "param1", 0, 0
+                                          debugline 246
+                                          getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                          getglobalscope
+                                          getlocal1
+                                          getproperty QName(PackageNamespace(""),"currentTarget")
+                                          call 1
+                                          pushstring "complete"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onUrlLoaderComplete")
+                                          callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                          debugline 247
+                                          getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                          getglobalscope
+                                          getlocal1
+                                          getproperty QName(PackageNamespace(""),"currentTarget")
+                                          call 1
+                                          pushstring "ioError"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onIoError")
+                                          callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function onHttpStatus(param1:HTTPStatusEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onHttpStatus")
+                                    dispid 0
+                                    method
+                                       name "onHttpStatus"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("flash.events"),"HTTPStatusEvent")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                             debug 1, "param1", 0, 0
+                                             debugline 251
+                                             getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                             getglobalscope
+                                             getlocal1
+                                             getproperty QName(PackageNamespace(""),"currentTarget")
+                                             call 1
+                                             pushstring "httpStatus"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onHttpStatus")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             getlocal1
+                                             debugline 252
+                                             getproperty QName(PackageNamespace(""),"status")
+                                             pushshort 404
+                                             ifne ofs005f
+                                             debugline 253
+                                             getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                             getglobalscope
+                                             getlocal1
+                                             getproperty QName(PackageNamespace(""),"currentTarget")
+                                             call 1
+                                             pushstring "complete"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onUrlLoaderComplete")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             debugline 254
+                                             getlex QName(PackageNamespace("flash.net"),"URLLoader")
+                                             getglobalscope
+                                             getlocal1
+                                             getproperty QName(PackageNamespace(""),"currentTarget")
+                                             call 1
+                                             pushstring "ioError"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onIoError")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             findpropstrict QName(PackageNamespace(""),"Error")
+                                             debugline 255
+                                             pushstring "CGI应用程序 http://10.1.1.159/cgi-bin/HelloWorld.exeJumpTestNpcPanel.getConfigData()"
+                                             constructprop QName(PackageNamespace(""),"Error"), 1
+                                             throw
+                                    ofs005f:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 public function getPanelData(param1:uint) : void
+                                 {
+                                    trait method QName(PackageNamespace(""),"getPanelData")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "10269"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "getPanelData"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace(""),"uint")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 4
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                debug 1, "_loc2_", 1, 0
+                                                debug 1, "param1", 0, 0
+                                                debug 1, "_loc3_", 2, 0
+                                                findpropstrict QName(PackageNamespace("flash.net"),"URLRequest")
+                                                debugline 260
+                                                pushstring "http://10.1.1.159/cgi-bin/SavePanelAndMap/DebugToolSavePanelAndMap.exe"
+                                                constructprop QName(PackageNamespace("flash.net"),"URLRequest"), 1
+                                                coerce QName(PackageNamespace("flash.net"),"URLRequest")
+                                                setlocal2
+                                                findpropstrict QName(PackageNamespace("flash.net"),"URLVariables")
+                                                debugline 261
+                                                constructprop QName(PackageNamespace("flash.net"),"URLVariables"), 0
+                                                coerce QName(PackageNamespace("flash.net"),"URLVariables")
+                                                setlocal3
+                                                getlocal0
+                                                getlocal1
+                                                debugline 262
+                                                callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_userId")
+                                                getlocal3
+                                                debugline 263
+                                                pushbyte 2
+                                                setproperty Multiname("p0",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal3
+                                                getlocal0
+                                                debugline 264
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_userId")
+                                                setproperty Multiname("p1",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal2
+                                                getlocal3
+                                                debugline 265
+                                                setproperty QName(PackageNamespace(""),"data")
+                                                getlocal2
+                                                pushstring "POST"
+                                                setproperty QName(PackageNamespace(""),"method")
+                                                getlocal0
+                                                debugline 267
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelDataLoader")
+                                                pushnull
+                                                ifne ofs006c
+                                                getlocal0
+                                                findpropstrict QName(PackageNamespace("flash.net"),"URLLoader")
+                                                debugline 268
+                                                constructprop QName(PackageNamespace("flash.net"),"URLLoader"), 0
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelDataLoader")
+                                       ofs006c:
+                                                getlocal0
+                                                debugline 270
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelDataLoader")
+                                                pushstring "variables"
+                                                setproperty QName(PackageNamespace(""),"dataFormat")
+                                                getlocal0
+                                                debugline 271
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelDataLoader")
+                                                pushstring "complete"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onPanelDataComplete")
+                                                callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                getlocal0
+                                                debugline 272
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelDataLoader")
+                                                pushstring "ioError"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onIoError")
+                                                callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                getlocal0
+                                                debugline 273
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelDataLoader")
+                                                pushstring "httpStatus"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onHttpStatus")
+                                                callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                getlocal0
+                                                debugline 274
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelDataLoader")
+                                                getlocal2
+                                                callpropvoid QName(PackageNamespace(""),"load"), 1
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function onPanelJumpBtn(param1:MouseEvent) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onPanelJumpBtn")
+                                          dispid 0
+                                          method
+                                             name "onPanelJumpBtn"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 4
+                                                localcount 4
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                   debug 1, "_loc2_", 1, 0
+                                                   debug 1, "param1", 0, 0
+                                                   debug 1, "_loc3_", 2, 0
+                                                   debugline 278
+                                                   pushnull
+                                                   coerce QName(PackageNamespace("flash.net"),"URLVariables")
+                                                   setlocal2
+                                                   debugline 279
+                                                   pushbyte 0
+                                                   setlocal3
+                                                   getlocal0
+                                                   debugline 280
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                   getproperty QName(PackageNamespace(""),"editorTxt")
+                                                   pushstring "DEBUG_ON"
+                                                   equals
+                                                   debugline 280
+                                                   iffalse ofs0042
+                                                   getlocal0
+                                                   debugline 281
+                                                   pushtrue
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"DEBUGMODE"), 1
+                                                   debugline 282
+                                                   returnvoid
+                                          ofs0042:
+                                                   getlocal0
+                                                   debugline 283
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                   getproperty QName(PackageNamespace(""),"editorTxt")
+                                                   pushstring "DEBUG_OFF"
+                                                   equals
+                                                   debugline 280
+                                                   iffalse ofs0061
+                                                   getlocal0
+                                                   debugline 284
+                                                   pushfalse
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"DEBUGMODE"), 1
+                                                   debugline 285
+                                                   returnvoid
+                                          ofs0061:
+                                                   getlocal0
+                                                   debugline 287
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                   getproperty QName(PackageNamespace(""),"editorTxt")
+                                                   pushstring ""
+                                                   ifeq ofs00ef
+                                                   debugline 288
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                   getproperty QName(PackageNamespace(""),"editorTxt")
+                                                   callpropvoid QName(PackageNamespace(""),"showAppModule"), 1
+                                                   getlocal0
+                                                   debugline 289
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                   getproperty QName(PackageNamespace(""),"editorTxt")
+                                                   callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                   pushbyte 0
+                                                   ifeq ofs00ef
+                                                   getlocal0
+                                                   getlocal0
+                                                   debugline 290
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                   getproperty QName(PackageNamespace(""),"editorTxt")
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                                                   findpropstrict QName(PackageNamespace("flash.net"),"URLVariables")
+                                                   debugline 291
+                                                   constructprop QName(PackageNamespace("flash.net"),"URLVariables"), 0
+                                                   coerce QName(PackageNamespace("flash.net"),"URLVariables")
+                                                   setlocal2
+                                                   getlocal2
+                                                   debugline 292
+                                                   pushbyte 1
+                                                   setproperty Multiname("p0",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   getlocal2
+                                                   getlocal0
+                                                   debugline 293
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_userId")
+                                                   setproperty Multiname("p1",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   debugline 294
+                                                   pushbyte 0
+                                                   setlocal3
+                                                   debugline 295
+                                                   pushbyte 0
+                                                   setlocal3
+                                                   jump ofs00e2
+                                          ofs00c8:
+                                                   label
+                                                   getlocal2
+                                                   debugline 297
+                                                   pushstring "p"
+                                                   getlocal3
+                                                   pushbyte 2
+                                                   add
+                                                   add
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                   getlocal3
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   setproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   debugline 298
+                                                   inclocal_i 3
+                                          ofs00e2:
+                                                   getlocal3
+                                                   getlocal0
+                                                   debugline 296
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                   getproperty QName(PackageNamespace(""),"length")
+                                                   iflt ofs00c8
+                                          ofs00ef:
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onMapJumpBtn(param1:MouseEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onMapJumpBtn")
+                                             dispid 0
+                                             method
+                                                name "onMapJumpBtn"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 2
+                                                   localcount 2
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                      debug 1, "param1", 0, 0
+                                                      getlocal0
+                                                      debugline 306
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mapIdTxt")
+                                                      getproperty QName(PackageNamespace(""),"text")
+                                                      pushstring ""
+                                                      ifeq ofs0032
+                                                      debugline 307
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"ActsHelperUtil")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mapIdTxt")
+                                                      getproperty QName(PackageNamespace(""),"text")
+                                                      convert_i
+                                                      callpropvoid QName(PackageNamespace(""),"goHandle"), 1
+                                                      getlocal0
+                                                      getlocal0
+                                                      debugline 308
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                      getproperty QName(PackageNamespace(""),"editorTxt")
+                                                      callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem"), 1
+                                             ofs0032:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function DEBUGMODE(param1:Boolean = false) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"DEBUGMODE")
+                                                dispid 0
+                                                method
+                                                   name "DEBUGMODE"
+                                                   flag HAS_OPTIONAL
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace(""),"Boolean")
+                                                   paramname "param1"
+                                                   optional False()
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 2
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                         debug 1, "param1", 0, 0
+                                                         debugline 313
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"TestAssistPanel")
+                                                         getlocal1
+                                                         setproperty QName(PackageNamespace(""),"DebugMode")
+                                                         debugline 314
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"ErrorMap")
+                                                         getlocal1
+                                                         setproperty QName(PackageNamespace(""),"DebugMode")
+                                                         getlocal1
+                                                         debugline 315
+                                                         iffalse ofs0034
+                                                         debugline 316
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"TestAssistPanel")
+                                                         callpropvoid QName(PackageNamespace(""),"show"), 0
+                                                         debugline 315
+                                                         jump ofs0039
+                                                         debugline 318
+                                                ofs0034:
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"TestAssistPanel")
+                                                         callpropvoid QName(PackageNamespace(""),"hide"), 0
+                                                ofs0039:
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function onNpcSwitchBtn(param1:MouseEvent) : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onNpcSwitchBtn")
+                                                   dispid 0
+                                                   method
+                                                      name "onNpcSwitchBtn"
+                                                      flag HAS_PARAM_NAMES
+                                                      param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      paramname "param1"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 2
+                                                         localcount 3
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                            debug 1, "_loc2_", 1, 0
+                                                            debug 1, "param1", 0, 0
+                                                            findpropstrict QName(PackageNamespace("flash.net"),"URLVariables")
+                                                            debugline 323
+                                                            constructprop QName(PackageNamespace("flash.net"),"URLVariables"), 0
+                                                            coerce QName(PackageNamespace("flash.net"),"URLVariables")
+                                                            setlocal2
+                                                            getlocal2
+                                                            debugline 324
+                                                            pushbyte 3
+                                                            setproperty Multiname("p0",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            getlocal2
+                                                            getlocal0
+                                                            debugline 325
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_userId")
+                                                            setproperty Multiname("p1",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            getlocal0
+                                                            debugline 326
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_crossSymbleMc")
+                                                            getproperty QName(PackageNamespace(""),"visible")
+                                                            debugline 326
+                                                            iffalse ofs005c
+                                                            getlocal0
+                                                            debugline 327
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_crossSymbleMc")
+                                                            pushfalse
+                                                            setproperty QName(PackageNamespace(""),"visible")
+                                                            debugline 328
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.processor.activity.npcPosHandle"),"NpcPosHandle")
+                                                            pushfalse
+                                                            callpropvoid QName(PackageNamespace(""),"setMovableState"), 1
+                                                            getlocal2
+                                                            debugline 329
+                                                            pushbyte 0
+                                                            setproperty Multiname("p2",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            debugline 326
+                                                            jump ofs0076
+                                                   ofs005c:
+                                                            getlocal0
+                                                            debugline 331
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_crossSymbleMc")
+                                                            pushtrue
+                                                            setproperty QName(PackageNamespace(""),"visible")
+                                                            debugline 332
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.processor.activity.npcPosHandle"),"NpcPosHandle")
+                                                            pushtrue
+                                                            callpropvoid QName(PackageNamespace(""),"setMovableState"), 1
+                                                            getlocal2
+                                                            debugline 333
+                                                            pushbyte 1
+                                                            setproperty Multiname("p2",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   ofs0076:
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function onTestDialogBtnClick(param1:*) : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onTestDialogBtnClick")
+                                                      dispid 0
+                                                      method
+                                                         name "onTestDialogBtnClick"
+                                                         flag HAS_PARAM_NAMES
+                                                         flag NEED_ACTIVATION
+                                                         param null
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 5
+                                                            initscopedepth 0
+                                                            maxscopedepth 4
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"param1")
+                                                               slotid 1
+                                                               type null
+                                                            end ; trait
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"dialogs")
+                                                               slotid 2
+                                                               type QName(PackageNamespace(""),"Array")
+                                                            end ; trait
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"e")
+                                                               slotid 3
+                                                               type null
+                                                            end ; trait
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"text")
+                                                               slotid 4
+                                                               type QName(PackageNamespace(""),"String")
+                                                            end ; trait
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                               newactivation
+                                                               dup
+                                                               setlocal2
+                                                               pushscope
+                                                               findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"param1")
+                                                               getlocal1
+                                                               setproperty QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"param1")
+                                                               debug 1, "param1", 0, 0
+                                                               debug 1, "onTestDialogBtnClick$0", 1, 0
+                                                               debugline 339
+                                                               pushnull
+                                                               coerce QName(PackageNamespace(""),"Array")
+                                                               getlocal2
+                                                               swap
+                                                               setslot 2
+                                                               debugline 340
+                                                               getlex QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"param1")
+                                                               getlocal2
+                                                               swap
+                                                               setslot 3
+                                                               getlocal0
+                                                               debugline 341
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_mainUI")
+                                                               pushstring "dialogTxt"
+                                                               getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               getproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               convert_s
+                                                               coerce_s
+                                                               getlocal2
+                                                               swap
+                                                               setslot 4
+                                                               debugline 342
+                                                               getlex QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"text")
+                                                               pushstring ".json"
+                                                               callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                               pushbyte -1
+                                                               ifeq ofs0063
+                                                               debugline 343
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                               getlex QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"text")
+                                                               newfunction 16
+                                                               callpropvoid QName(PackageNamespace(""),"showDialogsByText"), 2
+                                                               debugline 345
+                                                               returnvoid
+                                                               debugline 348
+                                                      ofs0063:
+                                                               getlex QName(PackageNamespace("com.adobe.serialization.json"),"JSON")
+                                                               getlex QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"text")
+                                                               callproperty QName(PackageNamespace(""),"decode"), 1
+                                                               coerce QName(PackageNamespace(""),"Array")
+                                                               getlocal2
+                                                               swap
+                                                               setslot 2
+                                                               debugline 347
+                                                      ofs0073:
+                                                               jump ofs009a
+                                                      ofs0077:
+                                                               getlocal0
+                                                               pushscope
+                                                               getlocal2
+                                                               pushscope
+                                                               newcatch 0
+                                                               dup
+                                                               setlocal 4
+                                                               dup
+                                                               pushscope
+                                                               swap
+                                                               setslot 1
+                                                               debugline 350
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                               pushstring "json 格式错误"
+                                                               callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                                                               popscope
+                                                               kill 4
+                                                               debugline 351
+                                                               returnvoid
+                                                               debugline 353
+                                                      ofs009a:
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                               getlex QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"dialogs")
+                                                               newfunction 17
+                                                               callpropvoid QName(PackageNamespace(""),"showDialogs"), 2
+                                                               returnvoid
+                                                            end ; code
+                                                            try from ofs0063 to ofs0073 target ofs0077 type null name QName(PackageInternalNs("com.taomee.seer2.app.debugTools"),"e") end
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function onConfirmBtn(param1:MouseEvent) : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onConfirmBtn")
+                                                         dispid 0
+                                                         method
+                                                            name "onConfirmBtn"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 1
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function onTabBtn(param1:MouseEvent) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onTabBtn")
+                                                            dispid 0
+                                                            method
+                                                               name "onTabBtn"
+                                                               flag HAS_PARAM_NAMES
+                                                               param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 8
+                                                                  localcount 3
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                                     debug 1, "_loc2_", 1, 0
+                                                                     debug 1, "param1", 0, 0
+                                                                     getlocal0
+                                                                     debugline 361
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabBtnList")
+                                                                     getlocal1
+                                                                     getproperty QName(PackageNamespace(""),"currentTarget")
+                                                                     getlex QName(PackageNamespace("flash.display"),"SimpleButton")
+                                                                     astypelate
+                                                                     callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                                     convert_i
+                                                                     setlocal2
+                                                                     getlocal2
+                                                                     getlocal0
+                                                                     debugline 362
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_curIndex")
+                                                                     ifne ofs0033
+                                                                     debugline 363
+                                                                     returnvoid
+                                                                     debugline 365
+                                                            ofs0033:
+                                                                     getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_selectedMc")
+                                                                     pushdouble 0.5
+                                                                     debugline 366
+                                                                     pushstring "x"
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabBtnList")
+                                                                     getlocal2
+                                                                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     getproperty QName(PackageNamespace(""),"x")
+                                                                     debugline 367
+                                                                     pushstring "y"
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_tabBtnList")
+                                                                     getlocal2
+                                                                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     getproperty QName(PackageNamespace(""),"y")
+                                                                     newobject 2
+                                                                     callpropvoid QName(PackageNamespace(""),"to"), 3
+                                                                     getlocal0
+                                                                     getlocal2
+                                                                     debugline 369
+                                                                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_curIndex")
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function onKeyDown(param1:KeyboardEvent) : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onKeyDown")
+                                                               dispid 0
+                                                               method
+                                                                  name "onKeyDown"
+                                                                  flag HAS_PARAM_NAMES
+                                                                  param QName(PackageNamespace("flash.events"),"KeyboardEvent")
+                                                                  paramname "param1"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 2
+                                                                     localcount 2
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                                        debug 1, "param1", 0, 0
+                                                                        getlocal1
+                                                                        debugline 373
+                                                                        getproperty QName(PackageNamespace(""),"keyCode")
+                                                                        pushbyte 32
+                                                                        ifne ofs001d
+                                                                        getlocal1
+                                                                        debugline 374
+                                                                        callpropvoid QName(PackageNamespace(""),"stopPropagation"), 0
+                                                               ofs001d:
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function onScroll() : void
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onScroll")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "onScroll"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 2
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                                           debug 1, "_loc1_", 0, 0
+                                                                           getlocal0
+                                                                           debugline 379
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                                           getproperty QName(PackageNamespace(""),"scrollPosition")
+                                                                           convert_i
+                                                                           setlocal1
+                                                                           getlocal0
+                                                                           getlocal1
+                                                                           debugline 380
+                                                                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"updatePanelListItem"), 1
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function updatePanelListItem(param1:int) : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"updatePanelListItem")
+                                                                     dispid 0
+                                                                     method
+                                                                        name "updatePanelListItem"
+                                                                        flag HAS_PARAM_NAMES
+                                                                        param QName(PackageNamespace(""),"int")
+                                                                        paramname "param1"
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 4
+                                                                           localcount 3
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                                              debug 1, "_loc2_", 1, 0
+                                                                              debug 1, "param1", 0, 0
+                                                                              debugline 384
+                                                                              pushbyte 0
+                                                                              setlocal2
+                                                                              debugline 385
+                                                                              pushbyte 0
+                                                                              setlocal2
+                                                                              jump ofs006d
+                                                                     ofs0020:
+                                                                              label
+                                                                              getlocal2
+                                                                              getlocal0
+                                                                              debugline 387
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                              getproperty QName(PackageNamespace(""),"length")
+                                                                              lessthan
+                                                                              debugline 387
+                                                                              iffalse ofs005c
+                                                                              getlocal0
+                                                                              debugline 388
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                                                                              getlocal2
+                                                                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                              pushstring "idTxt"
+                                                                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                              getlocal2
+                                                                              getlocal1
+                                                                              add
+                                                                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                              setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                              getlocal0
+                                                                              debugline 389
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                                                                              getlocal2
+                                                                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                              pushtrue
+                                                                              setproperty QName(PackageNamespace(""),"visible")
+                                                                              debugline 387
+                                                                              jump ofs006b
+                                                                     ofs005c:
+                                                                              getlocal0
+                                                                              debugline 391
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                                                                              getlocal2
+                                                                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                              pushfalse
+                                                                              setproperty QName(PackageNamespace(""),"visible")
+                                                                              debugline 393
+                                                                     ofs006b:
+                                                                              inclocal_i 2
+                                                                     ofs006d:
+                                                                              getlocal2
+                                                                              getlocal0
+                                                                              debugline 386
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                                                                              getproperty QName(PackageNamespace(""),"length")
+                                                                              iflt ofs0020
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function onPanelItemMc(param1:MouseEvent) : void
+                                                                  {
+                                                                     trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"onPanelItemMc")
+                                                                        dispid 0
+                                                                        method
+                                                                           name "onPanelItemMc"
+                                                                           flag HAS_PARAM_NAMES
+                                                                           param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                           paramname "param1"
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 4
+                                                                              localcount 4
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                                                 debug 1, "_loc2_", 1, 0
+                                                                                 debug 1, "param1", 0, 0
+                                                                                 debug 1, "_loc3_", 2, 0
+                                                                                 getlocal0
+                                                                                 debugline 398
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemMcList")
+                                                                                 getlocal1
+                                                                                 getproperty QName(PackageNamespace(""),"currentTarget")
+                                                                                 getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                                                                 astypelate
+                                                                                 callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                                                 convert_i
+                                                                                 setlocal2
+                                                                                 getlocal0
+                                                                                 debugline 399
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                                                 getproperty QName(PackageNamespace(""),"scrollPosition")
+                                                                                 convert_i
+                                                                                 setlocal3
+                                                                                 getlocal0
+                                                                                 debugline 400
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                                 getlocal2
+                                                                                 getlocal3
+                                                                                 add
+                                                                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),ProtectedNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.debugTools"),PackageInternalNs("com.taomee.seer2.app.debugTools"),PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                 setproperty QName(PackageNamespace(""),"editorTxt")
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private function addPanelItem(param1:String) : void
+                                                                     {
+                                                                        trait method QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"addPanelItem")
+                                                                           dispid 0
+                                                                           method
+                                                                              name "addPanelItem"
+                                                                              flag HAS_PARAM_NAMES
+                                                                              param QName(PackageNamespace(""),"String")
+                                                                              paramname "param1"
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 3
+                                                                                 localcount 4
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 1
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                                                    debug 1, "_loc2_", 1, 0
+                                                                                    debug 1, "param1", 0, 0
+                                                                                    debug 1, "_loc3_", 2, 0
+                                                                                    debugline 404
+                                                                                    pushstring ""
+                                                                                    coerce_s
+                                                                                    setlocal2
+                                                                                    debugline 405
+                                                                                    pushbyte 0
+                                                                                    setlocal3
+                                                                                    getlocal0
+                                                                                    debugline 406
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                                    getlocal1
+                                                                                    callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                                                    convert_i
+                                                                                    setlocal3
+                                                                                    getlocal3
+                                                                                    debugline 407
+                                                                                    pushbyte -1
+                                                                                    equals
+                                                                                    debugline 407
+                                                                                    iffalse ofs0067
+                                                                                    getlocal0
+                                                                                    debugline 408
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                                    getproperty QName(PackageNamespace(""),"length")
+                                                                                    pushbyte 20
+                                                                                    ifngt ofs0055
+                                                                                    getlocal0
+                                                                                    debugline 409
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"pop"), 0
+                                                                           ofs0055:
+                                                                                    getlocal0
+                                                                                    debugline 411
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                                    getlocal1
+                                                                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"unshift"), 1
+                                                                                    debugline 407
+                                                                                    jump ofs0081
+                                                                           ofs0067:
+                                                                                    getlocal0
+                                                                                    debugline 413
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                                    getlocal3
+                                                                                    pushbyte 1
+                                                                                    callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 2
+                                                                                    coerce_s
+                                                                                    setlocal2
+                                                                                    getlocal0
+                                                                                    debugline 414
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                                    getlocal2
+                                                                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"unshift"), 1
+                                                                           ofs0081:
+                                                                                    getlocal0
+                                                                                    debugline 416
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelCombobox")
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"_panelItemArr")
+                                                                                    getproperty QName(PackageNamespace(""),"length")
+                                                                                    setproperty QName(PackageNamespace(""),"maxScrollPosition")
+                                                                                    getlocal0
+                                                                                    debugline 417
+                                                                                    pushbyte 0
+                                                                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.debugTools:JumpTestNpcPanel"),"updatePanelListItem"), 1
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                     }
+                                                                  }
+                                                                  
+                                                                  class InterClass
+                                                                  {
+                                                                     
+                                                                     method
+                                                                        name null
+                                                                        returns null
+                                                                        
+                                                                        body
+                                                                           maxstack 0
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 0
+                                                                           
+                                                                           code
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                     
+                                                                     public function InterClass()
+                                                                     {
+                                                                        method
+                                                                           name "InterClass"
+                                                                           returns null
+                                                                           
+                                                                           body
+                                                                              maxstack 1
+                                                                              localcount 1
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\debugTools;JumpTestNpcPanel.as"
+                                                                                 debugline 426
+                                                                                 getlocal0
+                                                                                 debugline 426
+                                                                                 constructsuper 0
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                  }
+                                                                  
+                                                                  method
+                                                                     name null
+                                                                     returns null
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 1
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 7
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           getscopeobject 0
+                                                                           getlex QName(PackageNamespace(""),"Object")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                                           dup
+                                                                           pushscope
+                                                                           newclass 0
+                                                                           popscope
+                                                                           popscope
+                                                                           popscope
+                                                                           popscope
+                                                                           popscope
+                                                                           popscope
+                                                                           initproperty QName(PackageNamespace("com.taomee.seer2.app.debugTools"),"JumpTestNpcPanel")
+                                                                           getscopeobject 0
+                                                                           getlex QName(PackageNamespace(""),"Object")
+                                                                           dup
+                                                                           pushscope
+                                                                           newclass 1
+                                                                           popscope
+                                                                           initproperty QName(PrivateNamespace("FilePrivateNS:JumpTestNpcPanel"),"InterClass")
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                                  

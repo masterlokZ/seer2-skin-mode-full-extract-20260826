@@ -1,0 +1,1759 @@
+package com.taomee.seer2.app.processor.activity.moPetProcessAct
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.arena.FightVerifyManager;
+   import com.taomee.seer2.app.config.ItemConfig;
+   import com.taomee.seer2.app.inventory.ItemManager;
+   import com.taomee.seer2.app.inventory.events.ItemEvent;
+   import com.taomee.seer2.app.lobby.LobbyScene;
+   import com.taomee.seer2.app.net.parser.Parser_1142;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.core.entity.Mobile;
+   import com.taomee.seer2.core.entity.MobileManager;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.module.ModuleEvent;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.events.SceneEvent;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.events.MouseEvent;
+   import flash.system.ApplicationDomain;
+   import flash.text.TextField;
+   import flash.utils.IDataInput;
+   import org.taomee.utils.DomainUtil;
+   
+   public class MoFightAct
+   {
+      
+      private static var _self:MoFightAct;
+      
+      private static const ITEM_ID:Vector.<uint>;
+      
+      private static const MAX_BLOOD_NUM:uint = 680000;
+      
+      private static const TURN_FOR:uint = 203189;
+      
+      private static const MI_TURN_FOR:uint = 203190;
+      
+      private static const ALL_HURT_FOR:int = 203188;
+      
+      private static const DEFAULT_BLOOD_WIDTH:int = 168;
+      
+      private static const FIGHT_INDEX:uint = 587;
+      
+      private static const EXIT_MAP_SWAP:int = 1883;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 7
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 1
+            
+            code
+               getlocal0
+               pushscope
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+               debugline 42
+               getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+               getlex QName(PackageNamespace(""),"uint")
+               applytype 1
+               getlocal0
+               pushint 500583
+               pushint 500584
+               pushint 500585
+               pushint 500586
+               pushint 500587
+               newarray 5
+               call 1
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"ITEM_ID")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"ITEM_ID")
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _map:MapModel;
+      
+      private var _resLib:ApplicationDomain;
+      
+      private var _menu:MovieClip;
+      
+      private var _itemTxt:TextField;
+      
+      private var _turnTxt:TextField;
+      
+      private var _allHurtTxt:TextField;
+      
+      private var _hpTxt:TextField;
+      
+      private var _exitBtn:SimpleButton;
+      
+      private var _buyBtn:SimpleButton;
+      
+      private var _hpBar:MovieClip;
+      
+      private var _petBagBtn:SimpleButton;
+      
+      private var _tip:MovieClip;
+      
+      private var _turnValue:int;
+      
+      private var _hurtValue:int;
+      
+      private var _leftBlood:int;
+      
+      private var _npc:Mobile;
+      
+      private var _isToFight:Boolean = false;
+      
+      public function MoFightAct()
+      {
+         method
+            name "MoFightAct"
+            returns null
+            
+            body
+               maxstack 3
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                  debugline 94
+                  getlocal0
+                  debugline 94
+                  constructsuper 0
+                  debugline 95
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                  pushstring "switchComplete"
+                  getlocal0
+                  getproperty QName(PackageNamespace(""),"onSwitchComplete")
+                  callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : MoFightAct
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "3032"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),"MoFightAct")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                     debugline 99
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_self")
+                     pushnull
+                     ifne ofs001b
+                     debugline 100
+                     getlocal0
+                     debugline 100
+                     construct 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_self")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_self")
+                     debugline 102
+            ofs001b:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_self")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function setup(param1:MapModel) : void
+         {
+            trait method QName(PackageNamespace(""),"setup")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "3192"
+               end ; metadata
+               dispid 0
+               method
+                  name "setup"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 4
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                        debug 1, "param1", 0, 0
+                        debugline 106
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        getproperty QName(PackageNamespace(""),"prevSceneType")
+                        pushbyte 2
+                        equals
+                        dup
+                        iffalse ofs0021
+                        pop
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                        callproperty QName(PackageNamespace(""),"getPositionIndex"), 0
+                        pushshort 587
+                        equals
+               ofs0021:
+                        dup
+                        iffalse ofs002d
+                        pop
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                        callproperty QName(PackageNamespace(""),"isWinWar"), 0
+                        convert_b
+               ofs002d:
+                        iffalse ofs0043
+                        debugline 107
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                        pushshort 1883
+                        pushbyte 1
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeSwap")
+                        callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                        debugline 108
+                        returnvoid
+               ofs0043:
+                        getlocal0
+                        getlocal1
+                        debugline 110
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_map")
+                        getlocal0
+                        debugline 111
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"getURL"), 0
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function getURL() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"getURL")
+                  dispid 0
+                  method
+                     name "getURL"
+                     flag NEED_ACTIVATION
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 4
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 2
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                           newactivation
+                           pushscope
+                           debugline 115
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                           pushstring "moPetProcessAct/MoFightAct"
+                           callproperty QName(PackageNamespace(""),"getActivityAnimation"), 1
+                           pushstring "swf"
+                           newfunction 4
+                           callpropvoid QName(PackageNamespace(""),"load"), 3
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function init() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"init")
+                     dispid 0
+                     method
+                        name "init"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 1
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                              getlocal0
+                              debugline 122
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"initSet"), 0
+                              getlocal0
+                              debugline 123
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"initEvent"), 0
+                              getlocal0
+                              debugline 124
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"show"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function getMovie(param1:String) : MovieClip
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"getMovie")
+                        dispid 0
+                        method
+                           name "getMovie"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace(""),"String")
+                           paramname "param1"
+                           returns QName(PackageNamespace("flash.display"),"MovieClip")
+                           
+                           body
+                              maxstack 3
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 debugline 128
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_resLib")
+                                 iffalse ofs0023
+                                 debugline 129
+                                 getlex QName(PackageNamespace("org.taomee.utils"),"DomainUtil")
+                                 getlocal1
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_resLib")
+                                 callproperty QName(PackageNamespace(""),"getMovieClip"), 2
+                                 returnvalue
+                                 debugline 131
+                        ofs0023:
+                                 pushnull
+                                 returnvalue
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function initSet() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"initSet")
+                           dispid 0
+                           method
+                              name "initSet"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 5
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                    getlocal0
+                                    getlocal0
+                                    debugline 135
+                                    pushstring "Menu"
+                                    callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"getMovie"), 1
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 136
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "itemTxt"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_itemTxt")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 137
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "turnTxt"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_turnTxt")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 138
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "allHurtTxt"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_allHurtTxt")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 139
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "hpTxt"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_hpTxt")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 140
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "hpBar"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_hpBar")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 141
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "buyBtn"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_buyBtn")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 142
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "exitBtn"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_exitBtn")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 143
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "petBtn"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_petBagBtn")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 144
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                    pushstring "tip"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_tip")
+                                    getlocal0
+                                    debugline 145
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_tip")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_tip")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_tip")
+                                    pushfalse
+                                    dup
+                                    setlocal1
+                                    setproperty QName(PackageNamespace(""),"visible")
+                                    getlocal1
+                                    dup
+                                    setlocal1
+                                    setproperty QName(PackageNamespace(""),"mouseChildren")
+                                    getlocal1
+                                    setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                    getlocal0
+                                    debugline 146
+                                    pushfalse
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_isToFight")
+                                    debugline 147
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                    getproperty QName(PackageNamespace(""),"active")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.lobby"),"LobbyScene")
+                                    astypelate
+                                    callpropvoid QName(PackageNamespace(""),"hideToolbar"), 0
+                                    getlocal0
+                                    debugline 148
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"addNpc"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function show() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"show")
+                              dispid 0
+                              method
+                                 name "show"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                       getlocal0
+                                       debugline 152
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"update"), 0
+                                       getlocal0
+                                       debugline 153
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_map")
+                                       getproperty QName(PackageNamespace(""),"content")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_menu")
+                                       callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function addNpc() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"addNpc")
+                                 dispid 0
+                                 method
+                                    name "addNpc"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                          getlocal0
+                                          debugline 157
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                          iftrue ofs0038
+                                          getlocal0
+                                          findpropstrict QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile")
+                                          debugline 158
+                                          constructprop QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile"), 0
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                          getlocal0
+                                          debugline 159
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                          pushshort 435
+                                          setproperty QName(PackageNamespace(""),"x")
+                                          getlocal0
+                                          debugline 160
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                          pushshort 300
+                                          setproperty QName(PackageNamespace(""),"y")
+                                          getlocal0
+                                          debugline 161
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                          pushtrue
+                                          setproperty QName(PackageNamespace(""),"buttonMode")
+                                 ofs0038:
+                                          getlocal0
+                                          debugline 163
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                          pushstring "MoProcessBoss"
+                                          callproperty QName(PackageNamespace(""),"getActivityMobile"), 1
+                                          setproperty QName(PackageNamespace(""),"resourceUrl")
+                                          debugline 164
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                          pushstring "npc"
+                                          callpropvoid QName(PackageNamespace(""),"addMobile"), 2
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function toFight(param1:MouseEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toFight")
+                                    dispid 0
+                                    method
+                                       name "toFight"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 2
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                             debug 1, "param1", 0, 0
+                                             getlocal0
+                                             debugline 168
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_turnValue")
+                                             pushbyte 0
+                                             greaterthan
+                                             debugline 168
+                                             iffalse ofs003d
+                                             getlocal0
+                                             debugline 169
+                                             callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"fightFilter"), 0
+                                             iffalse ofs0039
+                                             getlocal0
+                                             debugline 170
+                                             pushtrue
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_isToFight")
+                                             debugline 171
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                             pushshort 587
+                                             callpropvoid QName(PackageNamespace(""),"startFightWithBoss"), 1
+                                             debugline 168
+                                    ofs0039:
+                                             jump ofs0044
+                                    ofs003d:
+                                             getlocal0
+                                             debugline 174
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toExit"), 0
+                                    ofs0044:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function fightFilter() : Boolean
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"fightFilter")
+                                       dispid 0
+                                       method
+                                          name "fightFilter"
+                                          returns QName(PackageNamespace(""),"Boolean")
+                                          
+                                          body
+                                             maxstack 2
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                debug 1, "_loc1_", 0, 0
+                                                debugline 179
+                                                pushtrue
+                                                setlocal1
+                                                debugline 180
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightVerifyManager")
+                                                callproperty QName(PackageNamespace(""),"validateFightStart"), 0
+                                                iftrue ofs0020
+                                                debugline 181
+                                                pushfalse
+                                                setlocal1
+                                       ofs0020:
+                                                getlocal0
+                                                debugline 183
+                                                pushbyte 100
+                                                callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"isHasPetInBagByLevel"), 1
+                                                iftrue ofs003d
+                                                debugline 184
+                                                pushfalse
+                                                setlocal1
+                                                debugline 185
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                pushstring "精灵背包中至少有一只满级精灵才可以挑战哦!"
+                                                callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                                       ofs003d:
+                                                getlocal1
+                                                debugline 187
+                                                returnvalue
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function isHasPetInBagByType(param1:int) : Boolean
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"isHasPetInBagByType")
+                                          dispid 0
+                                          method
+                                             name "isHasPetInBagByType"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace(""),"int")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"Boolean")
+                                             
+                                             body
+                                                maxstack 2
+                                                localcount 5
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                   debug 1, "_loc2_", 1, 0
+                                                   debug 1, "param1", 0, 0
+                                                   debug 1, "_loc4_", 2, 0
+                                                   debug 1, "_loc3_", 3, 0
+                                                   debugline 191
+                                                   pushfalse
+                                                   setlocal2
+                                                   debugline 192
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                   callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                                   coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                                   setlocal 4
+                                                   debugline 193
+                                                   pushbyte 0
+                                                   setlocal3
+                                                   jump ofs0054
+                                          ofs0036:
+                                                   label
+                                                   getlocal 4
+                                                   getlocal3
+                                                   debugline 195
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   getproperty QName(PackageNamespace(""),"type")
+                                                   getlocal1
+                                                   ifne ofs0052
+                                                   debugline 196
+                                                   pushtrue
+                                                   setlocal2
+                                                   jump ofs0060
+                                                   debugline 199
+                                          ofs0052:
+                                                   inclocal_i 3
+                                          ofs0054:
+                                                   getlocal3
+                                                   getlocal 4
+                                                   debugline 194
+                                                   getproperty QName(PackageNamespace(""),"length")
+                                                   iflt ofs0036
+                                          ofs0060:
+                                                   getlocal2
+                                                   debugline 201
+                                                   returnvalue
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function isHasPetInBagByLevel(param1:int) : Boolean
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"isHasPetInBagByLevel")
+                                             dispid 0
+                                             method
+                                                name "isHasPetInBagByLevel"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace(""),"int")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"Boolean")
+                                                
+                                                body
+                                                   maxstack 2
+                                                   localcount 5
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                      debug 1, "_loc2_", 1, 0
+                                                      debug 1, "param1", 0, 0
+                                                      debug 1, "_loc4_", 2, 0
+                                                      debug 1, "_loc3_", 3, 0
+                                                      debugline 205
+                                                      pushfalse
+                                                      setlocal2
+                                                      debugline 206
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                      callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                                      coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                                      setlocal 4
+                                                      debugline 207
+                                                      pushbyte 0
+                                                      setlocal3
+                                                      jump ofs0054
+                                             ofs0036:
+                                                      label
+                                                      getlocal 4
+                                                      getlocal3
+                                                      debugline 209
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      getproperty QName(PackageNamespace(""),"level")
+                                                      getlocal1
+                                                      ifne ofs0052
+                                                      debugline 210
+                                                      pushtrue
+                                                      setlocal2
+                                                      jump ofs0060
+                                                      debugline 213
+                                             ofs0052:
+                                                      inclocal_i 3
+                                             ofs0054:
+                                                      getlocal3
+                                                      getlocal 4
+                                                      debugline 208
+                                                      getproperty QName(PackageNamespace(""),"length")
+                                                      iflt ofs0036
+                                             ofs0060:
+                                                      getlocal2
+                                                      debugline 215
+                                                      returnvalue
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function update() : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"update")
+                                                dispid 0
+                                                method
+                                                   name "update"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 1
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                         getlocal0
+                                                         debugline 219
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"requestItem"), 0
+                                                         getlocal0
+                                                         debugline 220
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"requestForeverLimit"), 0
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function initEvent() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"initEvent")
+                                                   dispid 0
+                                                   method
+                                                      name "initEvent"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                            getlocal0
+                                                            debugline 224
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_exitBtn")
+                                                            pushstring "click"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toExit")
+                                                            callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                            getlocal0
+                                                            debugline 225
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_buyBtn")
+                                                            pushstring "click"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toBuy")
+                                                            callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                            getlocal0
+                                                            debugline 226
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_petBagBtn")
+                                                            pushstring "click"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"openPanel")
+                                                            callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                            getlocal0
+                                                            debugline 227
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                            pushstring "click"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toFight")
+                                                            callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                            getlocal0
+                                                            debugline 228
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                            pushstring "rollOver"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"onNpcOver")
+                                                            callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                            getlocal0
+                                                            debugline 229
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                            pushstring "rollOut"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"onNpcOut")
+                                                            callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function onNpcOver(param1:MouseEvent) : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"onNpcOver")
+                                                      dispid 0
+                                                      method
+                                                         name "onNpcOver"
+                                                         flag HAS_PARAM_NAMES
+                                                         param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 2
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                               debug 1, "param1", 0, 0
+                                                               getlocal0
+                                                               debugline 233
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_tip")
+                                                               pushtrue
+                                                               setproperty QName(PackageNamespace(""),"visible")
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function onNpcOut(param1:MouseEvent) : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"onNpcOut")
+                                                         dispid 0
+                                                         method
+                                                            name "onNpcOut"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 2
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  getlocal0
+                                                                  debugline 237
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_tip")
+                                                                  pushfalse
+                                                                  setproperty QName(PackageNamespace(""),"visible")
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function openPanel(param1:MouseEvent) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"openPanel")
+                                                            dispid 0
+                                                            method
+                                                               name "openPanel"
+                                                               flag HAS_PARAM_NAMES
+                                                               param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 3
+                                                                  localcount 2
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                     debug 1, "param1", 0, 0
+                                                                     debugline 241
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                     pushstring "PetBagPanel"
+                                                                     callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                                     callpropvoid QName(PackageNamespace(""),"toggleModule"), 1
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function toBuy(param1:MouseEvent) : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toBuy")
+                                                               dispid 0
+                                                               method
+                                                                  name "toBuy"
+                                                                  flag HAS_PARAM_NAMES
+                                                                  param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                  paramname "param1"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 5
+                                                                     localcount 2
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                        debug 1, "param1", 0, 0
+                                                                        debugline 245
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                        pushstring "BuyHurtItemPanel"
+                                                                        pushstring "dispose"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeBuy")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 3
+                                                                        debugline 246
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                        pushstring "BuyHurtItemPanel"
+                                                                        callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                                        pushstring "正在打开购买伤害面板..."
+                                                                        pushstring "type"
+                                                                        pushbyte 1
+                                                                        newobject 1
+                                                                        callpropvoid QName(PackageNamespace(""),"toggleModule"), 3
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function closeBuy(param1:ModuleEvent) : void
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeBuy")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "closeBuy"
+                                                                     flag HAS_PARAM_NAMES
+                                                                     param QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                                     paramname "param1"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 4
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                           debug 1, "param1", 0, 0
+                                                                           debugline 250
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                           pushstring "BuyHurtItemPanel"
+                                                                           pushstring "dispose"
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeBuy")
+                                                                           callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                                           getlocal0
+                                                                           debugline 251
+                                                                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"requestItem"), 0
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function toExit(param1:MouseEvent = null) : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toExit")
+                                                                     dispid 0
+                                                                     method
+                                                                        name "toExit"
+                                                                        flag HAS_OPTIONAL
+                                                                        flag HAS_PARAM_NAMES
+                                                                        param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                        paramname "param1"
+                                                                        optional Null()
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 7
+                                                                           localcount 2
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                              debug 1, "param1", 0, 0
+                                                                              debugline 255
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                              pushstring "MoPetProcessHurtAlertPanel"
+                                                                              pushstring "dispose"
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeAlert")
+                                                                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 3
+                                                                              debugline 256
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                              pushstring "MoPetProcessHurtAlertPanel"
+                                                                              callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                                              pushstring ""
+                                                                              debugline 257
+                                                                              pushstring "hurt"
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_hurtValue")
+                                                                              debugline 258
+                                                                              pushstring "leftCount"
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_turnValue")
+                                                                              newobject 2
+                                                                              callpropvoid QName(PackageNamespace(""),"toggleModule"), 3
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function closeAlert(param1:ModuleEvent) : void
+                                                                  {
+                                                                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeAlert")
+                                                                        dispid 0
+                                                                        method
+                                                                           name "closeAlert"
+                                                                           flag HAS_PARAM_NAMES
+                                                                           param QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                                           paramname "param1"
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 4
+                                                                              localcount 2
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                 debug 1, "param1", 0, 0
+                                                                                 debugline 263
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                                 pushstring "MoPetProcessHurtAlertPanel"
+                                                                                 pushstring "dispose"
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeAlert")
+                                                                                 callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                                                 getlocal0
+                                                                                 debugline 264
+                                                                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"updateTurns"), 0
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private function updateTurns() : void
+                                                                     {
+                                                                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"updateTurns")
+                                                                           dispid 0
+                                                                           method
+                                                                              name "updateTurns"
+                                                                              flag NEED_ACTIVATION
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 4
+                                                                                 localcount 2
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 2
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                    newactivation
+                                                                                    pushscope
+                                                                                    getlocal0
+                                                                                    debugline 268
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                                                    pushfalse
+                                                                                    dup
+                                                                                    setlocal1
+                                                                                    setproperty QName(PackageNamespace(""),"mouseChildren")
+                                                                                    getlocal1
+                                                                                    setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                                                    debugline 269
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                                    pushuint 203189
+                                                                                    pushuint 203190
+                                                                                    newarray 2
+                                                                                    newfunction 24
+                                                                                    callpropvoid QName(PackageNamespace(""),"requestActiveCountList"), 2
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        private function requestForeverLimit() : void
+                                                                        {
+                                                                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"requestForeverLimit")
+                                                                              dispid 0
+                                                                              method
+                                                                                 name "requestForeverLimit"
+                                                                                 returns QName(PackageNamespace(""),"void")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 4
+                                                                                    localcount 2
+                                                                                    initscopedepth 0
+                                                                                    maxscopedepth 1
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                       getlocal0
+                                                                                       debugline 277
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                                                       getlocal0
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                                                       pushfalse
+                                                                                       dup
+                                                                                       setlocal1
+                                                                                       setproperty QName(PackageNamespace(""),"mouseChildren")
+                                                                                       getlocal1
+                                                                                       setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                                                       debugline 278
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                                       pushuint 203189
+                                                                                       pushuint 203190
+                                                                                       pushint 203188
+                                                                                       newarray 3
+                                                                                       getlocal0
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"getNewInfo")
+                                                                                       callpropvoid QName(PackageNamespace(""),"requestActiveCountList"), 2
+                                                                                       returnvoid
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                           
+                                                                           private function getNewInfo(param1:Parser_1142) : void
+                                                                           {
+                                                                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"getNewInfo")
+                                                                                 dispid 0
+                                                                                 method
+                                                                                    name "getNewInfo"
+                                                                                    flag HAS_PARAM_NAMES
+                                                                                    param QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1142")
+                                                                                    paramname "param1"
+                                                                                    returns QName(PackageNamespace(""),"void")
+                                                                                    
+                                                                                    body
+                                                                                       maxstack 4
+                                                                                       localcount 3
+                                                                                       initscopedepth 0
+                                                                                       maxscopedepth 1
+                                                                                       
+                                                                                       code
+                                                                                          getlocal0
+                                                                                          pushscope
+                                                                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                          debug 1, "param1", 0, 0
+                                                                                          getlocal0
+                                                                                          debugline 282
+                                                                                          pushbyte 5
+                                                                                          getlocal1
+                                                                                          getproperty QName(PackageNamespace(""),"infoVec")
+                                                                                          pushbyte 0
+                                                                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                          subtract
+                                                                                          getlocal1
+                                                                                          getproperty QName(PackageNamespace(""),"infoVec")
+                                                                                          pushbyte 1
+                                                                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                          add
+                                                                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_turnValue")
+                                                                                          getlocal0
+                                                                                          debugline 283
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                                                          pushtrue
+                                                                                          dup
+                                                                                          setlocal2
+                                                                                          setproperty QName(PackageNamespace(""),"mouseChildren")
+                                                                                          getlocal2
+                                                                                          setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                                                          getlocal0
+                                                                                          getlocal1
+                                                                                          debugline 284
+                                                                                          getproperty QName(PackageNamespace(""),"infoVec")
+                                                                                          pushbyte 2
+                                                                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_hurtValue")
+                                                                                          getlocal0
+                                                                                          debugline 285
+                                                                                          pushuint 680000
+                                                                                          getlocal0
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_hurtValue")
+                                                                                          subtract
+                                                                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_leftBlood")
+                                                                                          getlocal0
+                                                                                          debugline 286
+                                                                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"updateBlood"), 0
+                                                                                          getlocal0
+                                                                                          debugline 287
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_turnValue")
+                                                                                          pushbyte 0
+                                                                                          ifne ofs0065
+                                                                                          getlocal0
+                                                                                          debugline 288
+                                                                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toExit"), 0
+                                                                                 ofs0065:
+                                                                                          returnvoid
+                                                                                       end ; code
+                                                                                    end ; body
+                                                                                 end ; method
+                                                                              }
+                                                                              
+                                                                              private function closeSwap(param1:IDataInput) : void
+                                                                              {
+                                                                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeSwap")
+                                                                                    dispid 0
+                                                                                    method
+                                                                                       name "closeSwap"
+                                                                                       flag HAS_PARAM_NAMES
+                                                                                       param QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                                                       paramname "param1"
+                                                                                       returns QName(PackageNamespace(""),"void")
+                                                                                       
+                                                                                       body
+                                                                                          maxstack 3
+                                                                                          localcount 2
+                                                                                          initscopedepth 0
+                                                                                          maxscopedepth 1
+                                                                                          
+                                                                                          code
+                                                                                             getlocal0
+                                                                                             pushscope
+                                                                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                             debug 1, "param1", 0, 0
+                                                                                             findpropstrict QName(PackageNamespace("com.taomee.seer2.app.swap.info"),"SwapInfo")
+                                                                                             getlocal1
+                                                                                             debugline 293
+                                                                                             constructprop QName(PackageNamespace("com.taomee.seer2.app.swap.info"),"SwapInfo"), 1
+                                                                                             pop
+                                                                                             debugline 294
+                                                                                             getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                             pushbyte 1
+                                                                                             pushbyte 70
+                                                                                             callpropvoid QName(PackageNamespace(""),"changeScene"), 2
+                                                                                             returnvoid
+                                                                                          end ; code
+                                                                                       end ; body
+                                                                                    end ; method
+                                                                                 }
+                                                                                 
+                                                                                 private function updateBlood() : void
+                                                                                 {
+                                                                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"updateBlood")
+                                                                                       dispid 0
+                                                                                       method
+                                                                                          name "updateBlood"
+                                                                                          returns QName(PackageNamespace(""),"void")
+                                                                                          
+                                                                                          body
+                                                                                             maxstack 3
+                                                                                             localcount 1
+                                                                                             initscopedepth 0
+                                                                                             maxscopedepth 1
+                                                                                             
+                                                                                             code
+                                                                                                getlocal0
+                                                                                                pushscope
+                                                                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                                getlocal0
+                                                                                                debugline 298
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_turnTxt")
+                                                                                                getlocal0
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_turnValue")
+                                                                                                callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                                                                setproperty QName(PackageNamespace(""),"text")
+                                                                                                getlocal0
+                                                                                                debugline 299
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_hpBar")
+                                                                                                getlocal0
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_leftBlood")
+                                                                                                pushuint 680000
+                                                                                                divide
+                                                                                                pushshort 168
+                                                                                                multiply
+                                                                                                setproperty QName(PackageNamespace(""),"width")
+                                                                                                getlocal0
+                                                                                                debugline 300
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_hpTxt")
+                                                                                                getlocal0
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_leftBlood")
+                                                                                                pushstring "/"
+                                                                                                add
+                                                                                                pushuint 680000
+                                                                                                add
+                                                                                                setproperty QName(PackageNamespace(""),"text")
+                                                                                                getlocal0
+                                                                                                debugline 301
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_allHurtTxt")
+                                                                                                getlocal0
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_hurtValue")
+                                                                                                callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                                                                setproperty QName(PackageNamespace(""),"text")
+                                                                                                returnvoid
+                                                                                             end ; code
+                                                                                          end ; body
+                                                                                       end ; method
+                                                                                    }
+                                                                                    
+                                                                                    private function requestItem() : void
+                                                                                    {
+                                                                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"requestItem")
+                                                                                          dispid 0
+                                                                                          method
+                                                                                             name "requestItem"
+                                                                                             returns QName(PackageNamespace(""),"void")
+                                                                                             
+                                                                                             body
+                                                                                                maxstack 3
+                                                                                                localcount 1
+                                                                                                initscopedepth 0
+                                                                                                maxscopedepth 1
+                                                                                                
+                                                                                                code
+                                                                                                   getlocal0
+                                                                                                   pushscope
+                                                                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                                   debugline 305
+                                                                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                                                   pushstring "requestSpecialItemSuccess"
+                                                                                                   getlocal0
+                                                                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"checkItem")
+                                                                                                   callpropvoid QName(PackageNamespace(""),"addEventListener1"), 2
+                                                                                                   debugline 306
+                                                                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                                                   pushtrue
+                                                                                                   callpropvoid QName(PackageNamespace(""),"requestSpecialItemList"), 1
+                                                                                                   returnvoid
+                                                                                                end ; code
+                                                                                             end ; body
+                                                                                          end ; method
+                                                                                       }
+                                                                                       
+                                                                                       private function checkItem(param1:ItemEvent) : void
+                                                                                       {
+                                                                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"checkItem")
+                                                                                             dispid 0
+                                                                                             method
+                                                                                                name "checkItem"
+                                                                                                flag HAS_PARAM_NAMES
+                                                                                                param QName(PackageNamespace("com.taomee.seer2.app.inventory.events"),"ItemEvent")
+                                                                                                paramname "param1"
+                                                                                                returns QName(PackageNamespace(""),"void")
+                                                                                                
+                                                                                                body
+                                                                                                   maxstack 5
+                                                                                                   localcount 3
+                                                                                                   initscopedepth 0
+                                                                                                   maxscopedepth 1
+                                                                                                   
+                                                                                                   code
+                                                                                                      getlocal0
+                                                                                                      pushscope
+                                                                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                                      debug 1, "_loc2_", 1, 0
+                                                                                                      debug 1, "param1", 0, 0
+                                                                                                      debugline 310
+                                                                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                                                      pushstring "requestSpecialItemSuccess"
+                                                                                                      getlocal0
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"checkItem")
+                                                                                                      callpropvoid QName(PackageNamespace(""),"removeEventListener1"), 2
+                                                                                                      debugline 311
+                                                                                                      pushbyte 0
+                                                                                                      setlocal2
+                                                                                                      jump ofs0085
+                                                                                             ofs0029:
+                                                                                                      label
+                                                                                                      debugline 313
+                                                                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"ITEM_ID")
+                                                                                                      getlocal2
+                                                                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                                      callproperty QName(PackageNamespace(""),"getSpecialItem"), 1
+                                                                                                      convert_b
+                                                                                                      dup
+                                                                                                      iffalse ofs0052
+                                                                                                      pop
+                                                                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"ITEM_ID")
+                                                                                                      getlocal2
+                                                                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                                      callproperty QName(PackageNamespace(""),"getSpecialItem"), 1
+                                                                                                      getproperty QName(PackageNamespace(""),"quantity")
+                                                                                                      pushbyte 0
+                                                                                                      greaterthan
+                                                                                             ofs0052:
+                                                                                                      iffalse ofs0075
+                                                                                                      getlocal0
+                                                                                                      debugline 314
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_itemTxt")
+                                                                                                      pushstring "当前魔神荣耀:"
+                                                                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ItemConfig")
+                                                                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"ITEM_ID")
+                                                                                                      getlocal2
+                                                                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),ProtectedNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PackageInternalNs("com.taomee.seer2.app.processor.activity.moPetProcessAct"),PrivateNamespace("FilePrivateNS:MoFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                                      callproperty QName(PackageNamespace(""),"getItemDefinition"), 1
+                                                                                                      getproperty QName(PackageNamespace(""),"tip")
+                                                                                                      add
+                                                                                                      setproperty QName(PackageNamespace(""),"text")
+                                                                                                      jump ofs0091
+                                                                                             ofs0075:
+                                                                                                      getlocal0
+                                                                                                      debugline 317
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_itemTxt")
+                                                                                                      pushstring "当前魔神荣耀:"
+                                                                                                      setproperty QName(PackageNamespace(""),"text")
+                                                                                                      debugline 318
+                                                                                                      inclocal_i 2
+                                                                                             ofs0085:
+                                                                                                      getlocal2
+                                                                                                      debugline 312
+                                                                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"ITEM_ID")
+                                                                                                      getproperty QName(PackageNamespace(""),"length")
+                                                                                                      iflt ofs0029
+                                                                                             ofs0091:
+                                                                                                      returnvoid
+                                                                                                   end ; code
+                                                                                                end ; body
+                                                                                             end ; method
+                                                                                          }
+                                                                                          
+                                                                                          public function onSwitchComplete(param1:SceneEvent) : void
+                                                                                          {
+                                                                                             trait method QName(PackageNamespace(""),"onSwitchComplete")
+                                                                                                flag METADATA
+                                                                                                metadata "__go_to_definition_help"
+                                                                                                   item "pos" "11196"
+                                                                                                end ; metadata
+                                                                                                dispid 0
+                                                                                                method
+                                                                                                   name "onSwitchComplete"
+                                                                                                   flag HAS_PARAM_NAMES
+                                                                                                   param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                                                                                                   paramname "param1"
+                                                                                                   returns QName(PackageNamespace(""),"void")
+                                                                                                   
+                                                                                                   body
+                                                                                                      maxstack 3
+                                                                                                      localcount 2
+                                                                                                      initscopedepth 0
+                                                                                                      maxscopedepth 1
+                                                                                                      
+                                                                                                      code
+                                                                                                         getlocal0
+                                                                                                         pushscope
+                                                                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                                         debug 1, "param1", 0, 0
+                                                                                                         debugline 323
+                                                                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                                         getproperty QName(PackageNamespace(""),"active")
+                                                                                                         getproperty QName(PackageNamespace(""),"mapID")
+                                                                                                         pushbyte 70
+                                                                                                         ifne ofs0044
+                                                                                                         debugline 324
+                                                                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                                         pushstring "switchComplete"
+                                                                                                         getlocal0
+                                                                                                         getproperty QName(PackageNamespace(""),"onSwitchComplete")
+                                                                                                         callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                                         debugline 325
+                                                                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                                                         pushstring "MoPetProcessActPanel"
+                                                                                                         callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                                                                         pushstring "正在打开魔圣前传(上):魔之刃面板..."
+                                                                                                         callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                                                                                                         debugline 326
+                                                                                                         pushnull
+                                                                                                         findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_self")
+                                                                                                         swap
+                                                                                                         setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_self")
+                                                                                                ofs0044:
+                                                                                                         returnvoid
+                                                                                                      end ; code
+                                                                                                   end ; body
+                                                                                                end ; method
+                                                                                             }
+                                                                                             
+                                                                                             public function dispose() : void
+                                                                                             {
+                                                                                                trait method QName(PackageNamespace(""),"dispose")
+                                                                                                   flag METADATA
+                                                                                                   metadata "__go_to_definition_help"
+                                                                                                      item "pos" "11562"
+                                                                                                   end ; metadata
+                                                                                                   dispid 0
+                                                                                                   method
+                                                                                                      name "dispose"
+                                                                                                      returns QName(PackageNamespace(""),"void")
+                                                                                                      
+                                                                                                      body
+                                                                                                         maxstack 4
+                                                                                                         localcount 1
+                                                                                                         initscopedepth 0
+                                                                                                         maxscopedepth 1
+                                                                                                         
+                                                                                                         code
+                                                                                                            getlocal0
+                                                                                                            pushscope
+                                                                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\moPetProcessAct;MoFightAct.as"
+                                                                                                            getlocal0
+                                                                                                            debugline 331
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_npc")
+                                                                                                            pushstring "click"
+                                                                                                            getlocal0
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toFight")
+                                                                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                                            debugline 332
+                                                                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                                                            pushstring "MoPetProcessHurtAlertPanel"
+                                                                                                            pushstring "dispose"
+                                                                                                            getlocal0
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeAlert")
+                                                                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                                                                            debugline 333
+                                                                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                                                            pushstring "BuyHurtItemPanel"
+                                                                                                            pushstring "dispose"
+                                                                                                            getlocal0
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"closeBuy")
+                                                                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                                                                            getlocal0
+                                                                                                            debugline 334
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_isToFight")
+                                                                                                            iftrue ofs004b
+                                                                                                            debugline 335
+                                                                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                                            getproperty QName(PackageNamespace(""),"active")
+                                                                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.lobby"),"LobbyScene")
+                                                                                                            astypelate
+                                                                                                            callpropvoid QName(PackageNamespace(""),"showToolbar"), 0
+                                                                                                   ofs004b:
+                                                                                                            getlocal0
+                                                                                                            debugline 337
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_exitBtn")
+                                                                                                            pushstring "click"
+                                                                                                            getlocal0
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toExit")
+                                                                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                                            getlocal0
+                                                                                                            debugline 338
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_buyBtn")
+                                                                                                            pushstring "click"
+                                                                                                            getlocal0
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"toBuy")
+                                                                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                                            getlocal0
+                                                                                                            debugline 339
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"_petBagBtn")
+                                                                                                            pushstring "click"
+                                                                                                            getlocal0
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct:MoFightAct"),"openPanel")
+                                                                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                                            returnvoid
+                                                                                                         end ; code
+                                                                                                      end ; body
+                                                                                                   end ; method
+                                                                                                }
+                                                                                             }
+                                                                                          }
+                                                                                          
+                                                                                          method
+                                                                                             name null
+                                                                                             returns null
+                                                                                             
+                                                                                             body
+                                                                                                maxstack 3
+                                                                                                localcount 1
+                                                                                                initscopedepth 0
+                                                                                                maxscopedepth 2
+                                                                                                
+                                                                                                code
+                                                                                                   getlocal0
+                                                                                                   pushscope
+                                                                                                   getscopeobject 0
+                                                                                                   getlex QName(PackageNamespace(""),"Object")
+                                                                                                   dup
+                                                                                                   pushscope
+                                                                                                   newclass 0
+                                                                                                   popscope
+                                                                                                   initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.activity.moPetProcessAct"),"MoFightAct")
+                                                                                                   returnvoid
+                                                                                                end ; code
+                                                                                             end ; body
+                                                                                          end ; method
+                                                                                          

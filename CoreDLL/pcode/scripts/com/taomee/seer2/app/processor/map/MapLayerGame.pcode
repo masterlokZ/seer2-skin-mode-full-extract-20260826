@@ -1,0 +1,1017 @@
+package com.taomee.seer2.app.processor.map
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.info.BuyPropInfo;
+   import com.taomee.seer2.app.net.parser.Parser_1142;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.shopManager.ShopManager;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.manager.TimeManager;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.DisplayObject;
+   import flash.display.SimpleButton;
+   import flash.events.MouseEvent;
+   import flash.events.TimerEvent;
+   import flash.system.ApplicationDomain;
+   import flash.text.TextField;
+   import flash.utils.Timer;
+   import org.taomee.utils.DomainUtil;
+   
+   public class MapLayerGame
+   {
+      
+      private static const lastLayerCompleteTimeLimitId:int = 203299;
+      
+      private static const timeBetweenLayers:Array;
+      
+      private static const currentLayerLimitId:int = 203300;
+      
+      private static const mapId:Array;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 6
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 1
+            
+            code
+               getlocal0
+               pushscope
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+               debugline 31
+               pushbyte 0
+               pushbyte 5
+               pushbyte 10
+               pushbyte 20
+               pushbyte 30
+               pushshort 1440
+               newarray 6
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"timeBetweenLayers")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"timeBetweenLayers")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+               debugline 35
+               pushshort 8600
+               pushshort 8601
+               pushshort 8602
+               pushshort 8603
+               pushshort 8604
+               pushshort 8605
+               newarray 6
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"mapId")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"mapId")
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _mapModel:MapModel;
+      
+      private var _resLibs:ApplicationDomain;
+      
+      private var _loadCom:Boolean = false;
+      
+      private var _lastTime:uint;
+      
+      private var _timeLeftCount:int;
+      
+      private var _currentLayer:int;
+      
+      private var _timer:Timer;
+      
+      private var _leftTimeTxt:TextField;
+      
+      private var _leftTimeContainer:DisplayObject;
+      
+      private var _skipTimeBtn:SimpleButton;
+      
+      private var _popMc:DisplayObject;
+      
+      private var _canEnter:Boolean;
+      
+      private var shi:int;
+      
+      private var fen:int;
+      
+      private var miao:int;
+      
+      public function MapLayerGame(param1:MapModel)
+      {
+         method
+            name "MapLayerGame"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                  debug 1, "param1", 0, 0
+                  debugline 69
+                  getlocal0
+                  debugline 69
+                  constructsuper 0
+                  getlocal0
+                  getlocal1
+                  debugline 70
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_mapModel")
+                  getlocal0
+                  debugline 71
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"init"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function dispose() : void
+      {
+         trait method QName(PackageNamespace(""),"dispose")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2095"
+            end ; metadata
+            dispid 0
+            method
+               name "dispose"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                     getlocal0
+                     debugline 75
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_popMc")
+                     iffalse ofs0024
+                     getlocal0
+                     debugline 76
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_popMc")
+                     pushstring "click"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onPop")
+                     callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                     debugline 77
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_popMc")
+                     callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+            ofs0024:
+                     getlocal0
+                     debugline 79
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                     iffalse ofs0048
+                     getlocal0
+                     debugline 80
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                     callpropvoid QName(PackageNamespace(""),"stop"), 0
+                     getlocal0
+                     debugline 81
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                     pushstring "timer"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onTimer")
+                     callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                     getlocal0
+                     debugline 82
+                     pushnull
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+            ofs0048:
+                     getlocal0
+                     debugline 84
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                     iffalse ofs0068
+                     getlocal0
+                     debugline 85
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                     pushstring "click"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onSkip")
+                     callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                     debugline 86
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                     callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+            ofs0068:
+                     getlocal0
+                     debugline 88
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                     iffalse ofs007b
+                     debugline 89
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                     callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+            ofs007b:
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function init() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"init")
+               dispid 0
+               method
+                  name "init"
+                  flag NEED_ACTIVATION
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 4
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 2
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                        newactivation
+                        pushscope
+                        debugline 94
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                        pushstring "mapLayerGame/MapLayerGame"
+                        callproperty QName(PackageNamespace(""),"getActivityAnimation"), 1
+                        pushstring "swf"
+                        newfunction 3
+                        callpropvoid QName(PackageNamespace(""),"load"), 3
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function initMap() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"initMap")
+                  dispid 0
+                  method
+                     name "initMap"
+                     flag NEED_ACTIVATION
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 2
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                           newactivation
+                           pushscope
+                           getlocal0
+                           getlocal0
+                           debugline 102
+                           pushstring "PopMc"
+                           callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"getMovie"), 1
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_popMc")
+                           getlocal0
+                           debugline 103
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_mapModel")
+                           getproperty QName(PackageNamespace(""),"content")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_popMc")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           getlocal0
+                           debugline 104
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_popMc")
+                           pushshort 637
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           debugline 105
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_popMc")
+                           pushshort 185
+                           setproperty QName(PackageNamespace(""),"y")
+                           getlocal0
+                           debugline 106
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_popMc")
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onPop")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           debugline 107
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                           pushint 203299
+                           pushint 203300
+                           newarray 2
+                           newfunction 5
+                           callpropvoid QName(PackageNamespace(""),"requestActiveCountList"), 2
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onPop(param1:MouseEvent) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onPop")
+                     dispid 0
+                     method
+                        name "onPop"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("flash.events"),"MouseEvent")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 4
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              debugline 115
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_canEnter")
+                              pushfalse
+                              equals
+                              debugline 115
+                              iffalse ofs0027
+                              debugline 116
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                              pushstring "倒计时结束方可进入"
+                              callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                              debugline 115
+                              jump ofs0035
+                              debugline 118
+                     ofs0027:
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                              pushbyte 1
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"mapId")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_currentLayer")
+                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapLayerGame"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapLayerGame"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              callpropvoid QName(PackageNamespace(""),"changeScene"), 2
+                     ofs0035:
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function checkTime() : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"checkTime")
+                        dispid 0
+                        method
+                           name "checkTime"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 4
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                 getlocal0
+                                 debugline 123
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_lastTime")
+                                 pushbyte 0
+                                 equals
+                                 debugline 123
+                                 iffalse ofs001e
+                                 getlocal0
+                                 debugline 124
+                                 pushtrue
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_canEnter")
+                                 debugline 123
+                                 jump ofs006a
+                        ofs001e:
+                                 getlocal0
+                                 getlocal0
+                                 debugline 126
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_lastTime")
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"timeBetweenLayers")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_currentLayer")
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapLayerGame"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapLayerGame"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 pushbyte 60
+                                 multiply
+                                 add
+                                 pushbyte 15
+                                 add
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                 callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                 subtract
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timeLeftCount")
+                                 getlocal0
+                                 debugline 127
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timeLeftCount")
+                                 pushbyte 0
+                                 lessequals
+                                 debugline 127
+                                 iffalse ofs005c
+                                 getlocal0
+                                 debugline 128
+                                 pushtrue
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_canEnter")
+                                 getlocal0
+                                 debugline 129
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"removeTxtAndBtn"), 0
+                                 debugline 127
+                                 jump ofs006a
+                        ofs005c:
+                                 getlocal0
+                                 debugline 131
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"addTxtAndBtn"), 0
+                                 getlocal0
+                                 debugline 132
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"startTimer"), 0
+                        ofs006a:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function addTxtAndBtn() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"addTxtAndBtn")
+                           dispid 0
+                           method
+                              name "addTxtAndBtn"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                    getlocal0
+                                    getlocal0
+                                    debugline 138
+                                    pushstring "Container"
+                                    callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"getMovie"), 1
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                    getlocal0
+                                    debugline 139
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_mapModel")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                    callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                    getlocal0
+                                    debugline 140
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                    pushbyte 70
+                                    setproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    debugline 141
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                    pushshort 250
+                                    setproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 142
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                    pushstring "leftTxt"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapLayerGame"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapLayerGame"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeTxt")
+                                    getlocal0
+                                    debugline 143
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeTxt")
+                                    pushstring ""
+                                    setproperty QName(PackageNamespace(""),"text")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 144
+                                    pushstring "skipTimeBtn"
+                                    callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"getMovie"), 1
+                                    getlex QName(PackageNamespace("flash.display"),"SimpleButton")
+                                    astypelate
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                    getlocal0
+                                    debugline 145
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_mapModel")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                    callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                    getlocal0
+                                    debugline 146
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                    pushbyte 100
+                                    setproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    debugline 147
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                    pushshort 200
+                                    setproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    debugline 148
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                    pushstring "click"
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onSkip")
+                                    callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function removeTxtAndBtn() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"removeTxtAndBtn")
+                              dispid 0
+                              method
+                                 name "removeTxtAndBtn"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                       getlocal0
+                                       debugline 152
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                       iffalse ofs0019
+                                       debugline 153
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                       callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                              ofs0019:
+                                       getlocal0
+                                       debugline 155
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                       iffalse ofs003c
+                                       debugline 156
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                       callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                       getlocal0
+                                       debugline 157
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onSkip")
+                                       callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                              ofs003c:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onSkip(param1:MouseEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onSkip")
+                                 dispid 0
+                                 method
+                                    name "onSkip"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                          debug 1, "_loc2_", 1, 0
+                                          debug 1, "param1", 0, 0
+                                          findpropstrict QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo")
+                                          debugline 162
+                                          constructprop QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo"), 0
+                                          coerce QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo")
+                                          setlocal2
+                                          getlocal2
+                                          debugline 163
+                                          pushint 603327
+                                          setproperty QName(PackageNamespace(""),"itemId")
+                                          getlocal2
+                                          getlocal0
+                                          debugline 164
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"buyComplete")
+                                          setproperty QName(PackageNamespace(""),"buyComplete")
+                                          debugline 165
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.shopManager"),"ShopManager")
+                                          getlocal2
+                                          callpropvoid QName(PackageNamespace(""),"buyVirtualItem"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function buyComplete(param1:Object) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"buyComplete")
+                                    dispid 0
+                                    method
+                                       name "buyComplete"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace(""),"Object")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                             debug 1, "param1", 0, 0
+                                             getlocal0
+                                             debugline 169
+                                             pushtrue
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_canEnter")
+                                             getlocal0
+                                             debugline 170
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                                             iffalse ofs0034
+                                             getlocal0
+                                             debugline 171
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                                             callpropvoid QName(PackageNamespace(""),"stop"), 0
+                                             getlocal0
+                                             debugline 172
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                                             pushstring "timer"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onTimer")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             debugline 174
+                                    ofs0034:
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                             callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                             debugline 175
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                             callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function startTimer() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"startTimer")
+                                       dispid 0
+                                       method
+                                          name "startTimer"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                                getlocal0
+                                                findpropstrict QName(PackageNamespace("flash.utils"),"Timer")
+                                                debugline 179
+                                                pushshort 1000
+                                                constructprop QName(PackageNamespace("flash.utils"),"Timer"), 1
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                                                getlocal0
+                                                debugline 180
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                                                pushstring "timer"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onTimer")
+                                                callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                getlocal0
+                                                debugline 181
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                                                callpropvoid QName(PackageNamespace(""),"start"), 0
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function onTimer(param1:TimerEvent) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onTimer")
+                                          dispid 0
+                                          method
+                                             name "onTimer"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace("flash.events"),"TimerEvent")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                                   debug 1, "param1", 0, 0
+                                                   getlocal0
+                                                   debugline 185
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timeLeftCount")
+                                                   pushbyte 0
+                                                   greaterthan
+                                                   debugline 185
+                                                   iffalse ofs0033
+                                                   getlocal0
+                                                   debugline 186
+                                                   dup
+                                                   debugline 186
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timeLeftCount")
+                                                   debugline 186
+                                                   decrement
+                                                   debugline 186
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timeLeftCount")
+                                                   debugline 185
+                                                   jump ofs0067
+                                          ofs0033:
+                                                   getlocal0
+                                                   debugline 188
+                                                   pushtrue
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_canEnter")
+                                                   getlocal0
+                                                   debugline 189
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                                                   callpropvoid QName(PackageNamespace(""),"stop"), 0
+                                                   getlocal0
+                                                   debugline 190
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timer")
+                                                   pushstring "timer"
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"onTimer")
+                                                   callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                   debugline 191
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_skipTimeBtn")
+                                                   callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                                   debugline 192
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeContainer")
+                                                   callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                          ofs0067:
+                                                   getlocal0
+                                                   debugline 194
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"showLeftTime"), 0
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function showLeftTime() : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"showLeftTime")
+                                             dispid 0
+                                             method
+                                                name "showLeftTime"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 4
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                                      getlocal0
+                                                      getlocal0
+                                                      debugline 198
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timeLeftCount")
+                                                      pushshort 3600
+                                                      divide
+                                                      convert_i
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"shi")
+                                                      getlocal0
+                                                      getlocal0
+                                                      debugline 199
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timeLeftCount")
+                                                      pushshort 3600
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"shi")
+                                                      multiply
+                                                      subtract
+                                                      pushbyte 60
+                                                      divide
+                                                      convert_i
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"fen")
+                                                      getlocal0
+                                                      getlocal0
+                                                      debugline 200
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_timeLeftCount")
+                                                      pushshort 3600
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"shi")
+                                                      multiply
+                                                      subtract
+                                                      pushbyte 60
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"fen")
+                                                      multiply
+                                                      subtract
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"miao")
+                                                      getlocal0
+                                                      debugline 201
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_leftTimeTxt")
+                                                      pushstring ""
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"shi")
+                                                      pushbyte 10
+                                                      ifnlt ofs005b
+                                                      pushstring "0"
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"shi")
+                                                      convert_s
+                                                      add
+                                                      jump ofs0060
+                                             ofs005b:
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"shi")
+                                                      convert_s
+                                                      coerce_s
+                                             ofs0060:
+                                                      add
+                                                      pushstring ":"
+                                                      add
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"fen")
+                                                      pushbyte 10
+                                                      ifnlt ofs0078
+                                                      pushstring "0"
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"fen")
+                                                      convert_s
+                                                      add
+                                                      jump ofs007d
+                                             ofs0078:
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"fen")
+                                                      convert_s
+                                                      coerce_s
+                                             ofs007d:
+                                                      add
+                                                      pushstring ":"
+                                                      add
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"miao")
+                                                      pushbyte 10
+                                                      ifnlt ofs0095
+                                                      pushstring "0"
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"miao")
+                                                      convert_s
+                                                      add
+                                                      jump ofs009a
+                                             ofs0095:
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"miao")
+                                                      convert_s
+                                                      coerce_s
+                                             ofs009a:
+                                                      add
+                                                      setproperty QName(PackageNamespace(""),"text")
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function getMovie(param1:String) : DisplayObject
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"getMovie")
+                                                dispid 0
+                                                method
+                                                   name "getMovie"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace(""),"String")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapLayerGame.as"
+                                                         debug 1, "param1", 0, 0
+                                                         getlocal0
+                                                         debugline 205
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_resLibs")
+                                                         iffalse ofs0023
+                                                         debugline 206
+                                                         getlex QName(PackageNamespace("org.taomee.utils"),"DomainUtil")
+                                                         getlocal1
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapLayerGame"),"_resLibs")
+                                                         callproperty QName(PackageNamespace(""),"getDisplayObject"), 2
+                                                         returnvalue
+                                                         debugline 208
+                                                ofs0023:
+                                                         pushnull
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                          }
+                                       }
+                                       
+                                       method
+                                          name null
+                                          returns null
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                getscopeobject 0
+                                                getlex QName(PackageNamespace(""),"Object")
+                                                dup
+                                                pushscope
+                                                newclass 0
+                                                popscope
+                                                initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.map"),"MapLayerGame")
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                       

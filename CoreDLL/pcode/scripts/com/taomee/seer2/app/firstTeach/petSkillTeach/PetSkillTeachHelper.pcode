@@ -1,0 +1,1549 @@
+package com.taomee.seer2.app.firstTeach.petSkillTeach
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.firstTeach.FirstTeachManager;
+   import com.taomee.seer2.app.home.panel.HomePanel;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.parser.Parser_1017;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.pet.events.PetInfoEvent;
+   import com.taomee.seer2.app.quest.QuestManager;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.quest.events.QuestEvent;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.events.SceneEvent;
+   import com.taomee.seer2.core.ui.UIManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import org.taomee.manager.EventManager;
+   
+   public class PetSkillTeachHelper
+   {
+      
+      public static const PET_BAG:uint = 0;
+      
+      public static const PET_STORAGE:uint = 1;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _initPetInfoVec:Vector.<PetInfo>;
+      
+      private var _statusVec:Vector.<int>;
+      
+      private var _petResourceId:uint;
+      
+      private var _petId:uint;
+      
+      private var _type:int;
+      
+      private var _skillTeachIndex:int;
+      
+      private var _petInfo:PetInfo;
+      
+      private var _storagePop:MovieClip;
+      
+      public function PetSkillTeachHelper()
+      {
+         method
+            name "PetSkillTeachHelper"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                  debugline 53
+                  getlocal0
+                  debugline 53
+                  constructsuper 0
+                  getlocal0
+                  debugline 54
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                  callproperty QName(PackageNamespace(""),"getInitialPetInfoVec"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_initPetInfoVec")
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function initEventListener() : void
+      {
+         trait method QName(PackageNamespace(""),"initEventListener")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1823"
+            end ; metadata
+            dispid 0
+            method
+               name "initEventListener"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                     debugline 58
+                     getlex QName(PackageNamespace("org.taomee.manager"),"EventManager")
+                     pushstring "petSkillTeachComplete"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetSkillTeachComplete")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 59
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                     pushstring "switchComplete"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onMapComplete")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 60
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                     pushstring "switchStart"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onMapStart")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 61
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                     pushstring "petStartTraining"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetInfoChange")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 62
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                     pushstring "petPropertiesChange"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetInfoChange")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 63
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                     pushstring "petCure"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetInfoChange")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 64
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                     pushstring "petPutToBag"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetInfoChange")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 65
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                     pushstring "petPutToStorage"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetInfoChange")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 66
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                     pushstring "petRemove"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetInfoChange")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     debugline 67
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     callproperty QName(PackageNamespace(""),"isFreshQuestComplete"), 0
+                     pushfalse
+                     ifne ofs0088
+                     debugline 68
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushstring "complete"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onQuestComplete")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+            ofs0088:
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function onQuestComplete(param1:QuestEvent) : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onQuestComplete")
+               dispid 0
+               method
+                  name "onQuestComplete"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                        debug 1, "param1", 0, 0
+                        debugline 73
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                        callproperty QName(PackageNamespace(""),"isFreshQuestComplete"), 0
+                        iffalse ofs002d
+                        debugline 74
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                        pushstring "complete"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onQuestComplete")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        getlocal0
+                        debugline 75
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"clearPop"), 0
+                        getlocal0
+                        debugline 76
+                        pushnull
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onMapComplete"), 1
+               ofs002d:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function onPetInfoChange(param1:PetInfoEvent) : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetInfoChange")
+                  dispid 0
+                  method
+                     name "onPetInfoChange"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace("com.taomee.seer2.app.pet.events"),"PetInfoEvent")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 2
+                        localcount 3
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                           debug 1, "_loc2_", 1, 0
+                           debug 1, "param1", 0, 0
+                           getlocal1
+                           debugline 81
+                           getproperty QName(PackageNamespace(""),"info")
+                           coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                           setlocal2
+                           getlocal2
+                           debugline 82
+                           getproperty QName(PackageNamespace(""),"resourceId")
+                           pushbyte 9
+                           ifnle ofs0039
+                           debugline 83
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                           getlocal2
+                           callpropvoid QName(PackageNamespace(""),"setInitialPetInfo"), 1
+                           getlocal0
+                           debugline 84
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                           callproperty QName(PackageNamespace(""),"getInitialPetInfoVec"), 0
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_initPetInfoVec")
+                           getlocal0
+                           debugline 85
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"resetPopStatus"), 0
+                  ofs0039:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onPetSkillTeachComplete(param1:Event) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPetSkillTeachComplete")
+                     dispid 0
+                     method
+                        name "onPetSkillTeachComplete"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("flash.events"),"Event")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 1
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              debugline 90
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"resetPopStatus"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function resetPopStatus() : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"resetPopStatus")
+                        dispid 0
+                        method
+                           name "resetPopStatus"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                 getlocal0
+                                 debugline 94
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"clearPop"), 0
+                                 getlocal0
+                                 debugline 95
+                                 pushnull
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onMapComplete"), 1
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onMapStart(param1:SceneEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onMapStart")
+                           dispid 0
+                           method
+                              name "onMapStart"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 1
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                    debug 1, "param1", 0, 0
+                                    getlocal0
+                                    debugline 99
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"clearPop"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function onMapComplete(param1:SceneEvent) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onMapComplete")
+                              dispid 0
+                              method
+                                 name "onMapComplete"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                       debug 1, "param1", 0, 0
+                                       debugline 103
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                       callproperty QName(PackageNamespace(""),"isFreshQuestComplete"), 0
+                                       pushfalse
+                                       equals
+                                       dup
+                                       iftrue ofs001e
+                                       pop
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                       getproperty QName(PackageNamespace(""),"active")
+                                       pushnull
+                                       equals
+                              ofs001e:
+                                       iffalse ofs0027
+                                       debugline 104
+                                       returnvoid
+                                       debugline 106
+                              ofs0027:
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                       getproperty QName(PackageNamespace(""),"active")
+                                       getproperty QName(PackageNamespace(""),"type")
+                                       pushbyte 3
+                                       equals
+                                       dup
+                                       iffalse ofs0045
+                                       pop
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                       getproperty QName(PackageNamespace(""),"actorInfo")
+                                       getproperty QName(PackageNamespace(""),"id")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                       getproperty QName(PackageNamespace(""),"active")
+                                       getproperty QName(PackageNamespace(""),"mapID")
+                                       equals
+                                       debugline 106
+                              ofs0045:
+                                       iffalse ofs0057
+                                       getlocal0
+                                       debugline 107
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"processStoragePetSkillTeach"), 0
+                                       debugline 106
+                                       jump ofs006c
+                                       debugline 108
+                              ofs0057:
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                       getproperty QName(PackageNamespace(""),"active")
+                                       getproperty QName(PackageNamespace(""),"type")
+                                       pushbyte 1
+                                       equals
+                                       debugline 106
+                                       iffalse ofs006c
+                                       getlocal0
+                                       debugline 109
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"processBagPetSkillTeach"), 0
+                              ofs006c:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function processBagPetSkillTeach() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"processBagPetSkillTeach")
+                                 dispid 0
+                                 method
+                                    name "processBagPetSkillTeach"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 1
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                          getlocal0
+                                          debugline 114
+                                          callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"hasBagPetNeedSkillTeach"), 0
+                                          iffalse ofs000e
+                                 ofs000e:
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function processStoragePetSkillTeach() : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"processStoragePetSkillTeach")
+                                    dispid 0
+                                    method
+                                       name "processStoragePetSkillTeach"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 2
+                                          localcount 4
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                             debug 1, "_loc1_", 0, 0
+                                             debugline 119
+                                             pushnull
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                             setlocal1
+                                             pushbyte 0
+                                             setlocal3
+                                             getlocal0
+                                             debugline 120
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_initPetInfoVec")
+                                             setlocal2
+                                             jump ofs005c
+                                    ofs001c:
+                                             label
+                                             getlocal2
+                                             getlocal3
+                                             nextvalue
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                             setlocal1
+                                             getlocal0
+                                             getlocal1
+                                             debugline 121
+                                             getproperty QName(PackageNamespace(""),"resourceId")
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petResourceId")
+                                             getlocal0
+                                             getlocal0
+                                             debugline 122
+                                             callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"getPetSkillTeachType"), 0
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_type")
+                                             getlocal0
+                                             getlocal1
+                                             debugline 123
+                                             getproperty QName(PackageNamespace(""),"catchTime")
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petId")
+                                             getlocal1
+                                             debugline 124
+                                             getproperty QName(PackageNamespace(""),"isInStorage")
+                                             dup
+                                             iffalse ofs004f
+                                             pop
+                                             getlocal0
+                                             getlocal1
+                                             getproperty QName(PackageNamespace(""),"level")
+                                             callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"isShowSkillTeache"), 1
+                                             convert_b
+                                    ofs004f:
+                                             iffalse ofs005c
+                                             getlocal0
+                                             debugline 125
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"processHomePetSkillTeach"), 0
+                                             debugline 126
+                                             returnvoid
+                                    ofs005c:
+                                             hasnext2 2, 3
+                                             iftrue ofs001c
+                                             getlocal0
+                                             debugline 129
+                                             pushbyte 0
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petResourceId")
+                                             getlocal0
+                                             debugline 130
+                                             pushbyte -1
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_type")
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function getStoragePetInfo() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"getStoragePetInfo")
+                                       dispid 0
+                                       method
+                                          name "getStoragePetInfo"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                debugline 134
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                getproperty QName(PackageNamespace(""),"PET_SIMPLE_INFO_1017")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onGetPetSimpleInfo")
+                                                callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                                debugline 135
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                getproperty QName(PackageNamespace(""),"PET_SIMPLE_INFO_1017")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petId")
+                                                callpropvoid QName(PackageNamespace(""),"send"), 2
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function onGetPetSimpleInfo(param1:MessageEvent) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onGetPetSimpleInfo")
+                                          dispid 0
+                                          method
+                                             name "onGetPetSimpleInfo"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 3
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                   debug 1, "_loc2_", 1, 0
+                                                   debug 1, "param1", 0, 0
+                                                   debugline 139
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                   getproperty QName(PackageNamespace(""),"PET_SIMPLE_INFO_1017")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onGetPetSimpleInfo")
+                                                   callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                   getlocal0
+                                                   findpropstrict QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1017")
+                                                   getlocal1
+                                                   debugline 140
+                                                   getproperty QName(PackageNamespace(""),"message")
+                                                   callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                                   constructprop QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1017"), 1
+                                                   getproperty QName(PackageNamespace(""),"petInfo")
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petInfo")
+                                                   debugline 141
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.home.panel"),"HomePanel")
+                                                   callproperty QName(PackageNamespace(""),"getSidBar"), 0
+                                                   pushstring "petStorageBtn"
+                                                   callproperty QName(PackageNamespace(""),"getBtnByName"), 1
+                                                   coerce QName(PackageNamespace("flash.display"),"SimpleButton")
+                                                   setlocal2
+                                                   debugline 142
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.home.panel"),"HomePanel")
+                                                   callproperty QName(PackageNamespace(""),"getSidBar"), 0
+                                                   convert_b
+                                                   dup
+                                                   iffalse ofs0051
+                                                   pop
+                                                   getlocal2
+                                                   convert_b
+                                          ofs0051:
+                                                   iffalse ofs00a0
+                                                   debugline 143
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.home.panel"),"HomePanel")
+                                                   callproperty QName(PackageNamespace(""),"getSidBar"), 0
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                   callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                   getlocal0
+                                                   debugline 144
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                   getlocal2
+                                                   getproperty QName(PackageNamespace(""),"x")
+                                                   pushbyte 15
+                                                   subtract
+                                                   setproperty QName(PackageNamespace(""),"x")
+                                                   getlocal0
+                                                   debugline 145
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                   getlocal2
+                                                   getproperty QName(PackageNamespace(""),"y")
+                                                   pushdouble 12.5
+                                                   subtract
+                                                   setproperty QName(PackageNamespace(""),"y")
+                                                   getlocal0
+                                                   debugline 146
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                   pushtrue
+                                                   setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                   getlocal0
+                                                   debugline 147
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                   pushtrue
+                                                   setproperty QName(PackageNamespace(""),"buttonMode")
+                                                   getlocal0
+                                                   debugline 148
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                   pushstring "click"
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPopClick")
+                                                   callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                          ofs00a0:
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onPopClick(param1:MouseEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPopClick")
+                                             dispid 0
+                                             method
+                                                name "onPopClick"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 3
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                      debug 1, "_loc2_", 1, 0
+                                                      debug 1, "param1", 0, 0
+                                                      getlocal1
+                                                      debugline 153
+                                                      callpropvoid QName(PackageNamespace(""),"stopImmediatePropagation"), 0
+                                                      debugline 154
+                                                      newobject 0
+                                                      coerce QName(PackageNamespace(""),"Object")
+                                                      setlocal2
+                                                      getlocal2
+                                                      getlocal0
+                                                      debugline 155
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_statusVec")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_type")
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),ProtectedNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),PackageInternalNs("com.taomee.seer2.app.firstTeach.petSkillTeach"),PrivateNamespace("FilePrivateNS:PetSkillTeachHelper"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      pushbyte 1
+                                                      add
+                                                      setproperty Multiname("index",[PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),ProtectedNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),PackageInternalNs("com.taomee.seer2.app.firstTeach.petSkillTeach"),PrivateNamespace("FilePrivateNS:PetSkillTeachHelper"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      getlocal2
+                                                      getlocal0
+                                                      debugline 156
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petInfo")
+                                                      setproperty Multiname("petInfo",[PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),ProtectedNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),PackageInternalNs("com.taomee.seer2.app.firstTeach.petSkillTeach"),PrivateNamespace("FilePrivateNS:PetSkillTeachHelper"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      getlocal2
+                                                      debugline 157
+                                                      pushbyte 1
+                                                      setproperty Multiname("moduleFlag",[PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),ProtectedNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),PackageInternalNs("com.taomee.seer2.app.firstTeach.petSkillTeach"),PrivateNamespace("FilePrivateNS:PetSkillTeachHelper"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      debugline 158
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.firstTeach"),"FirstTeachManager")
+                                                      getlocal2
+                                                      callpropvoid QName(PackageNamespace(""),"setPetSkillTeachData"), 1
+                                                      debugline 159
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.firstTeach"),"FirstTeachManager")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_type")
+                                                      callpropvoid QName(PackageNamespace(""),"firstTeach"), 1
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function getPetSkillTeachType() : int
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"getPetSkillTeachType")
+                                                dispid 0
+                                                method
+                                                   name "getPetSkillTeachType"
+                                                   returns QName(PackageNamespace(""),"int")
+                                                   
+                                                   body
+                                                      maxstack 2
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                         getlocal0
+                                                         debugline 163
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petResourceId")
+                                                         debugline 163
+                                                         convert_i
+                                                         debugline 163
+                                                         pushint 1
+                                                         debugline 163
+                                                         subtract_i
+                                                         debugline 163
+                                                         lookupswitch ofs0046, [ofs003a, ofs003a, ofs003a, ofs003d, ofs003d, ofs003d, ofs0040, ofs0040, ofs0040]
+                                                ofs003a:
+                                                         pushbyte 4
+                                                         returnvalue
+                                                ofs003d:
+                                                         pushbyte 5
+                                                         returnvalue
+                                                ofs0040:
+                                                         pushbyte 3
+                                                         returnvalue
+                                                         debugline 177
+                                                ofs0046:
+                                                         pushbyte -1
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public function setStatus(param1:Vector.<int>) : void
+                                             {
+                                                trait method QName(PackageNamespace(""),"setStatus")
+                                                   flag METADATA
+                                                   metadata "__go_to_definition_help"
+                                                      item "pos" "6929"
+                                                   end ; metadata
+                                                   dispid 0
+                                                   method
+                                                      name "setStatus"
+                                                      flag HAS_PARAM_NAMES
+                                                      param TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace(""),"int")>)
+                                                      paramname "param1"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 2
+                                                         localcount 2
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                            debug 1, "param1", 0, 0
+                                                            getlocal0
+                                                            getlocal1
+                                                            debugline 182
+                                                            setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_statusVec")
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function isShowSkillTeache(param1:uint) : Boolean
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"isShowSkillTeache")
+                                                      dispid 0
+                                                      method
+                                                         name "isShowSkillTeache"
+                                                         flag HAS_PARAM_NAMES
+                                                         param QName(PackageNamespace(""),"uint")
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"Boolean")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                               debug 1, "param1", 0, 0
+                                                               getlocal0
+                                                               getlocal0
+                                                               getlocal1
+                                                               debugline 186
+                                                               callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"getPetSkillTeachIndex"), 1
+                                                               setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_skillTeachIndex")
+                                                               getlocal0
+                                                               debugline 187
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_statusVec")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_type")
+                                                               getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),ProtectedNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),PackageInternalNs("com.taomee.seer2.app.firstTeach.petSkillTeach"),PrivateNamespace("FilePrivateNS:PetSkillTeachHelper"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_skillTeachIndex")
+                                                               ifnlt ofs002e
+                                                               debugline 188
+                                                               pushtrue
+                                                               returnvalue
+                                                               debugline 190
+                                                      ofs002e:
+                                                               pushfalse
+                                                               returnvalue
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function getPetSkillTeachIndex(param1:uint) : int
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"getPetSkillTeachIndex")
+                                                         dispid 0
+                                                         method
+                                                            name "getPetSkillTeachIndex"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace(""),"uint")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"int")
+                                                            
+                                                            body
+                                                               maxstack 2
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  getlocal0
+                                                                  debugline 194
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_type")
+                                                                  debugline 194
+                                                                  convert_i
+                                                                  debugline 194
+                                                                  pushint 3
+                                                                  debugline 194
+                                                                  subtract_i
+                                                                  debugline 194
+                                                                  lookupswitch ofs004b, [ofs0036, ofs002d, ofs003f]
+                                                         ofs002d:
+                                                                  getlocal0
+                                                                  getlocal1
+                                                                  debugline 196
+                                                                  callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"diDiLanSkillTeachIndex"), 1
+                                                                  returnvalue
+                                                         ofs0036:
+                                                                  getlocal0
+                                                                  getlocal1
+                                                                  debugline 198
+                                                                  callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"laAoSkillTeachIndex"), 1
+                                                                  returnvalue
+                                                         ofs003f:
+                                                                  getlocal0
+                                                                  getlocal1
+                                                                  debugline 200
+                                                                  callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"xiuXiuSkillTeachIndex"), 1
+                                                                  returnvalue
+                                                                  debugline 202
+                                                         ofs004b:
+                                                                  pushbyte 0
+                                                                  returnvalue
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function laAoSkillTeachIndex(param1:uint) : int
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"laAoSkillTeachIndex")
+                                                            dispid 0
+                                                            method
+                                                               name "laAoSkillTeachIndex"
+                                                               flag HAS_PARAM_NAMES
+                                                               param QName(PackageNamespace(""),"uint")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"int")
+                                                               
+                                                               body
+                                                                  maxstack 2
+                                                                  localcount 2
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                     debug 1, "param1", 0, 0
+                                                                     getlocal1
+                                                                     debugline 207
+                                                                     pushbyte 20
+                                                                     ifnlt ofs0019
+                                                                     debugline 208
+                                                                     pushbyte 0
+                                                                     returnvalue
+                                                            ofs0019:
+                                                                     getlocal1
+                                                                     debugline 210
+                                                                     pushbyte 20
+                                                                     greaterequals
+                                                                     dup
+                                                                     iffalse ofs002a
+                                                                     pop
+                                                                     getlocal1
+                                                                     pushbyte 45
+                                                                     lessthan
+                                                            ofs002a:
+                                                                     iffalse ofs0034
+                                                                     debugline 211
+                                                                     pushbyte 1
+                                                                     returnvalue
+                                                            ofs0034:
+                                                                     getlocal1
+                                                                     debugline 213
+                                                                     pushbyte 45
+                                                                     greaterequals
+                                                                     dup
+                                                                     iffalse ofs0045
+                                                                     pop
+                                                                     getlocal1
+                                                                     pushbyte 60
+                                                                     lessthan
+                                                            ofs0045:
+                                                                     iffalse ofs0052
+                                                                     debugline 214
+                                                                     pushbyte 2
+                                                                     returnvalue
+                                                                     debugline 216
+                                                            ofs0052:
+                                                                     pushbyte 3
+                                                                     returnvalue
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function diDiLanSkillTeachIndex(param1:uint) : int
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"diDiLanSkillTeachIndex")
+                                                               dispid 0
+                                                               method
+                                                                  name "diDiLanSkillTeachIndex"
+                                                                  flag HAS_PARAM_NAMES
+                                                                  param QName(PackageNamespace(""),"uint")
+                                                                  paramname "param1"
+                                                                  returns QName(PackageNamespace(""),"int")
+                                                                  
+                                                                  body
+                                                                     maxstack 2
+                                                                     localcount 2
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                        debug 1, "param1", 0, 0
+                                                                        getlocal1
+                                                                        debugline 220
+                                                                        pushbyte 20
+                                                                        ifnlt ofs0019
+                                                                        debugline 221
+                                                                        pushbyte 0
+                                                                        returnvalue
+                                                               ofs0019:
+                                                                        getlocal1
+                                                                        debugline 223
+                                                                        pushbyte 20
+                                                                        greaterequals
+                                                                        dup
+                                                                        iffalse ofs002a
+                                                                        pop
+                                                                        getlocal1
+                                                                        pushbyte 30
+                                                                        lessthan
+                                                               ofs002a:
+                                                                        iffalse ofs0034
+                                                                        debugline 224
+                                                                        pushbyte 1
+                                                                        returnvalue
+                                                               ofs0034:
+                                                                        getlocal1
+                                                                        debugline 226
+                                                                        pushbyte 30
+                                                                        greaterequals
+                                                                        dup
+                                                                        iffalse ofs0045
+                                                                        pop
+                                                                        getlocal1
+                                                                        pushbyte 60
+                                                                        lessthan
+                                                               ofs0045:
+                                                                        iffalse ofs0052
+                                                                        debugline 227
+                                                                        pushbyte 2
+                                                                        returnvalue
+                                                                        debugline 229
+                                                               ofs0052:
+                                                                        pushbyte 3
+                                                                        returnvalue
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function xiuXiuSkillTeachIndex(param1:uint) : int
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"xiuXiuSkillTeachIndex")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "xiuXiuSkillTeachIndex"
+                                                                     flag HAS_PARAM_NAMES
+                                                                     param QName(PackageNamespace(""),"uint")
+                                                                     paramname "param1"
+                                                                     returns QName(PackageNamespace(""),"int")
+                                                                     
+                                                                     body
+                                                                        maxstack 2
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                           debug 1, "param1", 0, 0
+                                                                           getlocal1
+                                                                           debugline 233
+                                                                           pushbyte 20
+                                                                           ifnlt ofs0019
+                                                                           debugline 234
+                                                                           pushbyte 0
+                                                                           returnvalue
+                                                                  ofs0019:
+                                                                           getlocal1
+                                                                           debugline 236
+                                                                           pushbyte 20
+                                                                           greaterequals
+                                                                           dup
+                                                                           iffalse ofs002a
+                                                                           pop
+                                                                           getlocal1
+                                                                           pushbyte 30
+                                                                           lessthan
+                                                                  ofs002a:
+                                                                           iffalse ofs0034
+                                                                           debugline 237
+                                                                           pushbyte 1
+                                                                           returnvalue
+                                                                  ofs0034:
+                                                                           getlocal1
+                                                                           debugline 239
+                                                                           pushbyte 30
+                                                                           greaterequals
+                                                                           dup
+                                                                           iffalse ofs0045
+                                                                           pop
+                                                                           getlocal1
+                                                                           pushbyte 35
+                                                                           lessthan
+                                                                  ofs0045:
+                                                                           iffalse ofs004f
+                                                                           debugline 240
+                                                                           pushbyte 2
+                                                                           returnvalue
+                                                                  ofs004f:
+                                                                           getlocal1
+                                                                           debugline 242
+                                                                           pushbyte 35
+                                                                           greaterequals
+                                                                           dup
+                                                                           iffalse ofs0060
+                                                                           pop
+                                                                           getlocal1
+                                                                           pushbyte 60
+                                                                           lessthan
+                                                                  ofs0060:
+                                                                           iffalse ofs006d
+                                                                           debugline 243
+                                                                           pushbyte 3
+                                                                           returnvalue
+                                                                           debugline 245
+                                                                  ofs006d:
+                                                                           pushbyte 4
+                                                                           returnvalue
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function processHomePetSkillTeach() : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"processHomePetSkillTeach")
+                                                                     dispid 0
+                                                                     method
+                                                                        name "processHomePetSkillTeach"
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 3
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                              getlocal0
+                                                                              debugline 249
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.ui"),"UIManager")
+                                                                              pushstring "UI_PetSkillTeach_StoragePop"
+                                                                              callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                                                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                                              getlocal0
+                                                                              debugline 250
+                                                                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"getStoragePetInfo"), 0
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function hasBagPetNeedSkillTeach() : Boolean
+                                                                  {
+                                                                     trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"hasBagPetNeedSkillTeach")
+                                                                        dispid 0
+                                                                        method
+                                                                           name "hasBagPetNeedSkillTeach"
+                                                                           returns QName(PackageNamespace(""),"Boolean")
+                                                                           
+                                                                           body
+                                                                              maxstack 3
+                                                                              localcount 4
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                                 debug 1, "_loc1_", 0, 0
+                                                                                 debugline 254
+                                                                                 pushnull
+                                                                                 coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                                                 setlocal1
+                                                                                 pushbyte 0
+                                                                                 setlocal3
+                                                                                 getlocal0
+                                                                                 debugline 255
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_initPetInfoVec")
+                                                                                 setlocal2
+                                                                                 jump ofs006d
+                                                                        ofs001e:
+                                                                                 label
+                                                                                 getlocal2
+                                                                                 getlocal3
+                                                                                 nextvalue
+                                                                                 coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                                                 setlocal1
+                                                                                 getlocal0
+                                                                                 getlocal1
+                                                                                 debugline 256
+                                                                                 getproperty QName(PackageNamespace(""),"resourceId")
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petResourceId")
+                                                                                 getlocal0
+                                                                                 getlocal0
+                                                                                 debugline 257
+                                                                                 callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"getPetSkillTeachType"), 0
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_type")
+                                                                                 getlocal0
+                                                                                 getlocal1
+                                                                                 debugline 258
+                                                                                 getproperty QName(PackageNamespace(""),"catchTime")
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petId")
+                                                                                 getlocal0
+                                                                                 debugline 259
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petId")
+                                                                                 callproperty QName(PackageNamespace(""),"getPetInfoFromBag"), 1
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petInfo")
+                                                                                 getlocal0
+                                                                                 debugline 260
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petInfo")
+                                                                                 convert_b
+                                                                                 dup
+                                                                                 iffalse ofs0064
+                                                                                 pop
+                                                                                 getlocal0
+                                                                                 getlocal1
+                                                                                 getproperty QName(PackageNamespace(""),"level")
+                                                                                 callproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"isShowSkillTeache"), 1
+                                                                                 convert_b
+                                                                        ofs0064:
+                                                                                 iffalse ofs006d
+                                                                                 debugline 261
+                                                                                 pushtrue
+                                                                                 returnvalue
+                                                                        ofs006d:
+                                                                                 hasnext2 2, 3
+                                                                                 iftrue ofs001e
+                                                                                 getlocal0
+                                                                                 debugline 264
+                                                                                 pushbyte 0
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_petResourceId")
+                                                                                 getlocal0
+                                                                                 debugline 265
+                                                                                 pushbyte -1
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_type")
+                                                                                 debugline 266
+                                                                                 pushfalse
+                                                                                 returnvalue
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private function clearPop() : void
+                                                                     {
+                                                                        trait method QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"clearPop")
+                                                                           dispid 0
+                                                                           method
+                                                                              name "clearPop"
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 3
+                                                                                 localcount 1
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 1
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                                    getlocal0
+                                                                                    debugline 270
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                                                    iffalse ofs002f
+                                                                                    getlocal0
+                                                                                    debugline 271
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                                                    pushstring "click"
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onPopClick")
+                                                                                    callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                    debugline 272
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                                                    callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                                                                    getlocal0
+                                                                                    debugline 273
+                                                                                    pushnull
+                                                                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_storagePop")
+                                                                           ofs002f:
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        public function getInitPetPotentialStatus(param1:uint) : Boolean
+                                                                        {
+                                                                           trait method QName(PackageNamespace(""),"getInitPetPotentialStatus")
+                                                                              flag METADATA
+                                                                              metadata "__go_to_definition_help"
+                                                                                 item "pos" "9877"
+                                                                              end ; metadata
+                                                                              dispid 0
+                                                                              method
+                                                                                 name "getInitPetPotentialStatus"
+                                                                                 flag HAS_PARAM_NAMES
+                                                                                 param QName(PackageNamespace(""),"uint")
+                                                                                 paramname "param1"
+                                                                                 returns QName(PackageNamespace(""),"Boolean")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 2
+                                                                                    localcount 2
+                                                                                    initscopedepth 0
+                                                                                    maxscopedepth 1
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                                       debug 1, "param1", 0, 0
+                                                                                       getlocal1
+                                                                                       debugline 278
+                                                                                       convert_i
+                                                                                       debugline 278
+                                                                                       pushint 1
+                                                                                       debugline 278
+                                                                                       subtract_i
+                                                                                       debugline 278
+                                                                                       lookupswitch ofs0055, [ofs0028, ofs0036, ofs0044]
+                                                                              ofs0028:
+                                                                                       getlocal0
+                                                                                       debugline 280
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_statusVec")
+                                                                                       pushbyte 4
+                                                                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),ProtectedNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),PackageInternalNs("com.taomee.seer2.app.firstTeach.petSkillTeach"),PrivateNamespace("FilePrivateNS:PetSkillTeachHelper"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                       pushbyte 3
+                                                                                       equals
+                                                                                       returnvalue
+                                                                              ofs0036:
+                                                                                       getlocal0
+                                                                                       debugline 282
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_statusVec")
+                                                                                       pushbyte 5
+                                                                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),ProtectedNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),PackageInternalNs("com.taomee.seer2.app.firstTeach.petSkillTeach"),PrivateNamespace("FilePrivateNS:PetSkillTeachHelper"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                       pushbyte 4
+                                                                                       equals
+                                                                                       returnvalue
+                                                                              ofs0044:
+                                                                                       getlocal0
+                                                                                       debugline 284
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_statusVec")
+                                                                                       pushbyte 3
+                                                                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),ProtectedNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),PackageInternalNs("com.taomee.seer2.app.firstTeach.petSkillTeach"),PrivateNamespace("FilePrivateNS:PetSkillTeachHelper"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                       pushbyte 3
+                                                                                       equals
+                                                                                       returnvalue
+                                                                                       debugline 286
+                                                                              ofs0055:
+                                                                                       pushfalse
+                                                                                       returnvalue
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                           
+                                                                           public function closePop() : void
+                                                                           {
+                                                                              trait method QName(PackageNamespace(""),"closePop")
+                                                                                 flag METADATA
+                                                                                 metadata "__go_to_definition_help"
+                                                                                    item "pos" "10350"
+                                                                                 end ; metadata
+                                                                                 dispid 0
+                                                                                 method
+                                                                                    name "closePop"
+                                                                                    returns QName(PackageNamespace(""),"void")
+                                                                                    
+                                                                                    body
+                                                                                       maxstack 1
+                                                                                       localcount 1
+                                                                                       initscopedepth 0
+                                                                                       maxscopedepth 1
+                                                                                       
+                                                                                       code
+                                                                                          getlocal0
+                                                                                          pushscope
+                                                                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                                          getlocal0
+                                                                                          debugline 291
+                                                                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"clearPop"), 0
+                                                                                          returnvoid
+                                                                                       end ; code
+                                                                                    end ; body
+                                                                                 end ; method
+                                                                              }
+                                                                              
+                                                                              public function dispose() : void
+                                                                              {
+                                                                                 trait method QName(PackageNamespace(""),"dispose")
+                                                                                    flag METADATA
+                                                                                    metadata "__go_to_definition_help"
+                                                                                       item "pos" "10424"
+                                                                                    end ; metadata
+                                                                                    dispid 0
+                                                                                    method
+                                                                                       name "dispose"
+                                                                                       returns QName(PackageNamespace(""),"void")
+                                                                                       
+                                                                                       body
+                                                                                          maxstack 3
+                                                                                          localcount 1
+                                                                                          initscopedepth 0
+                                                                                          maxscopedepth 1
+                                                                                          
+                                                                                          code
+                                                                                             getlocal0
+                                                                                             pushscope
+                                                                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\firstTeach\\petSkillTeach;PetSkillTeachHelper.as"
+                                                                                             getlocal0
+                                                                                             debugline 295
+                                                                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"clearPop"), 0
+                                                                                             debugline 296
+                                                                                             getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                             pushstring "switchComplete"
+                                                                                             getlocal0
+                                                                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onMapComplete")
+                                                                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                             debugline 297
+                                                                                             getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                             pushstring "switchStart"
+                                                                                             getlocal0
+                                                                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"onMapStart")
+                                                                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                                             getlocal0
+                                                                                             debugline 298
+                                                                                             pushnull
+                                                                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach:PetSkillTeachHelper"),"_initPetInfoVec")
+                                                                                             returnvoid
+                                                                                          end ; code
+                                                                                       end ; body
+                                                                                    end ; method
+                                                                                 }
+                                                                              }
+                                                                           }
+                                                                           
+                                                                           method
+                                                                              name null
+                                                                              returns null
+                                                                              
+                                                                              body
+                                                                                 maxstack 3
+                                                                                 localcount 1
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 2
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    getscopeobject 0
+                                                                                    getlex QName(PackageNamespace(""),"Object")
+                                                                                    dup
+                                                                                    pushscope
+                                                                                    newclass 0
+                                                                                    popscope
+                                                                                    initproperty QName(PackageNamespace("com.taomee.seer2.app.firstTeach.petSkillTeach"),"PetSkillTeachHelper")
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                           

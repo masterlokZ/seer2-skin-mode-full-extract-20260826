@@ -1,0 +1,1394 @@
+package com.taomee.seer2.app.actives
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.manager.DayLimitManager;
+   import com.taomee.seer2.app.manager.SeatTipsManager;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.app.utils.NpcUtil;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.manager.TimeManager;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.map.ResourceLibrary;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.geom.Point;
+   import org.taomee.utils.BitUtil;
+   import org.taomee.utils.Tick;
+   
+   public class TwelveTurnFightAct
+   {
+      
+      private static var _instance:TwelveTurnFightAct;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private const FIGHT_LIST:Array;
+      
+      private const FIGHT_STATE:int = 877;
+      
+      private const ACT_YEAR:uint = 2013;
+      
+      private const ACT_MONTH:uint = 12;
+      
+      private const ACT_DAY:Array;
+      
+      private const PET_DIA_ID1:uint = 644;
+      
+      private const PET_DIA_NAME1:String = "电魂巴图";
+      
+      private const PET_DIA_ID2:uint = 592;
+      
+      private const PET_DIA_NAME2:String = "紫电";
+      
+      private const PET_DIA_ID3:uint = 592;
+      
+      private const PET_DIA_NAME3:String = "紫电";
+      
+      private const MAP_ID:uint = 80068;
+      
+      private var timeDate:Date;
+      
+      private var minute:uint;
+      
+      private var currentTurn:uint;
+      
+      private var resLib:ResourceLibrary;
+      
+      private var sceneMc:MovieClip;
+      
+      private var rewardTipsMc:MovieClip;
+      
+      private var map:MapModel;
+      
+      private var seatTips:Array;
+      
+      private var currentNpc:MovieClip;
+      
+      private var actIndex:int;
+      
+      private var fightState:uint;
+      
+      public function TwelveTurnFightAct()
+      {
+         method
+            name "TwelveTurnFightAct"
+            returns null
+            
+            body
+               maxstack 6
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                  debugline 34
+                  pushshort 699
+                  pushshort 700
+                  pushshort 700
+                  newarray 3
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"FIGHT_LIST")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"FIGHT_LIST")
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                  debugline 42
+                  pushbyte 1
+                  newarray 1
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"ACT_DAY")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"ACT_DAY")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace(""),"Date")
+                  debugline 81
+                  constructprop QName(PackageNamespace(""),"Date"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                  debugline 82
+                  pushshort 295
+                  pushshort 205
+                  constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                  findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                  pushshort 630
+                  pushshort 300
+                  constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                  findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                  pushshort 630
+                  pushshort 300
+                  constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                  newarray 3
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"seatTips")
+                  debugline 83
+                  getlocal0
+                  debugline 83
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : TwelveTurnFightAct
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2409"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.actives"),"TwelveTurnFightAct")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                     debugline 87
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"_instance")
+                     iftrue ofs001a
+                     debugline 88
+                     getlocal0
+                     debugline 88
+                     construct 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"_instance")
+                     debugline 90
+            ofs001a:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function dispose() : void
+         {
+            trait method QName(PackageNamespace(""),"dispose")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "2590"
+               end ; metadata
+               dispid 0
+               method
+                  name "dispose"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                        getlocal0
+                        debugline 94
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentNpc")
+                        iffalse ofs001c
+                        getlocal0
+                        debugline 95
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentNpc")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"toFight")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        debugline 97
+               ofs001c:
+                        getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                        getproperty QName(PackageNamespace(""),"instance")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"updateTime")
+                        callpropvoid QName(PackageNamespace(""),"removeRender"), 1
+                        debugline 98
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"SeatTipsManager")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"seatTips")
+                        pushbyte 0
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        pushuint 80068
+                        callpropvoid QName(PackageNamespace(""),"removeSeat"), 2
+                        debugline 99
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"SeatTipsManager")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"seatTips")
+                        pushbyte 1
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        pushuint 80068
+                        callpropvoid QName(PackageNamespace(""),"removeSeat"), 2
+                        debugline 100
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"SeatTipsManager")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"seatTips")
+                        pushbyte 2
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        pushuint 80068
+                        callpropvoid QName(PackageNamespace(""),"removeSeat"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function setup(param1:MapModel) : void
+            {
+               trait method QName(PackageNamespace(""),"setup")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "3020"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "setup"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 4
+                        localcount 3
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                           debug 1, "_loc2_", 1, 0
+                           debug 1, "param1", 0, 0
+                           getlocal0
+                           getlocal1
+                           debugline 104
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"map")
+                           debugline 105
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"showRemoteActor")
+                           getlocal0
+                           debugline 106
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                           callproperty QName(PackageNamespace(""),"getPrecisionServerTime"), 0
+                           pushshort 1000
+                           multiply
+                           callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"setTime"), 1
+                           debugline 107
+                           pushfalse
+                           setlocal2
+                           getlocal0
+                           debugline 108
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"ACT_DAY")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                           getproperty QName(PackageNamespace(""),"date")
+                           callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                           pushbyte -1
+                           ifeq ofs0047
+                           debugline 109
+                           pushtrue
+                           setlocal2
+                  ofs0047:
+                           getlocal0
+                           debugline 111
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                           getproperty QName(PackageNamespace(""),"fullYear")
+                           pushshort 2013
+                           equals
+                           not
+                           dup
+                           iftrue ofs0065
+                           pop
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                           getproperty QName(PackageNamespace(""),"month")
+                           pushbyte 12
+                           pushbyte 1
+                           subtract
+                           equals
+                           not
+                  ofs0065:
+                           dup
+                           iftrue ofs006d
+                           pop
+                           getlocal2
+                           not
+                  ofs006d:
+                           dup
+                           iftrue ofs007c
+                           pop
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                           getproperty QName(PackageNamespace(""),"hours")
+                           pushbyte 13
+                           equals
+                           not
+                  ofs007c:
+                           iffalse ofs0083
+                           debugline 112
+                           returnvoid
+                  ofs0083:
+                           getlocal0
+                           getlocal0
+                           debugline 114
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                           getproperty QName(PackageNamespace(""),"minutes")
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"minute")
+                           getlocal0
+                           debugline 115
+                           getlex QName(PackageNamespace(""),"Math")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"minute")
+                           pushbyte 5
+                           divide
+                           callproperty QName(PackageNamespace(""),"floor"), 1
+                           pushbyte 1
+                           add
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                           getlocal0
+                           debugline 116
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"resLib")
+                           not
+                           debugline 116
+                           iffalse ofs00c7
+                           debugline 117
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                           pushstring "TwelveTurnFight"
+                           callproperty QName(PackageNamespace(""),"getActivityAnimation"), 1
+                           pushstring "domain"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"onLoadComplete")
+                           callpropvoid QName(PackageNamespace(""),"load"), 3
+                           debugline 116
+                           jump ofs00d4
+                           debugline 119
+                  ofs00c7:
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                           pushshort 877
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"getState")
+                           callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                           debugline 121
+                  ofs00d4:
+                           getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                           getproperty QName(PackageNamespace(""),"instance")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"updateTime")
+                           pushshort 10000
+                           callpropvoid QName(PackageNamespace(""),"addRender"), 2
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function getState(param1:uint) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"getState")
+                     dispid 0
+                     method
+                        name "getState"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"uint")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 2
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              getlocal1
+                              debugline 125
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"fightState")
+                              getlocal0
+                              debugline 126
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"playSceneMc"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function updateTime(param1:int) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"updateTime")
+                        dispid 0
+                        method
+                           name "updateTime"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace(""),"int")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 4
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                                 debug 1, "_loc2_", 1, 0
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "_loc3_", 2, 0
+                                 getlocal0
+                                 debugline 130
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                 callproperty QName(PackageNamespace(""),"getPrecisionServerTime"), 0
+                                 pushshort 1000
+                                 multiply
+                                 callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"setTime"), 1
+                                 getlocal0
+                                 debugline 131
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                                 getproperty QName(PackageNamespace(""),"minutes")
+                                 convert_u
+                                 setlocal2
+                                 debugline 132
+                                 getlex QName(PackageNamespace(""),"Math")
+                                 getlocal2
+                                 pushbyte 5
+                                 divide
+                                 callproperty QName(PackageNamespace(""),"floor"), 1
+                                 pushbyte 1
+                                 add
+                                 convert_u
+                                 setlocal3
+                                 getlocal0
+                                 debugline 133
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                 getlocal3
+                                 ifeq ofs0059
+                                 getlocal0
+                                 getlocal3
+                                 debugline 134
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                 getlocal0
+                                 debugline 135
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"playSceneMc"), 0
+                        ofs0059:
+                                 getlocal0
+                                 debugline 137
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                                 getproperty QName(PackageNamespace(""),"hours")
+                                 pushbyte 14
+                                 ifnge ofs007b
+                                 debugline 138
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                 callpropvoid QName(PackageNamespace(""),"hide"), 0
+                                 debugline 139
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                 pushbyte 1
+                                 pushbyte 70
+                                 callpropvoid QName(PackageNamespace(""),"changeScene"), 2
+                        ofs007b:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onLoadComplete(param1:ContentInfo) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"onLoadComplete")
+                           dispid 0
+                           method
+                              name "onLoadComplete"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("com.taomee.seer2.core.loader"),"ContentInfo")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                                    debug 1, "param1", 0, 0
+                                    getlocal0
+                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.core.map"),"ResourceLibrary")
+                                    getlocal1
+                                    debugline 144
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    constructprop QName(PackageNamespace("com.taomee.seer2.core.map"),"ResourceLibrary"), 1
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"resLib")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 145
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"resLib")
+                                    pushstring "RewardTipsMc"
+                                    callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                    debugline 146
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                    pushshort 877
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"getState")
+                                    callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function playSceneMc() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"playSceneMc")
+                              dispid 0
+                              method
+                                 name "playSceneMc"
+                                 flag NEED_ACTIVATION
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 6
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 2
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"mcName")
+                                       slotid 1
+                                       type QName(PackageNamespace(""),"String")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"diaString")
+                                       slotid 2
+                                       type QName(PackageNamespace(""),"String")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"okString")
+                                       slotid 3
+                                       type QName(PackageNamespace(""),"String")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"npcName")
+                                       slotid 4
+                                       type QName(PackageNamespace(""),"String")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"npcID")
+                                       slotid 5
+                                       type QName(PackageNamespace(""),"int")
+                                    end ; trait
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                                       newactivation
+                                       dup
+                                       setlocal1
+                                       pushscope
+                                       debug 1, "playSceneMc$0", 0, 0
+                                       debugline 150
+                                       pushnull
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 1
+                                       debugline 151
+                                       pushnull
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 2
+                                       debugline 152
+                                       pushnull
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 3
+                                       debugline 153
+                                       pushnull
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 4
+                                       debugline 154
+                                       pushbyte 0
+                                       getlocal1
+                                       swap
+                                       setslot 5
+                                       getlocal0
+                                       debugline 155
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"map")
+                                       getproperty QName(PackageNamespace(""),"front")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                       getlocal0
+                                       debugline 156
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("turnTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "第"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                       add
+                                       pushstring "轮对战开始"
+                                       add
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlocal0
+                                       debugline 157
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                       pushbyte 12
+                                       lessthan
+                                       debugline 157
+                                       iffalse ofs0206
+                                       getlocal0
+                                       debugline 158
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                       pushbyte 2
+                                       modulo
+                                       pushbyte 0
+                                       equals
+                                       not
+                                       debugline 158
+                                       iffalse ofs00c8
+                                       debugline 159
+                                       pushstring "SingleTimeMc"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 1
+                                       debugline 160
+                                       pushstring "紫电，你还是老老实实回去吧！"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 2
+                                       debugline 161
+                                       pushstring "让我来试一下！"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 3
+                                       getlocal0
+                                       debugline 162
+                                       pushbyte 0
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"actIndex")
+                                       debugline 163
+                                       pushstring "电魂巴图"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 4
+                                       debugline 164
+                                       pushshort 644
+                                       getlocal1
+                                       swap
+                                       setslot 5
+                                       debugline 158
+                                       jump ofs0102
+                                       debugline 166
+                              ofs00c8:
+                                       pushstring "DoubleTimeMc"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 1
+                                       debugline 167
+                                       pushstring "哈哈哈！电魂巴图，我依然是帝国最强电系精灵！  "
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 2
+                                       debugline 168
+                                       pushstring "紫电，看我的！"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 3
+                                       getlocal0
+                                       debugline 169
+                                       pushbyte 1
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"actIndex")
+                                       debugline 170
+                                       pushstring "紫电"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 4
+                                       debugline 171
+                                       pushshort 592
+                                       getlocal1
+                                       swap
+                                       setslot 5
+                              ofs0102:
+                                       getlocal0
+                                       debugline 173
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                       debugline 173
+                                       convert_i
+                                       debugline 173
+                                       pushint 1
+                                       debugline 173
+                                       subtract_i
+                                       debugline 173
+                                       lookupswitch ofs01ff, [ofs013e, ofs014f, ofs0160, ofs0171, ofs0182, ofs0193, ofs01a4, ofs01b5, ofs01c6, ofs01d7, ofs01e8]
+                              ofs013e:
+                                       getlocal0
+                                       debugline 175
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n1级物攻药剂，1级特攻药剂，经验芯片5k*2 "
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs014f:
+                                       getlocal0
+                                       debugline 178
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n1级物攻药剂，1级特攻药剂，经验芯片5k*2"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs0160:
+                                       getlocal0
+                                       debugline 181
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n1级物攻药剂，1级特攻药剂，经验芯片5k*2"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs0171:
+                                       getlocal0
+                                       debugline 184
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n1级物攻药剂，1级特攻药剂，经验芯片5k*2"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs0182:
+                                       getlocal0
+                                       debugline 187
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n初级资质果实，学习力精片，五万经验券"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs0193:
+                                       getlocal0
+                                       debugline 190
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n1级物攻药剂，1级特攻药剂，经验芯片5k*2"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs01a4:
+                                       getlocal0
+                                       debugline 193
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n1级物攻药剂，1级特攻药剂，经验芯片5k*2"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs01b5:
+                                       getlocal0
+                                       debugline 196
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n1级物攻药剂，1级特攻药剂，经验芯片5k*2"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs01c6:
+                                       getlocal0
+                                       debugline 199
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n1级物攻药剂，1级特攻药剂，经验芯片5k*2"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs01d7:
+                                       getlocal0
+                                       debugline 202
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n初级资质果实，学习力精片，五万经验券"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       jump ofs01ff
+                              ofs01e8:
+                                       getlocal0
+                                       debugline 205
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n麻痹纹章,初级资质果实，学习力精片，五万经验券"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       debugline 173
+                                       jump ofs01ff
+                                       debugline 157
+                              ofs01ff:
+                                       jump ofs024d
+                                       debugline 208
+                              ofs0206:
+                                       pushstring "紫电"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 4
+                                       debugline 209
+                                       pushstring "LastTimeMc"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 1
+                                       debugline 210
+                                       pushstring "哈哈哈！电魂巴图，我依然是帝国最强电系精灵！ "
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 2
+                                       debugline 211
+                                       pushstring "紫电，看我的！"
+                                       coerce_s
+                                       getlocal1
+                                       swap
+                                       setslot 3
+                                       getlocal0
+                                       debugline 212
+                                       pushbyte 1
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"actIndex")
+                                       debugline 213
+                                       pushshort 592
+                                       getlocal1
+                                       swap
+                                       setslot 5
+                                       getlocal0
+                                       debugline 214
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"rewardTipsMc")
+                                       getproperty Multiname("rewardTxt",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "当前奖励:\n紫煞之芯,初级资质果实，学习力精片，五万经验券"
+                                       setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              ofs024d:
+                                       getlocal0
+                                       debugline 216
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       iffalse ofs026e
+                                       debugline 217
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                       getlocal0
+                                       debugline 218
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       callpropvoid QName(PackageNamespace(""),"stop"), 0
+                                       debugline 220
+                              ofs026e:
+                                       getlex QName(PackageNamespace("org.taomee.utils"),"BitUtil")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"fightState")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                       pushbyte 1
+                                       subtract
+                                       callproperty QName(PackageNamespace(""),"getBit"), 2
+                                       not
+                                       debugline 220
+                                       iffalse ofs02e6
+                                       getlocal0
+                                       debugline 221
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       not
+                                       dup
+                                       iftrue ofs029a
+                                       pop
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       getproperty QName(PackageNamespace(""),"name")
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"mcName")
+                                       equals
+                                       not
+                              ofs029a:
+                                       iffalse ofs02b6
+                                       getlocal0
+                                       getlocal0
+                                       debugline 222
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"resLib")
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"mcName")
+                                       callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       getlocal0
+                                       debugline 223
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"mcName")
+                                       setproperty QName(PackageNamespace(""),"name")
+                              ofs02b6:
+                                       getlocal0
+                                       debugline 225
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"map")
+                                       getproperty QName(PackageNamespace(""),"front")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                       debugline 226
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       pushbyte 1
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       getproperty QName(PackageNamespace(""),"totalFrames")
+                                       newfunction 8
+                                       debugline 238
+                                       pushtrue
+                                       debugline 226
+                                       callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                       debugline 220
+                                       jump ofs0344
+                              ofs02e6:
+                                       getlocal0
+                                       getlocal0
+                                       debugline 240
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"resLib")
+                                       pushstring "NormalStateMc"
+                                       callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       getlocal0
+                                       debugline 241
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       pushstring "NormalStateMc"
+                                       setproperty QName(PackageNamespace(""),"name")
+                                       getlocal0
+                                       debugline 242
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       getproperty QName(PackageNamespace(""),"totalFrames")
+                                       callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                       getlocal0
+                                       getlocal0
+                                       debugline 243
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       pushstring "Npc"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"actIndex")
+                                       add
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentNpc")
+                                       getlocal0
+                                       debugline 244
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentNpc")
+                                       pushtrue
+                                       setproperty QName(PackageNamespace(""),"buttonMode")
+                                       getlocal0
+                                       debugline 245
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentNpc")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"toFight")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       debugline 246
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"map")
+                                       getproperty QName(PackageNamespace(""),"front")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                       callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                              ofs0344:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           protected function toFight(param1:MouseEvent) : void
+                           {
+                              trait method QName(ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"toFight")
+                                 flag METADATA
+                                 metadata "__go_to_definition_help"
+                                    item "pos" "9456"
+                                 end ; metadata
+                                 dispid 0
+                                 method
+                                    name "toFight"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 5
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                                          debug 1, "param1", 0, 0
+                                          debugline 251
+                                          getlex QName(PackageNamespace("org.taomee.utils"),"BitUtil")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"fightState")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                          pushbyte 1
+                                          subtract
+                                          callproperty QName(PackageNamespace(""),"getBit"), 2
+                                          iffalse ofs0076
+                                          getlocal0
+                                          debugline 252
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                          pushbyte 2
+                                          modulo
+                                          pushbyte 0
+                                          equals
+                                          not
+                                          debugline 252
+                                          iffalse ofs0057
+                                          debugline 253
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                          pushshort 644
+                                          pushstring "电魂巴图"
+                                          pushbyte 0
+                                          pushstring "每5分钟可以挑战我们其中一个。紫电，如今的我是不会被你战胜的！"
+                                          newarray 2
+                                          newarray 1
+                                          pushstring "那你可得加油咯！"
+                                          newarray 1
+                                          callpropvoid QName(PackageNamespace(""),"show"), 4
+                                          debugline 252
+                                          jump ofs0072
+                                          debugline 255
+                                 ofs0057:
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                          pushshort 592
+                                          pushstring "紫电"
+                                          pushbyte 0
+                                          pushstring "每5分钟可以挑战我们其中一个。为了尊严而战，我才是帝国最强电系精灵！"
+                                          newarray 2
+                                          newarray 1
+                                          pushstring "你的话说的太早了！"
+                                          newarray 1
+                                          callpropvoid QName(PackageNamespace(""),"show"), 4
+                                          debugline 257
+                                 ofs0072:
+                                          returnvoid
+                                          debugline 259
+                                 ofs0076:
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"SeatTipsManager")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"seatTips")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"actIndex")
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          pushuint 80068
+                                          callpropvoid QName(PackageNamespace(""),"removeSeat"), 2
+                                          debugline 260
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                          pushstring "FIGHT_OVER"
+                                          getlocal0
+                                          getproperty QName(ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"fightOver")
+                                          callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                          debugline 261
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"FIGHT_LIST")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"actIndex")
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("com.taomee.seer2.app.actives:TwelveTurnFightAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:TwelveTurnFightAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          callpropvoid QName(PackageNamespace(""),"startFightWithWild"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              protected function fightOver(param1:Event) : void
+                              {
+                                 trait method QName(ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"fightOver")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "10204"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "fightOver"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("flash.events"),"Event")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 6
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                                             debug 1, "param1", 0, 0
+                                             debugline 265
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                             pushstring "FIGHT_OVER"
+                                             getlocal0
+                                             getproperty QName(ProtectedNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"fightOver")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             getlocal0
+                                             debugline 266
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                             pushbyte 2
+                                             modulo
+                                             pushbyte 0
+                                             equals
+                                             not
+                                             debugline 266
+                                             iffalse ofs0052
+                                             debugline 267
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                             pushshort 644
+                                             pushstring "电魂巴图"
+                                             pushbyte 0
+                                             pushstring "实力不错嘛！看样子你是一个可敬的对手！"
+                                             newarray 2
+                                             newarray 1
+                                             pushstring "太棒啦！"
+                                             newarray 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"checkTime")
+                                             newarray 1
+                                             callpropvoid QName(PackageNamespace(""),"show"), 5
+                                             debugline 266
+                                             jump ofs00b9
+                                    ofs0052:
+                                             getlocal0
+                                             debugline 268
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                             pushbyte 2
+                                             modulo
+                                             pushbyte 0
+                                             equals
+                                             dup
+                                             iffalse ofs006e
+                                             pop
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"currentTurn")
+                                             pushbyte 12
+                                             equals
+                                             not
+                                             debugline 266
+                                    ofs006e:
+                                             iffalse ofs009c
+                                             debugline 269
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                             pushshort 592
+                                             pushstring "紫电"
+                                             pushbyte 0
+                                             pushstring "挺厉害嘛！不能太小看你了。"
+                                             newarray 2
+                                             newarray 1
+                                             pushstring "你也不错！"
+                                             newarray 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"checkTime")
+                                             newarray 1
+                                             callpropvoid QName(PackageNamespace(""),"show"), 5
+                                             debugline 266
+                                             jump ofs00b9
+                                             debugline 271
+                                    ofs009c:
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                             pushshort 592
+                                             pushstring "紫电"
+                                             pushbyte 0
+                                             pushstring "实力不错嘛！看样子你是一个可敬的对手！"
+                                             newarray 2
+                                             newarray 1
+                                             pushstring "太棒啦！"
+                                             newarray 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"completeAct")
+                                             newarray 1
+                                             callpropvoid QName(PackageNamespace(""),"show"), 5
+                                    ofs00b9:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function completeAct() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"completeAct")
+                                       dispid 0
+                                       method
+                                          name "completeAct"
+                                          flag NEED_ACTIVATION
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 6
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                                                newactivation
+                                                pushscope
+                                                getlocal0
+                                                debugline 276
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                                iffalse ofs001b
+                                                debugline 277
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                                callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                       ofs001b:
+                                                getlocal0
+                                                getlocal0
+                                                debugline 279
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"resLib")
+                                                pushstring "LastTimeWinMc"
+                                                callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                                getlocal0
+                                                debugline 280
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"map")
+                                                getproperty QName(PackageNamespace(""),"front")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                                callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                debugline 281
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                                pushbyte 1
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"sceneMc")
+                                                getproperty QName(PackageNamespace(""),"totalFrames")
+                                                newfunction 13
+                                                debugline 288
+                                                pushtrue
+                                                debugline 281
+                                                callpropvoid QName(PackageNamespace(""),"playMc"), 5
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function checkTime() : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"checkTime")
+                                          dispid 0
+                                          method
+                                             name "checkTime"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;TwelveTurnFightAct.as"
+                                                   getlocal0
+                                                   debugline 292
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                   callproperty QName(PackageNamespace(""),"getPrecisionServerTime"), 0
+                                                   pushshort 1000
+                                                   multiply
+                                                   callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"setTime"), 1
+                                                   getlocal0
+                                                   debugline 293
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:TwelveTurnFightAct"),"timeDate")
+                                                   getproperty QName(PackageNamespace(""),"hours")
+                                                   pushbyte 14
+                                                   ifnge ofs0038
+                                                   debugline 294
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                   callpropvoid QName(PackageNamespace(""),"hide"), 0
+                                                   debugline 295
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                   pushbyte 1
+                                                   pushbyte 70
+                                                   callpropvoid QName(PackageNamespace(""),"changeScene"), 2
+                                          ofs0038:
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                    }
+                                 }
+                                 
+                                 method
+                                    name null
+                                    returns null
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 2
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          getscopeobject 0
+                                          getlex QName(PackageNamespace(""),"Object")
+                                          dup
+                                          pushscope
+                                          newclass 0
+                                          popscope
+                                          initproperty QName(PackageNamespace("com.taomee.seer2.app.actives"),"TwelveTurnFightAct")
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                                 

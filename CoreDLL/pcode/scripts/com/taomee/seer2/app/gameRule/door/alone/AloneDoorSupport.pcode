@@ -1,0 +1,918 @@
+package com.taomee.seer2.app.gameRule.door.alone
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.arena.FightVerifyManager;
+   import com.taomee.seer2.app.gameRule.door.core.IMultiSelectable;
+   import com.taomee.seer2.app.gameRule.door.core.ServerReward;
+   import com.taomee.seer2.app.gameRule.door.core.vo.DoorInitData;
+   import com.taomee.seer2.app.gameRule.door.support.DoorSupportInfo;
+   import com.taomee.seer2.app.gameRule.door.support.IUpDoorSupport;
+   import com.taomee.seer2.app.gameRule.door.util.Door21LevelUtil;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.utils.IDataInput;
+   
+   public class AloneDoorSupport implements IMultiSelectable, IUpDoorSupport
+   {
+      
+      private static var _instance:AloneDoorSupport;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _uiController:AloneDoorUIController;
+      
+      private var _map:MapModel;
+      
+      private var _isGetServerGiveFlag:Boolean = false;
+      
+      private var _serverGivePetInfo:PetInfo;
+      
+      private var _doorLevel:uint = 1;
+      
+      private var _canLevelNow:Boolean = true;
+      
+      private var _supportInfo:DoorSupportInfo;
+      
+      private var _serverGivePetList:Vector.<ServerReward>;
+      
+      public function AloneDoorSupport()
+      {
+         method
+            name "AloneDoorSupport"
+            returns null
+            
+            body
+               maxstack 6
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                  debugline 50
+                  getlocal0
+                  debugline 50
+                  constructsuper 0
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.alone"),"AloneDoorUIController")
+                  debugline 51
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.alone"),"AloneDoorUIController"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_uiController")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.support"),"DoorSupportInfo")
+                  pushbyte 7
+                  pushbyte 0
+                  pushshort 412
+                  pushstring "AloneDoorStartPanel"
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.support"),"DoorSupportInfo"), 4
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : AloneDoorSupport
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2138"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.alone"),"AloneDoorSupport")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                     debugline 56
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_instance")
+                     pushnull
+                     ifne ofs001b
+                     debugline 57
+                     getlocal0
+                     debugline 57
+                     construct 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_instance")
+                     debugline 59
+            ofs001b:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function dealWithFightResult(param1:uint) : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"dealWithFightResult")
+               dispid 0
+               method
+                  name "dealWithFightResult"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace(""),"uint")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 5
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                        debug 1, "param1", 0, 0
+                        getlocal1
+                        pushbyte 2
+                        equals
+                        debugline 63
+                        iffalse ofs002b
+                        debugline 64
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                        pushfalse
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                        getproperty QName(PackageNamespace(""),"doorType")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                        getproperty QName(PackageNamespace(""),"doorRule")
+                        callpropvoid QName(PackageNamespace(""),"showDoorResult"), 3
+                        debugline 63
+                        jump ofs008d
+               ofs002b:
+                        getlocal1
+                        pushbyte 1
+                        equals
+                        debugline 63
+                        iffalse ofs008d
+                        getlocal0
+                        debugline 66
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_doorLevel")
+                        pushbyte 4
+                        greaterequals
+                        debugline 66
+                        iffalse ofs0081
+                        getlocal0
+                        debugline 67
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_isGetServerGiveFlag")
+                        debugline 67
+                        iffalse ofs0075
+                        debugline 68
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                        pushtrue
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                        getproperty QName(PackageNamespace(""),"doorType")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                        getproperty QName(PackageNamespace(""),"doorRule")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_serverGivePetInfo")
+                        callpropvoid QName(PackageNamespace(""),"showDoorResult"), 4
+                        getlocal0
+                        debugline 69
+                        pushfalse
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_isGetServerGiveFlag")
+                        getlocal0
+                        debugline 70
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_serverGivePetInfo")
+                        debugline 67
+                        jump ofs007d
+               ofs0075:
+                        getlocal0
+                        debugline 72
+                        pushtrue
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_isGetServerGiveFlag")
+                        debugline 66
+               ofs007d:
+                        jump ofs008d
+               ofs0081:
+                        getlocal0
+                        getlocal0
+                        debugline 75
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_doorLevel")
+                        pushbyte 1
+                        add
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"setDoorLevel"), 1
+               ofs008d:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function upNextLevelComplete() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"upNextLevelComplete")
+                  dispid 0
+                  method
+                     name "upNextLevelComplete"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 2
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                           getlocal0
+                           debugline 81
+                           pushtrue
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_canLevelNow")
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function setDoorLevel(param1:uint) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"setDoorLevel")
+                     dispid 0
+                     method
+                        name "setDoorLevel"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"uint")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              debugline 85
+                              pushfalse
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_canLevelNow")
+                              getlocal0
+                              getlocal1
+                              debugline 86
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_doorLevel")
+                              getlocal0
+                              debugline 87
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_uiController")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_doorLevel")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"upNextLevelComplete")
+                              callpropvoid QName(PackageNamespace(""),"updateLevel"), 2
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onStartFight() : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"onStartFight")
+                        dispid 0
+                        method
+                           name "onStartFight"
+                           flag NEED_ACTIVATION
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 5
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 2
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"onComplete")
+                                 slotid 1
+                                 type QName(PackageNamespace(""),"Function")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"information")
+                                 slotid 2
+                                 type QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                              end ; trait
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                 newactivation
+                                 dup
+                                 setlocal1
+                                 pushscope
+                                 debug 1, "onStartFight$0", 0, 0
+                                 debugline 91
+                                 pushnull
+                                 coerce QName(PackageNamespace(""),"Function")
+                                 getlocal1
+                                 swap
+                                 setslot 1
+                                 debugline 92
+                                 pushnull
+                                 coerce QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                 getlocal1
+                                 swap
+                                 setslot 2
+                                 newfunction 6
+                                 debugline 93
+                                 coerce QName(PackageNamespace(""),"Function")
+                                 debugline 93
+                                 getlocal1
+                                 debugline 93
+                                 swap
+                                 debugline 93
+                                 setslot 1
+                                 getlocal0
+                                 debugline 96
+                                 getproperty QName(PackageNamespace(""),"canLevelNow")
+                                 iffalse ofs009c
+                                 debugline 97
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightVerifyManager")
+                                 callproperty QName(PackageNamespace(""),"checkVerifyStatus"), 0
+                                 pushfalse
+                                 ifne ofs0047
+                                 debugline 98
+                                 returnvoid
+                        ofs0047:
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                 debugline 100
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData"), 0
+                                 coerce QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                 getlocal1
+                                 swap
+                                 setslot 2
+                                 debugline 101
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"information")
+                                 getlocal0
+                                 callproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"getGuardName"), 0
+                                 setproperty QName(PackageNamespace(""),"npcName")
+                                 debugline 102
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"information")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.util"),"Door21LevelUtil")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_doorLevel")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                                 getproperty QName(PackageNamespace(""),"doorType")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                                 getproperty QName(PackageNamespace(""),"doorRule")
+                                 callproperty QName(PackageNamespace(""),"getGuardPets"), 3
+                                 setproperty QName(PackageNamespace(""),"npcPets")
+                                 debugline 103
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"information")
+                                 getlocal0
+                                 setproperty QName(PackageNamespace(""),"supportInstance")
+                                 debugline 104
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"information")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_doorLevel")
+                                 setproperty QName(PackageNamespace(""),"doorLevel")
+                                 debugline 105
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"information")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getproperty QName(PackageNamespace(""),"actorInfo")
+                                 getproperty QName(PackageNamespace(""),"nick")
+                                 setproperty QName(PackageNamespace(""),"playerName")
+                                 getlocal0
+                                 debugline 106
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"information")
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"onComplete")
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"getPlayerPets"), 2
+                        ofs009c:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function getPlayerPets(param1:DoorInitData, param2:Function) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"getPlayerPets")
+                           dispid 0
+                           method
+                              name "getPlayerPets"
+                              flag HAS_PARAM_NAMES
+                              flag NEED_ACTIVATION
+                              param QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                              param QName(PackageNamespace(""),"Function")
+                              paramname "param1"
+                              paramname "param2"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 4
+                                 initscopedepth 0
+                                 maxscopedepth 2
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"param1")
+                                    slotid 1
+                                    type QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"param2")
+                                    slotid 2
+                                    type QName(PackageNamespace(""),"Function")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"deathIdList")
+                                    slotid 3
+                                    type QName(PackageNamespace(""),"Array")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"onListComplete")
+                                    slotid 4
+                                    type QName(PackageNamespace(""),"Function")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"information")
+                                    slotid 5
+                                    type QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"onComplete")
+                                    slotid 6
+                                    type QName(PackageNamespace(""),"Function")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"getFightPets")
+                                    slotid 7
+                                    type QName(PackageNamespace(""),"Function")
+                                 end ; trait
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                    newactivation
+                                    dup
+                                    setlocal3
+                                    pushscope
+                                    findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"param1")
+                                    getlocal1
+                                    setproperty QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"param1")
+                                    findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"param2")
+                                    getlocal2
+                                    setproperty QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"param2")
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "param2", 1, 0
+                                    debug 1, "getPlayerPets$0", 2, 0
+                                    debugline 111
+                                    pushnull
+                                    coerce QName(PackageNamespace(""),"Array")
+                                    getlocal3
+                                    swap
+                                    setslot 3
+                                    debugline 112
+                                    pushnull
+                                    coerce QName(PackageNamespace(""),"Function")
+                                    getlocal3
+                                    swap
+                                    setslot 4
+                                    debugline 113
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"param1")
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                    getlocal3
+                                    swap
+                                    setslot 5
+                                    debugline 114
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"param2")
+                                    coerce QName(PackageNamespace(""),"Function")
+                                    getlocal3
+                                    swap
+                                    setslot 6
+                                    newfunction 8
+                                    debugline 115
+                                    coerce QName(PackageNamespace(""),"Function")
+                                    debugline 115
+                                    getlocal3
+                                    debugline 115
+                                    swap
+                                    debugline 115
+                                    setslot 4
+                                    newfunction 9
+                                    debugline 127
+                                    coerce QName(PackageNamespace(""),"Function")
+                                    debugline 127
+                                    getlocal3
+                                    debugline 127
+                                    swap
+                                    debugline 127
+                                    setslot 7
+                                    debugline 139
+                                    newarray 0
+                                    coerce QName(PackageNamespace(""),"Array")
+                                    getlocal3
+                                    swap
+                                    setslot 3
+                                    debugline 140
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                    getproperty QName(PackageNamespace(""),"PLAYING_DEATH_LIST_1172")
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.alone"),"onListComplete")
+                                    callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                    debugline 141
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                    getproperty QName(PackageNamespace(""),"PLAYING_DEATH_LIST_1172")
+                                    callpropvoid QName(PackageNamespace(""),"send"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function getGuardName() : String
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"getGuardName")
+                              dispid 0
+                              method
+                                 name "getGuardName"
+                                 returns QName(PackageNamespace(""),"String")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                       getlocal0
+                                       debugline 145
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_doorLevel")
+                                       pushbyte 4
+                                       ifnlt ofs001a
+                                       debugline 146
+                                       pushstring "守护者"
+                                       returnvalue
+                                       debugline 148
+                              ofs001a:
+                                       pushstring "第五队队长"
+                                       returnvalue
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           public function reset() : void
+                           {
+                              trait method QName(PackageNamespace(""),"reset")
+                                 flag METADATA
+                                 metadata "__go_to_definition_help"
+                                    item "pos" "6052"
+                                 end ; metadata
+                                 dispid 0
+                                 method
+                                    name "reset"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                          getlocal0
+                                          debugline 152
+                                          pushbyte 1
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_doorLevel")
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public function get canLevelNow() : Boolean
+                              {
+                                 trait getter QName(PackageNamespace(""),"canLevelNow")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "6131"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "canLevelNow"
+                                       returns QName(PackageNamespace(""),"Boolean")
+                                       
+                                       body
+                                          maxstack 1
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                             getlocal0
+                                             debugline 156
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_canLevelNow")
+                                             returnvalue
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 public function set canLevelNow(param1:Boolean) : void
+                                 {
+                                    trait setter QName(PackageNamespace(""),"canLevelNow")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "6224"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "canLevelNow"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace(""),"Boolean")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 2
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                                debug 1, "param1", 0, 0
+                                                getlocal0
+                                                getlocal1
+                                                debugline 160
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_canLevelNow")
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    public function init(param1:MapModel) : void
+                                    {
+                                       trait method QName(PackageNamespace(""),"init")
+                                          flag METADATA
+                                          metadata "__go_to_definition_help"
+                                             item "pos" "6326"
+                                          end ; metadata
+                                          dispid 0
+                                          method
+                                             name "init"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                                   debug 1, "param1", 0, 0
+                                                   getlocal0
+                                                   debugline 164
+                                                   pushtrue
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_canLevelNow")
+                                                   getlocal0
+                                                   debugline 165
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_uiController")
+                                                   getlocal1
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"onStartFight")
+                                                   callpropvoid QName(PackageNamespace(""),"init"), 2
+                                                   debugline 166
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                   getproperty QName(PackageNamespace(""),"prevSceneType")
+                                                   pushbyte 2
+                                                   equals
+                                                   debugline 166
+                                                   iffalse ofs0040
+                                                   getlocal0
+                                                   debugline 167
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                   getproperty QName(PackageNamespace(""),"fightWinnerSide")
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"dealWithFightResult"), 1
+                                                   debugline 166
+                                                   jump ofs004c
+                                          ofs0040:
+                                                   getlocal0
+                                                   getlocal0
+                                                   debugline 169
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                                                   getproperty QName(PackageNamespace(""),"currentDoorLevel")
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"setDoorLevel"), 1
+                                          ofs004c:
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       public function dispose() : void
+                                       {
+                                          trait method QName(PackageNamespace(""),"dispose")
+                                             flag METADATA
+                                             metadata "__go_to_definition_help"
+                                                item "pos" "6709"
+                                             end ; metadata
+                                             dispid 0
+                                             method
+                                                name "dispose"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 1
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                                      getlocal0
+                                                      debugline 174
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_uiController")
+                                                      callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          public function get supportInfo() : DoorSupportInfo
+                                          {
+                                             trait getter QName(PackageNamespace(""),"supportInfo")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "6799"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "supportInfo"
+                                                   returns QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.support"),"DoorSupportInfo")
+                                                   
+                                                   body
+                                                      maxstack 1
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                                         getlocal0
+                                                         debugline 178
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_supportInfo")
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public function get rewardIDList() : Vector.<ServerReward>
+                                             {
+                                                trait getter QName(PackageNamespace(""),"rewardIDList")
+                                                   flag METADATA
+                                                   metadata "__go_to_definition_help"
+                                                      item "pos" "6900"
+                                                   end ; metadata
+                                                   dispid 0
+                                                   method
+                                                      name "rewardIDList"
+                                                      returns TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")>)
+                                                      
+                                                      body
+                                                         maxstack 1
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                                            getlocal0
+                                                            debugline 182
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_serverGivePetList")
+                                                            returnvalue
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                public function set rewardIDList(param1:Vector.<ServerReward>) : void
+                                                {
+                                                   trait setter QName(PackageNamespace(""),"rewardIDList")
+                                                      flag METADATA
+                                                      metadata "__go_to_definition_help"
+                                                         item "pos" "7014"
+                                                      end ; metadata
+                                                      dispid 0
+                                                      method
+                                                         name "rewardIDList"
+                                                         flag HAS_PARAM_NAMES
+                                                         param TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")>)
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 2
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\alone;AloneDoorSupport.as"
+                                                               debug 1, "param1", 0, 0
+                                                               getlocal0
+                                                               getlocal1
+                                                               debugline 186
+                                                               setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.alone:AloneDoorSupport"),"_serverGivePetList")
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                }
+                                             }
+                                             
+                                             method
+                                                name null
+                                                returns null
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 2
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      getscopeobject 0
+                                                      getlex QName(PackageNamespace(""),"Object")
+                                                      dup
+                                                      pushscope
+                                                      newclass 0
+                                                      popscope
+                                                      initproperty QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.alone"),"AloneDoorSupport")
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                             

@@ -1,0 +1,1263 @@
+package com.taomee.seer2.app.shopManager
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.config.MatchingConfig;
+   import com.taomee.seer2.app.config.ShopPanelConfig;
+   import com.taomee.seer2.app.info.BuyPropInfo;
+   import com.taomee.seer2.app.manager.OnlyFlagManager;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.ErrorMap;
+   import com.taomee.seer2.app.net.parser.Parser_1223;
+   import com.taomee.seer2.app.net.parser.Parser_1224;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.core.debugTools.MapPanelProtocolPanel;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.utils.ByteArray;
+   import flash.utils.IDataInput;
+   
+   public class ShopManager
+   {
+      
+      public static const CAN_NOT_BUY_IDS:Array;
+      
+      private static var _successCallBack:Function;
+      
+      private static var _errorCallBack:Function;
+      
+      private static var _buySuccessCallBack:Function;
+      
+      private static var _buyErrorCallBack:Function;
+      
+      private static var _waitList:Array;
+      
+      private static var _isRequesting:Boolean = false;
+      
+      private static var _isBuyRequesting:Boolean = false;
+      
+      private static var _tryId:uint = 0;
+      
+      private static var _count:uint;
+      
+      private static var _obj:Object;
+      
+      private static var _buyWaitList:Array;
+      
+      private static var _byte:ByteArray;
+      
+      private static var _buyInfo:BuyPropInfo;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 2
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 1
+            
+            code
+               getlocal0
+               pushscope
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+               debugline 26
+               pushint 203559
+               newarray 1
+               findproperty QName(PackageNamespace(""),"CAN_NOT_BUY_IDS")
+               swap
+               initproperty QName(PackageNamespace(""),"CAN_NOT_BUY_IDS")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+               findpropstrict QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo")
+               debugline 52
+               constructprop QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo"), 0
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyInfo")
+               swap
+               setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyInfo")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+               findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"initialize")
+               debugline 55
+               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"initialize"), 0
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      public function ShopManager()
+      {
+         method
+            name "ShopManager"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                  debugline 59
+                  getlocal0
+                  debugline 59
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      private static function initialize() : void
+      {
+         trait method QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"initialize")
+            dispid 0
+            method
+               name "initialize"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                     debugline 63
+                     newarray 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_waitList")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_waitList")
+                     debugline 64
+                     newarray 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyWaitList")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyWaitList")
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public static function buyShopItem(param1:uint, param2:uint, param3:ByteArray, param4:Function, param5:Function = null) : void
+         {
+            trait method QName(PackageNamespace(""),"buyShopItem")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "2011"
+               end ; metadata
+               dispid 0
+               method
+                  name "buyShopItem"
+                  flag HAS_OPTIONAL
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace(""),"uint")
+                  param QName(PackageNamespace(""),"uint")
+                  param QName(PackageNamespace("flash.utils"),"ByteArray")
+                  param QName(PackageNamespace(""),"Function")
+                  param QName(PackageNamespace(""),"Function")
+                  paramname "param1"
+                  paramname "param2"
+                  paramname "param3"
+                  paramname "param4"
+                  paramname "param5"
+                  optional Null()
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 11
+                     localcount 6
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                        debug 1, "param5", 4, 0
+                        debug 1, "param3", 2, 0
+                        debug 1, "param4", 3, 0
+                        debug 1, "param1", 0, 0
+                        debug 1, "param2", 1, 0
+                        getlocal1
+                        iffalse ofs0046
+                        debugline 69
+                        getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyWaitList")
+                        debugline 70
+                        pushstring "id"
+                        getlocal1
+                        debugline 71
+                        pushstring "count"
+                        getlocal2
+                        debugline 72
+                        pushstring "by"
+                        getlocal3
+                        debugline 73
+                        pushstring "success"
+                        getlocal 4
+                        debugline 74
+                        pushstring "error"
+                        getlocal 5
+                        newobject 5
+                        callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+               ofs0046:
+                        findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextBuyRequest")
+                        debugline 77
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextBuyRequest"), 0
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private static function processNextBuyRequest() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextBuyRequest")
+                  dispid 0
+                  method
+                     name "processNextBuyRequest"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 5
+                        localcount 3
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                           debug 1, "_loc2_", 0, 0
+                           debug 1, "_loc1_", 1, 0
+                           debugline 81
+                           pushnull
+                           coerce QName(PackageNamespace(""),"Object")
+                           setlocal2
+                           debugline 82
+                           pushbyte 0
+                           convert_u
+                           setlocal1
+                           debugline 83
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyWaitList")
+                           getproperty QName(PackageNamespace(""),"length")
+                           convert_b
+                           dup
+                           iffalse ofs002b
+                           pop
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isBuyRequesting")
+                           pushfalse
+                           equals
+                  ofs002b:
+                           iffalse ofs00f3
+                           debugline 84
+                           pushtrue
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isBuyRequesting")
+                           swap
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isBuyRequesting")
+                           debugline 85
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyWaitList")
+                           callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"shift"), 0
+                           coerce QName(PackageNamespace(""),"Object")
+                           setlocal2
+                           getlocal2
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_obj")
+                           debugline 86
+                           swap
+                           debugline 86
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_obj")
+                           getlocal2
+                           debugline 87
+                           getproperty Multiname("success",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buySuccessCallBack")
+                           swap
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buySuccessCallBack")
+                           getlocal2
+                           debugline 88
+                           getproperty Multiname("error",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyErrorCallBack")
+                           swap
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyErrorCallBack")
+                           debugline 89
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"MatchingConfig")
+                           getlocal2
+                           getproperty Multiname("id",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           callproperty QName(PackageNamespace(""),"getOldId"), 1
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_tryId")
+                           swap
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_tryId")
+                           getlocal2
+                           debugline 90
+                           getproperty Multiname("count",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_count")
+                           swap
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_count")
+                           debugline 91
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"MI_BUY_ITEM_1224")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGerBuyRewardError")
+                           callpropvoid QName(PackageNamespace(""),"addErrorHandler"), 2
+                           debugline 92
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"MI_BUY_ITEM_1224")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGetBuyRewardSuccess")
+                           callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                           debugline 93
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"MI_BUY_ITEM_1224")
+                           getlocal2
+                           getproperty Multiname("id",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           getlocal2
+                           getproperty Multiname("count",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           getlocal2
+                           getproperty Multiname("by",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           callpropvoid QName(PackageNamespace(""),"send"), 4
+                           debugline 94
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"MatchingConfig")
+                           getlocal2
+                           getproperty Multiname("id",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           callproperty QName(PackageNamespace(""),"getOldId"), 1
+                           convert_u
+                           setlocal1
+                           debugline 95
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.debugTools"),"MapPanelProtocolPanel")
+                           callproperty QName(PackageNamespace(""),"instance"), 0
+                           getlocal1
+                           setproperty QName(PackageNamespace(""),"buyID")
+                           debugline 96
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.debugTools"),"MapPanelProtocolPanel")
+                           callproperty QName(PackageNamespace(""),"instance"), 0
+                           pushbyte 6
+                           pushstring "\n购买协议："
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"MI_BUY_ITEM_1224")
+                           add
+                           pushstring "\n\t newID="
+                           add
+                           getlocal1
+                           add
+                           pushstring " oldID="
+                           add
+                           getlocal2
+                           getproperty Multiname("id",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           add
+                           pushstring " num="
+                           add
+                           getlocal2
+                           getproperty Multiname("count",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           add
+                           pushstring " price="
+                           add
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ShopPanelConfig")
+                           getlocal1
+                           callproperty QName(PackageNamespace(""),"getItemPrice"), 1
+                           getlocal2
+                           getproperty Multiname("count",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           multiply
+                           add
+                           pushstring "星钻"
+                           add
+                           callpropvoid QName(PackageNamespace(""),"addLog"), 2
+                  ofs00f3:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private static function onGetBuyRewardSuccess(param1:MessageEvent) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGetBuyRewardSuccess")
+                     dispid 0
+                     method
+                        name "onGetBuyRewardSuccess"
+                        flag HAS_PARAM_NAMES
+                        flag NEED_ACTIVATION
+                        param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 5
+                           localcount 3
+                           initscopedepth 0
+                           maxscopedepth 2
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"param1")
+                              slotid 1
+                              type QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"parser")
+                              slotid 2
+                              type QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1224")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"event")
+                              slotid 3
+                              type QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                           end ; trait
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                              newactivation
+                              dup
+                              setlocal2
+                              pushscope
+                              findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"param1")
+                              getlocal1
+                              setproperty QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"param1")
+                              debug 1, "param1", 0, 0
+                              debug 1, "onGetBuyRewardSuccess$0", 1, 0
+                              debugline 102
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"param1")
+                              coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                              getlocal2
+                              swap
+                              setslot 3
+                              debugline 103
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                              getproperty QName(PackageNamespace(""),"MI_BUY_ITEM_1224")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGerBuyRewardError")
+                              callpropvoid QName(PackageNamespace(""),"removeErrorHandler"), 2
+                              debugline 104
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                              getproperty QName(PackageNamespace(""),"MI_BUY_ITEM_1224")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGetBuyRewardSuccess")
+                              callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                              debugline 105
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.debugTools"),"MapPanelProtocolPanel")
+                              callproperty QName(PackageNamespace(""),"instance"), 0
+                              pushbyte 6
+                              pushstring "\n购买协议： 购买成功  newID="
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.debugTools"),"MapPanelProtocolPanel")
+                              callproperty QName(PackageNamespace(""),"instance"), 0
+                              getproperty QName(PackageNamespace(""),"buyID")
+                              add
+                              callpropvoid QName(PackageNamespace(""),"addLog"), 2
+                              debugline 106
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"OnlyFlagManager")
+                              newfunction 6
+                              callpropvoid QName(PackageNamespace(""),"RequestFlag"), 1
+                              findpropstrict QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1224")
+                              debugline 114
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"event")
+                              getproperty QName(PackageNamespace(""),"message")
+                              callproperty QName(PackageNamespace(""),"getRawData"), 0
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_obj")
+                              getproperty Multiname("id",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_count")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_tryId")
+                              constructprop QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1224"), 4
+                              coerce QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1224")
+                              getlocal2
+                              swap
+                              setslot 2
+                              debugline 115
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buySuccessCallBack")
+                              getglobalscope
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"parser")
+                              call 1
+                              pop
+                              debugline 116
+                              pushnull
+                              findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buySuccessCallBack")
+                              swap
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buySuccessCallBack")
+                              debugline 117
+                              pushfalse
+                              findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isBuyRequesting")
+                              swap
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isBuyRequesting")
+                              debugline 118
+                              pushbyte 0
+                              findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_tryId")
+                              swap
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_tryId")
+                              debugline 119
+                              pushbyte 0
+                              findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_count")
+                              swap
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_count")
+                              findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextBuyRequest")
+                              debugline 120
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextBuyRequest"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private static function onGerBuyRewardError(param1:MessageEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGerBuyRewardError")
+                        dispid 0
+                        method
+                           name "onGerBuyRewardError"
+                           flag HAS_PARAM_NAMES
+                           flag NEED_ACTIVATION
+                           param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 5
+                              localcount 3
+                              initscopedepth 0
+                              maxscopedepth 2
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"param1")
+                                 slotid 1
+                                 type QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"event")
+                                 slotid 2
+                                 type QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"nextRequest")
+                                 slotid 3
+                                 type QName(PackageNamespace(""),"Function")
+                              end ; trait
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                 newactivation
+                                 dup
+                                 setlocal2
+                                 pushscope
+                                 findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"param1")
+                                 getlocal1
+                                 setproperty QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"param1")
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "onGerBuyRewardError$0", 1, 0
+                                 debugline 124
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"param1")
+                                 coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                 getlocal2
+                                 swap
+                                 setslot 2
+                                 newfunction 9
+                                 debugline 125
+                                 coerce QName(PackageNamespace(""),"Function")
+                                 debugline 125
+                                 getlocal2
+                                 debugline 125
+                                 swap
+                                 debugline 125
+                                 setslot 3
+                                 debugline 135
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                 getproperty QName(PackageNamespace(""),"MI_BUY_ITEM_1224")
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGerBuyRewardError")
+                                 callpropvoid QName(PackageNamespace(""),"removeErrorHandler"), 2
+                                 debugline 136
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                 getproperty QName(PackageNamespace(""),"MI_BUY_ITEM_1224")
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGetBuyRewardSuccess")
+                                 callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                 debugline 137
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"event")
+                                 getproperty QName(PackageNamespace(""),"message")
+                                 getproperty QName(PackageNamespace(""),"statusCode")
+                                 pushint 100105
+                                 equals
+                                 debugline 137
+                                 iffalse ofs0078
+                                 debugline 138
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                 pushstring "星钻余额不足，请充值后再购买!"
+                                 newfunction 10
+                                 callpropvoid QName(PackageNamespace(""),"showAlert"), 2
+                                 debugline 137
+                                 jump ofs008a
+                                 debugline 148
+                        ofs0078:
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"nextRequest")
+                                 debugline 148
+                                 getglobalscope
+                                 debugline 148
+                                 call 0
+                                 debugline 148
+                                 pop
+                                 debugline 150
+                        ofs008a:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.debugTools"),"MapPanelProtocolPanel")
+                                 callproperty QName(PackageNamespace(""),"instance"), 0
+                                 pushbyte 6
+                                 pushstring "\n购买协议： 购买失败  newID="
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.debugTools"),"MapPanelProtocolPanel")
+                                 callproperty QName(PackageNamespace(""),"instance"), 0
+                                 getproperty QName(PackageNamespace(""),"buyID")
+                                 add
+                                 pushstring "\n\t"
+                                 add
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"ErrorMap")
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.shopManager"),"event")
+                                 getproperty QName(PackageNamespace(""),"message")
+                                 getproperty QName(PackageNamespace(""),"statusCode")
+                                 callproperty QName(PackageNamespace(""),"findErrorMessage"), 1
+                                 add
+                                 callpropvoid QName(PackageNamespace(""),"addLog"), 2
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public static function requestShop(param1:uint, param2:Function, param3:Function = null) : void
+                     {
+                        trait method QName(PackageNamespace(""),"requestShop")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "6113"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "requestShop"
+                              flag HAS_OPTIONAL
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace(""),"uint")
+                              param QName(PackageNamespace(""),"Function")
+                              param QName(PackageNamespace(""),"Function")
+                              paramname "param1"
+                              paramname "param2"
+                              paramname "param3"
+                              optional Null()
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 7
+                                 localcount 4
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                    debug 1, "param3", 2, 0
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "param2", 1, 0
+                                    getlocal1
+                                    iffalse ofs0034
+                                    debugline 155
+                                    getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_waitList")
+                                    debugline 156
+                                    pushstring "id"
+                                    getlocal1
+                                    debugline 157
+                                    pushstring "success"
+                                    getlocal2
+                                    debugline 158
+                                    pushstring "error"
+                                    getlocal3
+                                    newobject 3
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                           ofs0034:
+                                    findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextRequest")
+                                    debugline 161
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextRequest"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private static function processNextRequest() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextRequest")
+                              dispid 0
+                              method
+                                 name "processNextRequest"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                       debug 1, "_loc1_", 0, 0
+                                       debugline 165
+                                       pushnull
+                                       coerce QName(PackageNamespace(""),"Object")
+                                       setlocal1
+                                       debugline 166
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_waitList")
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       convert_b
+                                       dup
+                                       iffalse ofs0022
+                                       pop
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isRequesting")
+                                       pushfalse
+                                       equals
+                              ofs0022:
+                                       iffalse ofs0087
+                                       debugline 167
+                                       pushtrue
+                                       findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isRequesting")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isRequesting")
+                                       debugline 168
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_waitList")
+                                       callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"shift"), 0
+                                       coerce QName(PackageNamespace(""),"Object")
+                                       setlocal1
+                                       getlocal1
+                                       debugline 169
+                                       getproperty Multiname("success",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_successCallBack")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_successCallBack")
+                                       getlocal1
+                                       debugline 170
+                                       getproperty Multiname("error",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_errorCallBack")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_errorCallBack")
+                                       getlocal1
+                                       debugline 171
+                                       getproperty Multiname("id",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushint 510109
+                                       ifne ofs005f
+                                       debugline 173
+                              ofs005f:
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                       getproperty QName(PackageNamespace(""),"GET_SHOP_INFO_1223")
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGerRewardError")
+                                       callpropvoid QName(PackageNamespace(""),"addErrorHandler"), 2
+                                       debugline 174
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                       getproperty QName(PackageNamespace(""),"GET_SHOP_INFO_1223")
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGetRewardSuccess")
+                                       callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                       debugline 175
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                       getproperty QName(PackageNamespace(""),"GET_SHOP_INFO_1223")
+                                       getlocal1
+                                       getproperty Multiname("id",[PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("com.taomee.seer2.app.shopManager:ShopManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.shopManager"),PackageInternalNs("com.taomee.seer2.app.shopManager"),PrivateNamespace("FilePrivateNS:ShopManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       callpropvoid QName(PackageNamespace(""),"send"), 2
+                              ofs0087:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private static function onGetRewardSuccess(param1:MessageEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGetRewardSuccess")
+                                 dispid 0
+                                 method
+                                    name "onGetRewardSuccess"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                          debug 1, "_loc2_", 1, 0
+                                          debug 1, "param1", 0, 0
+                                          debugline 180
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                          getproperty QName(PackageNamespace(""),"GET_SHOP_INFO_1223")
+                                          getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGerRewardError")
+                                          callpropvoid QName(PackageNamespace(""),"removeErrorHandler"), 2
+                                          debugline 181
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                          getproperty QName(PackageNamespace(""),"GET_SHOP_INFO_1223")
+                                          getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGetRewardSuccess")
+                                          callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                          findpropstrict QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1223")
+                                          getlocal1
+                                          debugline 182
+                                          getproperty QName(PackageNamespace(""),"message")
+                                          callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                          constructprop QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1223"), 1
+                                          coerce QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1223")
+                                          setlocal2
+                                          debugline 183
+                                          getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_successCallBack")
+                                          debugline 183
+                                          getglobalscope
+                                          getlocal2
+                                          debugline 183
+                                          call 1
+                                          debugline 183
+                                          pop
+                                          debugline 184
+                                          pushnull
+                                          findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_successCallBack")
+                                          swap
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_successCallBack")
+                                          debugline 185
+                                          pushfalse
+                                          findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isRequesting")
+                                          swap
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isRequesting")
+                                          findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextRequest")
+                                          debugline 186
+                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextRequest"), 0
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private static function onGerRewardError(param1:MessageEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGerRewardError")
+                                    dispid 0
+                                    method
+                                       name "onGerRewardError"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                             debug 1, "param1", 0, 0
+                                             debugline 190
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                             getproperty QName(PackageNamespace(""),"GET_SHOP_INFO_1223")
+                                             getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGerRewardError")
+                                             callpropvoid QName(PackageNamespace(""),"removeErrorHandler"), 2
+                                             debugline 191
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                             getproperty QName(PackageNamespace(""),"GET_SHOP_INFO_1223")
+                                             getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"onGetRewardSuccess")
+                                             callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                             debugline 192
+                                             getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_errorCallBack")
+                                             pushnull
+                                             ifeq ofs0049
+                                             debugline 193
+                                             getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_errorCallBack")
+                                             getglobalscope
+                                             getlocal1
+                                             getproperty QName(PackageNamespace(""),"message")
+                                             getproperty QName(PackageNamespace(""),"statusCode")
+                                             call 1
+                                             pop
+                                             debugline 194
+                                             pushnull
+                                             findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_errorCallBack")
+                                             swap
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_errorCallBack")
+                                             debugline 196
+                                    ofs0049:
+                                             pushfalse
+                                             findproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isRequesting")
+                                             swap
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_isRequesting")
+                                             findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextRequest")
+                                             debugline 197
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"processNextRequest"), 0
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 public static function buyBagItem(param1:BuyPropInfo) : void
+                                 {
+                                    trait method QName(PackageNamespace(""),"buyBagItem")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "8046"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "buyBagItem"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 4
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                                debug 1, "param1", 0, 0
+                                                debugline 201
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                pushstring "BuyPropPanel"
+                                                callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                pushstring ""
+                                                getlocal1
+                                                callpropvoid QName(PackageNamespace(""),"toggleModule"), 3
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    public static function buyVirtualItem(param1:BuyPropInfo) : void
+                                    {
+                                       trait method QName(PackageNamespace(""),"buyVirtualItem")
+                                          flag METADATA
+                                          metadata "__go_to_definition_help"
+                                             item "pos" "8208"
+                                          end ; metadata
+                                          dispid 0
+                                          method
+                                             name "buyVirtualItem"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 4
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                                   debug 1, "param1", 0, 0
+                                                   debugline 205
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                   pushstring "BuyItemVirtualPanel"
+                                                   callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                   pushstring ""
+                                                   getlocal1
+                                                   callpropvoid QName(PackageNamespace(""),"toggleModule"), 3
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       public static function buyItemForId(param1:uint, param2:Function = null) : void
+                                       {
+                                          trait method QName(PackageNamespace(""),"buyItemForId")
+                                             flag METADATA
+                                             metadata "__go_to_definition_help"
+                                                item "pos" "8381"
+                                             end ; metadata
+                                             dispid 0
+                                             method
+                                                name "buyItemForId"
+                                                flag HAS_OPTIONAL
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace(""),"uint")
+                                                param QName(PackageNamespace(""),"Function")
+                                                paramname "param1"
+                                                paramname "param2"
+                                                optional Null()
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 2
+                                                   localcount 3
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                                      debug 1, "param1", 0, 0
+                                                      debug 1, "param2", 1, 0
+                                                      debugline 209
+                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyInfo")
+                                                      getlocal1
+                                                      setproperty QName(PackageNamespace(""),"itemId")
+                                                      debugline 210
+                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyInfo")
+                                                      getlocal2
+                                                      setproperty QName(PackageNamespace(""),"buyComplete")
+                                                      debugline 211
+                                                      getlex QName(PackageNamespace(""),"CAN_NOT_BUY_IDS")
+                                                      getlocal1
+                                                      callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                      pushbyte -1
+                                                      ifeq ofs0031
+                                                      debugline 212
+                                                      returnvoid
+                                             ofs0031:
+                                                      getlocal1
+                                                      debugline 214
+                                                      pushint 800000
+                                                      ifngt ofs0049
+                                                      findpropstrict QName(PackageNamespace(""),"buyBagItem")
+                                                      debugline 215
+                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyInfo")
+                                                      callpropvoid QName(PackageNamespace(""),"buyBagItem"), 1
+                                                      debugline 216
+                                                      returnvoid
+                                             ofs0049:
+                                                      getlocal1
+                                                      debugline 218
+                                                      pushint 500500
+                                                      lessequals
+                                                      debugline 218
+                                                      iffalse ofs0068
+                                                      findpropstrict QName(PackageNamespace(""),"buyBagItem")
+                                                      debugline 219
+                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyInfo")
+                                                      callpropvoid QName(PackageNamespace(""),"buyBagItem"), 1
+                                                      debugline 218
+                                                      jump ofs0072
+                                             ofs0068:
+                                                      findpropstrict QName(PackageNamespace(""),"buyVirtualItem")
+                                                      debugline 221
+                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.shopManager:ShopManager"),"_buyInfo")
+                                                      callpropvoid QName(PackageNamespace(""),"buyVirtualItem"), 1
+                                             ofs0072:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          public static function checkReally(param1:Number, param2:Function) : void
+                                          {
+                                             trait method QName(PackageNamespace(""),"checkReally")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "8871"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "checkReally"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace(""),"Number")
+                                                   param QName(PackageNamespace(""),"Function")
+                                                   paramname "param1"
+                                                   paramname "param2"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 3
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                                         debug 1, "param1", 0, 0
+                                                         debug 1, "param2", 1, 0
+                                                         debugline 226
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                         getproperty QName(PackageNamespace(""),"actorInfo")
+                                                         getproperty QName(PackageNamespace(""),"moneyCount")
+                                                         getlocal1
+                                                         pushbyte 10
+                                                         multiply
+                                                         greaterequals
+                                                         debugline 226
+                                                         iffalse ofs0033
+                                                         getlocal2
+                                                         getlocal0
+                                                         debugline 227
+                                                         pushtrue
+                                                         call 1
+                                                         pop
+                                                         debugline 226
+                                                         jump ofs003c
+                                                ofs0033:
+                                                         getlocal2
+                                                         getlocal0
+                                                         debugline 229
+                                                         pushfalse
+                                                         call 1
+                                                         pop
+                                                ofs003c:
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public static function getReallyCount(param1:Function) : void
+                                             {
+                                                trait method QName(PackageNamespace(""),"getReallyCount")
+                                                   flag METADATA
+                                                   metadata "__go_to_definition_help"
+                                                      item "pos" "9108"
+                                                   end ; metadata
+                                                   dispid 0
+                                                   method
+                                                      name "getReallyCount"
+                                                      flag HAS_PARAM_NAMES
+                                                      param QName(PackageNamespace(""),"Function")
+                                                      paramname "param1"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 2
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                                            debug 1, "param1", 0, 0
+                                                            getlocal1
+                                                            getlocal0
+                                                            debugline 234
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                            getproperty QName(PackageNamespace(""),"actorInfo")
+                                                            getproperty QName(PackageNamespace(""),"moneyCount")
+                                                            call 1
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                public static function getReallyName() : String
+                                                {
+                                                   trait method QName(PackageNamespace(""),"getReallyName")
+                                                      flag METADATA
+                                                      metadata "__go_to_definition_help"
+                                                         item "pos" "9236"
+                                                      end ; metadata
+                                                      dispid 0
+                                                      method
+                                                         name "getReallyName"
+                                                         returns QName(PackageNamespace(""),"String")
+                                                         
+                                                         body
+                                                            maxstack 1
+                                                            localcount 1
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                                               debugline 238
+                                                               pushstring "星钻"
+                                                               returnvalue
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   public static function getReallyNum(param1:Number) : Number
+                                                   {
+                                                      trait method QName(PackageNamespace(""),"getReallyNum")
+                                                         flag METADATA
+                                                         metadata "__go_to_definition_help"
+                                                            item "pos" "9320"
+                                                         end ; metadata
+                                                         dispid 0
+                                                         method
+                                                            name "getReallyNum"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace(""),"Number")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"Number")
+                                                            
+                                                            body
+                                                               maxstack 2
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\shopManager;ShopManager.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  getlocal1
+                                                                  debugline 242
+                                                                  pushbyte 10
+                                                                  multiply
+                                                                  returnvalue
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                   }
+                                                }
+                                                
+                                                method
+                                                   name null
+                                                   returns null
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 2
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         getscopeobject 0
+                                                         getlex QName(PackageNamespace(""),"Object")
+                                                         dup
+                                                         pushscope
+                                                         newclass 0
+                                                         popscope
+                                                         initproperty QName(PackageNamespace("com.taomee.seer2.app.shopManager"),"ShopManager")
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                                

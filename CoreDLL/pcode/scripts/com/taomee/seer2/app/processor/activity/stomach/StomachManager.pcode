@@ -1,0 +1,830 @@
+package com.taomee.seer2.app.processor.activity.stomach
+{
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.entity.Teleport;
+   import com.taomee.seer2.app.npc.NpcEvent;
+   import com.taomee.seer2.app.npc.NpcManager;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.quest.QuestManager;
+   import com.taomee.seer2.core.entity.AnimateElementManager;
+   import com.taomee.seer2.core.entity.Mobile;
+   import com.taomee.seer2.core.entity.MobileManager;
+   import com.taomee.seer2.core.manager.TimeManager;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.utils.DateUtil;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   
+   public class StomachManager
+   {
+      
+      private static var _questAbort:Boolean = false;
+      
+      private static var _endDate:uint;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 6
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 1
+            
+            code
+               getlocal0
+               pushscope
+               findpropstrict QName(PackageNamespace(""),"Date")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+               debugline 25
+               pushshort 2012
+               pushbyte 11
+               pushbyte 11
+               pushbyte 15
+               pushbyte 2
+               constructprop QName(PackageNamespace(""),"Date"), 5
+               callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getTime"), 0
+               pushshort 1000
+               divide
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_endDate")
+               swap
+               setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_endDate")
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _map:MapModel;
+      
+      private var _grassNpc:Mobile;
+      
+      private var _fireNpc:Mobile;
+      
+      private var _waterNpc:Mobile;
+      
+      private var _fahaiNpc:Mobile;
+      
+      private var _teleport:Teleport;
+      
+      public function StomachManager(param1:MapModel)
+      {
+         method
+            name "StomachManager"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 3
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                  debug 1, "param1", 0, 0
+                  debugline 41
+                  getlocal0
+                  debugline 41
+                  constructsuper 0
+                  getlocal0
+                  getlocal1
+                  debugline 42
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_map")
+                  getlocal0
+                  debugline 43
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"AnimateElementManager")
+                  pushbyte 1
+                  callproperty QName(PackageNamespace(""),"getElement"), 1
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.entity"),"Teleport")
+                  astypelate
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_teleport")
+                  getlocal0
+                  debugline 44
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"initTeleport"), 0
+                  getlocal0
+                  debugline 45
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"initNpc"), 0
+                  getlocal0
+                  debugline 46
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"initDialogEvent"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function isTimerLater() : Boolean
+      {
+         trait method QName(PackageNamespace(""),"isTimerLater")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1565"
+            end ; metadata
+            dispid 0
+            method
+               name "isTimerLater"
+               returns QName(PackageNamespace(""),"Boolean")
+               
+               body
+                  maxstack 6
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                     debugline 50
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                     callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_endDate")
+                     ifnlt ofs0059
+                     debugline 51
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DateUtil")
+                     pushbyte 5
+                     pushbyte 13
+                     pushbyte 0
+                     pushbyte 15
+                     pushbyte 1
+                     callproperty QName(PackageNamespace(""),"inInDateScope"), 5
+                     convert_b
+                     dup
+                     iftrue ofs0039
+                     pop
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DateUtil")
+                     pushbyte 6
+                     pushbyte 13
+                     pushbyte 0
+                     pushbyte 15
+                     pushbyte 1
+                     callproperty QName(PackageNamespace(""),"inInDateScope"), 5
+                     convert_b
+            ofs0039:
+                     dup
+                     iftrue ofs004f
+                     pop
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DateUtil")
+                     pushbyte 0
+                     pushbyte 13
+                     pushbyte 0
+                     pushbyte 15
+                     pushbyte 1
+                     callproperty QName(PackageNamespace(""),"inInDateScope"), 5
+                     convert_b
+            ofs004f:
+                     iffalse ofs0059
+                     debugline 52
+                     pushfalse
+                     returnvalue
+                     debugline 55
+            ofs0059:
+                     pushfalse
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function initTeleport() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"initTeleport")
+               dispid 0
+               method
+                  name "initTeleport"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                        getlocal0
+                        debugline 59
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_map")
+                        getproperty QName(PackageNamespace(""),"content")
+                        pushstring "enterFrame"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onEnter")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function onEnter(param1:Event) : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onEnter")
+                  dispid 0
+                  method
+                     name "onEnter"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace("flash.events"),"Event")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 2
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                           debug 1, "param1", 0, 0
+                           findpropstrict QName(PackageNamespace(""),"isTimerLater")
+                           debugline 63
+                           callproperty QName(PackageNamespace(""),"isTimerLater"), 0
+                           debugline 63
+                           iffalse ofs0024
+                           getlocal0
+                           debugline 64
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_teleport")
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"visible")
+                           debugline 63
+                           jump ofs002c
+                  ofs0024:
+                           getlocal0
+                           debugline 66
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_teleport")
+                           pushtrue
+                           setproperty QName(PackageNamespace(""),"visible")
+                  ofs002c:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function initNpc() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"initNpc")
+                     dispid 0
+                     method
+                        name "initNpc"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 5
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                              getlocal0
+                              debugline 71
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                              pushbyte 62
+                              pushstring "npc"
+                              callproperty QName(PackageNamespace(""),"getMobile"), 2
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_grassNpc")
+                              getlocal0
+                              debugline 72
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                              pushbyte 63
+                              pushstring "npc"
+                              callproperty QName(PackageNamespace(""),"getMobile"), 2
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_fireNpc")
+                              getlocal0
+                              debugline 73
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                              pushbyte 64
+                              pushstring "npc"
+                              callproperty QName(PackageNamespace(""),"getMobile"), 2
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_waterNpc")
+                              getlocal0
+                              debugline 74
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                              pushbyte 61
+                              pushstring "npc"
+                              callproperty QName(PackageNamespace(""),"getMobile"), 2
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_fahaiNpc")
+                              getlocal0
+                              debugline 75
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_grassNpc")
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"buttonMode")
+                              getlocal0
+                              debugline 76
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_fireNpc")
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"buttonMode")
+                              getlocal0
+                              debugline 77
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_waterNpc")
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"buttonMode")
+                              getlocal0
+                              debugline 78
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_grassNpc")
+                              pushstring "click"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onGrass")
+                              pushfalse
+                              pushbyte 1
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 4
+                              getlocal0
+                              debugline 79
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_fireNpc")
+                              pushstring "click"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onFire")
+                              pushfalse
+                              pushbyte 1
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 4
+                              getlocal0
+                              debugline 80
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_waterNpc")
+                              pushstring "click"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onWater")
+                              pushfalse
+                              pushbyte 1
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 4
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function initDialogEvent() : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"initDialogEvent")
+                        dispid 0
+                        method
+                           name "initDialogEvent"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                                 debugline 84
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.npc"),"NpcManager")
+                                 pushstring "actorArrive"
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onDialogShow")
+                                 callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onDialogShow(param1:NpcEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onDialogShow")
+                           dispid 0
+                           method
+                              name "onDialogShow"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("com.taomee.seer2.app.npc"),"NpcEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                                    debug 1, "param1", 0, 0
+                                    getlocal1
+                                    debugline 88
+                                    getproperty QName(PackageNamespace(""),"npcDefinition")
+                                    getproperty QName(PackageNamespace(""),"id")
+                                    pushbyte 61
+                                    ifne ofs005d
+                                    findpropstrict QName(PackageNamespace(""),"isTimerLater")
+                                    debugline 89
+                                    callproperty QName(PackageNamespace(""),"isTimerLater"), 0
+                                    debugline 89
+                                    iffalse ofs003b
+                                    getlocal1
+                                    debugline 90
+                                    getproperty QName(PackageNamespace(""),"npcDefinition")
+                                    callpropvoid QName(PackageNamespace(""),"resetFunctionalityData"), 0
+                                    getlocal1
+                                    debugline 91
+                                    getproperty QName(PackageNamespace(""),"npcDefinition")
+                                    pushstring "空腹节的灾难"
+                                    callpropvoid QName(PackageNamespace(""),"removeFunctionalityUnit"), 1
+                                    debugline 89
+                                    jump ofs005d
+                           ofs003b:
+                                    getlocal1
+                                    debugline 93
+                                    getproperty QName(PackageNamespace(""),"npcDefinition")
+                                    pushstring "兑换道具"
+                                    callpropvoid QName(PackageNamespace(""),"removeFunctionalityUnit"), 1
+                                    debugline 94
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                    pushshort 10042
+                                    callproperty QName(PackageNamespace(""),"isComplete"), 1
+                                    iffalse ofs005d
+                                    getlocal1
+                                    debugline 95
+                                    getproperty QName(PackageNamespace(""),"npcDefinition")
+                                    pushstring "空腹节的灾难"
+                                    callpropvoid QName(PackageNamespace(""),"removeFunctionalityUnit"), 1
+                           ofs005d:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function onGrass(param1:MouseEvent) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onGrass")
+                              dispid 0
+                              method
+                                 name "onGrass"
+                                 flag HAS_PARAM_NAMES
+                                 flag NEED_ACTIVATION
+                                 param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 6
+                                    localcount 3
+                                    initscopedepth 0
+                                    maxscopedepth 2
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                       slotid 1
+                                       type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"event")
+                                       slotid 2
+                                       type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    end ; trait
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                                       newactivation
+                                       dup
+                                       setlocal2
+                                       pushscope
+                                       findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                       getlocal1
+                                       setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "onGrass$0", 1, 0
+                                       debugline 102
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                       coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       getlocal2
+                                       swap
+                                       setslot 2
+                                       debugline 103
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"event")
+                                       callpropvoid QName(PackageNamespace(""),"stopImmediatePropagation"), 0
+                                       debugline 104
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                       callproperty QName(PackageNamespace(""),"getFirstPetInfo"), 0
+                                       callproperty QName(PackageNamespace(""),"getPetDefinition"), 0
+                                       getproperty QName(PackageNamespace(""),"type")
+                                       pushbyte 2
+                                       equals
+                                       debugline 104
+                                       iffalse ofs0062
+                                       debugline 105
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                       pushbyte 18
+                                       pushstring "草系部落勇士"
+                                       pushbyte 3
+                                       pushstring "我是草系部落的勇士，你可以用草系精灵和我对战，为了部落！"
+                                       newarray 2
+                                       newarray 1
+                                       pushstring "我要挑战你"
+                                       pushstring "我先走了"
+                                       newarray 2
+                                       newfunction 8
+                                       newarray 1
+                                       callpropvoid QName(PackageNamespace(""),"show"), 5
+                                       debugline 104
+                                       jump ofs0077
+                                       debugline 109
+                              ofs0062:
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                       pushbyte 18
+                                       pushstring "草系部落勇士"
+                                       pushbyte 3
+                                       pushstring "想要挑战我的话，你的首发精灵必须是草系的。"
+                                       newarray 2
+                                       newarray 1
+                                       pushstring "知道了！"
+                                       newarray 1
+                                       callpropvoid QName(PackageNamespace(""),"show"), 4
+                              ofs0077:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onFire(param1:MouseEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onFire")
+                                 dispid 0
+                                 method
+                                    name "onFire"
+                                    flag HAS_PARAM_NAMES
+                                    flag NEED_ACTIVATION
+                                    param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 6
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 2
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                          slotid 1
+                                          type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       end ; trait
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"event")
+                                          slotid 2
+                                          type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       end ; trait
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                                          newactivation
+                                          dup
+                                          setlocal2
+                                          pushscope
+                                          findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                          getlocal1
+                                          setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                          debug 1, "param1", 0, 0
+                                          debug 1, "onFire$0", 1, 0
+                                          debugline 114
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                          coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          getlocal2
+                                          swap
+                                          setslot 2
+                                          debugline 115
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"event")
+                                          callpropvoid QName(PackageNamespace(""),"stopImmediatePropagation"), 0
+                                          debugline 116
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                          callproperty QName(PackageNamespace(""),"getFirstPetInfo"), 0
+                                          callproperty QName(PackageNamespace(""),"getPetDefinition"), 0
+                                          getproperty QName(PackageNamespace(""),"type")
+                                          pushbyte 3
+                                          equals
+                                          debugline 116
+                                          iffalse ofs0062
+                                          debugline 117
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                          pushbyte 26
+                                          pushstring "水系部落勇士"
+                                          pushbyte 2
+                                          pushstring "我是水系部落的勇士，你也想了解魔法的奥秘吗？"
+                                          newarray 2
+                                          newarray 1
+                                          pushstring "我要挑战你"
+                                          pushstring "我先走了"
+                                          newarray 2
+                                          newfunction 10
+                                          newarray 1
+                                          callpropvoid QName(PackageNamespace(""),"show"), 5
+                                          debugline 116
+                                          jump ofs0077
+                                          debugline 121
+                                 ofs0062:
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                          pushbyte 26
+                                          pushstring "水系部落勇士"
+                                          pushbyte 2
+                                          pushstring "想要挑战我的话，你的首发精灵必须是水系的。"
+                                          newarray 2
+                                          newarray 1
+                                          pushstring "知道了！"
+                                          newarray 1
+                                          callpropvoid QName(PackageNamespace(""),"show"), 4
+                                 ofs0077:
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function onWater(param1:MouseEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onWater")
+                                    dispid 0
+                                    method
+                                       name "onWater"
+                                       flag HAS_PARAM_NAMES
+                                       flag NEED_ACTIVATION
+                                       param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 6
+                                          localcount 3
+                                          initscopedepth 0
+                                          maxscopedepth 2
+                                          trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                             slotid 1
+                                             type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          end ; trait
+                                          trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"event")
+                                             slotid 2
+                                             type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          end ; trait
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                                             newactivation
+                                             dup
+                                             setlocal2
+                                             pushscope
+                                             findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                             getlocal1
+                                             setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                             debug 1, "param1", 0, 0
+                                             debug 1, "onWater$0", 1, 0
+                                             debugline 126
+                                             getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"param1")
+                                             coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                             getlocal2
+                                             swap
+                                             setslot 2
+                                             debugline 127
+                                             getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.activity.stomach"),"event")
+                                             callpropvoid QName(PackageNamespace(""),"stopImmediatePropagation"), 0
+                                             debugline 128
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                             callproperty QName(PackageNamespace(""),"getFirstPetInfo"), 0
+                                             callproperty QName(PackageNamespace(""),"getPetDefinition"), 0
+                                             getproperty QName(PackageNamespace(""),"type")
+                                             pushbyte 4
+                                             equals
+                                             debugline 128
+                                             iffalse ofs0067
+                                             debugline 129
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                             pushbyte 34
+                                             pushstring "火系部落勇士"
+                                             pushbyte 0
+                                             pushstring "我是火系部落的勇士，荣耀即吾命！"
+                                             newarray 2
+                                             newarray 1
+                                             pushstring "我要挑战你"
+                                             pushstring "我先走了"
+                                             newarray 2
+                                             newfunction 12
+                                             newarray 1
+                                             callpropvoid QName(PackageNamespace(""),"show"), 5
+                                             debugline 128
+                                             jump ofs007c
+                                             debugline 133
+                                    ofs0067:
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                             pushbyte 34
+                                             pushstring "火系部落勇士"
+                                             pushbyte 0
+                                             pushstring "想要挑战我的话，你的首发精灵必须是火系的。"
+                                             newarray 2
+                                             newarray 1
+                                             pushstring "知道了！"
+                                             newarray 1
+                                             callpropvoid QName(PackageNamespace(""),"show"), 4
+                                    ofs007c:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 public function dispose() : void
+                                 {
+                                    trait method QName(PackageNamespace(""),"dispose")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "5281"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "dispose"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\activity\\stomach;StomachManager.as"
+                                                debugline 138
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.npc"),"NpcManager")
+                                                pushstring "actorArrive"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onDialogShow")
+                                                callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                getlocal0
+                                                debugline 139
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_map")
+                                                getproperty QName(PackageNamespace(""),"content")
+                                                pushstring "enterFrame"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onEnter")
+                                                callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                getlocal0
+                                                debugline 140
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_grassNpc")
+                                                pushstring "click"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onGrass")
+                                                callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                getlocal0
+                                                debugline 141
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_fireNpc")
+                                                pushstring "click"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onFire")
+                                                callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                getlocal0
+                                                debugline 142
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"_waterNpc")
+                                                pushstring "click"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.activity.stomach:StomachManager"),"onWater")
+                                                callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                 }
+                              }
+                              
+                              method
+                                 name null
+                                 returns null
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 2
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       getscopeobject 0
+                                       getlex QName(PackageNamespace(""),"Object")
+                                       dup
+                                       pushscope
+                                       newclass 0
+                                       popscope
+                                       initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.activity.stomach"),"StomachManager")
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                              

@@ -1,0 +1,619 @@
+package com.taomee.seer2.core.net
+{
+   import com.taomee.seer2.core.log.Logger;
+   import com.taomee.seer2.core.net.message.Message;
+   import flash.events.DataEvent;
+   import flash.events.ProgressEvent;
+   import flash.net.Socket;
+   import flash.utils.ByteArray;
+   
+   public class TcpSocket extends Socket
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private const MSG_FIRST_TOKEN_LEN:int = 4;
+      
+      private var _tempBuffer:ByteArray;
+      
+      private var _chunkBuffer:ByteArray;
+      
+      private var _messageQueue:Vector.<Message>;
+      
+      private var _host:String = "";
+      
+      private var _port:int;
+      
+      private var _logger:Logger;
+      
+      public function TcpSocket()
+      {
+         method
+            name "TcpSocket"
+            returns null
+            
+            body
+               maxstack 3
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                  debugline 28
+                  getlocal0
+                  debugline 28
+                  constructsuper 0
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("flash.utils"),"ByteArray")
+                  debugline 29
+                  constructprop QName(PackageNamespace("flash.utils"),"ByteArray"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("flash.utils"),"ByteArray")
+                  debugline 30
+                  constructprop QName(PackageNamespace("flash.utils"),"ByteArray"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                  getlocal0
+                  debugline 31
+                  getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.net.message"),"Message")
+                  debugline 31
+                  applytype 1
+                  debugline 31
+                  construct 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_messageQueue")
+                  findpropstrict QName(PackageNamespace(""),"addEventListener")
+                  pushstring "socketData"
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"onSocketData")
+                  callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                  getlocal0
+                  debugline 33
+                  getlex QName(PackageNamespace("com.taomee.seer2.core.log"),"Logger")
+                  pushstring "TcpSocket"
+                  callproperty QName(PackageNamespace(""),"getLogger"), 1
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_logger")
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function get host() : String
+      {
+         trait getter QName(PackageNamespace(""),"host")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "952"
+            end ; metadata
+            dispid 0
+            method
+               name "host"
+               returns QName(PackageNamespace(""),"String")
+               
+               body
+                  maxstack 1
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                     getlocal0
+                     debugline 37
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_host")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function get port() : int
+         {
+            trait getter QName(PackageNamespace(""),"port")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "1030"
+               end ; metadata
+               dispid 0
+               method
+                  name "port"
+                  returns QName(PackageNamespace(""),"int")
+                  
+                  body
+                     maxstack 1
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                        getlocal0
+                        debugline 41
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_port")
+                        returnvalue
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            override public function set endian(param1:String) : void
+            {
+               trait setter QName(PackageNamespace(""),"endian")
+                  flag OVERRIDE
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "1114"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "endian"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace(""),"String")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 2
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                           debug 1, "param1", 0, 0
+                           getlocal1
+                           findproperty QName(PackageNamespace(""),"endian")
+                           debugline 45
+                           swap
+                           debugline 45
+                           setsuper QName(PackageNamespace(""),"endian")
+                           getlocal0
+                           debugline 46
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                           getlocal1
+                           setproperty QName(PackageNamespace(""),"endian")
+                           getlocal0
+                           debugline 47
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                           getlocal1
+                           setproperty QName(PackageNamespace(""),"endian")
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               override public function connect(param1:String, param2:int) : void
+               {
+                  trait method QName(PackageNamespace(""),"connect")
+                     flag OVERRIDE
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "1301"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "connect"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"String")
+                        param QName(PackageNamespace(""),"int")
+                        paramname "param1"
+                        paramname "param2"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 3
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                              debug 1, "param1", 0, 0
+                              debug 1, "param2", 1, 0
+                              getlocal0
+                              getlocal1
+                              debugline 51
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_host")
+                              getlocal0
+                              getlocal2
+                              debugline 52
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_port")
+                              debugline 53
+                              getlocal0
+                              getlocal1
+                              getlocal2
+                              debugline 53
+                              callsupervoid QName(PackageNamespace(""),"connect"), 2
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onSocketData(param1:ProgressEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"onSocketData")
+                        dispid 0
+                        method
+                           name "onSocketData"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("flash.events"),"ProgressEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 4
+                              localcount 4
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                                 debug 1, "_loc2_", 1, 0
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "_loc3_", 2, 0
+                                 debugline 57
+                                 pushbyte 0
+                                 setlocal2
+                                 debugline 58
+                                 pushnull
+                                 coerce QName(PackageNamespace("com.taomee.seer2.core.net.message"),"Message")
+                                 setlocal3
+                                 getlocal0
+                                 debugline 59
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 callpropvoid QName(PackageNamespace(""),"clear"), 0
+                                 getlocal0
+                                 debugline 60
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                                 getproperty QName(PackageNamespace(""),"length")
+                                 pushbyte 0
+                                 ifngt ofs0056
+                                 getlocal0
+                                 debugline 61
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                                 pushbyte 0
+                                 setproperty QName(PackageNamespace(""),"position")
+                                 getlocal0
+                                 debugline 62
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 pushbyte 0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                                 getproperty QName(PackageNamespace(""),"length")
+                                 callpropvoid QName(PackageNamespace(""),"readBytes"), 3
+                                 getlocal0
+                                 debugline 63
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                                 callpropvoid QName(PackageNamespace(""),"clear"), 0
+                        ofs0056:
+                                 findpropstrict QName(PackageNamespace(""),"readBytes")
+                                 getlocal0
+                                 debugline 65
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getproperty QName(PackageNamespace(""),"length")
+                                 getlex QName(PackageNamespace(""),"bytesAvailable")
+                                 callpropvoid QName(PackageNamespace(""),"readBytes"), 3
+                                 getlocal0
+                                 debugline 66
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 pushbyte 0
+                                 setproperty QName(PackageNamespace(""),"position")
+                                 jump ofs0113
+                        ofs0074:
+                                 label
+                                 getlocal0
+                                 debugline 68
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getproperty QName(PackageNamespace(""),"bytesAvailable")
+                                 pushbyte 4
+                                 greaterthan
+                                 debugline 68
+                                 iffalse ofs0101
+                                 getlocal0
+                                 debugline 69
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                 pushbyte 4
+                                 subtract
+                                 convert_i
+                                 setlocal2
+                                 getlocal2
+                                 getlocal0
+                                 debugline 70
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getproperty QName(PackageNamespace(""),"bytesAvailable")
+                                 greaterthan
+                                 debugline 70
+                                 iffalse ofs00c9
+                                 getlocal0
+                                 debugline 71
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getproperty QName(PackageNamespace(""),"position")
+                                 pushbyte 4
+                                 subtract
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 swap
+                                 setproperty QName(PackageNamespace(""),"position")
+                                 getlocal0
+                                 debugline 72
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                                 pushbyte 0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getproperty QName(PackageNamespace(""),"bytesAvailable")
+                                 callpropvoid QName(PackageNamespace(""),"readBytes"), 3
+                                 debugline 70
+                                 jump ofs00fd
+                        ofs00c9:
+                                 getlocal0
+                                 debugline 74
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getproperty QName(PackageNamespace(""),"position")
+                                 pushbyte 4
+                                 subtract
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 swap
+                                 setproperty QName(PackageNamespace(""),"position")
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.core.net.message"),"Message")
+                                 getlocal0
+                                 debugline 75
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.core.net.message"),"Message"), 1
+                                 coerce QName(PackageNamespace("com.taomee.seer2.core.net.message"),"Message")
+                                 setlocal3
+                                 getlocal0
+                                 debugline 76
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_messageQueue")
+                                 getlocal3
+                                 callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                 findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                 findpropstrict QName(PackageNamespace("flash.events"),"DataEvent")
+                                 pushstring "data"
+                                 constructprop QName(PackageNamespace("flash.events"),"DataEvent"), 1
+                                 callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                 debugline 68
+                        ofs00fd:
+                                 jump ofs0113
+                        ofs0101:
+                                 getlocal0
+                                 debugline 80
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_tempBuffer")
+                                 pushbyte 0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getproperty QName(PackageNamespace(""),"bytesAvailable")
+                                 callpropvoid QName(PackageNamespace(""),"readBytes"), 3
+                        ofs0113:
+                                 getlocal0
+                                 debugline 67
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_chunkBuffer")
+                                 getproperty QName(PackageNamespace(""),"bytesAvailable")
+                                 pushbyte 0
+                                 ifgt ofs0074
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public function getMessageQueue() : Vector.<Message>
+                     {
+                        trait method QName(PackageNamespace(""),"getMessageQueue")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "2923"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "getMessageQueue"
+                              returns TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.core.net.message"),"Message")>)
+                              
+                              body
+                                 maxstack 2
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                                    debug 1, "_loc1_", 0, 0
+                                    debugline 86
+                                    getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.net.message"),"Message")
+                                    debugline 86
+                                    applytype 1
+                                    debugline 86
+                                    construct 0
+                                    coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.core.net.message"),"Message")>)
+                                    setlocal1
+                                    jump ofs002b
+                           ofs001e:
+                                    label
+                                    getlocal1
+                                    getlocal0
+                                    debugline 88
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_messageQueue")
+                                    callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"shift"), 0
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                           ofs002b:
+                                    getlocal0
+                                    debugline 87
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_messageQueue")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    pushbyte 0
+                                    ifgt ofs001e
+                                    getlocal1
+                                    debugline 90
+                                    returnvalue
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        public function send(param1:ByteArray) : void
+                        {
+                           trait method QName(PackageNamespace(""),"send")
+                              flag METADATA
+                              metadata "__go_to_definition_help"
+                                 item "pos" "3191"
+                              end ; metadata
+                              dispid 0
+                              method
+                                 name "send"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("flash.utils"),"ByteArray")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                                       debug 1, "param1", 0, 0
+                                       debugline 94
+                                       getlex QName(PackageNamespace(""),"connected")
+                                       pushtrue
+                                       equals
+                                       debugline 94
+                                       iffalse ofs002a
+                                       findpropstrict QName(PackageNamespace(""),"writeBytes")
+                                       getlocal1
+                                       debugline 95
+                                       callpropvoid QName(PackageNamespace(""),"writeBytes"), 1
+                                       findpropstrict QName(PackageNamespace(""),"flush")
+                                       debugline 96
+                                       callpropvoid QName(PackageNamespace(""),"flush"), 0
+                                       debugline 94
+                                       jump ofs0034
+                              ofs002a:
+                                       getlocal0
+                                       debugline 98
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.net:TcpSocket"),"_logger")
+                                       pushstring "连接已断开"
+                                       callpropvoid QName(PackageNamespace(""),"error"), 1
+                              ofs0034:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           override public function close() : void
+                           {
+                              trait method QName(PackageNamespace(""),"close")
+                                 flag OVERRIDE
+                                 flag METADATA
+                                 metadata "__go_to_definition_help"
+                                    item "pos" "3420"
+                                 end ; metadata
+                                 dispid 0
+                                 method
+                                    name "close"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\net;TcpSocket.as"
+                                          debugline 103
+                                          getlex QName(PackageNamespace(""),"connected")
+                                          pushtrue
+                                          ifne ofs0015
+                                          debugline 104
+                                          getlocal0
+                                          debugline 104
+                                          callsupervoid QName(PackageNamespace(""),"close"), 0
+                                 ofs0015:
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                           }
+                        }
+                        
+                        method
+                           name null
+                           returns null
+                           
+                           body
+                              maxstack 3
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 4
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 getscopeobject 0
+                                 getlex QName(PackageNamespace(""),"Object")
+                                 pushscope
+                                 getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                 pushscope
+                                 getlex QName(PackageNamespace("flash.net"),"Socket")
+                                 dup
+                                 pushscope
+                                 newclass 0
+                                 popscope
+                                 popscope
+                                 popscope
+                                 initproperty QName(PackageNamespace("com.taomee.seer2.core.net"),"TcpSocket")
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                        

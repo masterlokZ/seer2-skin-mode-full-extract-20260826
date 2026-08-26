@@ -1,0 +1,1820 @@
+package com.taomee.seer2.app.processor.map.diceThing
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.config.ShopPanelConfig;
+   import com.taomee.seer2.app.config.info.DiceMapTileInfo;
+   import com.taomee.seer2.app.controls.PetAvatarPanel;
+   import com.taomee.seer2.app.lobby.LobbyScene;
+   import com.taomee.seer2.app.manager.DayLimitManager;
+   import com.taomee.seer2.app.manager.StatisticsManager;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.popup.ServerMessager;
+   import com.taomee.seer2.app.shopManager.PayManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.app.swap.special.SpecialInfo;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.core.entity.MobileManager;
+   import com.taomee.seer2.core.entity.PathMobile;
+   import com.taomee.seer2.core.entity.events.MoveEvent;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.module.Module;
+   import com.taomee.seer2.core.module.ModuleEvent;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.events.SceneEvent;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.events.MouseEvent;
+   import flash.geom.Point;
+   import flash.text.TextField;
+   import flash.utils.IDataInput;
+   
+   public class DiceMapSanjiManager
+   {
+      
+      private static var _instance:DiceMapSanjiManager;
+      
+      private static var _curCoin:int;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      protected var tileXml:XML;
+      
+      private var tileVec:Vector.<DiceMapTileInfo>;
+      
+      private var diceMc:MovieClip;
+      
+      private var _bar:MovieClip;
+      
+      private var _getBtn:SimpleButton;
+      
+      private var swapNpc:SimpleButton;
+      
+      private var scene:LobbyScene;
+      
+      private var _map:MapModel;
+      
+      private var roleMobile:PathMobile;
+      
+      private var roleMobileID:int;
+      
+      private var _currentTileSeat:int = 0;
+      
+      private var _maxSeat:int;
+      
+      private var _totalSeat:int;
+      
+      private var _leftCount:int = 0;
+      
+      private var freeCount:int;
+      
+      private var useCount:int;
+      
+      private var useCountId:uint;
+      
+      private var vipCount:int;
+      
+      private var normalCount:int;
+      
+      private var seatInfoId:uint;
+      
+      private var buyedCountId:uint;
+      
+      private var coinId:uint;
+      
+      private const BUY_DICE:uint = 604179;
+      
+      private var currentThing:BaseDiceThing;
+      
+      private var module:Module;
+      
+      private var _checkValue:int;
+      
+      public function DiceMapSanjiManager(param1:instancs)
+      {
+         method
+            name "DiceMapSanjiManager"
+            flag HAS_PARAM_NAMES
+            param QName(PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),"instancs")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                  debug 1, "param1", 0, 0
+                  debugline 104
+                  getlocal0
+                  debugline 104
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : DiceMapSanjiManager
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "3224"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),"DiceMapSanjiManager")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                     debugline 108
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_instance")
+                     iftrue ofs001d
+                     getlocal0
+                     findpropstrict QName(PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),"instancs")
+                     debugline 109
+                     constructprop QName(PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),"instancs"), 0
+                     construct 1
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_instance")
+                     debugline 111
+            ofs001d:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function dispose(param1:SceneEvent) : void
+         {
+            trait method QName(PackageNamespace(""),"dispose")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "3421"
+               end ; metadata
+               dispid 0
+               method
+                  name "dispose"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                        debug 1, "param1", 0, 0
+                        getlocal0
+                        debugline 115
+                        pushnull
+                        setproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                        getlocal0
+                        debugline 116
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                        getlocal0
+                        debugline 117
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                        iffalse ofs0031
+                        getlocal0
+                        debugline 118
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"clickDice")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        getlocal0
+                        debugline 119
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+               ofs0031:
+                        getlocal0
+                        debugline 121
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"swapNpc")
+                        iffalse ofs0047
+                        getlocal0
+                        debugline 122
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"swapNpc")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"toSwap")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+               ofs0047:
+                        getlocal0
+                        debugline 124
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                        getlocal0
+                        debugline 125
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobileID")
+                        getlocal0
+                        debugline 126
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                        getlocal0
+                        debugline 127
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_maxSeat")
+                        getlocal0
+                        debugline 128
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_totalSeat")
+                        getlocal0
+                        debugline 129
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"freeCount")
+                        getlocal0
+                        debugline 130
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"useCount")
+                        debugline 131
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                        callproperty QName(PackageNamespace(""),"getActor"), 0
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"blockFollowingPet")
+                        debugline 132
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                        callproperty QName(PackageNamespace(""),"getActor"), 0
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"blockNoNo")
+                        debugline 133
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                        pushtrue
+                        setproperty QName(PackageNamespace(""),"showRemoteActor")
+                        debugline 134
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                        callproperty QName(PackageNamespace(""),"getActor"), 0
+                        callpropvoid QName(PackageNamespace(""),"show"), 0
+                        getlocal0
+                        debugline 135
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                        iffalse ofs00bf
+                        getlocal0
+                        debugline 136
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                        getproperty QName(PackageNamespace(""),"ground")
+                        pushtrue
+                        setproperty QName(PackageNamespace(""),"mouseEnabled")
+                        getlocal0
+                        debugline 137
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+               ofs00bf:
+                        getlocal0
+                        debugline 139
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"scene")
+                        iffalse ofs00dc
+                        getlocal0
+                        debugline 140
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"scene")
+                        callpropvoid QName(PackageNamespace(""),"showToolbar"), 0
+                        getlocal0
+                        debugline 141
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"scene")
+                        debugline 143
+               ofs00dc:
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        pushstring "switchStart"
+                        getlocal0
+                        getproperty QName(PackageNamespace(""),"dispose")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function setup() : void
+            {
+               trait method QName(PackageNamespace(""),"setup")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "4540"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "setup"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 4
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                           getlocal0
+                           debugline 147
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapModel")
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                           getlocal0
+                           debugline 148
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"setEnvironment"), 0
+                           debugline 149
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                           getproperty QName(PackageNamespace(""),"id")
+                           callproperty QName(PackageNamespace(""),"getDiceMapData"), 1
+                           pushstring "text"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onXmlLoaded")
+                           callpropvoid QName(PackageNamespace(""),"load"), 3
+                           debugline 150
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           pushstring "switchStart"
+                           getlocal0
+                           getproperty QName(PackageNamespace(""),"dispose")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function setEnvironment() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"setEnvironment")
+                     dispid 0
+                     method
+                        name "setEnvironment"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                              debugline 154
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              callproperty QName(PackageNamespace(""),"getActor"), 0
+                              callpropvoid QName(PackageNamespace(""),"hide"), 0
+                              debugline 155
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              callproperty QName(PackageNamespace(""),"getActor"), 0
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"blockFollowingPet")
+                              debugline 156
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              callproperty QName(PackageNamespace(""),"getActor"), 0
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"blockNoNo")
+                              getlocal0
+                              debugline 157
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                              getproperty QName(PackageNamespace(""),"ground")
+                              pushfalse
+                              setproperty QName(PackageNamespace(""),"mouseEnabled")
+                              debugline 158
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              pushfalse
+                              setproperty QName(PackageNamespace(""),"showRemoteActor")
+                              getlocal0
+                              debugline 159
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                              getproperty QName(PackageNamespace(""),"active")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.lobby"),"LobbyScene")
+                              astypelate
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"scene")
+                              getlocal0
+                              debugline 160
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"scene")
+                              callpropvoid QName(PackageNamespace(""),"hideToolbar"), 0
+                              debugline 161
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"PetAvatarPanel")
+                              callpropvoid QName(PackageNamespace(""),"show"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onXmlLoaded(param1:ContentInfo) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onXmlLoaded")
+                        dispid 0
+                        method
+                           name "onXmlLoaded"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("com.taomee.seer2.core.loader"),"ContentInfo")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 4
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 debugline 165
+                                 getlex QName(PackageNamespace(""),"XML")
+                                 getglobalscope
+                                 getlocal1
+                                 getproperty QName(PackageNamespace(""),"content")
+                                 call 1
+                                 setproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                 getlocal0
+                                 debugline 166
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"parseXml"), 0
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function parseXml() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"parseXml")
+                           dispid 0
+                           method
+                              name "parseXml"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 6
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                    debug 1, "_loc2_", 0, 0
+                                    debug 1, "_loc1_", 1, 0
+                                    debug 1, "_loc3_", 2, 0
+                                    debugline 170
+                                    pushnull
+                                    coerce QName(PackageNamespace(""),"XML")
+                                    setlocal1
+                                    debugline 171
+                                    pushnull
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                    setlocal3
+                                    getlocal0
+                                    debugline 172
+                                    getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                    debugline 172
+                                    applytype 1
+                                    debugline 172
+                                    construct 0
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 173
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                    getproperty MultinameA("mobileId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobileID")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 174
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                    getproperty MultinameA("seatInfoId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"seatInfoId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 175
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                    getproperty MultinameA("vipCount",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"vipCount")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 176
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                    getproperty MultinameA("normalCount",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"normalCount")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 177
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                    getproperty MultinameA("useCountId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"useCountId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 178
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                    getproperty MultinameA("buyedCountId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"buyedCountId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 179
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                    getproperty MultinameA("coinId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"coinId")
+                                    getlocal0
+                                    debugline 180
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileXml")
+                                    pushstring "tile"
+                                    callproperty Multiname("descendants",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                                    coerce QName(PackageNamespace(""),"XMLList")
+                                    setlocal2
+                                    pushbyte 0
+                                    setlocal 5
+                                    getlocal2
+                                    setlocal 4
+                                    jump ofs00e9
+                           ofs00a3:
+                                    label
+                                    getlocal 4
+                                    getlocal 5
+                                    nextvalue
+                                    coerce QName(PackageNamespace(""),"XML")
+                                    setlocal1
+                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                    debugline 182
+                                    constructprop QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo"), 0
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                    setlocal3
+                                    getlocal3
+                                    getlocal1
+                                    debugline 183
+                                    getproperty MultinameA("seat",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setproperty QName(PackageNamespace(""),"seat")
+                                    getlocal3
+                                    getlocal1
+                                    debugline 184
+                                    getproperty MultinameA("tileType",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_s
+                                    setproperty QName(PackageNamespace(""),"thingType")
+                                    getlocal3
+                                    getlocal1
+                                    debugline 185
+                                    getproperty MultinameA("x",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setproperty QName(PackageNamespace(""),"x")
+                                    getlocal3
+                                    getlocal1
+                                    debugline 186
+                                    getproperty MultinameA("y",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    debugline 187
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                                    getlocal3
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                           ofs00e9:
+                                    hasnext2 4, 5
+                                    iftrue ofs00a3
+                                    getlocal0
+                                    debugline 189
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"sortVec")
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"sort"), 1
+                                    getlocal0
+                                    getlocal0
+                                    debugline 190
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_maxSeat")
+                                    debugline 191
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                    getproperty QName(PackageNamespace(""),"actorInfo")
+                                    getproperty QName(PackageNamespace(""),"vipInfo")
+                                    callproperty QName(PackageNamespace(""),"isVip"), 0
+                                    debugline 191
+                                    iffalse ofs012a
+                                    getlocal0
+                                    getlocal0
+                                    debugline 192
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"vipCount")
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"freeCount")
+                                    debugline 191
+                                    jump ofs0133
+                           ofs012a:
+                                    getlocal0
+                                    getlocal0
+                                    debugline 194
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"normalCount")
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"freeCount")
+                           ofs0133:
+                                    getlocal0
+                                    debugline 196
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"initUI"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function initUI() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"initUI")
+                              dispid 0
+                              method
+                                 name "initUI"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                       getlocal0
+                                       getlocal0
+                                       debugline 200
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                                       getproperty QName(PackageNamespace(""),"content")
+                                       pushstring "dice"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                       getlocal0
+                                       debugline 201
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                       pushbyte 1
+                                       callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                       getlocal0
+                                       debugline 202
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                       pushtrue
+                                       setproperty QName(PackageNamespace(""),"buttonMode")
+                                       getlocal0
+                                       debugline 203
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                       pushfalse
+                                       setproperty QName(PackageNamespace(""),"mouseChildren")
+                                       getlocal0
+                                       debugline 204
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"clickDice")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       getlocal0
+                                       debugline 205
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                                       getproperty QName(PackageNamespace(""),"content")
+                                       pushstring "swapNpc"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"swapNpc")
+                                       getlocal0
+                                       debugline 206
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"swapNpc")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"toSwap")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       getlocal0
+                                       debugline 207
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                                       getproperty QName(PackageNamespace(""),"front")
+                                       pushstring "bar"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_bar")
+                                       getlocal0
+                                       getlocal0
+                                       debugline 208
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                                       getproperty QName(PackageNamespace(""),"content")
+                                       pushstring "getBtn"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_getBtn")
+                                       getlocal0
+                                       debugline 209
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_getBtn")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onGetBtn")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       debugline 210
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                       iftrue ofs009b
+                                       getlocal0
+                                       debugline 211
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"initMobile"), 0
+                              ofs009b:
+                                       getlocal0
+                                       debugline 213
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"getCoinNum"), 0
+                                       getlocal0
+                                       debugline 214
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"getLeftCount"), 0
+                                       debugline 215
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                       pushstring "switchComplete"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onComplete")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onGetBtn(param1:MouseEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onGetBtn")
+                                 dispid 0
+                                 method
+                                    name "onGetBtn"
+                                    flag HAS_PARAM_NAMES
+                                    flag NEED_ACTIVATION
+                                    param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 8
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 2
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                          slotid 1
+                                          type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       end ; trait
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"event")
+                                          slotid 2
+                                          type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       end ; trait
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                          newactivation
+                                          dup
+                                          setlocal2
+                                          pushscope
+                                          findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                          getlocal1
+                                          setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                          debug 1, "param1", 0, 0
+                                          debug 1, "onGetBtn$0", 1, 0
+                                          debugline 219
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                          coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          getlocal2
+                                          swap
+                                          setslot 2
+                                          debugline 220
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                          pushshort 3135
+                                          pushbyte 1
+                                          newfunction 9
+                                          debugline 223
+                                          pushnull
+                                          findpropstrict QName(PackageNamespace("com.taomee.seer2.app.swap.special"),"SpecialInfo")
+                                          pushbyte 1
+                                          pushbyte 1
+                                          constructprop QName(PackageNamespace("com.taomee.seer2.app.swap.special"),"SpecialInfo"), 2
+                                          debugline 220
+                                          callpropvoid QName(PackageNamespace(""),"swapItem"), 5
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function toSwap(param1:MouseEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"toSwap")
+                                    dispid 0
+                                    method
+                                       name "toSwap"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 4
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                             debug 1, "param1", 0, 0
+                                             debugline 227
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                             pushstring "SanjiSwapPanel"
+                                             callpropvoid QName(PackageNamespace(""),"showAppModule"), 1
+                                             debugline 228
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                             pushstring "SanjiSwapPanel"
+                                             pushstring "dispose"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onDispose")
+                                             callpropvoid QName(PackageNamespace(""),"addEventListener"), 3
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function onDispose(param1:ModuleEvent) : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onDispose")
+                                       dispid 0
+                                       method
+                                          name "onDispose"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 4
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                debug 1, "param1", 0, 0
+                                                debugline 232
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                pushstring "SanjiSwapPanel"
+                                                pushstring "dispose"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onDispose")
+                                                callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                getlocal0
+                                                debugline 233
+                                                callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"getCoinNum"), 0
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function getCoinNum(param1:Boolean = false, param2:String = "") : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"getCoinNum")
+                                          dispid 0
+                                          method
+                                             name "getCoinNum"
+                                             flag HAS_OPTIONAL
+                                             flag HAS_PARAM_NAMES
+                                             flag NEED_ACTIVATION
+                                             param QName(PackageNamespace(""),"Boolean")
+                                             param QName(PackageNamespace(""),"String")
+                                             paramname "param1"
+                                             paramname "param2"
+                                             optional False()
+                                             optional Utf8("")
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 4
+                                                initscopedepth 0
+                                                maxscopedepth 2
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                   slotid 1
+                                                   type QName(PackageNamespace(""),"Boolean")
+                                                end ; trait
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param2")
+                                                   slotid 2
+                                                   type QName(PackageNamespace(""),"String")
+                                                end ; trait
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"needTip")
+                                                   slotid 3
+                                                   type QName(PackageNamespace(""),"Boolean")
+                                                end ; trait
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"tipTxt")
+                                                   slotid 4
+                                                   type QName(PackageNamespace(""),"String")
+                                                end ; trait
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                   newactivation
+                                                   dup
+                                                   setlocal3
+                                                   pushscope
+                                                   findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                   getlocal1
+                                                   setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                   findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param2")
+                                                   getlocal2
+                                                   setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param2")
+                                                   debug 1, "param1", 0, 0
+                                                   debug 1, "param2", 1, 0
+                                                   debug 1, "getCoinNum$0", 2, 0
+                                                   debugline 237
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                   convert_b
+                                                   getlocal3
+                                                   swap
+                                                   setslot 3
+                                                   debugline 238
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param2")
+                                                   coerce_s
+                                                   getlocal3
+                                                   swap
+                                                   setslot 4
+                                                   debugline 239
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"coinId")
+                                                   newfunction 13
+                                                   callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function getLeftCount() : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"getLeftCount")
+                                             dispid 0
+                                             method
+                                                name "getLeftCount"
+                                                flag NEED_ACTIVATION
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 2
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                      newactivation
+                                                      pushscope
+                                                      debugline 263
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"useCountId")
+                                                      newfunction 15
+                                                      callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function clickDice(param1:MouseEvent) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"clickDice")
+                                                dispid 0
+                                                method
+                                                   name "clickDice"
+                                                   flag HAS_PARAM_NAMES
+                                                   flag NEED_ACTIVATION
+                                                   param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 8
+                                                      localcount 3
+                                                      initscopedepth 0
+                                                      maxscopedepth 2
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                         slotid 1
+                                                         type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      end ; trait
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"event")
+                                                         slotid 2
+                                                         type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      end ; trait
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                         newactivation
+                                                         dup
+                                                         setlocal2
+                                                         pushscope
+                                                         findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                         getlocal1
+                                                         setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                         debug 1, "param1", 0, 0
+                                                         debug 1, "clickDice$0", 1, 0
+                                                         debugline 280
+                                                         getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                         coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                         getlocal2
+                                                         swap
+                                                         setslot 2
+                                                         getlocal0
+                                                         debugline 281
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_leftCount")
+                                                         pushbyte 0
+                                                         lessequals
+                                                         debugline 281
+                                                         iffalse ofs0065
+                                                         getlocal0
+                                                         debugline 282
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                                         pushfalse
+                                                         setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                         debugline 283
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                         pushstring "你没有可以用的骰子了\n是否花费"
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ShopPanelConfig")
+                                                         pushuint 604179
+                                                         callproperty QName(PackageNamespace(""),"getItemPrice"), 1
+                                                         add
+                                                         pushstring "星钻买一个?"
+                                                         add
+                                                         newfunction 18
+                                                         newfunction 21
+                                                         callpropvoid QName(PackageNamespace(""),"showConfirm"), 3
+                                                         debugline 281
+                                                         jump ofs007c
+                                                         debugline 294
+                                                ofs0065:
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                         pushshort 3126
+                                                         pushbyte 1
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"dicePlay")
+                                                         pushnull
+                                                         findpropstrict QName(PackageNamespace("com.taomee.seer2.app.swap.special"),"SpecialInfo")
+                                                         pushbyte 1
+                                                         pushbyte 1
+                                                         constructprop QName(PackageNamespace("com.taomee.seer2.app.swap.special"),"SpecialInfo"), 2
+                                                         callpropvoid QName(PackageNamespace(""),"swapItem"), 5
+                                                ofs007c:
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function dicePlay(param1:IDataInput = null) : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"dicePlay")
+                                                   dispid 0
+                                                   method
+                                                      name "dicePlay"
+                                                      flag HAS_OPTIONAL
+                                                      flag HAS_PARAM_NAMES
+                                                      flag NEED_ACTIVATION
+                                                      param QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                      paramname "param1"
+                                                      optional Null()
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 5
+                                                         localcount 3
+                                                         initscopedepth 0
+                                                         maxscopedepth 2
+                                                         trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                            slotid 1
+                                                            type QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                         end ; trait
+                                                         trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"leftTxt")
+                                                            slotid 2
+                                                            type QName(PackageNamespace("flash.text"),"TextField")
+                                                         end ; trait
+                                                         trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"diceResult")
+                                                            slotid 3
+                                                            type QName(PackageNamespace(""),"int")
+                                                         end ; trait
+                                                         trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"data")
+                                                            slotid 4
+                                                            type QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                         end ; trait
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                            newactivation
+                                                            dup
+                                                            setlocal2
+                                                            pushscope
+                                                            findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                            getlocal1
+                                                            setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                            debug 1, "param1", 0, 0
+                                                            debug 1, "dicePlay$0", 1, 0
+                                                            debugline 300
+                                                            pushbyte 0
+                                                            getlocal2
+                                                            swap
+                                                            setslot 3
+                                                            debugline 301
+                                                            getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                            coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                            getlocal2
+                                                            swap
+                                                            setslot 4
+                                                            debugline 302
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"StatisticsManager")
+                                                            pushstring "2014活动"
+                                                            pushstring "夏季寻宝大冒险"
+                                                            pushstring "投掷香吉士色字"
+                                                            callpropvoid QName(PackageNamespace(""),"newSendNovice"), 3
+                                                            getlocal0
+                                                            debugline 303
+                                                            dup
+                                                            debugline 303
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_leftCount")
+                                                            debugline 303
+                                                            decrement
+                                                            debugline 303
+                                                            setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_leftCount")
+                                                            getlocal0
+                                                            debugline 304
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_map")
+                                                            getproperty QName(PackageNamespace(""),"content")
+                                                            pushstring "countTxt"
+                                                            getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            pushstring "leftTxt"
+                                                            getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            coerce QName(PackageNamespace("flash.text"),"TextField")
+                                                            getlocal2
+                                                            swap
+                                                            setslot 2
+                                                            getlocal0
+                                                            debugline 305
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"useCount")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"freeCount")
+                                                            ifnlt ofs0088
+                                                            debugline 306
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"ServerMessager")
+                                                            pushstring "消耗300赛尔豆,抛一次骰子！"
+                                                            callpropvoid QName(PackageNamespace(""),"addMessage"), 1
+                                                            debugline 308
+                                                   ofs0088:
+                                                            getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"leftTxt")
+                                                            pushstring "还可以抛"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_leftCount")
+                                                            callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                            add
+                                                            pushstring "次"
+                                                            add
+                                                            setproperty QName(PackageNamespace(""),"text")
+                                                            getlocal0
+                                                            debugline 309
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                                            pushfalse
+                                                            setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                            getlocal0
+                                                            debugline 310
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                                            pushfalse
+                                                            setproperty QName(PackageNamespace(""),"buttonMode")
+                                                            debugline 311
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                                            pushstring "旋转"
+                                                            pushstring "停止"
+                                                            newfunction 23
+                                                            callpropvoid QName(PackageNamespace(""),"playMc"), 4
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function moveSeat() : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"moveSeat")
+                                                      dispid 0
+                                                      method
+                                                         name "moveSeat"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 4
+                                                            localcount 1
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                               getlocal0
+                                                               debugline 333
+                                                               dup
+                                                               debugline 333
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                               debugline 333
+                                                               increment
+                                                               debugline 333
+                                                               setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                               getlocal0
+                                                               debugline 334
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_maxSeat")
+                                                               ifnge ofs0032
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                               getlocal0
+                                                               debugline 335
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_maxSeat")
+                                                               subtract
+                                                               getlocal0
+                                                               swap
+                                                               setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                      ofs0032:
+                                                               getlocal0
+                                                               debugline 337
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                               pushstring "finished"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"moveFinished")
+                                                               callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                               getlocal0
+                                                               debugline 338
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobileID")
+                                                               pushbyte 0
+                                                               equals
+                                                               not
+                                                               debugline 338
+                                                               iffalse ofs0077
+                                                               getlocal0
+                                                               debugline 339
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                               getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               getproperty QName(PackageNamespace(""),"x")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                               getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               getproperty QName(PackageNamespace(""),"y")
+                                                               callpropvoid QName(PackageNamespace(""),"walkToLocation"), 2
+                                                               debugline 338
+                                                               jump ofs0095
+                                                      ofs0077:
+                                                               getlocal0
+                                                               debugline 341
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                               getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               getproperty QName(PackageNamespace(""),"x")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"tileVec")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                               getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               getproperty QName(PackageNamespace(""),"y")
+                                                               callpropvoid QName(PackageNamespace(""),"runToLocation"), 2
+                                                      ofs0095:
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function moveFinished(param1:MoveEvent) : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"moveFinished")
+                                                         dispid 0
+                                                         method
+                                                            name "moveFinished"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"MoveEvent")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 3
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  getlocal0
+                                                                  debugline 346
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                                  pushstring "finished"
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"moveFinished")
+                                                                  callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                  getlocal0
+                                                                  debugline 347
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_currentTileSeat")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"_totalSeat")
+                                                                  equals
+                                                                  not
+                                                                  debugline 347
+                                                                  iffalse ofs0038
+                                                                  getlocal0
+                                                                  debugline 348
+                                                                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"moveSeat"), 0
+                                                                  debugline 347
+                                                                  jump ofs003f
+                                                         ofs0038:
+                                                                  getlocal0
+                                                                  debugline 350
+                                                                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"checkThing"), 0
+                                                         ofs003f:
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function checkThing() : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"checkThing")
+                                                            dispid 0
+                                                            method
+                                                               name "checkThing"
+                                                               flag NEED_ACTIVATION
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 4
+                                                                  localcount 1
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 2
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                                     newactivation
+                                                                     pushscope
+                                                                     debugline 355
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                     pushshort 3128
+                                                                     pushbyte 1
+                                                                     newfunction 29
+                                                                     callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                                     getlocal0
+                                                                     debugline 372
+                                                                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"resetDice"), 0
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function onGameOver(param1:ModuleEvent) : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onGameOver")
+                                                               dispid 0
+                                                               method
+                                                                  name "onGameOver"
+                                                                  flag HAS_PARAM_NAMES
+                                                                  param QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                                  paramname "param1"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 4
+                                                                     localcount 2
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                                        debug 1, "param1", 0, 0
+                                                                        debugline 376
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                        pushstring "DiceBBQPanel"
+                                                                        pushstring "dispose"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onGameOver")
+                                                                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                                        getlocal0
+                                                                        debugline 377
+                                                                        pushtrue
+                                                                        pushstring "小游戏结束，"
+                                                                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"getCoinNum"), 2
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function onComplete(param1:SceneEvent) : void
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"onComplete")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "onComplete"
+                                                                     flag HAS_PARAM_NAMES
+                                                                     param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                                                                     paramname "param1"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                                           debug 1, "param1", 0, 0
+                                                                           debugline 381
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                           getproperty QName(PackageNamespace(""),"prevSceneType")
+                                                                           pushbyte 2
+                                                                           ifne ofs0047
+                                                                           debugline 382
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                                           getproperty QName(PackageNamespace(""),"fightWinnerSide")
+                                                                           pushbyte 1
+                                                                           equals
+                                                                           debugline 382
+                                                                           iffalse ofs003c
+                                                                           getlocal0
+                                                                           debugline 383
+                                                                           pushtrue
+                                                                           pushstring "战斗胜利"
+                                                                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"getCoinNum"), 2
+                                                                           debugline 382
+                                                                           jump ofs0047
+                                                                  ofs003c:
+                                                                           getlocal0
+                                                                           debugline 385
+                                                                           pushtrue
+                                                                           pushstring "战斗失败"
+                                                                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"getCoinNum"), 2
+                                                                  ofs0047:
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function resetDice() : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"resetDice")
+                                                                     dispid 0
+                                                                     method
+                                                                        name "resetDice"
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 2
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                                              getlocal0
+                                                                              debugline 391
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                                                              iffalse ofs002a
+                                                                              getlocal0
+                                                                              debugline 392
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                                                              pushtrue
+                                                                              setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                                              getlocal0
+                                                                              debugline 393
+                                                                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"diceMc")
+                                                                              pushtrue
+                                                                              setproperty QName(PackageNamespace(""),"buttonMode")
+                                                                              debugline 394
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                                              callpropvoid QName(PackageNamespace(""),"resetOperation"), 0
+                                                                     ofs002a:
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function sortVec(param1:DiceMapTileInfo, param2:DiceMapTileInfo) : int
+                                                                  {
+                                                                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"sortVec")
+                                                                        dispid 0
+                                                                        method
+                                                                           name "sortVec"
+                                                                           flag HAS_PARAM_NAMES
+                                                                           param QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                                                           param QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                                                           paramname "param1"
+                                                                           paramname "param2"
+                                                                           returns QName(PackageNamespace(""),"int")
+                                                                           
+                                                                           body
+                                                                              maxstack 2
+                                                                              localcount 3
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                                                 debug 1, "param1", 0, 0
+                                                                                 debug 1, "param2", 1, 0
+                                                                                 getlocal1
+                                                                                 debugline 399
+                                                                                 getproperty QName(PackageNamespace(""),"seat")
+                                                                                 getlocal2
+                                                                                 getproperty QName(PackageNamespace(""),"seat")
+                                                                                 ifngt ofs0022
+                                                                                 debugline 400
+                                                                                 pushbyte 1
+                                                                                 returnvalue
+                                                                        ofs0022:
+                                                                                 getlocal1
+                                                                                 debugline 402
+                                                                                 getproperty QName(PackageNamespace(""),"seat")
+                                                                                 getlocal2
+                                                                                 getproperty QName(PackageNamespace(""),"seat")
+                                                                                 ifnlt ofs0038
+                                                                                 debugline 403
+                                                                                 pushbyte -1
+                                                                                 returnvalue
+                                                                                 debugline 405
+                                                                        ofs0038:
+                                                                                 pushbyte 0
+                                                                                 returnvalue
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private function initMobile() : void
+                                                                     {
+                                                                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"initMobile")
+                                                                           dispid 0
+                                                                           method
+                                                                              name "initMobile"
+                                                                              flag NEED_ACTIVATION
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 3
+                                                                                 localcount 1
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 2
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                                                    newactivation
+                                                                                    pushscope
+                                                                                    getlocal0
+                                                                                    debugline 409
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                                                    iffalse ofs0027
+                                                                                    debugline 410
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                                                    pushstring "pet"
+                                                                                    callpropvoid QName(PackageNamespace(""),"removeMobile"), 2
+                                                                                    getlocal0
+                                                                                    debugline 411
+                                                                                    pushnull
+                                                                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                                           ofs0027:
+                                                                                    getlocal0
+                                                                                    debugline 413
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobileID")
+                                                                                    pushbyte 0
+                                                                                    equals
+                                                                                    not
+                                                                                    debugline 413
+                                                                                    iffalse ofs006c
+                                                                                    getlocal0
+                                                                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.core.entity"),"PathMobile")
+                                                                                    debugline 414
+                                                                                    constructprop QName(PackageNamespace("com.taomee.seer2.core.entity"),"PathMobile"), 0
+                                                                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                                                    getlocal0
+                                                                                    debugline 415
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobileID")
+                                                                                    callproperty QName(PackageNamespace(""),"getPetSwf"), 1
+                                                                                    setproperty QName(PackageNamespace(""),"resourceUrl")
+                                                                                    debugline 416
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                                                    pushstring "pet"
+                                                                                    callpropvoid QName(PackageNamespace(""),"addMobile"), 2
+                                                                                    debugline 413
+                                                                                    jump ofs009b
+                                                                           ofs006c:
+                                                                                    getlocal0
+                                                                                    debugline 418
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                    callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"roleMobile")
+                                                                                    debugline 419
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                    callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                                    callpropvoid QName(PackageNamespace(""),"show"), 0
+                                                                                    debugline 420
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                    callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                                    pushtrue
+                                                                                    setproperty QName(PackageNamespace(""),"blockNoNo")
+                                                                                    debugline 421
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                    callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                                    pushtrue
+                                                                                    setproperty QName(PackageNamespace(""),"blockFollowingPet")
+                                                                                    debugline 423
+                                                                           ofs009b:
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                                    getlocal0
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapSanjiManager"),"seatInfoId")
+                                                                                    newfunction 36
+                                                                                    callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                     }
+                                                                  }
+                                                                  
+                                                                  class instancs
+                                                                  {
+                                                                     
+                                                                     method
+                                                                        name null
+                                                                        returns null
+                                                                        
+                                                                        body
+                                                                           maxstack 0
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 0
+                                                                           
+                                                                           code
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                     
+                                                                     public function instancs()
+                                                                     {
+                                                                        method
+                                                                           name "instancs"
+                                                                           returns null
+                                                                           
+                                                                           body
+                                                                              maxstack 1
+                                                                              localcount 1
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapSanjiManager.as"
+                                                                                 debugline 435
+                                                                                 getlocal0
+                                                                                 debugline 435
+                                                                                 constructsuper 0
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                  }
+                                                                  
+                                                                  method
+                                                                     name null
+                                                                     returns null
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 1
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 2
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           getscopeobject 0
+                                                                           getlex QName(PackageNamespace(""),"Object")
+                                                                           dup
+                                                                           pushscope
+                                                                           newclass 0
+                                                                           popscope
+                                                                           initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),"DiceMapSanjiManager")
+                                                                           getscopeobject 0
+                                                                           getlex QName(PackageNamespace(""),"Object")
+                                                                           dup
+                                                                           pushscope
+                                                                           newclass 1
+                                                                           popscope
+                                                                           initproperty QName(PrivateNamespace("FilePrivateNS:DiceMapSanjiManager"),"instancs")
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                                  

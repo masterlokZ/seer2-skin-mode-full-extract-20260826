@@ -1,0 +1,827 @@
+package com.taomee.seer2.app.pet
+{
+   import com.taomee.seer2.app.pet.bubble.BubbleController;
+   import com.taomee.seer2.app.pet.bubble.IBubbleHost;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.effect.SpawnedPetPresentEffectPool;
+   import com.taomee.seer2.core.entity.PathMobile;
+   import com.taomee.seer2.core.entity.events.ActionEvent;
+   import com.taomee.seer2.core.ui.UIManager;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.DisplayObject;
+   import flash.display.MovieClip;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.geom.Point;
+   
+   public class ActivePet extends PathMobile implements IBubbleHost
+   {
+      
+      protected static const PERSONAL:String = "personal";
+      
+      protected static const START_WALK:String = "startWalk";
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      protected var _petInfo:PetInfo;
+      
+      private var _point:Point;
+      
+      private var _targetPoint:Point;
+      
+      private var _petId:uint;
+      
+      private var _presentEffectType:uint;
+      
+      private var _presendEffect:MovieClip;
+      
+      private var _shadow:Sprite;
+      
+      private var _mc:MovieClip;
+      
+      public function ActivePet(param1:Point, param2:uint)
+      {
+         method
+            name "ActivePet"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("flash.geom"),"Point")
+            param QName(PackageNamespace(""),"uint")
+            paramname "param1"
+            paramname "param2"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 3
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                  debug 1, "param1", 0, 0
+                  debug 1, "param2", 1, 0
+                  debugline 41
+                  getlocal0
+                  debugline 41
+                  constructsuper 0
+                  getlocal0
+                  getlocal2
+                  debugline 42
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_petId")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                  debugline 43
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo"), 0
+                  setproperty QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"_petInfo")
+                  getlocal0
+                  debugline 44
+                  getproperty QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"_petInfo")
+                  getlocal2
+                  setproperty QName(PackageNamespace(""),"resourceId")
+                  getlocal0
+                  getlocal1
+                  debugline 45
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_point")
+                  getlocal0
+                  debugline 46
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"initialize"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      private function initialize() : void
+      {
+         trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"initialize")
+            dispid 0
+            method
+               name "initialize"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                     getlocal0
+                     debugline 50
+                     callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"setResource"), 0
+                     getlocal0
+                     debugline 51
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"showLabel"), 0
+                     getlocal0
+                     debugline 52
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"addClickEventListener"), 0
+                     findpropstrict QName(PackageNamespace(""),"addEventListener")
+                     pushstring "addedToStage"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"onAddToStage")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         protected function setResource() : void
+         {
+            trait method QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"setResource")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "1610"
+               end ; metadata
+               dispid 0
+               method
+                  name "setResource"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                        getlocal0
+                        debugline 57
+                        pushtrue
+                        setproperty QName(PackageNamespace(""),"buttonMode")
+                        getlocal0
+                        debugline 58
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"mouseChildren")
+                        getlocal0
+                        debugline 59
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                        getlocal0
+                        getproperty QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"_petInfo")
+                        getproperty QName(PackageNamespace(""),"resourceId")
+                        callproperty QName(PackageNamespace(""),"getPetSwf"), 1
+                        setproperty QName(PackageNamespace(""),"resourceUrl")
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function showLabel() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"showLabel")
+                  dispid 0
+                  method
+                     name "showLabel"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                           findpropstrict QName(PackageNamespace(""),"setLabelStyle")
+                           debugline 63
+                           pushint 13395456
+                           pushint 16777215
+                           callpropvoid QName(PackageNamespace(""),"setLabelStyle"), 2
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function addClickEventListener() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"addClickEventListener")
+                     dispid 0
+                     method
+                        name "addClickEventListener"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 1
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onAddToStage(param1:Event) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"onAddToStage")
+                        dispid 0
+                        method
+                           name "onAddToStage"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("flash.events"),"Event")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 1
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 debugline 70
+                                 callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"present"), 0
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     protected function present() : void
+                     {
+                        trait method QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"present")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "2053"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "present"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                    getlocal0
+                                    getlocal0
+                                    debugline 74
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_point")
+                                    getproperty QName(PackageNamespace(""),"x")
+                                    setproperty QName(PackageNamespace(""),"x")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 75
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_point")
+                                    getproperty QName(PackageNamespace(""),"y")
+                                    setproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    debugline 76
+                                    pushstring "startWalk"
+                                    setproperty QName(PackageNamespace(""),"action")
+                                    getlocal0
+                                    debugline 77
+                                    callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"showAnimation"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function playPresentEffect() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"playPresentEffect")
+                              dispid 0
+                              method
+                                 name "playPresentEffect"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                       getlocal0
+                                       getlocal0
+                                       debugline 81
+                                       getproperty QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"_petInfo")
+                                       getproperty QName(PackageNamespace(""),"type")
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presentEffectType")
+                                       getlocal0
+                                       debugline 82
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet.effect"),"SpawnedPetPresentEffectPool")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presentEffectType")
+                                       callproperty QName(PackageNamespace(""),"checkout"), 1
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                       getlocal0
+                                       debugline 83
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                       getlocal0
+                                       getproperty QName(PackageNamespace(""),"x")
+                                       setproperty QName(PackageNamespace(""),"x")
+                                       getlocal0
+                                       debugline 84
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                       getlocal0
+                                       getproperty QName(PackageNamespace(""),"y")
+                                       pushbyte 10
+                                       subtract
+                                       setproperty QName(PackageNamespace(""),"y")
+                                       getlocal0
+                                       debugline 85
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                       pushstring "enterFrame"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"onPresentEffectPlay")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       debugline 86
+                                       getproperty QName(PackageNamespace(""),"parent")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                       callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onPresentEffectPlay(param1:Event) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"onPresentEffectPlay")
+                                 dispid 0
+                                 method
+                                    name "onPresentEffectPlay"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.events"),"Event")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                          debug 1, "param1", 0, 0
+                                          getlocal0
+                                          debugline 90
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                          getproperty QName(PackageNamespace(""),"currentFrame")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                          getproperty QName(PackageNamespace(""),"totalFrames")
+                                          ifne ofs0025
+                                          getlocal0
+                                          debugline 91
+                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"recylePresentEffect"), 0
+                                          getlocal0
+                                          debugline 92
+                                          callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"showAnimation"), 0
+                                 ofs0025:
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function recylePresentEffect() : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"recylePresentEffect")
+                                    dispid 0
+                                    method
+                                       name "recylePresentEffect"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                             getlocal0
+                                             debugline 97
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                             pushnull
+                                             ifeq ofs0036
+                                             getlocal0
+                                             debugline 98
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                             pushstring "enterFrame"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"onPresentEffectPlay")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             getlocal0
+                                             debugline 99
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                             callpropvoid QName(PackageNamespace(""),"stop"), 0
+                                             debugline 100
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.pet.effect"),"SpawnedPetPresentEffectPool")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presentEffectType")
+                                             callpropvoid QName(PackageNamespace(""),"checkin"), 2
+                                             getlocal0
+                                             debugline 101
+                                             pushnull
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_presendEffect")
+                                    ofs0036:
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 protected function showAnimation() : void
+                                 {
+                                    trait method QName(ProtectedNamespace("com.taomee.seer2.app.pet:ActivePet"),"showAnimation")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "3308"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "showAnimation"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 2
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                                getlocal0
+                                                debugline 106
+                                                getproperty QName(PackageNamespace(""),"animation")
+                                                getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                astypelate
+                                                pushtrue
+                                                setproperty QName(PackageNamespace(""),"visible")
+                                                debugline 107
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.pet.bubble"),"BubbleController")
+                                                callproperty QName(PackageNamespace(""),"getInstance"), 0
+                                                getlocal0
+                                                callpropvoid QName(PackageNamespace(""),"addBubbleHost"), 1
+                                                getlocal0
+                                                debugline 108
+                                                callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"randomWalk"), 0
+                                                getlocal0
+                                                debugline 109
+                                                callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"addShadow"), 0
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function addShadow() : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"addShadow")
+                                          dispid 0
+                                          method
+                                             name "addShadow"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 4
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                                   getlocal0
+                                                   debugline 113
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.ui"),"UIManager")
+                                                   pushstring "UI_PetShadow"
+                                                   callproperty QName(PackageNamespace(""),"getSprite"), 1
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_shadow")
+                                                   getlocal0
+                                                   debugline 114
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_shadow")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_shadow")
+                                                   getlex QName(PackageNamespace(""),"width")
+                                                   pushbyte 40
+                                                   divide
+                                                   dup
+                                                   setlocal1
+                                                   setproperty QName(PackageNamespace(""),"scaleY")
+                                                   getlocal1
+                                                   setproperty QName(PackageNamespace(""),"scaleX")
+                                                   findpropstrict QName(PackageNamespace(""),"addChildAt")
+                                                   getlocal0
+                                                   debugline 115
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_shadow")
+                                                   pushbyte 0
+                                                   callpropvoid QName(PackageNamespace(""),"addChildAt"), 2
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function playIdelAnimation() : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"playIdelAnimation")
+                                             dispid 0
+                                             method
+                                                name "playIdelAnimation"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 5
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                                      findpropstrict QName(PackageNamespace(""),"addActionEventListener")
+                                                      pushstring "finished"
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"onActionEnd")
+                                                      pushfalse
+                                                      pushbyte 1
+                                                      callpropvoid QName(PackageNamespace(""),"addActionEventListener"), 4
+                                                      getlocal0
+                                                      debugline 120
+                                                      pushstring "personal"
+                                                      setproperty QName(PackageNamespace(""),"action")
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function onActionEnd(param1:ActionEvent) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"onActionEnd")
+                                                dispid 0
+                                                method
+                                                   name "onActionEnd"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"ActionEvent")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 4
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                                         debug 1, "param1", 0, 0
+                                                         findpropstrict QName(PackageNamespace(""),"removeActionEventListener")
+                                                         pushstring "finished"
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"onActionEnd")
+                                                         pushfalse
+                                                         callpropvoid QName(PackageNamespace(""),"removeActionEventListener"), 3
+                                                         getlocal0
+                                                         debugline 125
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"randomWalk"), 0
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function randomWalk() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"randomWalk")
+                                                   dispid 0
+                                                   method
+                                                      name "randomWalk"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                                            findpropstrict QName(PackageNamespace(""),"walkToLocation")
+                                                            getlocal0
+                                                            debugline 129
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_targetPoint")
+                                                            getproperty QName(PackageNamespace(""),"x")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_targetPoint")
+                                                            getproperty QName(PackageNamespace(""),"y")
+                                                            callpropvoid QName(PackageNamespace(""),"walkToLocation"), 2
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                public function showBubble() : void
+                                                {
+                                                   trait method QName(PackageNamespace(""),"showBubble")
+                                                      flag METADATA
+                                                      metadata "__go_to_definition_help"
+                                                         item "pos" "4223"
+                                                      end ; metadata
+                                                      dispid 0
+                                                      method
+                                                         name "showBubble"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 1
+                                                            localcount 1
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   public function set targetPoint(param1:Point) : void
+                                                   {
+                                                      trait setter QName(PackageNamespace(""),"targetPoint")
+                                                         flag METADATA
+                                                         metadata "__go_to_definition_help"
+                                                            item "pos" "4277"
+                                                         end ; metadata
+                                                         dispid 0
+                                                         method
+                                                            name "targetPoint"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace("flash.geom"),"Point")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 2
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  getlocal0
+                                                                  getlocal1
+                                                                  debugline 136
+                                                                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_targetPoint")
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      public function get targetMC() : MovieClip
+                                                      {
+                                                         trait getter QName(PackageNamespace(""),"targetMC")
+                                                            flag METADATA
+                                                            metadata "__go_to_definition_help"
+                                                               item "pos" "4381"
+                                                            end ; metadata
+                                                            dispid 0
+                                                            method
+                                                               name "targetMC"
+                                                               returns QName(PackageNamespace("flash.display"),"MovieClip")
+                                                               
+                                                               body
+                                                                  maxstack 1
+                                                                  localcount 1
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\pet;ActivePet.as"
+                                                                     getlocal0
+                                                                     debugline 140
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.pet:ActivePet"),"_mc")
+                                                                     returnvalue
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                      }
+                                                   }
+                                                   
+                                                   method
+                                                      name null
+                                                      returns null
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 10
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            getscopeobject 0
+                                                            getlex QName(PackageNamespace(""),"Object")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"AnimateElement")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"PathMobile")
+                                                            dup
+                                                            pushscope
+                                                            newclass 0
+                                                            popscope
+                                                            popscope
+                                                            popscope
+                                                            popscope
+                                                            popscope
+                                                            popscope
+                                                            popscope
+                                                            popscope
+                                                            popscope
+                                                            initproperty QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                   

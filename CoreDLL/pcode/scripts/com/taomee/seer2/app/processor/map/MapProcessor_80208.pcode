@@ -1,0 +1,1083 @@
+package com.taomee.seer2.app.processor.map
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.config.ShopPanelConfig;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.inventory.ItemManager;
+   import com.taomee.seer2.app.lobby.LobbyScene;
+   import com.taomee.seer2.app.manager.DayLimitManager;
+   import com.taomee.seer2.app.net.parser.Parser_1142;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.shopManager.PayManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.app.vip.VipManager;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.map.MapProcessor;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.utils.IDataInput;
+   
+   public class MapProcessor_80208 extends MapProcessor
+   {
+      
+      public static var havewin:Boolean = false;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private const FIGHT_DAY:int = 1163;
+      
+      private const FIGHT_SWAP:int = 2853;
+      
+      private const MI_BUY_NUM_FOR:uint = 204273;
+      
+      private const POWER:uint = 204271;
+      
+      private const MAX:uint = 200000;
+      
+      private const ITEM_LIST:Vector.<uint>;
+      
+      private const FIGHT_ID:int = 1024;
+      
+      private const YAO_ID:int = 500607;
+      
+      private const MI_BUY_LIST:int = 603897;
+      
+      private const MI_BUY_YAO:int = 1;
+      
+      private var isToFight:Boolean = false;
+      
+      public function MapProcessor_80208(param1:MapModel)
+      {
+         method
+            name "MapProcessor_80208"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 3
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                  debug 1, "param1", 0, 0
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                  debugline 42
+                  getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                  getlex QName(PackageNamespace(""),"uint")
+                  applytype 1
+                  getlocal0
+                  pushint 400498
+                  newarray 1
+                  call 1
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"ITEM_LIST")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"ITEM_LIST")
+                  debugline 55
+                  getlocal0
+                  getlocal1
+                  debugline 55
+                  constructsuper 1
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      override public function init() : void
+      {
+         trait method QName(PackageNamespace(""),"init")
+            flag OVERRIDE
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1890"
+            end ; metadata
+            dispid 0
+            method
+               name "init"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                     getlocal0
+                     debugline 59
+                     pushfalse
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"isToFight")
+                     debugline 60
+                     getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                     getproperty QName(PackageNamespace(""),"front")
+                     pushstring "fightUI"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushstring "win"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushfalse
+                     setproperty Multiname("visible",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     debugline 61
+                     getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                     getproperty QName(PackageNamespace(""),"front")
+                     pushstring "fightUI"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushstring "win"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushfalse
+                     setproperty Multiname("visible",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal0
+                     debugline 62
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"update"), 0
+                     getlocal0
+                     debugline 63
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"initEvent"), 0
+                     debugline 64
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                     getproperty QName(PackageNamespace(""),"active")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.lobby"),"LobbyScene")
+                     astypelate
+                     callpropvoid QName(PackageNamespace(""),"hideToolbar"), 0
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         override public function dispose() : void
+         {
+            trait method QName(PackageNamespace(""),"dispose")
+               flag OVERRIDE
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "2197"
+               end ; metadata
+               dispid 0
+               method
+                  name "dispose"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 2
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                        getlocal0
+                        debugline 68
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"isToFight")
+                        iftrue ofs0019
+                        debugline 69
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        getproperty QName(PackageNamespace(""),"active")
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.lobby"),"LobbyScene")
+                        astypelate
+                        callpropvoid QName(PackageNamespace(""),"showToolbar"), 0
+               ofs0019:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function initEvent() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"initEvent")
+                  dispid 0
+                  method
+                     name "initEvent"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                           debugline 74
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "fightUI"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "leaveBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           callproperty Multiname("hasEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           iftrue ofs0033
+                           debugline 75
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "fightUI"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "leaveBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onClick")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           debugline 77
+                  ofs0033:
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "openVipBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           callproperty Multiname("hasEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           iftrue ofs0058
+                           debugline 78
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "openVipBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onVip")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           debugline 80
+                  ofs0058:
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "petBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           callproperty Multiname("hasEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           iftrue ofs007d
+                           debugline 81
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "petBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onPetBag")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           debugline 83
+                  ofs007d:
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "help"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           callproperty Multiname("hasEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           iftrue ofs00a2
+                           debugline 84
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "help"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onHelp")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           debugline 86
+                  ofs00a2:
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "yao"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           callproperty Multiname("hasEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           iftrue ofs00c7
+                           debugline 87
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "yao"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onClickYao")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           debugline 89
+                  ofs00c7:
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"content")
+                           pushstring "pet"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           callproperty Multiname("hasEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           iftrue ofs00ec
+                           debugline 90
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"content")
+                           pushstring "pet"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onClickPet")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           debugline 92
+                  ofs00ec:
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"content")
+                           pushstring "pet"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushtrue
+                           setproperty Multiname("buttonMode",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           debugline 93
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "fightUI"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "win"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "okBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           callproperty Multiname("hasEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           iftrue ofs012c
+                           debugline 94
+                           getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                           getproperty QName(PackageNamespace(""),"front")
+                           pushstring "fightUI"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "win"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "okBtn"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onGoShowOk")
+                           callpropvoid Multiname("addEventListener",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                  ofs012c:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onGoShowClose(param1:MouseEvent) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onGoShowClose")
+                     dispid 0
+                     method
+                        name "onGoShowClose"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("flash.events"),"MouseEvent")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 1
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                              debug 1, "param1", 0, 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onGoShowOk(param1:MouseEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onGoShowOk")
+                        dispid 0
+                        method
+                           name "onGoShowOk"
+                           flag HAS_PARAM_NAMES
+                           flag NEED_ACTIVATION
+                           param QName(PackageNamespace("flash.events"),"MouseEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 6
+                              localcount 3
+                              initscopedepth 0
+                              maxscopedepth 2
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                 slotid 1
+                                 type QName(PackageNamespace("flash.events"),"MouseEvent")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"e")
+                                 slotid 2
+                                 type QName(PackageNamespace("flash.events"),"MouseEvent")
+                              end ; trait
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                 newactivation
+                                 dup
+                                 setlocal2
+                                 pushscope
+                                 findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                 getlocal1
+                                 setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "onGoShowOk$0", 1, 0
+                                 debugline 102
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                 coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                 getlocal2
+                                 swap
+                                 setslot 2
+                                 debugline 103
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                 pushshort 2853
+                                 pushbyte 1
+                                 newfunction 6
+                                 debugline 106
+                                 pushnull
+                                 pushnull
+                                 debugline 103
+                                 callpropvoid QName(PackageNamespace(""),"swapItem"), 5
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onHelp(param1:MouseEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onHelp")
+                           dispid 0
+                           method
+                              name "onHelp"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("flash.events"),"MouseEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                    debug 1, "param1", 0, 0
+                                    debugline 110
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                    pushstring "MedicineShopPanel"
+                                    callpropvoid QName(PackageNamespace(""),"showAppModule"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function onPetBag(param1:MouseEvent) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onPetBag")
+                              dispid 0
+                              method
+                                 name "onPetBag"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                       debug 1, "param1", 0, 0
+                                       debugline 114
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                       pushstring "PetBagPanel"
+                                       callpropvoid QName(PackageNamespace(""),"showAppModule"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onVip(param1:MouseEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onVip")
+                                 dispid 0
+                                 method
+                                    name "onVip"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 1
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                          debug 1, "param1", 0, 0
+                                          debugline 118
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.vip"),"VipManager")
+                                          callpropvoid QName(PackageNamespace(""),"navigateToPayPage"), 0
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function onClickPet(param1:MouseEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onClickPet")
+                                    dispid 0
+                                    method
+                                       name "onClickPet"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 1
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                             debug 1, "param1", 0, 0
+                                             getlocal0
+                                             debugline 122
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onSpeak1"), 0
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function onClickYao(param1:MouseEvent) : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onClickYao")
+                                       dispid 0
+                                       method
+                                          name "onClickYao"
+                                          flag HAS_PARAM_NAMES
+                                          flag NEED_ACTIVATION
+                                          param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 4
+                                             localcount 3
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                                slotid 1
+                                                type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                             end ; trait
+                                             trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"e")
+                                                slotid 2
+                                                type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                             end ; trait
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                                newactivation
+                                                dup
+                                                setlocal2
+                                                pushscope
+                                                findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                                getlocal1
+                                                setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                                debug 1, "param1", 0, 0
+                                                debug 1, "onClickYao$0", 1, 0
+                                                debugline 126
+                                                getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                                coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                getlocal2
+                                                swap
+                                                setslot 2
+                                                debugline 127
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                pushstring "你确定花费"
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ShopPanelConfig")
+                                                pushint 500607
+                                                callproperty QName(PackageNamespace(""),"getItemPrice"), 1
+                                                add
+                                                pushstring "星钻购买断魂药剂?"
+                                                add
+                                                newfunction 12
+                                                callpropvoid QName(PackageNamespace(""),"showConfirm"), 2
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function onClick(param1:MouseEvent) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onClick")
+                                          dispid 0
+                                          method
+                                             name "onClick"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 2
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                                   debug 1, "param1", 0, 0
+                                                   debugline 135
+                                                   pushfalse
+                                                   findproperty QName(PackageNamespace(""),"havewin")
+                                                   swap
+                                                   setproperty QName(PackageNamespace(""),"havewin")
+                                                   debugline 136
+                                                   getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                                                   getproperty QName(PackageNamespace(""),"front")
+                                                   pushstring "fightUI"
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   pushstring "win"
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   pushtrue
+                                                   setproperty Multiname("visible",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onSpeak1() : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onSpeak1")
+                                             dispid 0
+                                             method
+                                                name "onSpeak1"
+                                                flag NEED_ACTIVATION
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 7
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 2
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                                      newactivation
+                                                      pushscope
+                                                      debugline 140
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                      pushshort 694
+                                                      pushstring "黑武士"
+                                                      pushbyte 0
+                                                      pushstring "我的剑可以斩断一切，因为我信奉武士道精神！我来挑战下武士道精神！"
+                                                      newarray 2
+                                                      newarray 1
+                                                      pushstring "让我体验下武士道精神！"
+                                                      pushstring " 让我准备一下"
+                                                      newarray 2
+                                                      newfunction 16
+                                                      debugline 153
+                                                      pushnull
+                                                      newarray 2
+                                                      callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function onOver(param1:Event) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"onOver")
+                                                dispid 0
+                                                method
+                                                   name "onOver"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace("flash.events"),"Event")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 2
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                                         debug 1, "param1", 0, 0
+                                                         debugline 157
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                         callproperty QName(PackageNamespace(""),"getPositionIndex"), 0
+                                                         pushshort 1024
+                                                         ifeq ofs001f
+                                                         debugline 158
+                                                         returnvoid
+                                                         debugline 160
+                                                ofs001f:
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                         getproperty QName(PackageNamespace(""),"prevSceneType")
+                                                         pushbyte 2
+                                                         equals
+                                                         dup
+                                                         iffalse ofs0036
+                                                         pop
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                         getproperty QName(PackageNamespace(""),"fightWinnerSide")
+                                                         pushbyte 1
+                                                         equals
+                                                         debugline 160
+                                                ofs0036:
+                                                         iffalse ofs0054
+                                                         debugline 161
+                                                         pushtrue
+                                                         findproperty QName(PackageNamespace(""),"havewin")
+                                                         swap
+                                                         setproperty QName(PackageNamespace(""),"havewin")
+                                                         getlocal0
+                                                         debugline 162
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"showWin"), 0
+                                                         debugline 160
+                                                         jump ofs006f
+                                                         debugline 163
+                                                ofs0054:
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                         getproperty QName(PackageNamespace(""),"prevSceneType")
+                                                         pushbyte 2
+                                                         equals
+                                                         dup
+                                                         iffalse ofs006b
+                                                         pop
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                         getproperty QName(PackageNamespace(""),"fightWinnerSide")
+                                                         pushbyte 2
+                                                         equals
+                                                         debugline 160
+                                                ofs006b:
+                                                         iffalse ofs006f
+                                                ofs006f:
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function showWin() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"showWin")
+                                                   dispid 0
+                                                   method
+                                                      name "showWin"
+                                                      flag NEED_ACTIVATION
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 2
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                                            newactivation
+                                                            pushscope
+                                                            debugline 168
+                                                            getlex QName(PackageNamespace(""),"havewin")
+                                                            iffalse ofs0025
+                                                            debugline 169
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                            pushstring "由于你赢的了胜利,你将获得25个武魂！"
+                                                            newfunction 21
+                                                            callpropvoid QName(PackageNamespace(""),"showAlert"), 2
+                                                            debugline 172
+                                                            pushfalse
+                                                            findproperty QName(PackageNamespace(""),"havewin")
+                                                            swap
+                                                            setproperty QName(PackageNamespace(""),"havewin")
+                                                   ofs0025:
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function update() : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"update")
+                                                      dispid 0
+                                                      method
+                                                         name "update"
+                                                         flag NEED_ACTIVATION
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 2
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"miBuyVal")
+                                                               slotid 1
+                                                               type QName(PackageNamespace(""),"int")
+                                                            end ; trait
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"power")
+                                                               slotid 2
+                                                               type QName(PackageNamespace(""),"int")
+                                                            end ; trait
+                                                            trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"practiceVal")
+                                                               slotid 3
+                                                               type QName(PackageNamespace(""),"int")
+                                                            end ; trait
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                                               newactivation
+                                                               dup
+                                                               setlocal1
+                                                               pushscope
+                                                               debug 1, "update$0", 0, 0
+                                                               debugline 177
+                                                               pushbyte 0
+                                                               getlocal1
+                                                               swap
+                                                               setslot 1
+                                                               debugline 178
+                                                               pushbyte 0
+                                                               getlocal1
+                                                               swap
+                                                               setslot 2
+                                                               debugline 179
+                                                               pushbyte 0
+                                                               getlocal1
+                                                               swap
+                                                               setslot 3
+                                                               debugline 180
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                                               pushshort 1163
+                                                               newfunction 23
+                                                               callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                                               getlocal0
+                                                               debugline 215
+                                                               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"updateItem"), 0
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function updateItem() : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"updateItem")
+                                                         dispid 0
+                                                         method
+                                                            name "updateItem"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 4
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                                                  debug 1, "_loc1_", 0, 0
+                                                                  debugline 219
+                                                                  pushbyte 0
+                                                                  convert_u
+                                                                  setlocal1
+                                                                  jump ofs005e
+                                                         ofs0015:
+                                                                  label
+                                                                  debugline 221
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"ITEM_LIST")
+                                                                  getlocal1
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  callproperty QName(PackageNamespace(""),"getSpecialItem"), 1
+                                                                  iffalse ofs004d
+                                                                  debugline 222
+                                                                  getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                                                                  getproperty QName(PackageNamespace(""),"front")
+                                                                  pushstring "fightUI"
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  pushstring "itemText"
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"ITEM_LIST")
+                                                                  getlocal1
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  callproperty QName(PackageNamespace(""),"getSpecialItem"), 1
+                                                                  getproperty QName(PackageNamespace(""),"quantity")
+                                                                  pushstring ""
+                                                                  add
+                                                                  setproperty Multiname("text",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  debugline 224
+                                                         ofs004d:
+                                                                  getlocal1
+                                                                  debugline 224
+                                                                  convert_d
+                                                                  debugline 224
+                                                                  increment
+                                                                  debugline 224
+                                                                  convert_u
+                                                                  debugline 224
+                                                                  setlocal1
+                                                         ofs005e:
+                                                                  getlocal1
+                                                                  getlocal0
+                                                                  debugline 220
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"ITEM_LIST")
+                                                                  getproperty QName(PackageNamespace(""),"length")
+                                                                  iflt ofs0015
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function updateBar(param1:uint) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),"updateBar")
+                                                            dispid 0
+                                                            method
+                                                               name "updateBar"
+                                                               flag HAS_PARAM_NAMES
+                                                               param QName(PackageNamespace(""),"uint")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 3
+                                                                  localcount 2
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapProcessor_80208.as"
+                                                                     debug 1, "param1", 0, 0
+                                                                     debugline 229
+                                                                     getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                                                                     getproperty QName(PackageNamespace(""),"front")
+                                                                     pushstring "fightUI"
+                                                                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     pushstring "bar"
+                                                                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     pushbyte 1
+                                                                     callpropvoid Multiname("gotoAndStop",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                                                                     debugline 230
+                                                                     getlex QName(ProtectedNamespace("com.taomee.seer2.core.map:MapProcessor"),"_map")
+                                                                     getproperty QName(PackageNamespace(""),"front")
+                                                                     pushstring "fightUI"
+                                                                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     pushstring "bar"
+                                                                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     getlocal1
+                                                                     pushbyte 100
+                                                                     multiply
+                                                                     pushuint 200000
+                                                                     divide
+                                                                     convert_u
+                                                                     callpropvoid Multiname("gotoAndStop",[PrivateNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapProcessor_80208"),StaticProtectedNs("com.taomee.seer2.core.map:MapProcessor"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapProcessor_80208"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                      }
+                                                   }
+                                                   
+                                                   method
+                                                      name null
+                                                      returns null
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 3
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            getscopeobject 0
+                                                            getlex QName(PackageNamespace(""),"Object")
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.map"),"MapProcessor")
+                                                            dup
+                                                            pushscope
+                                                            newclass 0
+                                                            popscope
+                                                            popscope
+                                                            initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.map"),"MapProcessor_80208")
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                   

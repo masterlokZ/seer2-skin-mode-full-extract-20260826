@@ -1,0 +1,1177 @@
+package com.taomee.seer2.app.actor.data
+{
+   import com.adobe.crypto.MD5;
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.actor.events.UserInfoEvent;
+   import com.taomee.seer2.app.actor.util.ActorEquipAssembler;
+   import com.taomee.seer2.app.gameRule.nono.NonoInfoEvent;
+   import com.taomee.seer2.app.gameRule.nono.core.NonoInfo;
+   import com.taomee.seer2.app.gameRule.nono.time.NonoButlerController;
+   import com.taomee.seer2.app.inventory.item.EquipItem;
+   import com.taomee.seer2.app.morphSystem.MorphInfo;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.helper.UserInfoParseHelper;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.processor.activity.decoration.BirthdayInfo;
+   import com.taomee.seer2.app.team.data.TeamMainInfo;
+   import com.taomee.seer2.app.vip.data.VipInfo;
+   import com.taomee.seer2.core.net.LittleEndianByteArray;
+   import flash.events.EventDispatcher;
+   import flash.utils.IDataInput;
+   
+   public class UserInfo extends EventDispatcher
+   {
+      
+      public static const NICK_DATA_LEN:int = 16;
+      
+      public static const IP_ARRAY_LEN:int = 20;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      public var loginAccount:String;
+      
+      public var id:uint;
+      
+      public var nick:String;
+      
+      public var x:int;
+      
+      public var y:int;
+      
+      public var medalId:int;
+      
+      public var createTime:uint;
+      
+      public var serverID:uint;
+      
+      private var _trainerScore:int;
+      
+      public var color:uint;
+      
+      public var equipVec:Vector.<EquipItem>;
+      
+      public var sex:uint;
+      
+      public var coins:uint;
+      
+      private var _highestPetLevel:uint;
+      
+      public var petCount:int;
+      
+      private var _petLevel:int;
+      
+      public var sptCount:int;
+      
+      public var medalCount:int;
+      
+      public var signature:String;
+      
+      public var followingPetInfo:PetInfo;
+      
+      public var ridingPetInfo:PetInfo;
+      
+      public var teamInfo:TeamMainInfo;
+      
+      public var vipInfo:VipInfo;
+      
+      private var _nonoInfo:NonoInfo;
+      
+      public var activityData:Vector.<uint>;
+      
+      public var clientCacheData:Array;
+      
+      public var stateFlag:uint;
+      
+      public var callerUserId:uint;
+      
+      public var troop:uint = 0;
+      
+      public var activityStatus:int = 0;
+      
+      public var honorNum:uint = 0;
+      
+      public var _isPlanHook:uint = 0;
+      
+      public var _isOnhook:uint = 0;
+      
+      public var plantLevel:uint = 0;
+      
+      public var moneyCount:uint = 0;
+      
+      public var morphInfo:MorphInfo;
+      
+      public var birthdayInfo:BirthdayInfo;
+      
+      public var ip:String;
+      
+      public var isYearVip:uint;
+      
+      public function UserInfo(param1:IDataInput = null)
+      {
+         method
+            name "UserInfo"
+            flag HAS_OPTIONAL
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("flash.utils"),"IDataInput")
+            paramname "param1"
+            optional Null()
+            returns null
+            
+            body
+               maxstack 4
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                  debug 1, "param1", 0, 0
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.team.data"),"TeamMainInfo")
+                  debugline 109
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.team.data"),"TeamMainInfo"), 0
+                  setproperty QName(PackageNamespace(""),"teamInfo")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.vip.data"),"VipInfo")
+                  debugline 110
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.vip.data"),"VipInfo"), 0
+                  setproperty QName(PackageNamespace(""),"vipInfo")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.nono.core"),"NonoInfo")
+                  debugline 111
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.nono.core"),"NonoInfo"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_nonoInfo")
+                  getlocal0
+                  debugline 112
+                  getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                  getlex QName(PackageNamespace(""),"uint")
+                  applytype 1
+                  getlocal0
+                  newarray 0
+                  call 1
+                  setproperty QName(PackageNamespace(""),"activityData")
+                  getlocal0
+                  debugline 113
+                  newarray 0
+                  setproperty QName(PackageNamespace(""),"clientCacheData")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.morphSystem"),"MorphInfo")
+                  debugline 114
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.morphSystem"),"MorphInfo"), 0
+                  setproperty QName(PackageNamespace(""),"morphInfo")
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.processor.activity.decoration"),"BirthdayInfo")
+                  debugline 115
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.processor.activity.decoration"),"BirthdayInfo"), 0
+                  setproperty QName(PackageNamespace(""),"birthdayInfo")
+                  debugline 116
+                  getlocal0
+                  debugline 116
+                  constructsuper 0
+                  getlocal1
+                  debugline 117
+                  pushnull
+                  ifeq ofs006c
+                  debugline 118
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.net.helper"),"UserInfoParseHelper")
+                  getlocal0
+                  getlocal1
+                  callpropvoid QName(PackageNamespace(""),"readBaseInfo"), 2
+         ofs006c:
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function requestNewestMoney() : void
+      {
+         trait method QName(PackageNamespace(""),"requestNewestMoney")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "3102"
+            end ; metadata
+            dispid 0
+            method
+               name "requestNewestMoney"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                     debugline 123
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                     getproperty QName(PackageNamespace(""),"CLI_MONEY_COUNT_1253")
+                     getlocal0
+                     callproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"getResult"), 0
+                     callpropvoid QName(PackageNamespace(""),"send"), 2
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function getResult() : LittleEndianByteArray
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"getResult")
+               dispid 0
+               method
+                  name "getResult"
+                  returns QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                  
+                  body
+                     maxstack 4
+                     localcount 7
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                        debug 1, "_loc6_", 0, 0
+                        debug 1, "_loc5_", 1, 0
+                        debug 1, "_loc2_", 2, 0
+                        debug 1, "_loc1_", 3, 0
+                        debug 1, "_loc4_", 4, 0
+                        debug 1, "_loc3_", 5, 0
+                        debugline 127
+                        pushnull
+                        coerce_s
+                        setlocal2
+                        debugline 128
+                        pushbyte 0
+                        setlocal1
+                        findpropstrict QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                        debugline 129
+                        constructprop QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray"), 0
+                        coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                        setlocal 4
+                        debugline 130
+                        getlex QName(PackageNamespace("com.adobe.crypto"),"MD5")
+                        pushstring "0"
+                        callproperty QName(PackageNamespace(""),"hash"), 1
+                        convert_s
+                        coerce_s
+                        setlocal3
+                        getlocal3
+                        debugline 131
+                        getproperty QName(PackageNamespace(""),"length")
+                        convert_i
+                        setlocal 6
+                        debugline 132
+                        pushbyte 0
+                        setlocal 5
+                        jump ofs0091
+               ofs0062:
+                        label
+                        getlocal3
+                        getlocal 5
+                        debugline 134
+                        pushbyte 2
+                        callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"substr"), 2
+                        coerce_s
+                        setlocal2
+                        debugline 135
+                        getlex QName(PackageNamespace(""),"parseInt")
+                        getglobalscope
+                        getlocal2
+                        pushbyte 16
+                        call 2
+                        convert_i
+                        setlocal1
+                        getlocal 4
+                        getlocal1
+                        debugline 136
+                        callpropvoid QName(PackageNamespace(""),"writeByte"), 1
+                        getlocal 5
+                        debugline 137
+                        pushbyte 2
+                        add
+                        convert_i
+                        setlocal 5
+               ofs0091:
+                        getlocal 5
+                        getlocal 6
+                        debugline 133
+                        iflt ofs0062
+                        getlocal 4
+                        debugline 139
+                        returnvalue
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function updateEquipVec(param1:Vector.<EquipItem>) : void
+            {
+               trait method QName(PackageNamespace(""),"updateEquipVec")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "3790"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "updateEquipVec"
+                     flag HAS_PARAM_NAMES
+                     param TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.inventory.item"),"EquipItem")>)
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                           debug 1, "param1", 0, 0
+                           debugline 143
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.actor.util"),"ActorEquipAssembler")
+                           getlocal0
+                           getproperty QName(PackageNamespace(""),"color")
+                           getlocal1
+                           callpropvoid QName(PackageNamespace(""),"mergeDefaultEquip"), 2
+                           getlocal0
+                           getlocal1
+                           debugline 144
+                           setproperty QName(PackageNamespace(""),"equipVec")
+                           findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                           findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                           pushstring "equipUpdate"
+                           constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent"), 1
+                           callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                           debugline 146
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"CookieUserInfo")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                           getproperty QName(PackageNamespace(""),"actorInfo")
+                           callpropvoid QName(PackageNamespace(""),"serialize"), 1
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public function updateColor(param1:uint) : void
+               {
+                  trait method QName(PackageNamespace(""),"updateColor")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "4100"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "updateColor"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"uint")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                              debug 1, "param1", 0, 0
+                              debugline 150
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor.util"),"ActorEquipAssembler")
+                              getlocal0
+                              getproperty QName(PackageNamespace(""),"color")
+                              getlocal0
+                              getproperty QName(PackageNamespace(""),"equipVec")
+                              callpropvoid QName(PackageNamespace(""),"removeDefaultEquip"), 2
+                              getlocal0
+                              getlocal1
+                              debugline 151
+                              setproperty QName(PackageNamespace(""),"color")
+                              debugline 152
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor.util"),"ActorEquipAssembler")
+                              getlocal0
+                              getproperty QName(PackageNamespace(""),"color")
+                              getlocal0
+                              getproperty QName(PackageNamespace(""),"equipVec")
+                              callpropvoid QName(PackageNamespace(""),"mergeDefaultEquip"), 2
+                              findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                              findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                              pushstring "equipUpdate"
+                              constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent"), 1
+                              callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                              debugline 154
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"CookieUserInfo")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              getproperty QName(PackageNamespace(""),"actorInfo")
+                              callpropvoid QName(PackageNamespace(""),"serialize"), 1
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  public function setFollowingPetInfo(param1:PetInfo) : void
+                  {
+                     trait method QName(PackageNamespace(""),"setFollowingPetInfo")
+                        flag METADATA
+                        metadata "__go_to_definition_help"
+                           item "pos" "4473"
+                        end ; metadata
+                        dispid 0
+                        method
+                           name "setFollowingPetInfo"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 getlocal1
+                                 debugline 158
+                                 setproperty QName(PackageNamespace(""),"followingPetInfo")
+                                 findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                                 pushstring "followingPetUpdate"
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent"), 1
+                                 callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public function setPetRidePetInfo(param1:PetInfo) : void
+                     {
+                        trait method QName(PackageNamespace(""),"setPetRidePetInfo")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "4666"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "setPetRidePetInfo"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                    debug 1, "param1", 0, 0
+                                    getlocal0
+                                    getlocal1
+                                    debugline 163
+                                    setproperty QName(PackageNamespace(""),"ridingPetInfo")
+                                    findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                                    pushstring "RIDING_PET_UPDATE"
+                                    constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent"), 1
+                                    callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        public function updateNonoInfo(param1:IDataInput) : void
+                        {
+                           trait method QName(PackageNamespace(""),"updateNonoInfo")
+                              flag METADATA
+                              metadata "__go_to_definition_help"
+                                 item "pos" "4851"
+                              end ; metadata
+                              dispid 0
+                              method
+                                 name "updateNonoInfo"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("flash.utils"),"IDataInput")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                       debug 1, "param1", 0, 0
+                                       getlocal0
+                                       debugline 168
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_nonoInfo")
+                                       getlocal1
+                                       callpropvoid QName(PackageNamespace(""),"readData"), 1
+                                       findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                       findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.nono"),"NonoInfoEvent")
+                                       pushstring "NONOINFO_UPDATE"
+                                       constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.nono"),"NonoInfoEvent"), 1
+                                       callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           public function updateNonoTimeButler(param1:IDataInput) : void
+                           {
+                              trait method QName(PackageNamespace(""),"updateNonoTimeButler")
+                                 flag METADATA
+                                 metadata "__go_to_definition_help"
+                                    item "pos" "5038"
+                                 end ; metadata
+                                 dispid 0
+                                 method
+                                    name "updateNonoTimeButler"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.utils"),"IDataInput")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                          debug 1, "param1", 0, 0
+                                          debugline 173
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.nono.time"),"NonoButlerController")
+                                          callproperty QName(PackageNamespace(""),"getInstance"), 0
+                                          getlocal1
+                                          callpropvoid QName(PackageNamespace(""),"parserData"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public function getNonoInfo() : NonoInfo
+                              {
+                                 trait method QName(PackageNamespace(""),"getNonoInfo")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "5179"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "getNonoInfo"
+                                       returns QName(PackageNamespace("com.taomee.seer2.app.gameRule.nono.core"),"NonoInfo")
+                                       
+                                       body
+                                          maxstack 1
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                             getlocal0
+                                             debugline 177
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_nonoInfo")
+                                             returnvalue
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 public function update(param1:UserInfo) : void
+                                 {
+                                    trait method QName(PackageNamespace(""),"update")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "5266"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "update"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 2
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                debug 1, "param1", 0, 0
+                                                getlocal0
+                                                debugline 181
+                                                getproperty QName(PackageNamespace(""),"id")
+                                                getlocal1
+                                                getproperty QName(PackageNamespace(""),"id")
+                                                ifne ofs0045
+                                                getlocal0
+                                                getlocal1
+                                                debugline 182
+                                                getproperty QName(PackageNamespace(""),"nick")
+                                                setproperty QName(PackageNamespace(""),"nick")
+                                                getlocal0
+                                                getlocal1
+                                                debugline 183
+                                                getproperty QName(PackageNamespace(""),"color")
+                                                setproperty QName(PackageNamespace(""),"color")
+                                                getlocal0
+                                                getlocal1
+                                                debugline 184
+                                                getproperty QName(PackageNamespace(""),"trainerScore")
+                                                setproperty QName(PackageNamespace(""),"trainerScore")
+                                                getlocal0
+                                                getlocal1
+                                                debugline 185
+                                                getproperty QName(PackageNamespace(""),"equipVec")
+                                                setproperty QName(PackageNamespace(""),"equipVec")
+                                                getlocal0
+                                                getlocal1
+                                                debugline 186
+                                                getproperty QName(PackageNamespace(""),"vipInfo")
+                                                setproperty QName(PackageNamespace(""),"vipInfo")
+                                       ofs0045:
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    public function set trainerScore(param1:int) : void
+                                    {
+                                       trait setter QName(PackageNamespace(""),"trainerScore")
+                                          flag METADATA
+                                          metadata "__go_to_definition_help"
+                                             item "pos" "5601"
+                                          end ; metadata
+                                          dispid 0
+                                          method
+                                             name "trainerScore"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace(""),"int")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 2
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                   debug 1, "param1", 0, 0
+                                                   getlocal0
+                                                   getlocal1
+                                                   debugline 191
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_trainerScore")
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       public function get trainerScore() : int
+                                       {
+                                          trait getter QName(PackageNamespace(""),"trainerScore")
+                                             flag METADATA
+                                             metadata "__go_to_definition_help"
+                                                item "pos" "5705"
+                                             end ; metadata
+                                             dispid 0
+                                             method
+                                                name "trainerScore"
+                                                returns QName(PackageNamespace(""),"int")
+                                                
+                                                body
+                                                   maxstack 1
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                      getlocal0
+                                                      debugline 195
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_trainerScore")
+                                                      returnvalue
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          public function setTrainerScore(param1:int) : void
+                                          {
+                                             trait method QName(PackageNamespace(""),"setTrainerScore")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "5792"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "setTrainerScore"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace(""),"int")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                         debug 1, "param1", 0, 0
+                                                         getlocal0
+                                                         getlocal1
+                                                         debugline 199
+                                                         setproperty QName(PackageNamespace(""),"trainerScore")
+                                                         findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                                         findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                                                         pushstring "trainerScoreUpdate"
+                                                         constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent"), 1
+                                                         callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public function get trainerLevel() : int
+                                             {
+                                                trait getter QName(PackageNamespace(""),"trainerLevel")
+                                                   flag METADATA
+                                                   metadata "__go_to_definition_help"
+                                                      item "pos" "5977"
+                                                   end ; metadata
+                                                   dispid 0
+                                                   method
+                                                      name "trainerLevel"
+                                                      returns QName(PackageNamespace(""),"int")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                            getlocal0
+                                                            debugline 204
+                                                            getproperty QName(PackageNamespace(""),"trainerScore")
+                                                            pushbyte 40
+                                                            ifnlt ofs001a
+                                                            debugline 205
+                                                            pushbyte 1
+                                                            returnvalue
+                                                            debugline 207
+                                                   ofs001a:
+                                                            getlex QName(PackageNamespace(""),"Math")
+                                                            getlocal0
+                                                            getproperty QName(PackageNamespace(""),"trainerScore")
+                                                            pushbyte 40
+                                                            subtract
+                                                            pushbyte 20
+                                                            divide
+                                                            callproperty QName(PackageNamespace(""),"sqrt"), 1
+                                                            pushbyte 1
+                                                            add
+                                                            returnvalue
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                public function get nextLevelNeedExp() : int
+                                                {
+                                                   trait getter QName(PackageNamespace(""),"nextLevelNeedExp")
+                                                      flag METADATA
+                                                      metadata "__go_to_definition_help"
+                                                         item "pos" "6167"
+                                                      end ; metadata
+                                                      dispid 0
+                                                      method
+                                                         name "nextLevelNeedExp"
+                                                         returns QName(PackageNamespace(""),"int")
+                                                         
+                                                         body
+                                                            maxstack 2
+                                                            localcount 1
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                               getlocal0
+                                                               debugline 211
+                                                               getproperty QName(PackageNamespace(""),"trainerLevel")
+                                                               pushbyte 1
+                                                               ifne ofs0017
+                                                               debugline 212
+                                                               pushbyte 60
+                                                               returnvalue
+                                                      ofs0017:
+                                                               getlocal0
+                                                               debugline 214
+                                                               getproperty QName(PackageNamespace(""),"trainerLevel")
+                                                               pushbyte 1
+                                                               subtract
+                                                               pushbyte 2
+                                                               multiply
+                                                               pushbyte 1
+                                                               add
+                                                               pushbyte 20
+                                                               multiply
+                                                               returnvalue
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   public function get currentLevelExp() : int
+                                                   {
+                                                      trait getter QName(PackageNamespace(""),"currentLevelExp")
+                                                         flag METADATA
+                                                         metadata "__go_to_definition_help"
+                                                            item "pos" "6361"
+                                                         end ; metadata
+                                                         dispid 0
+                                                         method
+                                                            name "currentLevelExp"
+                                                            returns QName(PackageNamespace(""),"int")
+                                                            
+                                                            body
+                                                               maxstack 4
+                                                               localcount 1
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                                  getlocal0
+                                                                  debugline 218
+                                                                  getproperty QName(PackageNamespace(""),"trainerLevel")
+                                                                  pushbyte 1
+                                                                  ifne ofs0018
+                                                                  getlocal0
+                                                                  debugline 219
+                                                                  getproperty QName(PackageNamespace(""),"trainerScore")
+                                                                  returnvalue
+                                                         ofs0018:
+                                                                  getlocal0
+                                                                  debugline 221
+                                                                  getproperty QName(PackageNamespace(""),"trainerScore")
+                                                                  getlex QName(PackageNamespace(""),"Math")
+                                                                  getlocal0
+                                                                  getproperty QName(PackageNamespace(""),"trainerLevel")
+                                                                  pushbyte 1
+                                                                  subtract
+                                                                  pushbyte 2
+                                                                  callproperty QName(PackageNamespace(""),"pow"), 2
+                                                                  pushbyte 20
+                                                                  multiply
+                                                                  pushbyte 40
+                                                                  add
+                                                                  subtract
+                                                                  convert_i
+                                                                  returnvalue
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      public function isRemote() : Boolean
+                                                      {
+                                                         trait method QName(PackageNamespace(""),"isRemote")
+                                                            flag METADATA
+                                                            metadata "__go_to_definition_help"
+                                                               item "pos" "6593"
+                                                            end ; metadata
+                                                            dispid 0
+                                                            method
+                                                               name "isRemote"
+                                                               returns QName(PackageNamespace(""),"Boolean")
+                                                               
+                                                               body
+                                                                  maxstack 2
+                                                                  localcount 1
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                                     debugline 225
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                     getproperty QName(PackageNamespace(""),"actorInfo")
+                                                                     getproperty QName(PackageNamespace(""),"id")
+                                                                     getlocal0
+                                                                     getproperty QName(PackageNamespace(""),"id")
+                                                                     equals
+                                                                     not
+                                                                     returnvalue
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         public function get highestPetLevel() : uint
+                                                         {
+                                                            trait getter QName(PackageNamespace(""),"highestPetLevel")
+                                                               flag METADATA
+                                                               metadata "__go_to_definition_help"
+                                                                  item "pos" "6702"
+                                                               end ; metadata
+                                                               dispid 0
+                                                               method
+                                                                  name "highestPetLevel"
+                                                                  returns QName(PackageNamespace(""),"uint")
+                                                                  
+                                                                  body
+                                                                     maxstack 2
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                                        getlocal0
+                                                                        debugline 229
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_highestPetLevel")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_petLevel")
+                                                                        ifngt ofs0019
+                                                                        getlocal0
+                                                                        debugline 230
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_highestPetLevel")
+                                                                        returnvalue
+                                                               ofs0019:
+                                                                        getlocal0
+                                                                        debugline 232
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_petLevel")
+                                                                        returnvalue
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            public function set highestPetLevel(param1:uint) : void
+                                                            {
+                                                               trait setter QName(PackageNamespace(""),"highestPetLevel")
+                                                                  flag METADATA
+                                                                  metadata "__go_to_definition_help"
+                                                                     item "pos" "6902"
+                                                                  end ; metadata
+                                                                  dispid 0
+                                                                  method
+                                                                     name "highestPetLevel"
+                                                                     flag HAS_PARAM_NAMES
+                                                                     param QName(PackageNamespace(""),"uint")
+                                                                     paramname "param1"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                                           debug 1, "param1", 0, 0
+                                                                           getlocal0
+                                                                           getlocal1
+                                                                           debugline 236
+                                                                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_highestPetLevel")
+                                                                           findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                                                           findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                                                                           pushstring "highestPetLevelUpdate"
+                                                                           constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent"), 1
+                                                                           callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               public function get petLevel() : int
+                                                               {
+                                                                  trait getter QName(PackageNamespace(""),"petLevel")
+                                                                     flag METADATA
+                                                                     metadata "__go_to_definition_help"
+                                                                        item "pos" "7094"
+                                                                     end ; metadata
+                                                                     dispid 0
+                                                                     method
+                                                                        name "petLevel"
+                                                                        returns QName(PackageNamespace(""),"int")
+                                                                        
+                                                                        body
+                                                                           maxstack 1
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                                              getlocal0
+                                                                              debugline 241
+                                                                              getproperty QName(PackageNamespace(""),"highestPetLevel")
+                                                                              returnvalue
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  public function set petLevel(param1:int) : void
+                                                                  {
+                                                                     trait setter QName(PackageNamespace(""),"petLevel")
+                                                                        flag METADATA
+                                                                        metadata "__go_to_definition_help"
+                                                                           item "pos" "7183"
+                                                                        end ; metadata
+                                                                        dispid 0
+                                                                        method
+                                                                           name "petLevel"
+                                                                           flag HAS_PARAM_NAMES
+                                                                           param QName(PackageNamespace(""),"int")
+                                                                           paramname "param1"
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 3
+                                                                              localcount 2
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actor\\data;UserInfo.as"
+                                                                                 debug 1, "param1", 0, 0
+                                                                                 getlocal0
+                                                                                 getlocal1
+                                                                                 debugline 245
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.actor.data:UserInfo"),"_petLevel")
+                                                                                 findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                                                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                                                                                 pushstring "highestPetLevelUpdate"
+                                                                                 constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent"), 1
+                                                                                 callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                  }
+                                                               }
+                                                               
+                                                               method
+                                                                  name null
+                                                                  returns null
+                                                                  
+                                                                  body
+                                                                     maxstack 3
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 3
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        getscopeobject 0
+                                                                        getlex QName(PackageNamespace(""),"Object")
+                                                                        pushscope
+                                                                        getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                                        dup
+                                                                        pushscope
+                                                                        newclass 0
+                                                                        popscope
+                                                                        popscope
+                                                                        initproperty QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                               

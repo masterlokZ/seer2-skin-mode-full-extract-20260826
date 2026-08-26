@@ -1,0 +1,716 @@
+package com.taomee.seer2.app.actives
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.dialog.DialogPanel;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.dialog.events.DialogPanelEvent;
+   import com.taomee.seer2.app.inventory.ItemManager;
+   import com.taomee.seer2.app.npc.NpcEvent;
+   import com.taomee.seer2.app.npc.NpcManager;
+   import com.taomee.seer2.app.quest.mark.AcceptableMark;
+   import com.taomee.seer2.core.entity.Mobile;
+   import com.taomee.seer2.core.entity.MobileManager;
+   import com.taomee.seer2.core.entity.definition.NpcDefinition;
+   import com.taomee.seer2.core.module.ModuleEvent;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.utils.URLUtil;
+   
+   public class PetKingMatch2ClothAct
+   {
+      
+      private static var _instance:PetKingMatch2ClothAct;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private const ARMY_ID:uint = 202997;
+      
+      private const MAP_IDS:Array;
+      
+      private const CHECK_IDS:Array;
+      
+      private const MOBILE_IDS:Array;
+      
+      private const GET_DES:Array;
+      
+      private const NPC_NAME:Array;
+      
+      private const NPC_DIA:Array;
+      
+      private var army:uint;
+      
+      private var setIndex:int;
+      
+      private var currentNpcId:uint;
+      
+      private var npcdef:NpcDefinition;
+      
+      private var hasListener:Boolean = false;
+      
+      private var hasGet:Boolean;
+      
+      private var currMobile:Mobile;
+      
+      public function PetKingMatch2ClothAct()
+      {
+         method
+            name "PetKingMatch2ClothAct"
+            returns null
+            
+            body
+               maxstack 3
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                  debugline 26
+                  pushshort 450
+                  pushbyte 60
+                  pushshort 1300
+                  newarray 3
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"MAP_IDS")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"MAP_IDS")
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                  debugline 28
+                  pushint 100911
+                  pushint 100916
+                  pushint 100921
+                  newarray 3
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"CHECK_IDS")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"CHECK_IDS")
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                  debugline 30
+                  pushbyte 3
+                  pushshort 190
+                  pushshort 195
+                  newarray 3
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"MOBILE_IDS")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"MOBILE_IDS")
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                  debugline 32
+                  pushstring "领取水队队服"
+                  pushstring "领取火队队服"
+                  pushstring "领取草队队服"
+                  newarray 3
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"GET_DES")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"GET_DES")
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                  debugline 34
+                  pushstring "上尉门罗"
+                  pushstring "金"
+                  pushstring "上尉雷文"
+                  newarray 3
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"NPC_NAME")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"NPC_NAME")
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                  debugline 36
+                  pushstring "追求极致 勇者为王！你好！我的水队队员，我们将一起经历一场严酷的赛事！加油！"
+                  pushstring "火赐予我们胜利的力量！你好！我的火队队员，我们将一起经历一场严酷的赛事！加油！"
+                  pushstring "草原之力 助我问鼎！你好！我的草队队员，我们将一起经历一场严酷的赛事！加油"
+                  newarray 3
+                  findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"NPC_DIA")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"NPC_DIA")
+                  debugline 53
+                  getlocal0
+                  debugline 53
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : PetKingMatch2ClothAct
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1849"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.actives"),"PetKingMatch2ClothAct")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                     debugline 57
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"_instance")
+                     iftrue ofs001a
+                     debugline 58
+                     getlocal0
+                     debugline 58
+                     construct 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"_instance")
+                     debugline 60
+            ofs001a:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function dispose() : void
+         {
+            trait method QName(PackageNamespace(""),"dispose")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "2036"
+               end ; metadata
+               dispid 0
+               method
+                  name "dispose"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 4
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                        debugline 64
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.npc"),"NpcManager")
+                        pushstring "actorArrive"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"onActorArriveShow")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        debugline 65
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanel")
+                        pushstring "customUnitClick"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"onUnit")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        debugline 66
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                        pushstring "PetKingMatch2ClothPanel"
+                        pushstring "dispose"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"diposeModlue")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                        getlocal0
+                        debugline 67
+                        pushfalse
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"hasListener")
+                        getlocal0
+                        debugline 68
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"currMobile")
+                        iffalse ofs0041
+                        getlocal0
+                        debugline 69
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"currMobile")
+                        callpropvoid QName(PackageNamespace(""),"removeOverHeadMark"), 0
+               ofs0041:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function setup() : void
+            {
+               trait method QName(PackageNamespace(""),"setup")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "2502"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "setup"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                           getlocal0
+                           debugline 74
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"army")
+                           pushbyte 0
+                           equals
+                           debugline 74
+                           iffalse ofs0026
+                           debugline 75
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                           pushuint 202997
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"getArmy")
+                           callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                           debugline 74
+                           jump ofs002e
+                           debugline 77
+                  ofs0026:
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"getEquip")
+                           callpropvoid QName(PackageNamespace(""),"requestEquipList"), 1
+                  ofs002e:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function checkIsGetMap() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"checkIsGetMap")
+                     dispid 0
+                     method
+                        name "checkIsGetMap"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 4
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                              getlocal0
+                              debugline 82
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"MAP_IDS")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                              getproperty QName(PackageNamespace(""),"active")
+                              getproperty QName(PackageNamespace(""),"mapID")
+                              ifeq ofs001b
+                              debugline 83
+                              returnvoid
+                     ofs001b:
+                              getlocal0
+                              debugline 85
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"MOBILE_IDS")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              pushstring "npc"
+                              callproperty QName(PackageNamespace(""),"getMobile"), 2
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"currMobile")
+                              getlocal0
+                              debugline 86
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"currMobile")
+                              callpropvoid QName(PackageNamespace(""),"removeOverHeadMark"), 0
+                              getlocal0
+                              debugline 87
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"currMobile")
+                              findpropstrict QName(PackageNamespace("com.taomee.seer2.app.quest.mark"),"AcceptableMark")
+                              constructprop QName(PackageNamespace("com.taomee.seer2.app.quest.mark"),"AcceptableMark"), 0
+                              callpropvoid QName(PackageNamespace(""),"addOverHeadMark"), 1
+                              debugline 88
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.npc"),"NpcManager")
+                              pushstring "actorArrive"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"onActorArriveShow")
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onActorArriveShow(param1:NpcEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"onActorArriveShow")
+                        dispid 0
+                        method
+                           name "onActorArriveShow"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("com.taomee.seer2.app.npc"),"NpcEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 4
+                              localcount 3
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                                 debug 1, "_loc2_", 1, 0
+                                 debug 1, "param1", 0, 0
+                                 debugline 92
+                                 pushnull
+                                 coerce QName(PackageNamespace(""),"XML")
+                                 setlocal2
+                                 getlocal0
+                                 getlocal1
+                                 debugline 93
+                                 getproperty QName(PackageNamespace(""),"npcDefinition")
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"npcdef")
+                                 getlocal0
+                                 debugline 94
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"hasGet")
+                                 iffalse ofs0038
+                                 getlocal0
+                                 debugline 95
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"npcdef")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"GET_DES")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 callpropvoid QName(PackageNamespace(""),"removeFunctionalityUnit"), 1
+                                 debugline 96
+                                 returnvoid
+                        ofs0038:
+                                 getlocal0
+                                 debugline 98
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"npcdef")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"MOBILE_IDS")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 ifne ofs008b
+                                 getlocal0
+                                 debugline 99
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"npcdef")
+                                 callpropvoid QName(PackageNamespace(""),"resetFunctionalityData"), 0
+                                 findpropstrict QName(PackageNamespace(""),"XML")
+                                 debugline 100
+                                 pushstring "<node type=\"quest\" name=\""
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"GET_DES")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 add
+                                 pushstring "\" params=\"getCloth\"/>"
+                                 add
+                                 constructprop QName(PackageNamespace(""),"XML"), 1
+                                 coerce QName(PackageNamespace(""),"XML")
+                                 setlocal2
+                                 getlocal0
+                                 debugline 101
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"npcdef")
+                                 getlocal2
+                                 pushbyte 2
+                                 callpropvoid QName(PackageNamespace(""),"addFunctionalityUnitAt"), 2
+                                 getlocal0
+                                 debugline 102
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"hasListener")
+                                 iftrue ofs008b
+                                 debugline 103
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanel")
+                                 pushstring "customUnitClick"
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"onUnit")
+                                 callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        ofs008b:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onUnit(param1:DialogPanelEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"onUnit")
+                           dispid 0
+                           method
+                              name "onUnit"
+                              flag HAS_PARAM_NAMES
+                              flag NEED_ACTIVATION
+                              param QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 6
+                                 localcount 3
+                                 initscopedepth 0
+                                 maxscopedepth 2
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                    slotid 1
+                                    type QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.actives"),"event")
+                                    slotid 2
+                                    type QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                                 end ; trait
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                                    newactivation
+                                    dup
+                                    setlocal2
+                                    pushscope
+                                    findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                    getlocal1
+                                    setproperty QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "onUnit$0", 1, 0
+                                    debugline 109
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"param1")
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.dialog.events"),"DialogPanelEvent")
+                                    getlocal2
+                                    swap
+                                    setslot 2
+                                    debugline 110
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.actives"),"event")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    getproperty Multiname("params",[PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushstring "getCloth"
+                                    ifne ofs0066
+                                    getlocal0
+                                    debugline 111
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"currMobile")
+                                    callpropvoid QName(PackageNamespace(""),"removeOverHeadMark"), 0
+                                    debugline 112
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"MOBILE_IDS")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"NPC_NAME")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushbyte 0
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"NPC_DIA")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    newarray 2
+                                    newarray 1
+                                    pushstring "领取队服"
+                                    pushstring "一会儿再来"
+                                    newarray 2
+                                    newfunction 7
+                                    newarray 1
+                                    callpropvoid QName(PackageNamespace(""),"show"), 5
+                           ofs0066:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function diposeModlue(param1:ModuleEvent) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"diposeModlue")
+                              dispid 0
+                              method
+                                 name "diposeModlue"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 4
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                                       debug 1, "param1", 0, 0
+                                       debugline 120
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                       pushstring "PetKingMatch2ClothPanel"
+                                       pushstring "dispose"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"diposeModlue")
+                                       callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                       debugline 121
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"getEquip")
+                                       callpropvoid QName(PackageNamespace(""),"requestEquipList"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function getArmy(param1:uint, param2:uint) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"getArmy")
+                                 dispid 0
+                                 method
+                                    name "getArmy"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace(""),"uint")
+                                    param QName(PackageNamespace(""),"uint")
+                                    paramname "param1"
+                                    paramname "param2"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                                          debug 1, "param1", 0, 0
+                                          debug 1, "param2", 1, 0
+                                          getlocal0
+                                          getlocal2
+                                          debugline 125
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"army")
+                                          getlocal0
+                                          debugline 126
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"army")
+                                          pushbyte 0
+                                          ifne ofs0022
+                                          debugline 127
+                                          returnvoid
+                                 ofs0022:
+                                          getlocal0
+                                          getlocal0
+                                          debugline 129
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"army")
+                                          pushbyte 1
+                                          subtract
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                                          debugline 130
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"getEquip")
+                                          callpropvoid QName(PackageNamespace(""),"requestEquipList"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function getEquip() : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"getEquip")
+                                    dispid 0
+                                    method
+                                       name "getEquip"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 4
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\actives;PetKingMatch2ClothAct.as"
+                                             getlocal0
+                                             debugline 134
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"CHECK_IDS")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"setIndex")
+                                             getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),ProtectedNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.actives"),PackageInternalNs("com.taomee.seer2.app.actives"),PrivateNamespace("FilePrivateNS:PetKingMatch2ClothAct"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             callproperty QName(PackageNamespace(""),"getEquipItem"), 1
+                                             convert_b
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"hasGet")
+                                             getlocal0
+                                             debugline 135
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"hasGet")
+                                             iffalse ofs0026
+                                             debugline 136
+                                             returnvoid
+                                    ofs0026:
+                                             getlocal0
+                                             debugline 138
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.actives:PetKingMatch2ClothAct"),"checkIsGetMap"), 0
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                              }
+                           }
+                           
+                           method
+                              name null
+                              returns null
+                              
+                              body
+                                 maxstack 3
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 2
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    getscopeobject 0
+                                    getlex QName(PackageNamespace(""),"Object")
+                                    dup
+                                    pushscope
+                                    newclass 0
+                                    popscope
+                                    initproperty QName(PackageNamespace("com.taomee.seer2.app.actives"),"PetKingMatch2ClothAct")
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                           

@@ -1,0 +1,832 @@
+package org.taomee.manager
+{
+   import flash.display.Bitmap;
+   import flash.display.BitmapData;
+   import flash.display.InteractiveObject;
+   import flash.events.MouseEvent;
+   import flash.geom.Point;
+   import org.taomee.core.DragSource;
+   import org.taomee.events.DragEvent;
+   import org.taomee.utils.DisplayUtil;
+   
+   public class DragManager
+   {
+      
+      public static const NONE:String = "none";
+      
+      private static var _dragImage:Bitmap;
+      
+      private static var _dragSource:DragSource;
+      
+      public static const MOVE:String = "move";
+      
+      private static var _mouseTarget:InteractiveObject;
+      
+      private static var _isDragging:Boolean = false;
+      
+      private static var _dragInitiator:InteractiveObject;
+      
+      private static var _dropAction:String;
+      
+      private static var _offset:Point;
+      
+      public static const COPY:String = "copy";
+      
+      public static const LINK:String = "link";
+      
+      private static var _allowMove:Boolean = true;
+      
+      private static var _dropTarget:InteractiveObject;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      public function DragManager()
+      {
+         method
+            name "DragManager"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                  debugline 42
+                  getlocal0
+                  debugline 42
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function acceptDragDrop(param1:InteractiveObject) : void
+      {
+         trait method QName(PackageNamespace(""),"acceptDragDrop")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1093"
+            end ; metadata
+            dispid 0
+            method
+               name "acceptDragDrop"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace("flash.display"),"InteractiveObject")
+               paramname "param1"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 2
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                     debug 1, "param1", 0, 0
+                     getlocal1
+                     findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                     debugline 46
+                     swap
+                     debugline 46
+                     setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public static function get dropAction() : String
+         {
+            trait getter QName(PackageNamespace(""),"dropAction")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "1213"
+               end ; metadata
+               dispid 0
+               method
+                  name "dropAction"
+                  returns QName(PackageNamespace(""),"String")
+                  
+                  body
+                     maxstack 1
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                        debugline 50
+                        getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                        returnvalue
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private static function upDateImageMove() : void
+            {
+               trait method QName(PrivateNamespace("org.taomee.manager:DragManager"),"upDateImageMove")
+                  dispid 0
+                  method
+                     name "upDateImageMove"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                           debugline 54
+                           getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                           iffalse ofs002e
+                           debugline 55
+                           getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                           getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                           getproperty QName(PackageNamespace(""),"stage")
+                           getproperty QName(PackageNamespace(""),"mouseX")
+                           getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_offset")
+                           getproperty QName(PackageNamespace(""),"x")
+                           subtract
+                           setproperty QName(PackageNamespace(""),"x")
+                           debugline 56
+                           getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                           getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                           getproperty QName(PackageNamespace(""),"stage")
+                           getproperty QName(PackageNamespace(""),"mouseY")
+                           getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_offset")
+                           getproperty QName(PackageNamespace(""),"y")
+                           subtract
+                           setproperty QName(PackageNamespace(""),"y")
+                  ofs002e:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public static function set dropAction(param1:String) : void
+               {
+                  trait setter QName(PackageNamespace(""),"dropAction")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "1542"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "dropAction"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"String")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 2
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                              debug 1, "param1", 0, 0
+                              getlocal1
+                              findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                              debugline 61
+                              swap
+                              debugline 61
+                              setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private static function clear() : void
+                  {
+                     trait method QName(PrivateNamespace("org.taomee.manager:DragManager"),"clear")
+                        dispid 0
+                        method
+                           name "clear"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                 debugline 65
+                                 pushnull
+                                 findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                 swap
+                                 setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                 debugline 66
+                                 pushnull
+                                 findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                 swap
+                                 setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                 debugline 67
+                                 pushnull
+                                 findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_mouseTarget")
+                                 swap
+                                 setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_mouseTarget")
+                                 debugline 68
+                                 pushnull
+                                 findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                 swap
+                                 setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                 debugline 69
+                                 pushnull
+                                 findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_offset")
+                                 swap
+                                 setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_offset")
+                                 debugline 70
+                                 pushstring "none"
+                                 findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                 swap
+                                 setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                 debugline 71
+                                 getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                 iffalse ofs0061
+                                 debugline 72
+                                 getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                 getproperty QName(PackageNamespace(""),"bitmapData")
+                                 iffalse ofs0052
+                                 debugline 73
+                                 getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                 getproperty QName(PackageNamespace(""),"bitmapData")
+                                 callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                 debugline 75
+                        ofs0052:
+                                 getlex QName(PackageNamespace("org.taomee.utils"),"DisplayUtil")
+                                 getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                 callpropvoid QName(PackageNamespace(""),"removeForParent"), 1
+                                 debugline 76
+                                 pushnull
+                                 findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                 swap
+                                 setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                        ofs0061:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private static function onStageOver(param1:MouseEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageOver")
+                           dispid 0
+                           method
+                              name "onStageOver"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("flash.events"),"MouseEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 8
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                    debug 1, "param1", 0, 0
+                                    getlocal1
+                                    debugline 81
+                                    getproperty QName(PackageNamespace(""),"target")
+                                    getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                    astypelate
+                                    findpropstrict QName(PackageNamespace("org.taomee.events"),"DragEvent")
+                                    pushstring "dragEnter"
+                                    getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                    getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                    getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                    getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                    getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                    constructprop QName(PackageNamespace("org.taomee.events"),"DragEvent"), 6
+                                    callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        public static function get isDragging() : Boolean
+                        {
+                           trait getter QName(PackageNamespace(""),"isDragging")
+                              flag METADATA
+                              metadata "__go_to_definition_help"
+                                 item "pos" "2346"
+                              end ; metadata
+                              dispid 0
+                              method
+                                 name "isDragging"
+                                 returns QName(PackageNamespace(""),"Boolean")
+                                 
+                                 body
+                                    maxstack 1
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                       debugline 85
+                                       getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_isDragging")
+                                       returnvalue
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           public static function get dragInitiator() : InteractiveObject
+                           {
+                              trait getter QName(PackageNamespace(""),"dragInitiator")
+                                 flag METADATA
+                                 metadata "__go_to_definition_help"
+                                    item "pos" "2439"
+                                 end ; metadata
+                                 dispid 0
+                                 method
+                                    name "dragInitiator"
+                                    returns QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                    
+                                    body
+                                       maxstack 1
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                          debugline 89
+                                          getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                          returnvalue
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public static function doDrag(param1:InteractiveObject, param2:DragSource, param3:BitmapData = null, param4:Point = null, param5:Boolean = true) : void
+                              {
+                                 trait method QName(PackageNamespace(""),"doDrag")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "2544"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "doDrag"
+                                       flag HAS_OPTIONAL
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                       param QName(PackageNamespace("org.taomee.core"),"DragSource")
+                                       param QName(PackageNamespace("flash.display"),"BitmapData")
+                                       param QName(PackageNamespace("flash.geom"),"Point")
+                                       param QName(PackageNamespace(""),"Boolean")
+                                       paramname "param1"
+                                       paramname "param2"
+                                       paramname "param3"
+                                       paramname "param4"
+                                       paramname "param5"
+                                       optional Null()
+                                       optional Null()
+                                       optional True()
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 8
+                                          localcount 6
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                             debug 1, "param5", 4, 0
+                                             debug 1, "param3", 2, 0
+                                             debug 1, "param4", 3, 0
+                                             debug 1, "param1", 0, 0
+                                             debug 1, "param2", 1, 0
+                                             debugline 93
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_isDragging")
+                                             iffalse ofs002a
+                                             debugline 94
+                                             returnvoid
+                                             debugline 96
+                                    ofs002a:
+                                             pushtrue
+                                             findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_isDragging")
+                                             swap
+                                             setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_isDragging")
+                                             debugline 97
+                                             pushstring "none"
+                                             findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                             swap
+                                             setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                             findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                             debugline 98
+                                             constructprop QName(PackageNamespace("flash.geom"),"Point"), 0
+                                             findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_offset")
+                                             swap
+                                             setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_offset")
+                                             getlocal1
+                                             findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                             debugline 99
+                                             swap
+                                             debugline 99
+                                             setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                             getlocal2
+                                             findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                             debugline 100
+                                             swap
+                                             debugline 100
+                                             setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                             getlocal3
+                                             iffalse ofs009d
+                                             debugline 102
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                             pushnull
+                                             ifne ofs0075
+                                             findpropstrict QName(PackageNamespace("flash.display"),"Bitmap")
+                                             debugline 103
+                                             constructprop QName(PackageNamespace("flash.display"),"Bitmap"), 0
+                                             findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                             swap
+                                             setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                             debugline 105
+                                    ofs0075:
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                             getlocal3
+                                             setproperty QName(PackageNamespace(""),"bitmapData")
+                                             getlocal 4
+                                             iffalse ofs008d
+                                             getlocal 4
+                                             findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_offset")
+                                             debugline 107
+                                             swap
+                                             debugline 107
+                                             setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_offset")
+                                             debugline 109
+                                    ofs008d:
+                                             getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                             getproperty QName(PackageNamespace(""),"stage")
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragImage")
+                                             callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                             findpropstrict QName(PrivateNamespace("org.taomee.manager:DragManager"),"upDateImageMove")
+                                             debugline 110
+                                             callpropvoid QName(PrivateNamespace("org.taomee.manager:DragManager"),"upDateImageMove"), 0
+                                    ofs009d:
+                                             getlocal 5
+                                             findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                             debugline 112
+                                             swap
+                                             debugline 112
+                                             setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                             debugline 113
+                                             getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                             getproperty QName(PackageNamespace(""),"stage")
+                                             pushstring "mouseOver"
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageOver")
+                                             callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                             debugline 114
+                                             getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                             getproperty QName(PackageNamespace(""),"stage")
+                                             pushstring "mouseOut"
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageOut")
+                                             callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                             debugline 115
+                                             getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                             getproperty QName(PackageNamespace(""),"stage")
+                                             pushstring "mouseMove"
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageMove")
+                                             callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                             debugline 116
+                                             getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                             getproperty QName(PackageNamespace(""),"stage")
+                                             pushstring "mouseUp"
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageUp")
+                                             callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                             debugline 117
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                             findpropstrict QName(PackageNamespace("org.taomee.events"),"DragEvent")
+                                             pushstring "dragStart"
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                             getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                             constructprop QName(PackageNamespace("org.taomee.events"),"DragEvent"), 6
+                                             callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private static function onStageUp(param1:MouseEvent) : void
+                                 {
+                                    trait method QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageUp")
+                                       dispid 0
+                                       method
+                                          name "onStageUp"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 1
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                                debug 1, "param1", 0, 0
+                                                findpropstrict QName(PackageNamespace(""),"endDrag")
+                                                debugline 121
+                                                callpropvoid QName(PackageNamespace(""),"endDrag"), 0
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private static function onStageOut(param1:MouseEvent) : void
+                                    {
+                                       trait method QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageOut")
+                                          dispid 0
+                                          method
+                                             name "onStageOut"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 8
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                                   debug 1, "param1", 0, 0
+                                                   getlocal1
+                                                   debugline 125
+                                                   getproperty QName(PackageNamespace(""),"target")
+                                                   getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                   astypelate
+                                                   findpropstrict QName(PackageNamespace("org.taomee.events"),"DragEvent")
+                                                   pushstring "dragExit"
+                                                   getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                                   getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                                   getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                                   getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                                   getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                                   constructprop QName(PackageNamespace("org.taomee.events"),"DragEvent"), 6
+                                                   callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       public static function endDrag() : void
+                                       {
+                                          trait method QName(PackageNamespace(""),"endDrag")
+                                             flag METADATA
+                                             metadata "__go_to_definition_help"
+                                                item "pos" "4098"
+                                             end ; metadata
+                                             dispid 0
+                                             method
+                                                name "endDrag"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 8
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                                      debugline 129
+                                                      pushfalse
+                                                      findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_isDragging")
+                                                      swap
+                                                      setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_isDragging")
+                                                      debugline 130
+                                                      getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                                      getproperty QName(PackageNamespace(""),"stage")
+                                                      pushstring "mouseOver"
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageOver")
+                                                      callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                      debugline 131
+                                                      getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                                      getproperty QName(PackageNamespace(""),"stage")
+                                                      pushstring "mouseOut"
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageOut")
+                                                      callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                      debugline 132
+                                                      getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                                      getproperty QName(PackageNamespace(""),"stage")
+                                                      pushstring "mouseMove"
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageMove")
+                                                      callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                      debugline 133
+                                                      getlex QName(PackageNamespace("org.taomee.manager"),"TaomeeManager")
+                                                      getproperty QName(PackageNamespace(""),"stage")
+                                                      pushstring "mouseUp"
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageUp")
+                                                      callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                      debugline 134
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                                      iffalse ofs006a
+                                                      debugline 135
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                                      findpropstrict QName(PackageNamespace("org.taomee.events"),"DragEvent")
+                                                      pushstring "dragComplete"
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                                      constructprop QName(PackageNamespace("org.taomee.events"),"DragEvent"), 6
+                                                      callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                      debugline 137
+                                             ofs006a:
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                                      convert_b
+                                                      dup
+                                                      iffalse ofs0076
+                                                      pop
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_mouseTarget")
+                                                      convert_b
+                                             ofs0076:
+                                                      iffalse ofs009e
+                                                      debugline 138
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_mouseTarget")
+                                                      ifne ofs009e
+                                                      debugline 139
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                                      findpropstrict QName(PackageNamespace("org.taomee.events"),"DragEvent")
+                                                      pushstring "dragDrop"
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                                      getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                                      constructprop QName(PackageNamespace("org.taomee.events"),"DragEvent"), 6
+                                                      callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                             ofs009e:
+                                                      findpropstrict QName(PrivateNamespace("org.taomee.manager:DragManager"),"clear")
+                                                      debugline 142
+                                                      callpropvoid QName(PrivateNamespace("org.taomee.manager:DragManager"),"clear"), 0
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private static function onStageMove(param1:MouseEvent) : void
+                                          {
+                                             trait method QName(PrivateNamespace("org.taomee.manager:DragManager"),"onStageMove")
+                                                dispid 0
+                                                method
+                                                   name "onStageMove"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 8
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;org\\taomee\\manager;DragManager.as"
+                                                         debug 1, "param1", 0, 0
+                                                         findpropstrict QName(PrivateNamespace("org.taomee.manager:DragManager"),"upDateImageMove")
+                                                         debugline 146
+                                                         callpropvoid QName(PrivateNamespace("org.taomee.manager:DragManager"),"upDateImageMove"), 0
+                                                         debugline 147
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                                         findpropstrict QName(PackageNamespace("org.taomee.events"),"DragEvent")
+                                                         pushstring "dragUpdate"
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                                         constructprop QName(PackageNamespace("org.taomee.events"),"DragEvent"), 6
+                                                         callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                         getlocal1
+                                                         debugline 148
+                                                         getproperty QName(PackageNamespace(""),"target")
+                                                         getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                         astypelate
+                                                         findproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_mouseTarget")
+                                                         swap
+                                                         setproperty QName(PrivateNamespace("org.taomee.manager:DragManager"),"_mouseTarget")
+                                                         debugline 149
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_mouseTarget")
+                                                         findpropstrict QName(PackageNamespace("org.taomee.events"),"DragEvent")
+                                                         pushstring "dragOver"
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragInitiator")
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropTarget")
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dragSource")
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_dropAction")
+                                                         getlex QName(PrivateNamespace("org.taomee.manager:DragManager"),"_allowMove")
+                                                         constructprop QName(PackageNamespace("org.taomee.events"),"DragEvent"), 6
+                                                         callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                          }
+                                       }
+                                       
+                                       method
+                                          name null
+                                          returns null
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                getscopeobject 0
+                                                getlex QName(PackageNamespace(""),"Object")
+                                                dup
+                                                pushscope
+                                                newclass 0
+                                                popscope
+                                                initproperty QName(PackageNamespace("org.taomee.manager"),"DragManager")
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                       

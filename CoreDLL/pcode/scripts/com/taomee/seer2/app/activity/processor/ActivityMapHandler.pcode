@@ -1,0 +1,746 @@
+package com.taomee.seer2.app.activity.processor
+{
+   import com.taomee.seer2.app.activity.ActivityManager;
+   import com.taomee.seer2.app.activity.data.ActivityAnimationPlayer;
+   import com.taomee.seer2.app.config.ActivityConfig;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.core.manager.TimeManager;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.sound.SoundManager;
+   import com.taomee.seer2.core.ui.UIManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import flash.display.MovieClip;
+   import flash.events.Event;
+   
+   public class ActivityMapHandler
+   {
+      
+      private static const MINUTES_PER_HOUR:uint = 60;
+      
+      private static const MILLISECONDS_PER_SECOND:uint = 1000;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      protected var _isTimeOut:Boolean;
+      
+      protected var _currentTimeVec:Vector.<uint>;
+      
+      protected var _activityProcessor:ActivityProcessor;
+      
+      private var _activityAnimation:ActivityAnimationPlayer;
+      
+      private var _activityAnimationPathVec:Vector.<String>;
+      
+      private var _activityId:uint;
+      
+      public var isAnimationPlaying:Boolean;
+      
+      public function ActivityMapHandler(param1:ActivityProcessor)
+      {
+         method
+            name "ActivityMapHandler"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.app.activity.processor"),"ActivityProcessor")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                  debug 1, "param1", 0, 0
+                  debugline 37
+                  getlocal0
+                  debugline 37
+                  constructsuper 0
+                  getlocal0
+                  getlocal1
+                  debugline 38
+                  setproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityProcessor")
+                  getlocal0
+                  getlocal0
+                  debugline 39
+                  getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityProcessor")
+                  callproperty QName(PackageNamespace(""),"getActivityID"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityId")
+                  getlocal0
+                  debugline 40
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"initAnimationPathVec"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      private function initAnimationPathVec() : void
+      {
+         trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"initAnimationPathVec")
+            dispid 0
+            method
+               name "initAnimationPathVec"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                     getlocal0
+                     debugline 44
+                     getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                     getlex QName(PackageNamespace(""),"String")
+                     debugline 44
+                     applytype 1
+                     debugline 44
+                     construct 0
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimationPathVec")
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function process() : void
+         {
+            trait method QName(PackageNamespace(""),"process")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "1499"
+               end ; metadata
+               dispid 0
+               method
+                  name "process"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 2
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                        getlocal0
+                        debugline 48
+                        getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_isTimeOut")
+                        pushfalse
+                        equals
+                        dup
+                        iffalse ofs001b
+                        pop
+                        getlocal0
+                        getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityProcessor")
+                        getproperty QName(PackageNamespace(""),"activity")
+                        callproperty QName(PackageNamespace(""),"isTimeless"), 0
+                        pushfalse
+                        equals
+               ofs001b:
+                        dup
+                        iffalse ofs002d
+                        pop
+                        getlocal0
+                        getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityProcessor")
+                        getproperty QName(PackageNamespace(""),"activity")
+                        callproperty QName(PackageNamespace(""),"isAvailableTime"), 0
+                        pushfalse
+                        equals
+                        debugline 48
+               ofs002d:
+                        iffalse ofs0043
+                        getlocal0
+                        debugline 49
+                        pushtrue
+                        setproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_isTimeOut")
+                        getlocal0
+                        debugline 50
+                        callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"doLeavMap"), 0
+                        debugline 48
+                        jump ofs0056
+               ofs0043:
+                        getlocal0
+                        debugline 51
+                        getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_isTimeOut")
+                        pushfalse
+                        equals
+                        debugline 48
+                        iffalse ofs0056
+                        getlocal0
+                        debugline 52
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"getCurrentTimeVec"), 0
+               ofs0056:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function getCurrentTimeVec() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"getCurrentTimeVec")
+                  dispid 0
+                  method
+                     name "getCurrentTimeVec"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 4
+                        localcount 6
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                           debug 1, "_loc5_", 0, 0
+                           debug 1, "_loc2_", 1, 0
+                           debug 1, "_loc1_", 2, 0
+                           debug 1, "_loc4_", 3, 0
+                           debug 1, "_loc3_", 4, 0
+                           debugline 57
+                           pushnull
+                           coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace(""),"String")>)
+                           setlocal2
+                           debugline 58
+                           pushbyte 0
+                           setlocal 4
+                           debugline 59
+                           pushbyte 0
+                           convert_u
+                           setlocal1
+                           getlocal0
+                           debugline 60
+                           getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                           getlex QName(PackageNamespace(""),"uint")
+                           debugline 60
+                           applytype 1
+                           debugline 60
+                           construct 0
+                           setproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_currentTimeVec")
+                           debugline 61
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                           callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                           convert_u
+                           setlocal3
+                           debugline 62
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ActivityConfig")
+                           getlocal0
+                           getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityProcessor")
+                           callproperty QName(PackageNamespace(""),"getActivityID"), 0
+                           callproperty QName(PackageNamespace(""),"getActivityById"), 1
+                           pushnull
+                           ifeq ofs0071
+                           debugline 63
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ActivityConfig")
+                           getlocal0
+                           getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityProcessor")
+                           callproperty QName(PackageNamespace(""),"getActivityID"), 0
+                           callproperty QName(PackageNamespace(""),"getActivityById"), 1
+                           getlocal3
+                           callproperty QName(PackageNamespace(""),"getPhaseTimeVec"), 1
+                           coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace(""),"String")>)
+                           setlocal2
+                           debugline 65
+                  ofs0071:
+                           pushbyte 0
+                           convert_u
+                           setlocal 5
+                           jump ofs00c7
+                  ofs007a:
+                           label
+                           getlocal2
+                           getlocal 5
+                           debugline 67
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:ActivityMapHandler"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushstring ":"
+                           callproperty Multiname("indexOf",[PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:ActivityMapHandler"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           convert_i
+                           setlocal 4
+                           getlocal2
+                           getlocal 5
+                           debugline 68
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:ActivityMapHandler"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           pushbyte 0
+                           getlocal 4
+                           callproperty Multiname("substring",[PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:ActivityMapHandler"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 2
+                           convert_u
+                           pushbyte 60
+                           multiply
+                           getlocal2
+                           getlocal 5
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:ActivityMapHandler"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           getlocal 4
+                           pushbyte 1
+                           add
+                           callproperty Multiname("substring",[PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.activity.processor"),PackageInternalNs("com.taomee.seer2.app.activity.processor"),PrivateNamespace("FilePrivateNS:ActivityMapHandler"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                           convert_u
+                           add
+                           convert_u
+                           setlocal1
+                           getlocal0
+                           debugline 69
+                           getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_currentTimeVec")
+                           getlocal1
+                           callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                           debugline 70
+                           getlocal 5
+                           debugline 70
+                           convert_d
+                           debugline 70
+                           increment
+                           debugline 70
+                           convert_u
+                           debugline 70
+                           setlocal 5
+                  ofs00c7:
+                           getlocal 5
+                           getlocal2
+                           debugline 66
+                           getproperty QName(PackageNamespace(""),"length")
+                           iflt ofs007a
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               protected function playActivityAnimation(param1:String = null) : void
+               {
+                  trait method QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"playActivityAnimation")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "2713"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "playActivityAnimation"
+                        flag HAS_OPTIONAL
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"String")
+                        paramname "param1"
+                        optional Null()
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 3
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                              debug 1, "_loc2_", 1, 0
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              debugline 75
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimationPathVec")
+                              getlocal1
+                              callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                              getlocal0
+                              debugline 76
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              pushnull
+                              ifeq ofs0024
+                              debugline 77
+                              returnvoid
+                     ofs0024:
+                              getlocal0
+                              debugline 79
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimationPathVec")
+                              callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"shift"), 0
+                              coerce_s
+                              setlocal1
+                              getlocal1
+                              debugline 80
+                              pushnull
+                              ifne ofs003b
+                              debugline 81
+                              returnvoid
+                              debugline 83
+                     ofs003b:
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.activity"),"ActivityManager")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityId")
+                              getlocal1
+                              callproperty QName(PackageNamespace(""),"isPlayActivityAnimation"), 2
+                              pushfalse
+                              ifne ofs004c
+                              debugline 84
+                              returnvoid
+                     ofs004c:
+                              getlocal0
+                              debugline 86
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"isAnimationPlaying")
+                              debugline 87
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                              callpropvoid QName(PackageNamespace(""),"hide"), 0
+                              debugline 88
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.sound"),"SoundManager")
+                              pushfalse
+                              setproperty QName(PackageNamespace(""),"enabled")
+                              getlocal0
+                              findpropstrict QName(PackageNamespace("com.taomee.seer2.app.activity.data"),"ActivityAnimationPlayer")
+                              getlocal1
+                              debugline 89
+                              constructprop QName(PackageNamespace("com.taomee.seer2.app.activity.data"),"ActivityAnimationPlayer"), 1
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              debugline 90
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.activity"),"ActivityManager")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityId")
+                              getlocal1
+                              callpropvoid QName(PackageNamespace(""),"addActivityAnimationPlayNum"), 2
+                              getlocal0
+                              debugline 91
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              pushstring "close"
+                              getlocal0
+                              getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"onActivityAnimationClose")
+                              callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                              getlocal0
+                              debugline 92
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              getproperty QName(PackageNamespace(""),"x")
+                              pushbyte 120
+                              add
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              swap
+                              setproperty QName(PackageNamespace(""),"x")
+                              getlocal0
+                              debugline 93
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              getproperty QName(PackageNamespace(""),"y")
+                              pushbyte 50
+                              add
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              swap
+                              setproperty QName(PackageNamespace(""),"y")
+                              debugline 94
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.ui"),"UIManager")
+                              pushstring "UI_PlayScreen"
+                              callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                              coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                              setlocal2
+                              getlocal2
+                              getproperty QName(PackageNamespace(""),"x")
+                              debugline 95
+                              pushbyte 120
+                              subtract
+                              getlocal2
+                              swap
+                              setproperty QName(PackageNamespace(""),"x")
+                              getlocal2
+                              getproperty QName(PackageNamespace(""),"y")
+                              debugline 96
+                              pushbyte 50
+                              subtract
+                              getlocal2
+                              swap
+                              setproperty QName(PackageNamespace(""),"y")
+                              getlocal0
+                              debugline 97
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              getlocal2
+                              callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                              debugline 98
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                              getproperty QName(PackageNamespace(""),"topLayer")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                              callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                              debugline 99
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                              callpropvoid QName(PackageNamespace(""),"focusOnTopLayer"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  protected function onActivityAnimationClose(param1:Event) : void
+                  {
+                     trait method QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"onActivityAnimationClose")
+                        flag METADATA
+                        metadata "__go_to_definition_help"
+                           item "pos" "3896"
+                        end ; metadata
+                        dispid 0
+                        method
+                           name "onActivityAnimationClose"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("flash.events"),"Event")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 debugline 103
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                                 pushstring "close"
+                                 getlocal0
+                                 getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"onActivityAnimationClose")
+                                 callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                 debugline 104
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                                 callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                                 getlocal0
+                                 debugline 105
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                                 callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                 getlocal0
+                                 debugline 106
+                                 pushnull
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimation")
+                                 debugline 107
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                 callpropvoid QName(PackageNamespace(""),"resetOperation"), 0
+                                 debugline 108
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.sound"),"SoundManager")
+                                 pushtrue
+                                 setproperty QName(PackageNamespace(""),"enabled")
+                                 getlocal0
+                                 debugline 109
+                                 pushfalse
+                                 setproperty QName(PackageNamespace(""),"isAnimationPlaying")
+                                 getlocal0
+                                 debugline 110
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimationPathVec")
+                                 convert_b
+                                 dup
+                                 iffalse ofs0056
+                                 pop
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityAnimationPathVec")
+                                 getproperty QName(PackageNamespace(""),"length")
+                                 convert_b
+                                 debugline 110
+                        ofs0056:
+                                 iffalse ofs0066
+                                 getlocal0
+                                 debugline 111
+                                 callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"playActivityAnimation"), 0
+                                 debugline 110
+                                 jump ofs0084
+                        ofs0066:
+                                 getlocal0
+                                 debugline 112
+                                 getproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_isTimeOut")
+                                 debugline 110
+                                 iffalse ofs007f
+                                 getlocal0
+                                 debugline 113
+                                 callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"processActivityEnd"), 0
+                                 debugline 110
+                                 jump ofs0084
+                                 debugline 115
+                        ofs007f:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                 callpropvoid QName(PackageNamespace(""),"reShow"), 0
+                        ofs0084:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     protected function processActivityEnd() : void
+                     {
+                        trait method QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"processActivityEnd")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "4638"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "processActivityEnd"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 1
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        protected function doLeavMap() : void
+                        {
+                           trait method QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"doLeavMap")
+                              flag METADATA
+                              metadata "__go_to_definition_help"
+                                 item "pos" "4699"
+                              end ; metadata
+                              dispid 0
+                              method
+                                 name "doLeavMap"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                                       debug 1, "_loc1_", 0, 0
+                                       getlocal0
+                                       debugline 123
+                                       callproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"getLeavAnimationPath"), 0
+                                       coerce_s
+                                       setlocal1
+                                       getlocal0
+                                       getlocal1
+                                       debugline 124
+                                       callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"playActivityAnimation"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           protected function getLeavAnimationPath() : String
+                           {
+                              trait method QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"getLeavAnimationPath")
+                                 flag METADATA
+                                 metadata "__go_to_definition_help"
+                                    item "pos" "4854"
+                                 end ; metadata
+                                 dispid 0
+                                 method
+                                    name "getLeavAnimationPath"
+                                    returns QName(PackageNamespace(""),"String")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                                          findpropstrict QName(PackageNamespace(""),"Error")
+                                          debugline 128
+                                          pushstring "Should be implemented in subclasses"
+                                          constructprop QName(PackageNamespace(""),"Error"), 1
+                                          throw
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public function dispose() : void
+                              {
+                                 trait method QName(PackageNamespace(""),"dispose")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "4981"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "dispose"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 2
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\activity\\processor;ActivityMapHandler.as"
+                                             getlocal0
+                                             debugline 132
+                                             pushnull
+                                             setproperty QName(ProtectedNamespace("com.taomee.seer2.app.activity.processor:ActivityMapHandler"),"_activityProcessor")
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                              }
+                           }
+                           
+                           method
+                              name null
+                              returns null
+                              
+                              body
+                                 maxstack 3
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 2
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    getscopeobject 0
+                                    getlex QName(PackageNamespace(""),"Object")
+                                    dup
+                                    pushscope
+                                    newclass 0
+                                    popscope
+                                    initproperty QName(PackageNamespace("com.taomee.seer2.app.activity.processor"),"ActivityMapHandler")
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                           

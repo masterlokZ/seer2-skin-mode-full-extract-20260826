@@ -1,0 +1,1530 @@
+package com.taomee.seer2.app.processor.map
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.manager.StatisticsManager;
+   import com.taomee.seer2.app.pet.ActivePet;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.core.entity.MobileManager;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.HitTest;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.DisplayObject;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.display.Sprite;
+   import flash.events.MouseEvent;
+   import flash.events.TimerEvent;
+   import flash.geom.Point;
+   import flash.geom.Rectangle;
+   import flash.system.ApplicationDomain;
+   import flash.text.TextField;
+   import flash.utils.Timer;
+   import org.taomee.utils.DomainUtil;
+   import org.taomee.utils.Tick;
+   
+   public class Map3041Game
+   {
+      
+      private static const PetsPosition:Array;
+      
+      private static const PetsTargetPos:Point;
+      
+      private static const Petid:int = 146;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 5
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 1
+            
+            code
+               getlocal0
+               pushscope
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+               debugline 39
+               pushshort 826
+               pushshort 325
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 788
+               pushshort 442
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 621
+               pushshort 460
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               newarray 3
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"PetsPosition")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"PetsPosition")
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+               debugline 41
+               pushshort 315
+               pushshort 230
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"PetsTargetPos")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"PetsTargetPos")
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _mapModel:MapModel;
+      
+      private var _resLibs:ApplicationDomain;
+      
+      private var _npc:MovieClip;
+      
+      private var _bloodMC:MovieClip;
+      
+      private var _startMC:SimpleButton;
+      
+      private var _leaveMC:SimpleButton;
+      
+      private var _petsList:Vector.<ActivePet>;
+      
+      private var _playMcPos:Point;
+      
+      private var _hitCount:int = 0;
+      
+      private var _timeCount:int = 30;
+      
+      private var _timer:Timer;
+      
+      private var _timerContainer:Sprite;
+      
+      private var _timerTxt:TextField;
+      
+      private const petNum:int = 3;
+      
+      public function Map3041Game(param1:MapModel)
+      {
+         method
+            name "Map3041Game"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                  debug 1, "param1", 0, 0
+                  debugline 75
+                  getlocal0
+                  debugline 75
+                  constructsuper 0
+                  getlocal0
+                  getlocal1
+                  debugline 76
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_mapModel")
+                  getlocal0
+                  debugline 77
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getDomain"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function dispose() : void
+      {
+         trait method QName(PackageNamespace(""),"dispose")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2398"
+            end ; metadata
+            dispid 0
+            method
+               name "dispose"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                     getlocal0
+                     debugline 81
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"endGame"), 0
+                     getlocal0
+                     debugline 82
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                     iffalse ofs0030
+                     debugline 83
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                     callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                     getlocal0
+                     debugline 84
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                     pushstring "click"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onStart")
+                     callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                     getlocal0
+                     debugline 85
+                     pushnull
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+            ofs0030:
+                     getlocal0
+                     debugline 87
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                     iffalse ofs0056
+                     debugline 88
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                     callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                     getlocal0
+                     debugline 89
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                     pushstring "click"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onLeave")
+                     callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                     getlocal0
+                     debugline 90
+                     pushnull
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+            ofs0056:
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function getDomain() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getDomain")
+               dispid 0
+               method
+                  name "getDomain"
+                  flag NEED_ACTIVATION
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 4
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 2
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                        newactivation
+                        pushscope
+                        debugline 95
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                        pushstring "protectHomeGame/ProtectHome"
+                        callproperty QName(PackageNamespace(""),"getActivityAnimation"), 1
+                        pushstring "swf"
+                        newfunction 3
+                        callpropvoid QName(PackageNamespace(""),"load"), 3
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function init() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"init")
+                  dispid 0
+                  method
+                     name "init"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                           debugline 102
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                           getproperty QName(PackageNamespace(""),"uiLayer")
+                           pushfalse
+                           setproperty QName(PackageNamespace(""),"visible")
+                           getlocal0
+                           getlocal0
+                           debugline 103
+                           pushstring "npcMC"
+                           callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getMovie"), 1
+                           getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                           astypelate
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_npc")
+                           getlocal0
+                           debugline 104
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_mapModel")
+                           getproperty QName(PackageNamespace(""),"front")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_npc")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           getlocal0
+                           debugline 105
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_npc")
+                           pushshort 315
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           debugline 106
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_npc")
+                           pushshort 258
+                           setproperty QName(PackageNamespace(""),"y")
+                           getlocal0
+                           getlocal0
+                           debugline 107
+                           pushstring "bloodMC"
+                           callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getMovie"), 1
+                           getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                           astypelate
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_bloodMC")
+                           getlocal0
+                           debugline 108
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_mapModel")
+                           getproperty QName(PackageNamespace(""),"front")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_bloodMC")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           getlocal0
+                           debugline 109
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_bloodMC")
+                           pushshort 265
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           debugline 110
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_bloodMC")
+                           pushbyte 80
+                           setproperty QName(PackageNamespace(""),"y")
+                           getlocal0
+                           debugline 111
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_bloodMC")
+                           pushbyte 1
+                           callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                           getlocal0
+                           getlocal0
+                           debugline 112
+                           pushstring "startMc"
+                           callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getMovie"), 1
+                           getlex QName(PackageNamespace("flash.display"),"SimpleButton")
+                           astypelate
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                           getlocal0
+                           debugline 113
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_mapModel")
+                           getproperty QName(PackageNamespace(""),"front")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           getlocal0
+                           debugline 114
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                           pushshort 460
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           debugline 115
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                           pushshort 450
+                           setproperty QName(PackageNamespace(""),"y")
+                           getlocal0
+                           debugline 116
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onStart")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           getlocal0
+                           getlocal0
+                           debugline 117
+                           pushstring "leaveMc"
+                           callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getMovie"), 1
+                           getlex QName(PackageNamespace("flash.display"),"SimpleButton")
+                           astypelate
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                           getlocal0
+                           debugline 118
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                           pushshort 600
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           debugline 119
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                           pushshort 450
+                           setproperty QName(PackageNamespace(""),"y")
+                           getlocal0
+                           debugline 120
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_mapModel")
+                           getproperty QName(PackageNamespace(""),"front")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           getlocal0
+                           debugline 121
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                           pushstring "click"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onLeave")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           getlocal0
+                           getlocal0
+                           debugline 122
+                           pushstring "timeContainer"
+                           callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getMovie"), 1
+                           getlex QName(PackageNamespace("flash.display"),"Sprite")
+                           astypelate
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timerContainer")
+                           getlocal0
+                           getlocal0
+                           debugline 123
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timerContainer")
+                           pushstring "timeTxt"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),ProtectedNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:Map3041Game"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timerTxt")
+                           getlocal0
+                           debugline 124
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_mapModel")
+                           getproperty QName(PackageNamespace(""),"front")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timerContainer")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           getlocal0
+                           debugline 125
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timerContainer")
+                           pushshort 410
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           debugline 126
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timerContainer")
+                           pushbyte 100
+                           setproperty QName(PackageNamespace(""),"y")
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onStart(param1:MouseEvent) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onStart")
+                     dispid 0
+                     method
+                        name "onStart"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("flash.events"),"MouseEvent")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                              debug 1, "param1", 0, 0
+                              debugline 130
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"StatisticsManager")
+                              pushstring "0x10034182"
+                              callpropvoid QName(PackageNamespace(""),"sendNovice"), 1
+                              getlocal0
+                              debugline 131
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                              pushstring "click"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onStart")
+                              callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                              debugline 132
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_startMC")
+                              callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                              getlocal0
+                              debugline 133
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                              pushstring "click"
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onLeave")
+                              callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                              debugline 134
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_leaveMC")
+                              callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                              debugline 135
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              callproperty QName(PackageNamespace(""),"getActor"), 0
+                              callpropvoid QName(PackageNamespace(""),"hide"), 0
+                              getlocal0
+                              debugline 136
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"startGame"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onLeave(param1:MouseEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onLeave")
+                        dispid 0
+                        method
+                           name "onLeave"
+                           flag HAS_PARAM_NAMES
+                           flag NEED_ACTIVATION
+                           param QName(PackageNamespace("flash.events"),"MouseEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 3
+                              initscopedepth 0
+                              maxscopedepth 2
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                 slotid 1
+                                 type QName(PackageNamespace("flash.events"),"MouseEvent")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"e")
+                                 slotid 2
+                                 type QName(PackageNamespace("flash.events"),"MouseEvent")
+                              end ; trait
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                 newactivation
+                                 dup
+                                 setlocal2
+                                 pushscope
+                                 findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                 getlocal1
+                                 setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "onLeave$0", 1, 0
+                                 debugline 140
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                 coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                 getlocal2
+                                 swap
+                                 setslot 2
+                                 debugline 141
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 callproperty QName(PackageNamespace(""),"getActor"), 0
+                                 callpropvoid QName(PackageNamespace(""),"show"), 0
+                                 getlocal0
+                                 debugline 142
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"endGame"), 0
+                                 debugline 143
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                 pushstring "你确定离开当前场景吗？"
+                                 newfunction 7
+                                 callpropvoid QName(PackageNamespace(""),"showConfirm"), 2
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function startGame() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"startGame")
+                           dispid 0
+                           method
+                              name "startGame"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                    getlocal0
+                                    debugline 149
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"createPets"), 0
+                                    getlocal0
+                                    debugline 150
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"startTimer"), 0
+                                    debugline 151
+                                    getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                                    getproperty QName(PackageNamespace(""),"instance")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"checkHitsTest")
+                                    pushbyte 100
+                                    callpropvoid QName(PackageNamespace(""),"addRender"), 2
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function createPets() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"createPets")
+                              dispid 0
+                              method
+                                 name "createPets"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 3
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                       debug 1, "_loc2_", 0, 0
+                                       debug 1, "_loc1_", 1, 0
+                                       debugline 155
+                                       pushnull
+                                       coerce QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                       setlocal2
+                                       getlocal0
+                                       debugline 156
+                                       getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                       debugline 156
+                                       applytype 1
+                                       debugline 156
+                                       construct 0
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                       debugline 157
+                                       pushbyte 0
+                                       setlocal1
+                                       jump ofs008f
+                              ofs0035:
+                                       label
+                                       findpropstrict QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                       debugline 159
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"PetsPosition")
+                                       getlocal1
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),ProtectedNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:Map3041Game"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushshort 146
+                                       constructprop QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet"), 2
+                                       coerce QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                       setlocal2
+                                       getlocal2
+                                       debugline 160
+                                       pushbyte 1
+                                       setproperty QName(PackageNamespace(""),"speed")
+                                       getlocal0
+                                       debugline 161
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                       getlocal2
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                       getlocal0
+                                       debugline 162
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                       getlocal1
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),ProtectedNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:Map3041Game"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onClickPet")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       debugline 163
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                       getlocal1
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),ProtectedNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:Map3041Game"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"PetsTargetPos")
+                                       setproperty QName(PackageNamespace(""),"targetPoint")
+                                       debugline 164
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                       getlocal1
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),ProtectedNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:Map3041Game"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "modelPet"
+                                       callpropvoid QName(PackageNamespace(""),"addMobile"), 2
+                                       debugline 165
+                                       inclocal_i 1
+                              ofs008f:
+                                       getlocal1
+                                       debugline 158
+                                       pushbyte 3
+                                       iflt ofs0035
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function startTimer() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"startTimer")
+                                 dispid 0
+                                 method
+                                    name "startTimer"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                          getlocal0
+                                          findpropstrict QName(PackageNamespace("flash.utils"),"Timer")
+                                          debugline 170
+                                          pushshort 1000
+                                          constructprop QName(PackageNamespace("flash.utils"),"Timer"), 1
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timer")
+                                          getlocal0
+                                          debugline 171
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timer")
+                                          pushstring "timer"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onTimer")
+                                          callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                          getlocal0
+                                          debugline 172
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timer")
+                                          callpropvoid QName(PackageNamespace(""),"start"), 0
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function checkHitsTest(param1:int) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"checkHitsTest")
+                                    dispid 0
+                                    method
+                                       name "checkHitsTest"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace(""),"int")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 4
+                                          localcount 6
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                             debug 1, "_loc5_", 1, 0
+                                             debug 1, "_loc2_", 2, 0
+                                             debug 1, "param1", 0, 0
+                                             debug 1, "_loc4_", 3, 0
+                                             debug 1, "_loc3_", 4, 0
+                                             debugline 176
+                                             pushbyte 0
+                                             setlocal3
+                                             debugline 177
+                                             pushnull
+                                             coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                             setlocal 5
+                                             debugline 178
+                                             pushnull
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                             setlocal 4
+                                             getlocal0
+                                             debugline 179
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                             pushnull
+                                             equals
+                                             dup
+                                             iftrue ofs004d
+                                             pop
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                             getproperty QName(PackageNamespace(""),"length")
+                                             pushbyte 0
+                                             equals
+                                    ofs004d:
+                                             iffalse ofs0058
+                                             debugline 180
+                                             returnvoid
+                                             debugline 182
+                                    ofs0058:
+                                             pushbyte 0
+                                             setlocal2
+                                             jump ofs0151
+                                    ofs005f:
+                                             label
+                                             getlocal0
+                                             debugline 184
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                             getlocal2
+                                             getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),ProtectedNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:Map3041Game"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             dup
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                             setlocal 4
+                                             convert_b
+                                             dup
+                                             iffalse ofs0080
+                                             pop
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"HitTest")
+                                             getlocal 4
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_npc")
+                                             callproperty QName(PackageNamespace(""),"complexHitTestObject"), 2
+                                             convert_b
+                                    ofs0080:
+                                             iffalse ofs014f
+                                             debugline 185
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"HitTest")
+                                             getlocal 4
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_npc")
+                                             callproperty QName(PackageNamespace(""),"intersectionRectangle"), 2
+                                             coerce QName(PackageNamespace("flash.geom"),"Rectangle")
+                                             setlocal 5
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_hitCount")
+                                             debugline 186
+                                             pushbyte 1
+                                             add
+                                             getlocal0
+                                             swap
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_hitCount")
+                                             getlocal0
+                                             debugline 187
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_hitCount")
+                                             pushbyte 10
+                                             greaterequals
+                                             debugline 187
+                                             iffalse ofs00d4
+                                             debugline 188
+                                             getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                                             getproperty QName(PackageNamespace(""),"instance")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"checkHitsTest")
+                                             callpropvoid QName(PackageNamespace(""),"removeRender"), 1
+                                             getlocal0
+                                             debugline 189
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"endGame"), 0
+                                             getlocal0
+                                             debugline 190
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"showGameResult"), 0
+                                             debugline 187
+                                             jump ofs014f
+                                    ofs00d4:
+                                             getlocal0
+                                             debugline 192
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_bloodMC")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_hitCount")
+                                             pushbyte 1
+                                             add
+                                             callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                             getlocal0
+                                             findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                             getlocal 5
+                                             debugline 193
+                                             getproperty QName(PackageNamespace(""),"x")
+                                             getlocal 5
+                                             getproperty QName(PackageNamespace(""),"y")
+                                             constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_playMcPos")
+                                             getlocal0
+                                             debugline 194
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"playHitDispose"), 0
+                                             debugline 195
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                             getlocal 4
+                                             pushstring "modelPet"
+                                             callpropvoid QName(PackageNamespace(""),"removeMobile"), 2
+                                             getlocal 4
+                                             pushstring "click"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onClickPet")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             getlocal0
+                                             debugline 197
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                             getlocal 4
+                                             callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                             convert_i
+                                             setlocal3
+                                             getlocal3
+                                             debugline 198
+                                             pushbyte -1
+                                             ifeq ofs0137
+                                             getlocal0
+                                             debugline 199
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                             getlocal3
+                                             pushbyte 1
+                                             callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 2
+                                    ofs0137:
+                                             getlocal0
+                                             debugline 201
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                             getproperty QName(PackageNamespace(""),"length")
+                                             pushbyte 0
+                                             ifne ofs014f
+                                             getlocal0
+                                             debugline 202
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"createPets"), 0
+                                             debugline 206
+                                    ofs014f:
+                                             inclocal_i 2
+                                    ofs0151:
+                                             getlocal2
+                                             getlocal0
+                                             debugline 183
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                             getproperty QName(PackageNamespace(""),"length")
+                                             iflt ofs005f
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function endGame() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"endGame")
+                                       dispid 0
+                                       method
+                                          name "endGame"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                debug 1, "_loc1_", 0, 0
+                                                debugline 211
+                                                pushbyte 0
+                                                setlocal1
+                                                debugline 212
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                getproperty QName(PackageNamespace(""),"uiLayer")
+                                                pushtrue
+                                                setproperty QName(PackageNamespace(""),"visible")
+                                                getlocal0
+                                                debugline 213
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timer")
+                                                iffalse ofs004f
+                                                getlocal0
+                                                debugline 214
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timer")
+                                                getproperty QName(PackageNamespace(""),"running")
+                                                iffalse ofs0039
+                                                getlocal0
+                                                debugline 215
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timer")
+                                                callpropvoid QName(PackageNamespace(""),"stop"), 0
+                                       ofs0039:
+                                                getlocal0
+                                                debugline 217
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timer")
+                                                pushstring "timer"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onTimer")
+                                                callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                getlocal0
+                                                debugline 218
+                                                pushnull
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timer")
+                                       ofs004f:
+                                                getlocal0
+                                                debugline 220
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                                iffalse ofs00a5
+                                                debugline 221
+                                                pushbyte 0
+                                                setlocal1
+                                                jump ofs008b
+                                       ofs0063:
+                                                label
+                                                debugline 223
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                                getlocal1
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),ProtectedNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:Map3041Game"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                pushstring "modelPet"
+                                                callpropvoid QName(PackageNamespace(""),"removeMobile"), 2
+                                                getlocal0
+                                                debugline 224
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                                getlocal1
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),ProtectedNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("com.taomee.seer2.app.processor.map:Map3041Game"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:Map3041Game"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                pushstring "click"
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onClickPet")
+                                                callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                debugline 225
+                                                inclocal_i 1
+                                       ofs008b:
+                                                getlocal1
+                                                getlocal0
+                                                debugline 222
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                                getproperty QName(PackageNamespace(""),"length")
+                                                iflt ofs0063
+                                                getlocal0
+                                                debugline 227
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                                pushbyte 0
+                                                setproperty QName(PackageNamespace(""),"length")
+                                                debugline 229
+                                       ofs00a5:
+                                                getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                                                getproperty QName(PackageNamespace(""),"instance")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"checkHitsTest")
+                                                callproperty QName(PackageNamespace(""),"hasRender"), 1
+                                                iffalse ofs00c0
+                                                debugline 230
+                                                getlex QName(PackageNamespace("org.taomee.utils"),"Tick")
+                                                getproperty QName(PackageNamespace(""),"instance")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"checkHitsTest")
+                                                callpropvoid QName(PackageNamespace(""),"removeRender"), 1
+                                       ofs00c0:
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function showGameResult() : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"showGameResult")
+                                          dispid 0
+                                          method
+                                             name "showGameResult"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 2
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                   getlocal0
+                                                   debugline 235
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_hitCount")
+                                                   pushbyte 10
+                                                   lessthan
+                                                   debugline 235
+                                                   iffalse ofs0022
+                                                   getlocal0
+                                                   debugline 236
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"win"), 0
+                                                   debugline 235
+                                                   jump ofs0034
+                                          ofs0022:
+                                                   getlocal0
+                                                   debugline 238
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_bloodMC")
+                                                   pushbyte 11
+                                                   callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                   getlocal0
+                                                   debugline 239
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"lose"), 0
+                                          ofs0034:
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function win() : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"win")
+                                             dispid 0
+                                             method
+                                                name "win"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                      debugline 244
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                      pushstring "ProtectHomeWinPanel"
+                                                      callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                      pushstring ""
+                                                      callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                                                      debugline 245
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                      pushshort 2037
+                                                      callpropvoid QName(PackageNamespace(""),"swapItem"), 1
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function lose() : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"lose")
+                                                dispid 0
+                                                method
+                                                   name "lose"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                         debugline 249
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                         pushstring "ProtectHomeLosePanel"
+                                                         callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                         pushstring ""
+                                                         callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                                                         debugline 250
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                         pushshort 2046
+                                                         callpropvoid QName(PackageNamespace(""),"swapItem"), 1
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function onClickPet(param1:MouseEvent) : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onClickPet")
+                                                   dispid 0
+                                                   method
+                                                      name "onClickPet"
+                                                      flag HAS_PARAM_NAMES
+                                                      param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      paramname "param1"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 4
+                                                         localcount 4
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                            debug 1, "_loc2_", 1, 0
+                                                            debug 1, "param1", 0, 0
+                                                            debug 1, "_loc3_", 2, 0
+                                                            getlocal1
+                                                            debugline 254
+                                                            getproperty QName(PackageNamespace(""),"currentTarget")
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                                            astypelate
+                                                            coerce QName(PackageNamespace("com.taomee.seer2.app.pet"),"ActivePet")
+                                                            setlocal2
+                                                            getlocal2
+                                                            pushstring "click"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onClickPet")
+                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                            getlocal0
+                                                            findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                            getlocal2
+                                                            debugline 256
+                                                            getproperty QName(PackageNamespace(""),"x")
+                                                            getlocal2
+                                                            getproperty QName(PackageNamespace(""),"y")
+                                                            constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                            setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_playMcPos")
+                                                            getlocal0
+                                                            debugline 257
+                                                            callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"playClickDispose"), 0
+                                                            debugline 258
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                                            getlocal2
+                                                            pushstring "modelPet"
+                                                            callpropvoid QName(PackageNamespace(""),"removeMobile"), 2
+                                                            getlocal0
+                                                            debugline 259
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                                            getlocal2
+                                                            callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                                            convert_i
+                                                            setlocal3
+                                                            getlocal3
+                                                            debugline 260
+                                                            pushbyte -1
+                                                            ifeq ofs0070
+                                                            getlocal0
+                                                            debugline 261
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                                            getlocal3
+                                                            pushbyte 1
+                                                            callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 2
+                                                   ofs0070:
+                                                            getlocal0
+                                                            debugline 263
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_petsList")
+                                                            getproperty QName(PackageNamespace(""),"length")
+                                                            pushbyte 0
+                                                            ifne ofs0085
+                                                            getlocal0
+                                                            debugline 264
+                                                            callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"createPets"), 0
+                                                   ofs0085:
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function playClickDispose() : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"playClickDispose")
+                                                      dispid 0
+                                                      method
+                                                         name "playClickDispose"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 2
+                                                            localcount 1
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                               getlocal0
+                                                               debugline 269
+                                                               pushstring "ClickDispose"
+                                                               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"playMc"), 1
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function playHitDispose() : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"playHitDispose")
+                                                         dispid 0
+                                                         method
+                                                            name "playHitDispose"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 2
+                                                               localcount 1
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                                  getlocal0
+                                                                  debugline 273
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_npc")
+                                                                  pushstring "被攻击"
+                                                                  callpropvoid QName(PackageNamespace(""),"gotoAndPlay"), 1
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function playMc(param1:String) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"playMc")
+                                                            dispid 0
+                                                            method
+                                                               name "playMc"
+                                                               flag HAS_PARAM_NAMES
+                                                               flag NEED_ACTIVATION
+                                                               param QName(PackageNamespace(""),"String")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 5
+                                                                  localcount 3
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 2
+                                                                  trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                                                     slotid 1
+                                                                     type QName(PackageNamespace(""),"String")
+                                                                  end ; trait
+                                                                  trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                                                     slotid 2
+                                                                     type QName(PackageNamespace("flash.display"),"MovieClip")
+                                                                  end ; trait
+                                                                  trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"value")
+                                                                     slotid 3
+                                                                     type QName(PackageNamespace(""),"String")
+                                                                  end ; trait
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                                     newactivation
+                                                                     dup
+                                                                     setlocal2
+                                                                     pushscope
+                                                                     findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                                                     getlocal1
+                                                                     setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                                                     debug 1, "param1", 0, 0
+                                                                     debug 1, "playMc$0", 1, 0
+                                                                     debugline 277
+                                                                     pushnull
+                                                                     coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                                                     getlocal2
+                                                                     swap
+                                                                     setslot 2
+                                                                     debugline 278
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"param1")
+                                                                     coerce_s
+                                                                     getlocal2
+                                                                     swap
+                                                                     setslot 3
+                                                                     getlocal0
+                                                                     debugline 279
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"value")
+                                                                     callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getMovie"), 1
+                                                                     getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                                                     astypelate
+                                                                     coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                                                     getlocal2
+                                                                     swap
+                                                                     setslot 2
+                                                                     debugline 280
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_playMcPos")
+                                                                     getproperty QName(PackageNamespace(""),"x")
+                                                                     setproperty QName(PackageNamespace(""),"x")
+                                                                     debugline 281
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_playMcPos")
+                                                                     getproperty QName(PackageNamespace(""),"y")
+                                                                     setproperty QName(PackageNamespace(""),"y")
+                                                                     getlocal0
+                                                                     debugline 282
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_mapModel")
+                                                                     getproperty QName(PackageNamespace(""),"content")
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                                                     callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                                     debugline 283
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                                                     pushbyte 1
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                                                     getproperty QName(PackageNamespace(""),"totalFrames")
+                                                                     newfunction 20
+                                                                     callpropvoid QName(PackageNamespace(""),"playMc"), 4
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function onTimer(param1:TimerEvent) : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"onTimer")
+                                                               dispid 0
+                                                               method
+                                                                  name "onTimer"
+                                                                  flag HAS_PARAM_NAMES
+                                                                  param QName(PackageNamespace("flash.events"),"TimerEvent")
+                                                                  paramname "param1"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 2
+                                                                     localcount 2
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                                        debug 1, "param1", 0, 0
+                                                                        getlocal0
+                                                                        debugline 291
+                                                                        dup
+                                                                        debugline 291
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timeCount")
+                                                                        debugline 291
+                                                                        decrement
+                                                                        debugline 291
+                                                                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timeCount")
+                                                                        getlocal0
+                                                                        debugline 292
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timeCount")
+                                                                        pushbyte 0
+                                                                        ifnle ofs003e
+                                                                        getlocal0
+                                                                        debugline 293
+                                                                        pushbyte 0
+                                                                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timeCount")
+                                                                        getlocal0
+                                                                        debugline 294
+                                                                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"endGame"), 0
+                                                                        getlocal0
+                                                                        debugline 295
+                                                                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"showGameResult"), 0
+                                                               ofs003e:
+                                                                        getlocal0
+                                                                        debugline 297
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timerTxt")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_timeCount")
+                                                                        convert_s
+                                                                        setproperty QName(PackageNamespace(""),"text")
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function getMovie(param1:String) : DisplayObject
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"getMovie")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "getMovie"
+                                                                     flag HAS_PARAM_NAMES
+                                                                     param QName(PackageNamespace(""),"String")
+                                                                     paramname "param1"
+                                                                     returns QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;Map3041Game.as"
+                                                                           debug 1, "param1", 0, 0
+                                                                           getlocal0
+                                                                           debugline 301
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_resLibs")
+                                                                           iffalse ofs0023
+                                                                           debugline 302
+                                                                           getlex QName(PackageNamespace("org.taomee.utils"),"DomainUtil")
+                                                                           getlocal1
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:Map3041Game"),"_resLibs")
+                                                                           callproperty QName(PackageNamespace(""),"getDisplayObject"), 2
+                                                                           returnvalue
+                                                                           debugline 304
+                                                                  ofs0023:
+                                                                           pushnull
+                                                                           returnvalue
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                            }
+                                                         }
+                                                         
+                                                         method
+                                                            name null
+                                                            returns null
+                                                            
+                                                            body
+                                                               maxstack 3
+                                                               localcount 1
+                                                               initscopedepth 0
+                                                               maxscopedepth 2
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  getscopeobject 0
+                                                                  getlex QName(PackageNamespace(""),"Object")
+                                                                  dup
+                                                                  pushscope
+                                                                  newclass 0
+                                                                  popscope
+                                                                  initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.map"),"Map3041Game")
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                         

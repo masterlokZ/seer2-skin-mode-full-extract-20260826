@@ -1,0 +1,2025 @@
+package com.taomee.seer2.app.controls
+{
+   import com.adobe.crypto.MD5;
+   import com.greensock.TweenLite;
+   import com.greensock.easing.Expo;
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.actor.data.UserInfo;
+   import com.taomee.seer2.app.actor.events.UserInfoEvent;
+   import com.taomee.seer2.app.mail.GmailDataManager;
+   import com.taomee.seer2.app.manager.StatisticsManager;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.vip.VipManager;
+   import com.taomee.seer2.core.module.ModuleEvent;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.net.LittleEndianByteArray;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.events.SceneEvent;
+   import com.taomee.seer2.core.ui.UIManager;
+   import com.taomee.seer2.core.ui.toolTip.TooltipManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.NumberUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.DisplayObject;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.filters.GlowFilter;
+   import flash.text.TextField;
+   import org.taomee.filter.ColorFilter;
+   import org.taomee.manager.EventManager;
+   import seer2.next.entry.DynConfig;
+   
+   public class ActorAvatarPanel extends Sprite
+   {
+      
+      private static var _instance:ActorAvatarPanel;
+      
+      private static const _showXPos:int = 0;
+      
+      private static const _hideXPos:int = -207;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _mainPanel:MovieClip;
+      
+      private var _actorMC:MovieClip;
+      
+      private var _teamMC:MovieClip;
+      
+      private var _vipMC:MovieClip;
+      
+      private var _jumpBtn:SimpleButton;
+      
+      private var _nameTxt:TextField;
+      
+      private var _passWordTipMC:MovieClip;
+      
+      private var mailBtn:MovieClip;
+      
+      private var _levelTxt:TextField;
+      
+      private var _xingzuanTxt:TextField;
+      
+      private var _conisTxt:TextField;
+      
+      private var _allNumList:Vector.<MovieClip>;
+      
+      private var _isRetract:Boolean = true;
+      
+      public function ActorAvatarPanel()
+      {
+         method
+            name "ActorAvatarPanel"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                  debugline 81
+                  getlocal0
+                  debugline 81
+                  constructsuper 0
+                  debugline 82
+                  pushbyte 0
+                  findproperty QName(PackageNamespace(""),"x")
+                  swap
+                  setproperty QName(PackageNamespace(""),"x")
+                  getlocal0
+                  debugline 83
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"createChildren"), 0
+                  getlocal0
+                  debugline 84
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"initEventListener"), 0
+                  debugline 85
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.mail"),"GmailDataManager")
+                  callproperty QName(PackageNamespace(""),"getInstance"), 0
+                  callpropvoid QName(PackageNamespace(""),"updateMailNum"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : ActorAvatarPanel
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2748"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.controls"),"ActorAvatarPanel")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                     debugline 89
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                     pushnull
+                     ifne ofs001b
+                     debugline 90
+                     getlocal0
+                     debugline 90
+                     construct 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                     debugline 92
+            ofs001b:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public static function show() : void
+         {
+            trait method QName(PackageNamespace(""),"show")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "2939"
+               end ; metadata
+               dispid 0
+               method
+                  name "show"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 2
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                        debugline 96
+                        getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                        pushnull
+                        ifne ofs001b
+                        debugline 97
+                        getlocal0
+                        debugline 97
+                        construct 0
+                        findproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                        swap
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                        debugline 99
+               ofs001b:
+                        getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"updateData"), 0
+                        debugline 100
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                        getproperty QName(PackageNamespace(""),"uiLayer")
+                        getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                        callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public static function hide() : void
+            {
+               trait method QName(PackageNamespace(""),"hide")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "3168"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "hide"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 2
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                           debugline 104
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                           getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                           callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public static function darkenPanel() : void
+               {
+                  trait method QName(PackageNamespace(""),"darkenPanel")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "3275"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "darkenPanel"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 2
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                              debugline 108
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                              iffalse ofs001e
+                              debugline 109
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                              callpropvoid QName(PackageNamespace(""),"darkenDisplayObject"), 1
+                              debugline 110
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                              getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                              callpropvoid QName(PackageNamespace(""),"disableButtonMode"), 1
+                     ofs001e:
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  public static function recoverPanel() : void
+                  {
+                     trait method QName(PackageNamespace(""),"recoverPanel")
+                        flag METADATA
+                        metadata "__go_to_definition_help"
+                           item "pos" "3494"
+                        end ; metadata
+                        dispid 0
+                        method
+                           name "recoverPanel"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                 debugline 115
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                                 iffalse ofs001d
+                                 debugline 116
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                                 newarray 0
+                                 setproperty QName(PackageNamespace(""),"filters")
+                                 debugline 117
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                                 callpropvoid QName(PackageNamespace(""),"enableButtonMode"), 1
+                        ofs001d:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public static function showPassWord(param1:Boolean) : void
+                     {
+                        trait method QName(PackageNamespace(""),"showPassWord")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "3687"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "showPassWord"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace(""),"Boolean")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                    debug 1, "param1", 0, 0
+                                    debugline 122
+                                    getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                                    iffalse ofs001a
+                                    debugline 123
+                                    getlex QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_instance")
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_passWordTipMC")
+                                    getlocal1
+                                    setproperty QName(PackageNamespace(""),"visible")
+                           ofs001a:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        public function setMailStatus(param1:int) : void
+                        {
+                           trait method QName(PackageNamespace(""),"setMailStatus")
+                              flag METADATA
+                              metadata "__go_to_definition_help"
+                                 item "pos" "3846"
+                              end ; metadata
+                              dispid 0
+                              method
+                                 name "setMailStatus"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace(""),"int")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                       debug 1, "param1", 0, 0
+                                       getlocal0
+                                       debugline 128
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                       pushnull
+                                       ifne ofs0018
+                                       debugline 129
+                                       returnvoid
+                              ofs0018:
+                                       getlocal1
+                                       debugline 131
+                                       pushbyte 0
+                                       lessequals
+                                       debugline 131
+                                       iffalse ofs003d
+                                       getlocal0
+                                       debugline 132
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                       pushstring "numTip"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                       astypelate
+                                       pushfalse
+                                       setproperty QName(PackageNamespace(""),"visible")
+                                       debugline 131
+                                       jump ofs0064
+                              ofs003d:
+                                       getlocal0
+                                       debugline 134
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                       pushstring "numTip"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                       astypelate
+                                       pushtrue
+                                       setproperty QName(PackageNamespace(""),"visible")
+                                       getlocal0
+                                       debugline 135
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                       pushstring "numTip"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushstring "numTxt"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlex QName(PackageNamespace("flash.text"),"TextField")
+                                       astypelate
+                                       getlocal1
+                                       callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                       setproperty QName(PackageNamespace(""),"text")
+                              ofs0064:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function createChildren() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"createChildren")
+                                 dispid 0
+                                 method
+                                    name "createChildren"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 4
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                          debug 1, "_loc1_", 0, 0
+                                          getlocal0
+                                          debugline 140
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.ui"),"UIManager")
+                                          pushstring "UI_ActorAvatar_Panel"
+                                          callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          findpropstrict QName(PackageNamespace(""),"addChild")
+                                          getlocal0
+                                          debugline 141
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                          getlocal0
+                                          getlocal0
+                                          debugline 142
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "actor"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                          getlocal0
+                                          debugline 143
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                          pushtrue
+                                          setproperty QName(PackageNamespace(""),"buttonMode")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 144
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "teamMC"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_teamMC")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 145
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "vipMC"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 146
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "jumpBtn"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_jumpBtn")
+                                          getlocal0
+                                          debugline 147
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                          pushtrue
+                                          setproperty QName(PackageNamespace(""),"buttonMode")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 148
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "nameTxt"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_nameTxt")
+                                          getlocal0
+                                          debugline 149
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_nameTxt")
+                                          pushfalse
+                                          setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 150
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "mailMc"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                          getlocal0
+                                          debugline 151
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                          pushtrue
+                                          setproperty QName(PackageNamespace(""),"buttonMode")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 152
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "passWordTipMC"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_passWordTipMC")
+                                          getlocal0
+                                          debugline 153
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_passWordTipMC")
+                                          pushfalse
+                                          setproperty QName(PackageNamespace(""),"mouseChildren")
+                                          getlocal0
+                                          debugline 154
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_passWordTipMC")
+                                          pushfalse
+                                          setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                          getlocal0
+                                          debugline 155
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_passWordTipMC")
+                                          pushfalse
+                                          setproperty QName(PackageNamespace(""),"visible")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 156
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "levelTxt"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_levelTxt")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 157
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "xingzuanTxt"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_xingzuanTxt")
+                                          debugline 158
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                          getproperty QName(PackageNamespace(""),"actorInfo")
+                                          pushstring "UPDATE_MONEY"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onUpdate")
+                                          callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                          debugline 159
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                          getproperty QName(PackageNamespace(""),"actorInfo")
+                                          pushstring "updateCoin"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onUpdateCoin")
+                                          callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                          getlocal0
+                                          getlocal0
+                                          debugline 160
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "conisTxt"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_conisTxt")
+                                          getlocal0
+                                          debugline 161
+                                          getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                          getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                          debugline 161
+                                          applytype 1
+                                          debugline 161
+                                          construct 0
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_allNumList")
+                                          debugline 162
+                                          pushbyte 0
+                                          setlocal1
+                                          jump ofs0143
+                                 ofs011e:
+                                          label
+                                          getlocal0
+                                          debugline 164
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_allNumList")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_mainPanel")
+                                          pushstring "allNum"
+                                          getlocal1
+                                          add
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                          getlocal0
+                                          debugline 165
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_allNumList")
+                                          getlocal1
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          pushfalse
+                                          setproperty QName(PackageNamespace(""),"visible")
+                                          debugline 166
+                                          inclocal_i 1
+                                 ofs0143:
+                                          getlocal1
+                                          debugline 163
+                                          pushbyte 7
+                                          iflt ofs011e
+                                          getlocal0
+                                          debugline 168
+                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"updateAllPower"), 0
+                                          debugline 169
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                          getproperty QName(PackageNamespace(""),"CLI_MONEY_COUNT_1253")
+                                          getlocal0
+                                          callproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"getResult"), 0
+                                          callpropvoid QName(PackageNamespace(""),"send"), 2
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function updateAllPower() : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"updateAllPower")
+                                    dispid 0
+                                    method
+                                       name "updateAllPower"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 6
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                             debug 1, "_loc2_", 0, 0
+                                             debug 1, "_loc1_", 1, 0
+                                             debug 1, "_loc3_", 2, 0
+                                             debugline 173
+                                             pushnull
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                             setlocal3
+                                             debugline 174
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                             callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                             coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                             setlocal2
+                                             debugline 175
+                                             pushbyte 0
+                                             setlocal1
+                                             pushbyte 0
+                                             setlocal 5
+                                             getlocal2
+                                             setlocal 4
+                                             jump ofs004e
+                                    ofs0038:
+                                             label
+                                             getlocal 4
+                                             getlocal 5
+                                             nextvalue
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                             setlocal3
+                                             getlocal1
+                                             debugline 177
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                             getlocal3
+                                             callproperty QName(PackageNamespace(""),"getPowerByPetInfo"), 1
+                                             add
+                                             convert_i
+                                             setlocal1
+                                    ofs004e:
+                                             hasnext2 4, 5
+                                             iftrue ofs0038
+                                             getlocal0
+                                             getlocal1
+                                             debugline 179
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"showAllNumList"), 1
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function showAllNumList(param1:int) : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"showAllNumList")
+                                       dispid 0
+                                       method
+                                          name "showAllNumList"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace(""),"int")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 4
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                debug 1, "_loc2_", 1, 0
+                                                debug 1, "param1", 0, 0
+                                                debug 1, "_loc3_", 2, 0
+                                                debugline 183
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"NumberUtil")
+                                                getlocal1
+                                                callproperty QName(PackageNamespace(""),"parseNumberToDigitVec"), 1
+                                                coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace(""),"int")>)
+                                                setlocal2
+                                                debugline 184
+                                                pushbyte 0
+                                                setlocal3
+                                                jump ofs0072
+                                       ofs002b:
+                                                label
+                                                getlocal3
+                                                getlocal2
+                                                debugline 186
+                                                getproperty QName(PackageNamespace(""),"length")
+                                                lessthan
+                                                debugline 186
+                                                iffalse ofs0061
+                                                getlocal0
+                                                debugline 187
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_allNumList")
+                                                getlocal3
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal2
+                                                getlocal3
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                pushbyte 1
+                                                add
+                                                callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                getlocal0
+                                                debugline 188
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_allNumList")
+                                                getlocal3
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                pushtrue
+                                                setproperty QName(PackageNamespace(""),"visible")
+                                                debugline 186
+                                                jump ofs0070
+                                       ofs0061:
+                                                getlocal0
+                                                debugline 190
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_allNumList")
+                                                getlocal3
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),ProtectedNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("com.taomee.seer2.app.controls:ActorAvatarPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.controls"),PackageInternalNs("com.taomee.seer2.app.controls"),PrivateNamespace("FilePrivateNS:ActorAvatarPanel"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                pushfalse
+                                                setproperty QName(PackageNamespace(""),"visible")
+                                                debugline 192
+                                       ofs0070:
+                                                inclocal_i 3
+                                       ofs0072:
+                                                getlocal3
+                                                getlocal0
+                                                debugline 185
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_allNumList")
+                                                getproperty QName(PackageNamespace(""),"length")
+                                                iflt ofs002b
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function getResult() : LittleEndianByteArray
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"getResult")
+                                          dispid 0
+                                          method
+                                             name "getResult"
+                                             returns QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                                             
+                                             body
+                                                maxstack 4
+                                                localcount 7
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                   debug 1, "_loc6_", 0, 0
+                                                   debug 1, "_loc5_", 1, 0
+                                                   debug 1, "_loc2_", 2, 0
+                                                   debug 1, "_loc1_", 3, 0
+                                                   debug 1, "_loc4_", 4, 0
+                                                   debug 1, "_loc3_", 5, 0
+                                                   debugline 197
+                                                   pushnull
+                                                   coerce_s
+                                                   setlocal2
+                                                   debugline 198
+                                                   pushbyte 0
+                                                   setlocal1
+                                                   findpropstrict QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                                                   debugline 199
+                                                   constructprop QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray"), 0
+                                                   coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"LittleEndianByteArray")
+                                                   setlocal 4
+                                                   debugline 200
+                                                   getlex QName(PackageNamespace("com.adobe.crypto"),"MD5")
+                                                   pushstring "0"
+                                                   callproperty QName(PackageNamespace(""),"hash"), 1
+                                                   convert_s
+                                                   coerce_s
+                                                   setlocal3
+                                                   getlocal3
+                                                   debugline 201
+                                                   getproperty QName(PackageNamespace(""),"length")
+                                                   convert_i
+                                                   setlocal 6
+                                                   debugline 202
+                                                   pushbyte 0
+                                                   setlocal 5
+                                                   jump ofs0090
+                                          ofs0061:
+                                                   label
+                                                   getlocal3
+                                                   getlocal 5
+                                                   debugline 204
+                                                   pushbyte 2
+                                                   callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"substr"), 2
+                                                   coerce_s
+                                                   setlocal2
+                                                   debugline 205
+                                                   getlex QName(PackageNamespace(""),"parseInt")
+                                                   getglobalscope
+                                                   getlocal2
+                                                   pushbyte 16
+                                                   call 2
+                                                   convert_i
+                                                   setlocal1
+                                                   getlocal 4
+                                                   getlocal1
+                                                   debugline 206
+                                                   callpropvoid QName(PackageNamespace(""),"writeByte"), 1
+                                                   getlocal 5
+                                                   debugline 207
+                                                   pushbyte 2
+                                                   add
+                                                   convert_i
+                                                   setlocal 5
+                                          ofs0090:
+                                                   getlocal 5
+                                                   getlocal 6
+                                                   debugline 203
+                                                   iflt ofs0061
+                                                   getlocal 4
+                                                   debugline 209
+                                                   returnvalue
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onUpdate(param1:UserInfoEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onUpdate")
+                                             dispid 0
+                                             method
+                                                name "onUpdate"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 1
+                                                   localcount 2
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                      debug 1, "param1", 0, 0
+                                                      getlocal0
+                                                      debugline 213
+                                                      callpropvoid QName(PackageNamespace(""),"updateXingzuan"), 0
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function onUpdateCoin(param1:UserInfoEvent) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onUpdateCoin")
+                                                dispid 0
+                                                method
+                                                   name "onUpdateCoin"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 2
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                         debug 1, "param1", 0, 0
+                                                         getlocal0
+                                                         debugline 217
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_conisTxt")
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                         getproperty QName(PackageNamespace(""),"actorInfo")
+                                                         getproperty QName(PackageNamespace(""),"coins")
+                                                         callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                         setproperty QName(PackageNamespace(""),"text")
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public function updateXingzuan() : void
+                                             {
+                                                trait method QName(PackageNamespace(""),"updateXingzuan")
+                                                   flag METADATA
+                                                   metadata "__go_to_definition_help"
+                                                      item "pos" "7530"
+                                                   end ; metadata
+                                                   dispid 0
+                                                   method
+                                                      name "updateXingzuan"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 2
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                            getlocal0
+                                                            debugline 221
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_xingzuanTxt")
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                            getproperty QName(PackageNamespace(""),"actorInfo")
+                                                            getproperty QName(PackageNamespace(""),"moneyCount")
+                                                            callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                            setproperty QName(PackageNamespace(""),"text")
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function updateData() : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"updateData")
+                                                      dispid 0
+                                                      method
+                                                         name "updateData"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 4
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                               debug 1, "_loc1_", 0, 0
+                                                               debugline 225
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                               getproperty QName(PackageNamespace(""),"actorInfo")
+                                                               coerce QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                                               setlocal1
+                                                               getlocal0
+                                                               debugline 226
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_nameTxt")
+                                                               getlocal1
+                                                               getproperty QName(PackageNamespace(""),"nick")
+                                                               setproperty QName(PackageNamespace(""),"text")
+                                                               getlocal0
+                                                               debugline 227
+                                                               pushnull
+                                                               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onTrainerScoreUpdate"), 1
+                                                               getlocal1
+                                                               debugline 228
+                                                               getproperty QName(PackageNamespace(""),"teamInfo")
+                                                               getproperty QName(PackageNamespace(""),"userPost")
+                                                               pushbyte 1
+                                                               equals
+                                                               debugline 228
+                                                               iffalse ofs005c
+                                                               getlocal0
+                                                               debugline 229
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_teamMC")
+                                                               pushfalse
+                                                               setproperty QName(PackageNamespace(""),"visible")
+                                                               debugline 230
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.ui.toolTip"),"TooltipManager")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_teamMC")
+                                                               getlocal1
+                                                               getproperty QName(PackageNamespace(""),"teamInfo")
+                                                               getproperty QName(PackageNamespace(""),"name")
+                                                               pushstring "战队队长"
+                                                               add
+                                                               callpropvoid QName(PackageNamespace(""),"addCommonTip"), 2
+                                                               debugline 228
+                                                               jump ofs0065
+                                                      ofs005c:
+                                                               getlocal0
+                                                               debugline 232
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_teamMC")
+                                                               pushfalse
+                                                               setproperty QName(PackageNamespace(""),"visible")
+                                                      ofs0065:
+                                                               getlocal0
+                                                               debugline 234
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                               pushstring "rollOver"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVipMcOver")
+                                                               callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                               getlocal0
+                                                               debugline 235
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                               pushstring "rollOut"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVipMcOut")
+                                                               callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                               debugline 236
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.vip"),"VipManager")
+                                                               getproperty QName(PackageNamespace(""),"vipInfo")
+                                                               callproperty QName(PackageNamespace(""),"isVip"), 0
+                                                               pushfalse
+                                                               equals
+                                                               debugline 236
+                                                               iffalse ofs00b6
+                                                               debugline 237
+                                                               getlex QName(PackageNamespace("org.taomee.filter"),"ColorFilter")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                               callpropvoid QName(PackageNamespace(""),"setGrayscale"), 1
+                                                               debugline 238
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.ui.toolTip"),"TooltipManager")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                               pushstring "加入VIP点亮图标"
+                                                               callpropvoid QName(PackageNamespace(""),"addCommonTip"), 2
+                                                               debugline 236
+                                                               jump ofs00e9
+                                                      ofs00b6:
+                                                               getlocal0
+                                                               debugline 240
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                               newarray 0
+                                                               setproperty QName(PackageNamespace(""),"filters")
+                                                               debugline 241
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.ui.toolTip"),"TooltipManager")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                               callpropvoid QName(PackageNamespace(""),"remove"), 1
+                                                               getlocal0
+                                                               debugline 242
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                               pushstring "rollOver"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVipMcOver")
+                                                               callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                               getlocal0
+                                                               debugline 243
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                               pushstring "rollOut"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVipMcOut")
+                                                               callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                      ofs00e9:
+                                                               getlocal0
+                                                               debugline 245
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_levelTxt")
+                                                               pushstring "Lv"
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                               getproperty QName(PackageNamespace(""),"actorInfo")
+                                                               getproperty QName(PackageNamespace(""),"trainerLevel")
+                                                               callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                               add
+                                                               setproperty QName(PackageNamespace(""),"text")
+                                                               getlocal0
+                                                               debugline 246
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                               getproperty QName(PackageNamespace(""),"actorInfo")
+                                                               getproperty QName(PackageNamespace(""),"sex")
+                                                               pushbyte 1
+                                                               add
+                                                               callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                               getlocal0
+                                                               debugline 247
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_conisTxt")
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                               getproperty QName(PackageNamespace(""),"actorInfo")
+                                                               getproperty QName(PackageNamespace(""),"coins")
+                                                               callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                               setproperty QName(PackageNamespace(""),"text")
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function onVipMcOver(param1:MouseEvent) : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVipMcOver")
+                                                         dispid 0
+                                                         method
+                                                            name "onVipMcOver"
+                                                            flag HAS_PARAM_NAMES
+                                                            param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                            paramname "param1"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 2
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                  debug 1, "param1", 0, 0
+                                                                  getlocal0
+                                                                  getlocal0
+                                                                  debugline 251
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"setFilter"), 1
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function onVipMcOut(param1:MouseEvent) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVipMcOut")
+                                                            dispid 0
+                                                            method
+                                                               name "onVipMcOut"
+                                                               flag HAS_PARAM_NAMES
+                                                               param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 2
+                                                                  localcount 2
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                     debug 1, "param1", 0, 0
+                                                                     getlocal0
+                                                                     debugline 255
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                                     pushnull
+                                                                     setproperty QName(PackageNamespace(""),"filters")
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function initEventListener() : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"initEventListener")
+                                                               dispid 0
+                                                               method
+                                                                  name "initEventListener"
+                                                                  flag NEED_ACTIVATION
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 5
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 2
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                        newactivation
+                                                                        pushscope
+                                                                        getlocal0
+                                                                        debugline 259
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                                                        pushstring "click"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onActor")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        getlocal0
+                                                                        debugline 260
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                                                        pushstring "rollOver"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onActorMcOver")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        getlocal0
+                                                                        debugline 261
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_jumpBtn")
+                                                                        pushstring "click"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onJumpBianQiang")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        getlocal0
+                                                                        debugline 262
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                                                        pushstring "rollOut"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onActorMcOut")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        debugline 263
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.ui.toolTip"),"TooltipManager")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_jumpBtn")
+                                                                        pushstring "内网调试工具"
+                                                                        callpropvoid QName(PackageNamespace(""),"addCommonTip"), 2
+                                                                        debugline 264
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.ui.toolTip"),"TooltipManager")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                                                        pushstring "训练师资料"
+                                                                        callpropvoid QName(PackageNamespace(""),"addCommonTip"), 2
+                                                                        debugline 265
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                        getproperty QName(PackageNamespace(""),"actorInfo")
+                                                                        pushstring "trainerScoreUpdate"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onTrainerScoreUpdate")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        getlocal0
+                                                                        debugline 266
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_vipMC")
+                                                                        pushstring "click"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVip")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        debugline 267
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.vip"),"VipManager")
+                                                                        getproperty QName(PackageNamespace(""),"vipInfo")
+                                                                        pushstring "vipUpdate"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVipUpdate")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        getlocal0
+                                                                        debugline 268
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                                                        pushstring "click"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onClickMail")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        getlocal0
+                                                                        debugline 269
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                                                        pushstring "rollOver"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onMailOver")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        getlocal0
+                                                                        debugline 270
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                                                        pushstring "rollOut"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onMailOut")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        debugline 271
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                        pushstring "switchComplete"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onComplete")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        debugline 272
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                        pushstring "GmailPanel"
+                                                                        pushstring "hide"
+                                                                        newfunction 20
+                                                                        getlocal0
+                                                                        call 0
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 3
+                                                                        debugline 275
+                                                                        getlex QName(PackageNamespace("org.taomee.manager"),"EventManager")
+                                                                        pushstring "PetReCount"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onPetPowerUpdate")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        debugline 276
+                                                                        getlex QName(PackageNamespace("org.taomee.manager"),"EventManager")
+                                                                        pushstring "PetUpdate"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onPetPowerUpdate")
+                                                                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function onJumpBianQiang(param1:MouseEvent) : void
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onJumpBianQiang")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "onJumpBianQiang"
+                                                                     flag HAS_PARAM_NAMES
+                                                                     param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                     paramname "param1"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 2
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                           debug 1, "param1", 0, 0
+                                                                           debugline 281
+                                                                           getlex QName(PackageNamespace("seer2.next.entry"),"DynConfig")
+                                                                           getproperty QName(PackageNamespace(""),"mainEntry")
+                                                                           pushtrue
+                                                                           callpropvoid QName(PackageNamespace(""),"showDebugToolPanel"), 1
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function onPetPowerUpdate(param1:Event = null) : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onPetPowerUpdate")
+                                                                     dispid 0
+                                                                     method
+                                                                        name "onPetPowerUpdate"
+                                                                        flag HAS_OPTIONAL
+                                                                        flag HAS_PARAM_NAMES
+                                                                        param QName(PackageNamespace("flash.events"),"Event")
+                                                                        paramname "param1"
+                                                                        optional Null()
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 1
+                                                                           localcount 2
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                              debug 1, "param1", 0, 0
+                                                                              getlocal0
+                                                                              debugline 285
+                                                                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"updateAllPower"), 0
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function onComplete(param1:SceneEvent) : void
+                                                                  {
+                                                                     trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onComplete")
+                                                                        dispid 0
+                                                                        method
+                                                                           name "onComplete"
+                                                                           flag HAS_PARAM_NAMES
+                                                                           param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                                                                           paramname "param1"
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 2
+                                                                              localcount 2
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                 debug 1, "param1", 0, 0
+                                                                                 debugline 289
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                                 getproperty QName(PackageNamespace(""),"active")
+                                                                                 getproperty QName(PackageNamespace(""),"type")
+                                                                                 pushbyte 2
+                                                                                 ifeq ofs002b
+                                                                                 getlocal0
+                                                                                 debugline 290
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_conisTxt")
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                 getproperty QName(PackageNamespace(""),"actorInfo")
+                                                                                 getproperty QName(PackageNamespace(""),"coins")
+                                                                                 callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                                                 setproperty QName(PackageNamespace(""),"text")
+                                                                        ofs002b:
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private function onMailOver(param1:MouseEvent) : void
+                                                                     {
+                                                                        trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onMailOver")
+                                                                           dispid 0
+                                                                           method
+                                                                              name "onMailOver"
+                                                                              flag HAS_PARAM_NAMES
+                                                                              param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                              paramname "param1"
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 2
+                                                                                 localcount 2
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 1
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                    debug 1, "param1", 0, 0
+                                                                                    getlocal0
+                                                                                    getlocal0
+                                                                                    debugline 295
+                                                                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                                                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"setFilter"), 1
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        private function onMailOut(param1:MouseEvent) : void
+                                                                        {
+                                                                           trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onMailOut")
+                                                                              dispid 0
+                                                                              method
+                                                                                 name "onMailOut"
+                                                                                 flag HAS_PARAM_NAMES
+                                                                                 param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                                 paramname "param1"
+                                                                                 returns QName(PackageNamespace(""),"void")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 2
+                                                                                    localcount 2
+                                                                                    initscopedepth 0
+                                                                                    maxscopedepth 1
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                       debug 1, "param1", 0, 0
+                                                                                       getlocal0
+                                                                                       debugline 299
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                                                                       pushnull
+                                                                                       setproperty QName(PackageNamespace(""),"filters")
+                                                                                       returnvoid
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                           
+                                                                           private function onActorMcOver(param1:MouseEvent) : void
+                                                                           {
+                                                                              trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onActorMcOver")
+                                                                                 dispid 0
+                                                                                 method
+                                                                                    name "onActorMcOver"
+                                                                                    flag HAS_PARAM_NAMES
+                                                                                    param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                                    paramname "param1"
+                                                                                    returns QName(PackageNamespace(""),"void")
+                                                                                    
+                                                                                    body
+                                                                                       maxstack 2
+                                                                                       localcount 2
+                                                                                       initscopedepth 0
+                                                                                       maxscopedepth 1
+                                                                                       
+                                                                                       code
+                                                                                          getlocal0
+                                                                                          pushscope
+                                                                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                          debug 1, "param1", 0, 0
+                                                                                          getlocal0
+                                                                                          getlocal0
+                                                                                          debugline 303
+                                                                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                                                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"setFilter"), 1
+                                                                                          returnvoid
+                                                                                       end ; code
+                                                                                    end ; body
+                                                                                 end ; method
+                                                                              }
+                                                                              
+                                                                              private function setFilter(param1:DisplayObject) : void
+                                                                              {
+                                                                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"setFilter")
+                                                                                    dispid 0
+                                                                                    method
+                                                                                       name "setFilter"
+                                                                                       flag HAS_PARAM_NAMES
+                                                                                       param QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                                       paramname "param1"
+                                                                                       returns QName(PackageNamespace(""),"void")
+                                                                                       
+                                                                                       body
+                                                                                          maxstack 2
+                                                                                          localcount 3
+                                                                                          initscopedepth 0
+                                                                                          maxscopedepth 1
+                                                                                          
+                                                                                          code
+                                                                                             getlocal0
+                                                                                             pushscope
+                                                                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                             debug 1, "_loc2_", 1, 0
+                                                                                             debug 1, "param1", 0, 0
+                                                                                             findpropstrict QName(PackageNamespace("flash.filters"),"GlowFilter")
+                                                                                             debugline 307
+                                                                                             constructprop QName(PackageNamespace("flash.filters"),"GlowFilter"), 0
+                                                                                             coerce QName(PackageNamespace("flash.filters"),"GlowFilter")
+                                                                                             setlocal2
+                                                                                             getlocal2
+                                                                                             debugline 308
+                                                                                             pushbyte 10
+                                                                                             setproperty QName(PackageNamespace(""),"blurX")
+                                                                                             getlocal2
+                                                                                             debugline 309
+                                                                                             pushbyte 10
+                                                                                             setproperty QName(PackageNamespace(""),"blurY")
+                                                                                             getlocal2
+                                                                                             debugline 310
+                                                                                             pushint 6750207
+                                                                                             setproperty QName(PackageNamespace(""),"color")
+                                                                                             getlocal2
+                                                                                             debugline 311
+                                                                                             pushfalse
+                                                                                             setproperty QName(PackageNamespace(""),"inner")
+                                                                                             getlocal1
+                                                                                             getlocal2
+                                                                                             debugline 312
+                                                                                             newarray 1
+                                                                                             setproperty QName(PackageNamespace(""),"filters")
+                                                                                             returnvoid
+                                                                                          end ; code
+                                                                                       end ; body
+                                                                                    end ; method
+                                                                                 }
+                                                                                 
+                                                                                 private function onActorMcOut(param1:MouseEvent) : void
+                                                                                 {
+                                                                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onActorMcOut")
+                                                                                       dispid 0
+                                                                                       method
+                                                                                          name "onActorMcOut"
+                                                                                          flag HAS_PARAM_NAMES
+                                                                                          param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                                          paramname "param1"
+                                                                                          returns QName(PackageNamespace(""),"void")
+                                                                                          
+                                                                                          body
+                                                                                             maxstack 2
+                                                                                             localcount 2
+                                                                                             initscopedepth 0
+                                                                                             maxscopedepth 1
+                                                                                             
+                                                                                             code
+                                                                                                getlocal0
+                                                                                                pushscope
+                                                                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                                debug 1, "param1", 0, 0
+                                                                                                getlocal0
+                                                                                                debugline 316
+                                                                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_actorMC")
+                                                                                                pushnull
+                                                                                                setproperty QName(PackageNamespace(""),"filters")
+                                                                                                returnvoid
+                                                                                             end ; code
+                                                                                          end ; body
+                                                                                       end ; method
+                                                                                    }
+                                                                                    
+                                                                                    private function onClickMail(param1:MouseEvent) : void
+                                                                                    {
+                                                                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onClickMail")
+                                                                                          dispid 0
+                                                                                          method
+                                                                                             name "onClickMail"
+                                                                                             flag HAS_PARAM_NAMES
+                                                                                             param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                                             paramname "param1"
+                                                                                             returns QName(PackageNamespace(""),"void")
+                                                                                             
+                                                                                             body
+                                                                                                maxstack 3
+                                                                                                localcount 2
+                                                                                                initscopedepth 0
+                                                                                                maxscopedepth 1
+                                                                                                
+                                                                                                code
+                                                                                                   getlocal0
+                                                                                                   pushscope
+                                                                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                                   debug 1, "param1", 0, 0
+                                                                                                   getlocal0
+                                                                                                   debugline 320
+                                                                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                                                                                   getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                                                   pushbyte 1
+                                                                                                   ifeq ofs0026
+                                                                                                   getlocal0
+                                                                                                   debugline 321
+                                                                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"mailBtn")
+                                                                                                   pushbyte 1
+                                                                                                   callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                                                   debugline 323
+                                                                                          ofs0026:
+                                                                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                                                   pushstring "GmailPanel"
+                                                                                                   callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                                                                   pushstring ""
+                                                                                                   callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                                                                                                   returnvoid
+                                                                                                end ; code
+                                                                                             end ; body
+                                                                                          end ; method
+                                                                                       }
+                                                                                       
+                                                                                       private function onVipUpdate(param1:Event) : void
+                                                                                       {
+                                                                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVipUpdate")
+                                                                                             dispid 0
+                                                                                             method
+                                                                                                name "onVipUpdate"
+                                                                                                flag HAS_PARAM_NAMES
+                                                                                                param QName(PackageNamespace("flash.events"),"Event")
+                                                                                                paramname "param1"
+                                                                                                returns QName(PackageNamespace(""),"void")
+                                                                                                
+                                                                                                body
+                                                                                                   maxstack 1
+                                                                                                   localcount 2
+                                                                                                   initscopedepth 0
+                                                                                                   maxscopedepth 1
+                                                                                                   
+                                                                                                   code
+                                                                                                      getlocal0
+                                                                                                      pushscope
+                                                                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                                      debug 1, "param1", 0, 0
+                                                                                                      returnvoid
+                                                                                                   end ; code
+                                                                                                end ; body
+                                                                                             end ; method
+                                                                                          }
+                                                                                          
+                                                                                          private function retracte() : void
+                                                                                          {
+                                                                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"retracte")
+                                                                                                dispid 0
+                                                                                                method
+                                                                                                   name "retracte"
+                                                                                                   returns QName(PackageNamespace(""),"void")
+                                                                                                   
+                                                                                                   body
+                                                                                                      maxstack 7
+                                                                                                      localcount 1
+                                                                                                      initscopedepth 0
+                                                                                                      maxscopedepth 1
+                                                                                                      
+                                                                                                      code
+                                                                                                         getlocal0
+                                                                                                         pushscope
+                                                                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                                         getlocal0
+                                                                                                         debugline 330
+                                                                                                         pushfalse
+                                                                                                         setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_isRetract")
+                                                                                                         debugline 331
+                                                                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"LeftMinorToolBar")
+                                                                                                         callpropvoid QName(PackageNamespace(""),"hide"), 0
+                                                                                                         debugline 332
+                                                                                                         getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                                                                                                         getlocal0
+                                                                                                         pushdouble 0.6
+                                                                                                         debugline 333
+                                                                                                         pushstring "x"
+                                                                                                         pushshort -207
+                                                                                                         debugline 334
+                                                                                                         pushstring "ease"
+                                                                                                         getlex QName(PackageNamespace("com.greensock.easing"),"Expo")
+                                                                                                         getproperty QName(PackageNamespace(""),"easeOut")
+                                                                                                         newobject 2
+                                                                                                         callpropvoid QName(PackageNamespace(""),"to"), 3
+                                                                                                         returnvoid
+                                                                                                      end ; code
+                                                                                                   end ; body
+                                                                                                end ; method
+                                                                                             }
+                                                                                             
+                                                                                             private function expand(param1:Boolean = true) : void
+                                                                                             {
+                                                                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"expand")
+                                                                                                   dispid 0
+                                                                                                   method
+                                                                                                      name "expand"
+                                                                                                      flag HAS_OPTIONAL
+                                                                                                      flag HAS_PARAM_NAMES
+                                                                                                      param QName(PackageNamespace(""),"Boolean")
+                                                                                                      paramname "param1"
+                                                                                                      optional True()
+                                                                                                      returns QName(PackageNamespace(""),"void")
+                                                                                                      
+                                                                                                      body
+                                                                                                         maxstack 7
+                                                                                                         localcount 2
+                                                                                                         initscopedepth 0
+                                                                                                         maxscopedepth 1
+                                                                                                         
+                                                                                                         code
+                                                                                                            getlocal0
+                                                                                                            pushscope
+                                                                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                                            debug 1, "param1", 0, 0
+                                                                                                            getlocal0
+                                                                                                            debugline 339
+                                                                                                            pushtrue
+                                                                                                            setproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_isRetract")
+                                                                                                            debugline 340
+                                                                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"LeftMinorToolBar")
+                                                                                                            callpropvoid QName(PackageNamespace(""),"show"), 0
+                                                                                                            getlocal1
+                                                                                                            debugline 341
+                                                                                                            iffalse ofs004e
+                                                                                                            debugline 342
+                                                                                                            getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                                                                                                            getlocal0
+                                                                                                            pushdouble 0.6
+                                                                                                            debugline 343
+                                                                                                            pushstring "x"
+                                                                                                            pushbyte 0
+                                                                                                            debugline 344
+                                                                                                            pushstring "ease"
+                                                                                                            getlex QName(PackageNamespace("com.greensock.easing"),"Expo")
+                                                                                                            getproperty QName(PackageNamespace(""),"easeOut")
+                                                                                                            newobject 2
+                                                                                                            callpropvoid QName(PackageNamespace(""),"to"), 3
+                                                                                                            debugline 341
+                                                                                                            jump ofs0057
+                                                                                                            debugline 347
+                                                                                                   ofs004e:
+                                                                                                            pushbyte 0
+                                                                                                            findproperty QName(PackageNamespace(""),"x")
+                                                                                                            swap
+                                                                                                            setproperty QName(PackageNamespace(""),"x")
+                                                                                                   ofs0057:
+                                                                                                            returnvoid
+                                                                                                         end ; code
+                                                                                                      end ; body
+                                                                                                   end ; method
+                                                                                                }
+                                                                                                
+                                                                                                private function onVip(param1:MouseEvent) : void
+                                                                                                {
+                                                                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onVip")
+                                                                                                      dispid 0
+                                                                                                      method
+                                                                                                         name "onVip"
+                                                                                                         flag HAS_PARAM_NAMES
+                                                                                                         param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                                                         paramname "param1"
+                                                                                                         returns QName(PackageNamespace(""),"void")
+                                                                                                         
+                                                                                                         body
+                                                                                                            maxstack 5
+                                                                                                            localcount 2
+                                                                                                            initscopedepth 0
+                                                                                                            maxscopedepth 1
+                                                                                                            
+                                                                                                            code
+                                                                                                               getlocal0
+                                                                                                               pushscope
+                                                                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                                               debug 1, "param1", 0, 0
+                                                                                                               debugline 352
+                                                                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                                                               getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                                                               pushstring "SuperNonoPanel"
+                                                                                                               callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                                                                               pushstring ""
+                                                                                                               pushstring "currentTab"
+                                                                                                               pushbyte 0
+                                                                                                               newobject 1
+                                                                                                               callpropvoid QName(PackageNamespace(""),"toggleModule"), 3
+                                                                                                               debugline 353
+                                                                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"StatisticsManager")
+                                                                                                               pushstring "0x1003362E"
+                                                                                                               callpropvoid QName(PackageNamespace(""),"sendNovice"), 1
+                                                                                                               returnvoid
+                                                                                                            end ; code
+                                                                                                         end ; body
+                                                                                                      end ; method
+                                                                                                   }
+                                                                                                   
+                                                                                                   private function onTrainerScoreUpdate(param1:UserInfoEvent) : void
+                                                                                                   {
+                                                                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onTrainerScoreUpdate")
+                                                                                                         dispid 0
+                                                                                                         method
+                                                                                                            name "onTrainerScoreUpdate"
+                                                                                                            flag HAS_PARAM_NAMES
+                                                                                                            param QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"UserInfoEvent")
+                                                                                                            paramname "param1"
+                                                                                                            returns QName(PackageNamespace(""),"void")
+                                                                                                            
+                                                                                                            body
+                                                                                                               maxstack 2
+                                                                                                               localcount 4
+                                                                                                               initscopedepth 0
+                                                                                                               maxscopedepth 1
+                                                                                                               
+                                                                                                               code
+                                                                                                                  getlocal0
+                                                                                                                  pushscope
+                                                                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                                                  debug 1, "_loc2_", 1, 0
+                                                                                                                  debug 1, "param1", 0, 0
+                                                                                                                  debug 1, "_loc3_", 2, 0
+                                                                                                                  debugline 357
+                                                                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                                                  getproperty QName(PackageNamespace(""),"actorInfo")
+                                                                                                                  coerce QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                                                                                                  setlocal2
+                                                                                                                  getlocal2
+                                                                                                                  debugline 358
+                                                                                                                  getproperty QName(PackageNamespace(""),"currentLevelExp")
+                                                                                                                  getlocal2
+                                                                                                                  getproperty QName(PackageNamespace(""),"nextLevelNeedExp")
+                                                                                                                  divide
+                                                                                                                  convert_d
+                                                                                                                  setlocal3
+                                                                                                                  getlocal3
+                                                                                                                  debugline 359
+                                                                                                                  pushbyte 1
+                                                                                                                  ifngt ofs003d
+                                                                                                                  debugline 360
+                                                                                                                  pushdouble 1
+                                                                                                                  setlocal3
+                                                                                                         ofs003d:
+                                                                                                                  returnvoid
+                                                                                                               end ; code
+                                                                                                            end ; body
+                                                                                                         end ; method
+                                                                                                      }
+                                                                                                      
+                                                                                                      private function onActor(param1:MouseEvent) : void
+                                                                                                      {
+                                                                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"onActor")
+                                                                                                            dispid 0
+                                                                                                            method
+                                                                                                               name "onActor"
+                                                                                                               flag HAS_PARAM_NAMES
+                                                                                                               param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                                                               paramname "param1"
+                                                                                                               returns QName(PackageNamespace(""),"void")
+                                                                                                               
+                                                                                                               body
+                                                                                                                  maxstack 4
+                                                                                                                  localcount 2
+                                                                                                                  initscopedepth 0
+                                                                                                                  maxscopedepth 1
+                                                                                                                  
+                                                                                                                  code
+                                                                                                                     getlocal0
+                                                                                                                     pushscope
+                                                                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\controls;ActorAvatarPanel.as"
+                                                                                                                     debug 1, "param1", 0, 0
+                                                                                                                     debugline 365
+                                                                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                                                                     pushstring "UserPanel"
+                                                                                                                     callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                                                                                     pushstring "正在打开个人信息面板..."
+                                                                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                                                     getproperty QName(PackageNamespace(""),"actorInfo")
+                                                                                                                     getproperty QName(PackageNamespace(""),"id")
+                                                                                                                     callpropvoid QName(PackageNamespace(""),"showModule"), 3
+                                                                                                                     debugline 366
+                                                                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"StatisticsManager")
+                                                                                                                     pushstring "0x10033612"
+                                                                                                                     callpropvoid QName(PackageNamespace(""),"sendNovice"), 1
+                                                                                                                     getlocal0
+                                                                                                                     debugline 367
+                                                                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.controls:ActorAvatarPanel"),"_passWordTipMC")
+                                                                                                                     pushfalse
+                                                                                                                     setproperty QName(PackageNamespace(""),"visible")
+                                                                                                                     returnvoid
+                                                                                                                  end ; code
+                                                                                                               end ; body
+                                                                                                            end ; method
+                                                                                                         }
+                                                                                                      }
+                                                                                                   }
+                                                                                                   
+                                                                                                   method
+                                                                                                      name null
+                                                                                                      returns null
+                                                                                                      
+                                                                                                      body
+                                                                                                         maxstack 3
+                                                                                                         localcount 1
+                                                                                                         initscopedepth 0
+                                                                                                         maxscopedepth 7
+                                                                                                         
+                                                                                                         code
+                                                                                                            getlocal0
+                                                                                                            pushscope
+                                                                                                            getscopeobject 0
+                                                                                                            getlex QName(PackageNamespace(""),"Object")
+                                                                                                            pushscope
+                                                                                                            getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                                                                            pushscope
+                                                                                                            getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                                                            pushscope
+                                                                                                            getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                                                                            pushscope
+                                                                                                            getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                                                                            pushscope
+                                                                                                            getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                                                                            dup
+                                                                                                            pushscope
+                                                                                                            newclass 0
+                                                                                                            popscope
+                                                                                                            popscope
+                                                                                                            popscope
+                                                                                                            popscope
+                                                                                                            popscope
+                                                                                                            popscope
+                                                                                                            initproperty QName(PackageNamespace("com.taomee.seer2.app.controls"),"ActorAvatarPanel")
+                                                                                                            returnvoid
+                                                                                                         end ; code
+                                                                                                      end ; body
+                                                                                                   end ; method
+                                                                                                   

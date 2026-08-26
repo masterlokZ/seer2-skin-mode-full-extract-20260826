@@ -1,0 +1,2164 @@
+package com.taomee.seer2.app.popup.alert
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.dream.DreamMapInfo;
+   import com.taomee.seer2.app.dream.DreamMapOrganize;
+   import com.taomee.seer2.app.dream.DreamOneEntry;
+   import com.taomee.seer2.app.info.BuyPropInfo;
+   import com.taomee.seer2.app.info.DayLimitListInfo;
+   import com.taomee.seer2.app.inventory.ItemManager;
+   import com.taomee.seer2.app.inventory.events.ItemEvent;
+   import com.taomee.seer2.app.manager.DayLimitListManager;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.parser.Parser_1224;
+   import com.taomee.seer2.app.popup.AlertInfo;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.serverBuffer.ServerBufferManager;
+   import com.taomee.seer2.app.shopManager.ShopManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.app.swap.special.SpecialInfo;
+   import com.taomee.seer2.app.utils.ActsHelperUtil;
+   import com.taomee.seer2.core.config.DreamConfig;
+   import com.taomee.seer2.core.config.DreamInfo;
+   import com.taomee.seer2.core.config.FamilyInfo;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.ui.UIManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.text.TextField;
+   import flash.utils.IDataInput;
+   import org.taomee.filter.ColorFilter;
+   
+   public class DreamAlert extends Sprite implements IAlert
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _container:MovieClip;
+      
+      private var _closeBtn:SimpleButton;
+      
+      private var _nameTxt:TextField;
+      
+      private var _starMC:MovieClip;
+      
+      private var _pointTxtList:Vector.<TextField>;
+      
+      private var _conditionsList:Vector.<TextField>;
+      
+      private var _iconList:Vector.<DreamMiniPetIcon>;
+      
+      private var _itemList:Vector.<DreamMiniItemIcon>;
+      
+      private var _fightCountTxt:TextField;
+      
+      private var _fightCountBtn:SimpleButton;
+      
+      private var _entryFightBtn:SimpleButton;
+      
+      private var _autoFightBtn:SimpleButton;
+      
+      private var _dreamInfo:DreamInfo;
+      
+      private var _confirmHandler:Function;
+      
+      private var _cancelHandler:Function;
+      
+      private var _entryMapBtn:SimpleButton;
+      
+      private var _threeMC:MovieClip;
+      
+      private var _dreamOneMC:MovieClip;
+      
+      private var _dreamOneMC2:MovieClip;
+      
+      public function DreamAlert()
+      {
+         method
+            name "DreamAlert"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                  debugline 88
+                  getlocal0
+                  debugline 88
+                  constructsuper 0
+                  getlocal0
+                  debugline 89
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"initialize"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      private function initialize() : void
+      {
+         trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"initialize")
+            dispid 0
+            method
+               name "initialize"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 5
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                     debug 1, "_loc1_", 0, 0
+                     getlocal0
+                     debugline 93
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.ui"),"UIManager")
+                     pushstring "UI_dream_mini_panel"
+                     callproperty QName(PackageNamespace(""),"getMovieClip"), 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     findpropstrict QName(PackageNamespace(""),"addChild")
+                     getlocal0
+                     debugline 94
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                     getlocal0
+                     getlocal0
+                     debugline 95
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "closeBtn"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_closeBtn")
+                     getlocal0
+                     getlocal0
+                     debugline 96
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "nameTxt"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_nameTxt")
+                     getlocal0
+                     debugline 97
+                     getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                     getlex QName(PackageNamespace("flash.text"),"TextField")
+                     applytype 1
+                     getlocal0
+                     newarray 0
+                     call 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                     getlocal0
+                     getlocal0
+                     debugline 98
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "fightCountTxt"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountTxt")
+                     getlocal0
+                     getlocal0
+                     debugline 99
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "fightCountBtn"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountBtn")
+                     getlocal0
+                     getlocal0
+                     debugline 100
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "autoFightBtn"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_autoFightBtn")
+                     getlocal0
+                     getlocal0
+                     debugline 101
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "starMC"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_starMC")
+                     getlocal0
+                     debugline 102
+                     getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                     getlex QName(PrivateNamespace("FilePrivateNS:DreamAlert"),"DreamMiniPetIcon")
+                     applytype 1
+                     getlocal0
+                     newarray 0
+                     call 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_iconList")
+                     getlocal0
+                     debugline 103
+                     getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                     getlex QName(PrivateNamespace("FilePrivateNS:DreamAlert"),"DreamMiniItemIcon")
+                     applytype 1
+                     getlocal0
+                     newarray 0
+                     call 1
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_itemList")
+                     getlocal0
+                     getlocal0
+                     debugline 104
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "entryMapBtn"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_entryMapBtn")
+                     getlocal0
+                     getlocal0
+                     debugline 105
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "threeMC"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_threeMC")
+                     getlocal0
+                     debugline 106
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_threeMC")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlocal0
+                     getlocal0
+                     debugline 107
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "dreamOneMC"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC")
+                     getlocal0
+                     debugline 108
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"mouseChildren")
+                     getlocal0
+                     debugline 109
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"mouseEnabled")
+                     getlocal0
+                     debugline 110
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlocal0
+                     getlocal0
+                     debugline 111
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "dreamOneMC2"
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC2")
+                     getlocal0
+                     debugline 112
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC2")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"mouseChildren")
+                     getlocal0
+                     debugline 113
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC2")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"mouseEnabled")
+                     getlocal0
+                     debugline 114
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC2")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"visible")
+                     debugline 115
+                     pushbyte 0
+                     setlocal1
+                     jump ofs014a
+            ofs0108:
+                     label
+                     getlocal0
+                     debugline 117
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_iconList")
+                     findpropstrict QName(PrivateNamespace("FilePrivateNS:DreamAlert"),"DreamMiniPetIcon")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "dreamMiniPet"
+                     getlocal1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     constructprop QName(PrivateNamespace("FilePrivateNS:DreamAlert"),"DreamMiniPetIcon"), 1
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                     getlocal0
+                     debugline 118
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_itemList")
+                     findpropstrict QName(PrivateNamespace("FilePrivateNS:DreamAlert"),"DreamMiniItemIcon")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "dreamMiniItem"
+                     getlocal1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     constructprop QName(PrivateNamespace("FilePrivateNS:DreamAlert"),"DreamMiniItemIcon"), 1
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                     getlocal0
+                     debugline 119
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_container")
+                     pushstring "pointTxt"
+                     getlocal1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                     debugline 120
+                     inclocal_i 1
+            ofs014a:
+                     getlocal1
+                     debugline 116
+                     pushbyte 3
+                     iflt ofs0108
+                     getlocal0
+                     debugline 122
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"initEvent"), 0
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function initEvent() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"initEvent")
+               dispid 0
+               method
+                  name "initEvent"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                        getlocal0
+                        debugline 126
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_closeBtn")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onClickHandler")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        getlocal0
+                        debugline 127
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountBtn")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onFightCount")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        getlocal0
+                        debugline 128
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_autoFightBtn")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onAuto")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        getlocal0
+                        debugline 129
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_entryMapBtn")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onEntryMap")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function onEntryMap(param1:MouseEvent) : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onEntryMap")
+                  dispid 0
+                  method
+                     name "onEntryMap"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace("flash.events"),"MouseEvent")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                           debug 1, "param1", 0, 0
+                           debugline 133
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"DREAM_MAP_INFO_LIST_1562")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onFamilyInfo")
+                           callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                           debugline 134
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"DREAM_MAP_INFO_LIST_1562")
+                           callpropvoid QName(PackageNamespace(""),"send"), 1
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onFamilyInfo(param1:MessageEvent) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onFamilyInfo")
+                     dispid 0
+                     method
+                        name "onFamilyInfo"
+                        flag HAS_PARAM_NAMES
+                        flag NEED_ACTIVATION
+                        param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 3
+                           initscopedepth 0
+                           maxscopedepth 2
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                              slotid 1
+                              type QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"data")
+                              slotid 2
+                              type QName(PackageNamespace("flash.utils"),"IDataInput")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"count")
+                              slotid 3
+                              type QName(PackageNamespace(""),"int")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"i")
+                              slotid 4
+                              type QName(PackageNamespace(""),"int")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"starCount")
+                              slotid 5
+                              type QName(PackageNamespace(""),"int")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"currFamilyInfo")
+                              slotid 6
+                              type QName(PackageNamespace("com.taomee.seer2.core.config"),"FamilyInfo")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"familyInfo")
+                              slotid 7
+                              type QName(PackageNamespace("com.taomee.seer2.core.config"),"FamilyInfo")
+                           end ; trait
+                           trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"event")
+                              slotid 8
+                              type QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                           end ; trait
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                              newactivation
+                              dup
+                              setlocal2
+                              pushscope
+                              findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                              getlocal1
+                              setproperty QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                              debug 1, "param1", 0, 0
+                              debug 1, "onFamilyInfo$0", 1, 0
+                              debugline 142
+                              pushnull
+                              coerce QName(PackageNamespace("com.taomee.seer2.core.config"),"FamilyInfo")
+                              getlocal2
+                              swap
+                              setslot 6
+                              debugline 143
+                              pushnull
+                              coerce QName(PackageNamespace("com.taomee.seer2.core.config"),"FamilyInfo")
+                              getlocal2
+                              swap
+                              setslot 7
+                              debugline 144
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                              coerce QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                              getlocal2
+                              swap
+                              setslot 8
+                              debugline 145
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                              getproperty QName(PackageNamespace(""),"DREAM_MAP_INFO_LIST_1562")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onFamilyInfo")
+                              callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                              debugline 146
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"event")
+                              getproperty QName(PackageNamespace(""),"message")
+                              callproperty QName(PackageNamespace(""),"getRawData"), 0
+                              coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                              getlocal2
+                              swap
+                              setslot 2
+                              debugline 147
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"data")
+                              callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                              convert_i
+                              getlocal2
+                              swap
+                              setslot 3
+                              debugline 148
+                              pushbyte 0
+                              getlocal2
+                              swap
+                              setslot 4
+                              jump ofs00c9
+                     ofs0070:
+                              label
+                              debugline 150
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.config"),"DreamConfig")
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"i")
+                              pushbyte 1
+                              add
+                              callproperty QName(PackageNamespace(""),"getFamily"), 1
+                              coerce QName(PackageNamespace("com.taomee.seer2.core.config"),"FamilyInfo")
+                              getlocal2
+                              swap
+                              setslot 7
+                              debugline 151
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"familyInfo")
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"data")
+                              callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                              setproperty QName(PackageNamespace(""),"currStarCount")
+                              debugline 152
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"i")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                              getproperty QName(PackageNamespace(""),"familyId")
+                              pushbyte 1
+                              subtract
+                              ifne ofs00ac
+                              debugline 153
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"familyInfo")
+                              coerce QName(PackageNamespace("com.taomee.seer2.core.config"),"FamilyInfo")
+                              getlocal2
+                              swap
+                              setslot 6
+                     ofs00ac:
+                              findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"i")
+                              debugline 155
+                              getproperty QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"i")
+                              debugline 155
+                              convert_d
+                              debugline 155
+                              increment
+                              findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"i")
+                              debugline 155
+                              swap
+                              debugline 155
+                              setproperty QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"i")
+                              debugline 149
+                     ofs00c9:
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"i")
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"count")
+                              iflt ofs0070
+                              debugline 157
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"data")
+                              callpropvoid QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                              getlocal0
+                              debugline 158
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                              getproperty QName(PackageNamespace(""),"familyId")
+                              pushbyte 4
+                              ifne ofs00ed
+                              pushbyte 24
+                              jump ofs00ef
+                     ofs00ed:
+                              pushdouble 29
+                     ofs00ef:
+                              convert_i
+                              getlocal2
+                              swap
+                              setslot 5
+                              getlocal0
+                              debugline 159
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                              getproperty QName(PackageNamespace(""),"isWelfare")
+                              convert_b
+                              dup
+                              iffalse ofs010a
+                              pop
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"currFamilyInfo")
+                              getproperty QName(PackageNamespace(""),"currStarCount")
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"starCount")
+                              lessthan
+                     ofs010a:
+                              iffalse ofs0124
+                              debugline 160
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                              pushstring "需要"
+                              getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"starCount")
+                              add
+                              pushstring "颗星才能挑战"
+                              add
+                              callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                              debugline 161
+                              returnvoid
+                     ofs0124:
+                              getlocal0
+                              newfunction 5
+                              debugline 163
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"currKeyCount"), 1
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onClickHandler(param1:MouseEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onClickHandler")
+                        dispid 0
+                        method
+                           name "onClickHandler"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("flash.events"),"MouseEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 debugline 182
+                                 callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                 getlocal0
+                                 debugline 183
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_cancelHandler")
+                                 pushnull
+                                 ifeq ofs0022
+                                 getlocal0
+                                 debugline 184
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_cancelHandler"), 0
+                        ofs0022:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onEntryMap1557(param1:MessageEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onEntryMap1557")
+                           dispid 0
+                           method
+                              name "onEntryMap1557"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 4
+                                 localcount 4
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                    debug 1, "_loc2_", 1, 0
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "_loc3_", 2, 0
+                                    debugline 189
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                    getproperty QName(PackageNamespace(""),"DREAM_ENTRY_MAP_1557")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onEntryMap1557")
+                                    callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                    getlocal1
+                                    debugline 190
+                                    getproperty QName(PackageNamespace(""),"message")
+                                    callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                    coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                                    setlocal2
+                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.app.dream"),"DreamMapInfo")
+                                    getlocal2
+                                    debugline 191
+                                    constructprop QName(PackageNamespace("com.taomee.seer2.app.dream"),"DreamMapInfo"), 1
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.dream"),"DreamMapInfo")
+                                    setlocal3
+                                    debugline 192
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dream"),"DreamMapOrganize")
+                                    getlocal3
+                                    callpropvoid QName(PackageNamespace(""),"setInfo"), 1
+                                    getlocal0
+                                    debugline 193
+                                    callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                    getlocal0
+                                    debugline 194
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC2")
+                                    iffalse ofs0071
+                                    getlocal0
+                                    debugline 195
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC2")
+                                    pushfalse
+                                    setproperty QName(PackageNamespace(""),"visible")
+                                    debugline 196
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                                    pushshort 350
+                                    pushbyte 3
+                                    pushbyte 1
+                                    callpropvoid QName(PackageNamespace(""),"updateServerBuffer"), 3
+                                    debugline 198
+                           ofs0071:
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                    pushbyte 1
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                    getproperty QName(PackageNamespace(""),"mapId")
+                                    callpropvoid QName(PackageNamespace(""),"changeScene"), 2
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function onFightCount(param1:MouseEvent) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onFightCount")
+                              dispid 0
+                              method
+                                 name "onFightCount"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 3
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                       debug 1, "_loc2_", 1, 0
+                                       debug 1, "param1", 0, 0
+                                       getlocal0
+                                       debugline 202
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                       getproperty QName(PackageNamespace(""),"isWelfare")
+                                       iffalse ofs002a
+                                       debugline 203
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                       pushstring "福利关卡不能购买次数"
+                                       callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                                       debugline 204
+                                       returnvoid
+                              ofs002a:
+                                       findpropstrict QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo")
+                                       debugline 206
+                                       constructprop QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo"), 0
+                                       coerce QName(PackageNamespace("com.taomee.seer2.app.info"),"BuyPropInfo")
+                                       setlocal2
+                                       getlocal2
+                                       debugline 207
+                                       pushint 605616
+                                       setproperty QName(PackageNamespace(""),"itemId")
+                                       getlocal2
+                                       getlocal0
+                                       debugline 208
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"buyComplete")
+                                       setproperty QName(PackageNamespace(""),"buyComplete")
+                                       getlocal2
+                                       getlocal0
+                                       debugline 209
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onCancel")
+                                       setproperty QName(PackageNamespace(""),"cancelFunc")
+                                       debugline 210
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.shopManager"),"ShopManager")
+                                       getlocal2
+                                       callpropvoid QName(PackageNamespace(""),"buyVirtualItem"), 1
+                                       getlocal0
+                                       debugline 211
+                                       pushfalse
+                                       setproperty QName(PackageNamespace(""),"visible")
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onCancel() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onCancel")
+                                 dispid 0
+                                 method
+                                    name "onCancel"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 1
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                          debugline 215
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                          callpropvoid QName(PackageNamespace(""),"resetOperation"), 0
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function buyComplete(param1:Parser_1224) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"buyComplete")
+                                    dispid 0
+                                    method
+                                       name "buyComplete"
+                                       flag HAS_PARAM_NAMES
+                                       flag NEED_ACTIVATION
+                                       param QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1224")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 8
+                                          localcount 3
+                                          initscopedepth 0
+                                          maxscopedepth 2
+                                          trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                             slotid 1
+                                             type QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1224")
+                                          end ; trait
+                                          trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"par")
+                                             slotid 2
+                                             type QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1224")
+                                          end ; trait
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                             newactivation
+                                             dup
+                                             setlocal2
+                                             pushscope
+                                             findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                             getlocal1
+                                             setproperty QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                             debug 1, "param1", 0, 0
+                                             debug 1, "buyComplete$0", 1, 0
+                                             debugline 219
+                                             getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                             coerce QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1224")
+                                             getlocal2
+                                             swap
+                                             setslot 2
+                                             debugline 220
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                             pushshort 3834
+                                             pushbyte 1
+                                             newfunction 12
+                                             debugline 223
+                                             pushnull
+                                             findpropstrict QName(PackageNamespace("com.taomee.seer2.app.swap.special"),"SpecialInfo")
+                                             pushbyte 1
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                             getproperty QName(PackageNamespace(""),"id")
+                                             constructprop QName(PackageNamespace("com.taomee.seer2.app.swap.special"),"SpecialInfo"), 2
+                                             debugline 220
+                                             callpropvoid QName(PackageNamespace(""),"swapItem"), 5
+                                             getlocal0
+                                             debugline 224
+                                             pushtrue
+                                             setproperty QName(PackageNamespace(""),"visible")
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function onAuto(param1:MouseEvent) : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onAuto")
+                                       dispid 0
+                                       method
+                                          name "onAuto"
+                                          flag HAS_PARAM_NAMES
+                                          flag NEED_ACTIVATION
+                                          param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 2
+                                             localcount 3
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                                slotid 1
+                                                type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                             end ; trait
+                                             trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"event")
+                                                slotid 2
+                                                type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                             end ; trait
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                newactivation
+                                                dup
+                                                setlocal2
+                                                pushscope
+                                                findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                                getlocal1
+                                                setproperty QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                                debug 1, "param1", 0, 0
+                                                debug 1, "onAuto$0", 1, 0
+                                                debugline 228
+                                                getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                                coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                getlocal2
+                                                swap
+                                                setslot 2
+                                                getlocal0
+                                                debugline 229
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                getproperty QName(PackageNamespace(""),"isWelfare")
+                                                iffalse ofs003e
+                                                debugline 230
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                pushstring "福利关卡不能自动对战"
+                                                callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                                                debugline 231
+                                                returnvoid
+                                       ofs003e:
+                                                getlocal0
+                                                newfunction 14
+                                                debugline 233
+                                                callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"currKeyCount"), 1
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function currKeyCount(param1:Function) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"currKeyCount")
+                                          dispid 0
+                                          method
+                                             name "currKeyCount"
+                                             flag HAS_PARAM_NAMES
+                                             flag NEED_ACTIVATION
+                                             param QName(PackageNamespace(""),"Function")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 3
+                                                initscopedepth 0
+                                                maxscopedepth 2
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                                   slotid 1
+                                                   type QName(PackageNamespace(""),"Function")
+                                                end ; trait
+                                                trait slot QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"fun")
+                                                   slotid 2
+                                                   type QName(PackageNamespace(""),"Function")
+                                                end ; trait
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                   newactivation
+                                                   dup
+                                                   setlocal2
+                                                   pushscope
+                                                   findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                                   getlocal1
+                                                   setproperty QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                                   debug 1, "param1", 0, 0
+                                                   debug 1, "currKeyCount$0", 1, 0
+                                                   debugline 254
+                                                   getlex QName(PackageInternalNs("com.taomee.seer2.app.popup.alert"),"param1")
+                                                   coerce QName(PackageNamespace(""),"Function")
+                                                   getlocal2
+                                                   swap
+                                                   setslot 2
+                                                   debugline 255
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                   pushint 250005
+                                                   newfunction 18
+                                                   callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onDreamAuto(param1:MessageEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onDreamAuto")
+                                             dispid 0
+                                             method
+                                                name "onDreamAuto"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 2
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                      debug 1, "param1", 0, 0
+                                                      debugline 268
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                      getproperty QName(PackageNamespace(""),"DREAM_AUTO_FIGHT_1559")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onDreamAuto")
+                                                      callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                      getlocal0
+                                                      debugline 269
+                                                      callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                      debugline 270
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                      callpropvoid QName(PackageNamespace(""),"closeAll"), 0
+                                                      debugline 271
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                      pushstring "DreamMainPanel"
+                                                      callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                      pushstring ""
+                                                      callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          public function show(param1:AlertInfo) : void
+                                          {
+                                             trait method QName(PackageNamespace(""),"show")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "10910"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "show"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertInfo")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                         debug 1, "param1", 0, 0
+                                                         getlocal0
+                                                         debugline 275
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.core.config"),"DreamConfig")
+                                                         getlocal1
+                                                         getproperty QName(PackageNamespace(""),"initInfo")
+                                                         getproperty QName(PackageNamespace(""),"message")
+                                                         convert_u
+                                                         callproperty QName(PackageNamespace(""),"getMapInfo"), 1
+                                                         setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                         debugline 276
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                         pushstring "requestSpecialItemSuccess"
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onSuccess")
+                                                         callpropvoid QName(PackageNamespace(""),"addEventListener1"), 2
+                                                         debugline 277
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                         callpropvoid QName(PackageNamespace(""),"requestSpecialItemList"), 0
+                                                         getlocal0
+                                                         debugline 278
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_nameTxt")
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                         getproperty QName(PackageNamespace(""),"name")
+                                                         setproperty QName(PackageNamespace(""),"text")
+                                                         getlocal0
+                                                         debugline 279
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                         getproperty QName(PackageNamespace(""),"isWelfare")
+                                                         debugline 279
+                                                         iffalse ofs0083
+                                                         getlocal0
+                                                         debugline 280
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                         pushbyte 0
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         pushfalse
+                                                         setproperty QName(PackageNamespace(""),"visible")
+                                                         getlocal0
+                                                         debugline 281
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                         pushbyte 1
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         pushfalse
+                                                         setproperty QName(PackageNamespace(""),"visible")
+                                                         getlocal0
+                                                         debugline 282
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                         pushbyte 2
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         pushshort 153
+                                                         setproperty QName(PackageNamespace(""),"y")
+                                                         debugline 279
+                                                         jump ofs00b0
+                                                ofs0083:
+                                                         getlocal0
+                                                         debugline 284
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                         pushbyte 0
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         pushtrue
+                                                         setproperty QName(PackageNamespace(""),"visible")
+                                                         getlocal0
+                                                         debugline 285
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                         pushbyte 1
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         pushtrue
+                                                         setproperty QName(PackageNamespace(""),"visible")
+                                                         getlocal0
+                                                         debugline 286
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                         pushbyte 2
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         pushshort 198
+                                                         setproperty QName(PackageNamespace(""),"y")
+                                                         debugline 288
+                                                ofs00b0:
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                         getlocal1
+                                                         getlocal0
+                                                         callpropvoid QName(PackageNamespace(""),"addPopUp"), 2
+                                                         getlocal0
+                                                         debugline 289
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                         getproperty QName(PackageNamespace(""),"id")
+                                                         pushbyte 1
+                                                         ifne ofs00cd
+                                                         getlocal0
+                                                         debugline 290
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"updateDreamOne"), 0
+                                                ofs00cd:
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function updateDreamOne() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"updateDreamOne")
+                                                   dispid 0
+                                                   method
+                                                      name "updateDreamOne"
+                                                      flag NEED_ACTIVATION
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 2
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 2
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                            newactivation
+                                                            pushscope
+                                                            getlocal0
+                                                            debugline 295
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC")
+                                                            pushfalse
+                                                            setproperty QName(PackageNamespace(""),"visible")
+                                                            getlocal0
+                                                            debugline 296
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamOneMC2")
+                                                            pushfalse
+                                                            setproperty QName(PackageNamespace(""),"visible")
+                                                            debugline 297
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.dream"),"DreamOneEntry")
+                                                            newfunction 24
+                                                            callpropvoid QName(PackageNamespace(""),"getCurrQuestIndex"), 1
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function onSuccess(param1:ItemEvent) : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onSuccess")
+                                                      dispid 0
+                                                      method
+                                                         name "onSuccess"
+                                                         flag HAS_PARAM_NAMES
+                                                         param QName(PackageNamespace("com.taomee.seer2.app.inventory.events"),"ItemEvent")
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                               debug 1, "param1", 0, 0
+                                                               debugline 310
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                               pushstring "requestSpecialItemSuccess"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onSuccess")
+                                                               callpropvoid QName(PackageNamespace(""),"removeEventListener1"), 2
+                                                               getlocal0
+                                                               debugline 311
+                                                               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"updateDream"), 0
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function updateDream() : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"updateDream")
+                                                         dispid 0
+                                                         method
+                                                            name "updateDream"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 3
+                                                               localcount 2
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                  debug 1, "_loc1_", 0, 0
+                                                                  debugline 315
+                                                                  pushbyte 0
+                                                                  setlocal1
+                                                                  jump ofs0093
+                                                         ofs0013:
+                                                                  label
+                                                                  getlocal0
+                                                                  debugline 317
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                                  getproperty QName(PackageNamespace(""),"bossList")
+                                                                  getproperty QName(PackageNamespace(""),"length")
+                                                                  getlocal1
+                                                                  greaterthan
+                                                                  debugline 317
+                                                                  iffalse ofs0045
+                                                                  getlocal0
+                                                                  debugline 318
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_iconList")
+                                                                  getlocal1
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                                  getproperty QName(PackageNamespace(""),"bossList")
+                                                                  getlocal1
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  callpropvoid QName(PackageNamespace(""),"setInfo"), 1
+                                                                  debugline 317
+                                                                  jump ofs0051
+                                                         ofs0045:
+                                                                  getlocal0
+                                                                  debugline 320
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_iconList")
+                                                                  getlocal1
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                         ofs0051:
+                                                                  getlocal0
+                                                                  debugline 322
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                                  getproperty QName(PackageNamespace(""),"itemList")
+                                                                  getproperty QName(PackageNamespace(""),"length")
+                                                                  getlocal1
+                                                                  greaterthan
+                                                                  debugline 322
+                                                                  iffalse ofs0082
+                                                                  getlocal0
+                                                                  debugline 323
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_itemList")
+                                                                  getlocal1
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                                  getproperty QName(PackageNamespace(""),"itemList")
+                                                                  getlocal1
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  callpropvoid QName(PackageNamespace(""),"setInfo"), 1
+                                                                  debugline 322
+                                                                  jump ofs0091
+                                                         ofs0082:
+                                                                  getlocal0
+                                                                  debugline 325
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_itemList")
+                                                                  getlocal1
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                                  debugline 327
+                                                         ofs0091:
+                                                                  inclocal_i 1
+                                                         ofs0093:
+                                                                  getlocal1
+                                                                  debugline 316
+                                                                  pushbyte 3
+                                                                  iflt ofs0013
+                                                                  getlocal0
+                                                                  debugline 329
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                                  getproperty QName(PackageNamespace(""),"isWelfare")
+                                                                  debugline 329
+                                                                  iffalse ofs00c6
+                                                                  getlocal0
+                                                                  debugline 330
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                                  pushbyte 2
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                                  getproperty QName(PackageNamespace(""),"threeStar")
+                                                                  setproperty QName(PackageNamespace(""),"text")
+                                                                  debugline 329
+                                                                  jump ofs00e0
+                                                         ofs00c6:
+                                                                  getlocal0
+                                                                  debugline 332
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                                  pushbyte 2
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  pushstring "3星条件："
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                                  getproperty QName(PackageNamespace(""),"threeStar")
+                                                                  add
+                                                                  setproperty QName(PackageNamespace(""),"text")
+                                                                  debugline 334
+                                                         ofs00e0:
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                  getproperty QName(PackageNamespace(""),"DREAM_MAP_INFO_ONE_1564")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onDreamFamilyInfoOne")
+                                                                  callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                                                  debugline 335
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                  getproperty QName(PackageNamespace(""),"DREAM_MAP_INFO_ONE_1564")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_dreamInfo")
+                                                                  getproperty QName(PackageNamespace(""),"id")
+                                                                  callpropvoid QName(PackageNamespace(""),"send"), 2
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function onDreamFamilyInfoOne(param1:MessageEvent) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onDreamFamilyInfoOne")
+                                                            dispid 0
+                                                            method
+                                                               name "onDreamFamilyInfoOne"
+                                                               flag HAS_PARAM_NAMES
+                                                               param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 4
+                                                                  localcount 7
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                     debug 1, "_loc6_", 1, 0
+                                                                     debug 1, "_loc5_", 2, 0
+                                                                     debug 1, "_loc2_", 3, 0
+                                                                     debug 1, "param1", 0, 0
+                                                                     debug 1, "_loc4_", 4, 0
+                                                                     debug 1, "_loc3_", 5, 0
+                                                                     debugline 339
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                     getproperty QName(PackageNamespace(""),"DREAM_MAP_INFO_ONE_1564")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onDreamFamilyInfoOne")
+                                                                     callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                                     getlocal1
+                                                                     debugline 340
+                                                                     getproperty QName(PackageNamespace(""),"message")
+                                                                     callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                                                     coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                                     dup
+                                                                     setlocal 4
+                                                                     debugline 341
+                                                                     callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                                                     convert_i
+                                                                     setlocal 6
+                                                                     getlocal 4
+                                                                     debugline 342
+                                                                     callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                                                     convert_i
+                                                                     setlocal 5
+                                                                     getlocal0
+                                                                     debugline 343
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_starMC")
+                                                                     getlocal 6
+                                                                     pushbyte 1
+                                                                     add
+                                                                     callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                     debugline 344
+                                                                     pushbyte 0
+                                                                     setlocal3
+                                                                     jump ofs0088
+                                                            ofs0072:
+                                                                     label
+                                                                     debugline 346
+                                                                     getlex QName(PackageNamespace("org.taomee.filter"),"ColorFilter")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_pointTxtList")
+                                                                     getlocal3
+                                                                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),ProtectedNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("com.taomee.seer2.app.popup.alert:DreamAlert"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.popup.alert"),PackageInternalNs("com.taomee.seer2.app.popup.alert"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     callpropvoid QName(PackageNamespace(""),"setGrayscale"), 1
+                                                                     debugline 347
+                                                                     inclocal_i 3
+                                                            ofs0088:
+                                                                     getlocal3
+                                                                     getlocal 6
+                                                                     debugline 345
+                                                                     iflt ofs0072
+                                                                     debugline 349
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                     pushint 605616
+                                                                     callproperty QName(PackageNamespace(""),"getSpecialItem"), 1
+                                                                     not
+                                                                     iftrue ofs00b0
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.inventory"),"ItemManager")
+                                                                     pushint 605616
+                                                                     callproperty QName(PackageNamespace(""),"getSpecialItem"), 1
+                                                                     getproperty QName(PackageNamespace(""),"quantity")
+                                                                     convert_i
+                                                                     jump ofs00b3
+                                                            ofs00b0:
+                                                                     pushbyte 0
+                                                                     coerce_a
+                                                            ofs00b3:
+                                                                     convert_i
+                                                                     setlocal2
+                                                                     getlocal0
+                                                                     debugline 350
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountTxt")
+                                                                     getlocal 5
+                                                                     pushshort 999
+                                                                     ifnge ofs00cb
+                                                                     pushstring "不限制次数"
+                                                                     jump ofs00d5
+                                                            ofs00cb:
+                                                                     pushstring "本关次数上限:"
+                                                                     getlocal 5
+                                                                     getlocal2
+                                                                     add
+                                                                     convert_s
+                                                                     add
+                                                                     coerce_s
+                                                            ofs00d5:
+                                                                     setproperty QName(PackageNamespace(""),"text")
+                                                                     debugline 351
+                                                                     getlocal 5
+                                                                     getlocal2
+                                                                     debugline 351
+                                                                     add
+                                                                     debugline 351
+                                                                     dup
+                                                                     debugline 351
+                                                                     convert_i
+                                                                     debugline 351
+                                                                     setlocal 5
+                                                                     pushshort 999
+                                                                     greaterequals
+                                                                     debugline 351
+                                                                     iffalse ofs0111
+                                                                     debugline 352
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountBtn")
+                                                                     callpropvoid QName(PackageNamespace(""),"disableButton"), 1
+                                                                     debugline 351
+                                                                     jump ofs011b
+                                                                     debugline 354
+                                                            ofs0111:
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountBtn")
+                                                                     callpropvoid QName(PackageNamespace(""),"enableButton"), 1
+                                                            ofs011b:
+                                                                     getlocal 5
+                                                                     debugline 356
+                                                                     pushbyte 0
+                                                                     lessequals
+                                                                     debugline 356
+                                                                     iffalse ofs0141
+                                                                     debugline 357
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_entryMapBtn")
+                                                                     callpropvoid QName(PackageNamespace(""),"disableButton"), 1
+                                                                     debugline 356
+                                                                     jump ofs014b
+                                                                     debugline 359
+                                                            ofs0141:
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_entryMapBtn")
+                                                                     callpropvoid QName(PackageNamespace(""),"enableButton"), 1
+                                                            ofs014b:
+                                                                     getlocal 6
+                                                                     debugline 361
+                                                                     pushbyte 3
+                                                                     equals
+                                                                     debugline 361
+                                                                     iffalse ofs017a
+                                                                     debugline 362
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_autoFightBtn")
+                                                                     callpropvoid QName(PackageNamespace(""),"enableButton"), 1
+                                                                     getlocal0
+                                                                     debugline 363
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_threeMC")
+                                                                     pushfalse
+                                                                     setproperty QName(PackageNamespace(""),"visible")
+                                                                     debugline 361
+                                                                     jump ofs018d
+                                                                     debugline 365
+                                                            ofs017a:
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_autoFightBtn")
+                                                                     callpropvoid QName(PackageNamespace(""),"disableButton"), 1
+                                                                     getlocal0
+                                                                     debugline 366
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_threeMC")
+                                                                     pushtrue
+                                                                     setproperty QName(PackageNamespace(""),"visible")
+                                                            ofs018d:
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         public function dispose() : void
+                                                         {
+                                                            trait method QName(PackageNamespace(""),"dispose")
+                                                               flag METADATA
+                                                               metadata "__go_to_definition_help"
+                                                                  item "pos" "15010"
+                                                               end ; metadata
+                                                               dispid 0
+                                                               method
+                                                                  name "dispose"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 3
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                        getlocal0
+                                                                        debugline 371
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_closeBtn")
+                                                                        iffalse ofs001d
+                                                                        getlocal0
+                                                                        debugline 372
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_closeBtn")
+                                                                        pushstring "click"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onClickHandler")
+                                                                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                               ofs001d:
+                                                                        getlocal0
+                                                                        debugline 374
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountBtn")
+                                                                        iffalse ofs0036
+                                                                        getlocal0
+                                                                        debugline 375
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountBtn")
+                                                                        pushstring "click"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onFightCount")
+                                                                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                               ofs0036:
+                                                                        getlocal0
+                                                                        debugline 377
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_autoFightBtn")
+                                                                        iffalse ofs004f
+                                                                        getlocal0
+                                                                        debugline 378
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_autoFightBtn")
+                                                                        pushstring "click"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"onAuto")
+                                                                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                               ofs004f:
+                                                                        getlocal0
+                                                                        debugline 380
+                                                                        pushnull
+                                                                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_closeBtn")
+                                                                        getlocal0
+                                                                        debugline 381
+                                                                        pushnull
+                                                                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_fightCountBtn")
+                                                                        getlocal0
+                                                                        debugline 382
+                                                                        pushnull
+                                                                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.popup.alert:DreamAlert"),"_autoFightBtn")
+                                                                        debugline 383
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                                        getlocal0
+                                                                        callpropvoid QName(PackageNamespace(""),"removePopUp"), 1
+                                                                        getlocal0
+                                                                        findpropstrict QName(PackageNamespace("flash.events"),"Event")
+                                                                        pushstring "close"
+                                                                        constructprop QName(PackageNamespace("flash.events"),"Event"), 1
+                                                                        callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                         }
+                                                      }
+                                                      
+                                                      import com.taomee.seer2.app.component.IconDisplayer;
+                                                      import com.taomee.seer2.app.config.ItemConfig;
+                                                      import com.taomee.seer2.app.config.PetConfig;
+                                                      import com.taomee.seer2.core.config.DreamItemInfo;
+                                                      import com.taomee.seer2.core.config.DreamPetInfo;
+                                                      import com.taomee.seer2.core.ui.toolTip.TooltipManager;
+                                                      import com.taomee.seer2.core.utils.URLUtil;
+                                                      import flash.display.MovieClip;
+                                                      import flash.text.TextField;
+                                                      import org.taomee.utils.DisplayUtil;
+                                                      
+                                                      class DreamMiniPetIcon
+                                                      {
+                                                         
+                                                         method
+                                                            name null
+                                                            returns null
+                                                            
+                                                            body
+                                                               maxstack 0
+                                                               localcount 1
+                                                               initscopedepth 0
+                                                               maxscopedepth 0
+                                                               
+                                                               code
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                         
+                                                         private var _mc:MovieClip;
+                                                         
+                                                         private var _levelTxt:TextField;
+                                                         
+                                                         private var _nameTxt:TextField;
+                                                         
+                                                         private var _icon:IconDisplayer;
+                                                         
+                                                         public function DreamMiniPetIcon(param1:MovieClip)
+                                                         {
+                                                            method
+                                                               name "DreamMiniPetIcon"
+                                                               flag HAS_PARAM_NAMES
+                                                               param QName(PackageNamespace("flash.display"),"MovieClip")
+                                                               paramname "param1"
+                                                               returns null
+                                                               
+                                                               body
+                                                                  maxstack 3
+                                                                  localcount 2
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                     debug 1, "param1", 0, 0
+                                                                     debugline 411
+                                                                     getlocal0
+                                                                     debugline 411
+                                                                     constructsuper 0
+                                                                     getlocal0
+                                                                     getlocal1
+                                                                     debugline 412
+                                                                     setproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_mc")
+                                                                     getlocal0
+                                                                     getlocal1
+                                                                     debugline 413
+                                                                     pushstring "levelTxt"
+                                                                     getproperty MultinameL([PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),ProtectedNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),StaticProtectedNs("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),StaticProtectedNs("Object"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     setproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_levelTxt")
+                                                                     getlocal0
+                                                                     getlocal1
+                                                                     debugline 414
+                                                                     pushstring "nameTxt"
+                                                                     getproperty MultinameL([PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),ProtectedNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),StaticProtectedNs("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),StaticProtectedNs("Object"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                     setproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_nameTxt")
+                                                                     getlocal0
+                                                                     findpropstrict QName(PackageNamespace("com.taomee.seer2.app.component"),"IconDisplayer")
+                                                                     debugline 415
+                                                                     constructprop QName(PackageNamespace("com.taomee.seer2.app.component"),"IconDisplayer"), 0
+                                                                     setproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_icon")
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         public function setInfo(param1:DreamPetInfo) : void
+                                                         {
+                                                            trait method QName(PackageNamespace(""),"setInfo")
+                                                               flag METADATA
+                                                               metadata "__go_to_definition_help"
+                                                                  item "pos" "16393"
+                                                               end ; metadata
+                                                               dispid 0
+                                                               method
+                                                                  name "setInfo"
+                                                                  flag HAS_PARAM_NAMES
+                                                                  param QName(PackageNamespace("com.taomee.seer2.core.config"),"DreamPetInfo")
+                                                                  paramname "param1"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 3
+                                                                     localcount 2
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                        debug 1, "param1", 0, 0
+                                                                        getlocal0
+                                                                        debugline 419
+                                                                        getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_icon")
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                        getlocal1
+                                                                        getproperty QName(PackageNamespace(""),"id")
+                                                                        callproperty QName(PackageNamespace(""),"getPetIcon"), 1
+                                                                        callpropvoid QName(PackageNamespace(""),"setIconUrl"), 1
+                                                                        getlocal0
+                                                                        debugline 420
+                                                                        getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_icon")
+                                                                        pushbyte 4
+                                                                        setproperty QName(PackageNamespace(""),"x")
+                                                                        getlocal0
+                                                                        debugline 421
+                                                                        getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_icon")
+                                                                        pushbyte 3
+                                                                        setproperty QName(PackageNamespace(""),"y")
+                                                                        getlocal0
+                                                                        debugline 422
+                                                                        getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_mc")
+                                                                        pushstring "mc"
+                                                                        getproperty MultinameL([PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),ProtectedNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),StaticProtectedNs("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),StaticProtectedNs("Object"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_icon")
+                                                                        callpropvoid Multiname("addChild",[PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),ProtectedNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),StaticProtectedNs("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),StaticProtectedNs("Object"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                                                                        getlocal0
+                                                                        debugline 423
+                                                                        getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_levelTxt")
+                                                                        getlocal1
+                                                                        getproperty QName(PackageNamespace(""),"level")
+                                                                        callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                                        setproperty QName(PackageNamespace(""),"text")
+                                                                        getlocal0
+                                                                        debugline 424
+                                                                        getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_nameTxt")
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"PetConfig")
+                                                                        getlocal1
+                                                                        getproperty QName(PackageNamespace(""),"id")
+                                                                        callproperty QName(PackageNamespace(""),"getPetDefinition"), 1
+                                                                        getproperty QName(PackageNamespace(""),"name")
+                                                                        setproperty QName(PackageNamespace(""),"text")
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            public function dispose() : void
+                                                            {
+                                                               trait method QName(PackageNamespace(""),"dispose")
+                                                                  flag METADATA
+                                                                  metadata "__go_to_definition_help"
+                                                                     item "pos" "16752"
+                                                                  end ; metadata
+                                                                  dispid 0
+                                                                  method
+                                                                     name "dispose"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 2
+                                                                        localcount 1
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                           debugline 428
+                                                                           getlex QName(PackageNamespace("org.taomee.utils"),"DisplayUtil")
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_icon")
+                                                                           callpropvoid QName(PackageNamespace(""),"removeForParent"), 1
+                                                                           getlocal0
+                                                                           debugline 429
+                                                                           getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniPetIcon"),"_mc")
+                                                                           pushfalse
+                                                                           setproperty QName(PackageNamespace(""),"visible")
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                            }
+                                                            
+                                                            class DreamMiniItemIcon
+                                                            {
+                                                               
+                                                               method
+                                                                  name null
+                                                                  returns null
+                                                                  
+                                                                  body
+                                                                     maxstack 0
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 0
+                                                                     
+                                                                     code
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                               
+                                                               private var _mc:MovieClip;
+                                                               
+                                                               private var _icon:IconDisplayer;
+                                                               
+                                                               public function DreamMiniItemIcon(param1:MovieClip)
+                                                               {
+                                                                  method
+                                                                     name "DreamMiniItemIcon"
+                                                                     flag HAS_PARAM_NAMES
+                                                                     param QName(PackageNamespace("flash.display"),"MovieClip")
+                                                                     paramname "param1"
+                                                                     returns null
+                                                                     
+                                                                     body
+                                                                        maxstack 4
+                                                                        localcount 3
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                           debug 1, "param1", 0, 0
+                                                                           debugline 450
+                                                                           getlocal0
+                                                                           debugline 450
+                                                                           constructsuper 0
+                                                                           getlocal0
+                                                                           getlocal1
+                                                                           debugline 451
+                                                                           setproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_mc")
+                                                                           getlocal0
+                                                                           findpropstrict QName(PackageNamespace("com.taomee.seer2.app.component"),"IconDisplayer")
+                                                                           debugline 452
+                                                                           constructprop QName(PackageNamespace("com.taomee.seer2.app.component"),"IconDisplayer"), 0
+                                                                           setproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_icon")
+                                                                           getlocal0
+                                                                           debugline 453
+                                                                           getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_icon")
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_icon")
+                                                                           pushdouble 1.5
+                                                                           dup
+                                                                           setlocal2
+                                                                           setproperty QName(PackageNamespace(""),"scaleY")
+                                                                           getlocal2
+                                                                           setproperty QName(PackageNamespace(""),"scaleX")
+                                                                           getlocal0
+                                                                           debugline 454
+                                                                           getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_icon")
+                                                                           pushbyte 3
+                                                                           setproperty QName(PackageNamespace(""),"x")
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               public function setInfo(param1:DreamItemInfo) : void
+                                                               {
+                                                                  trait method QName(PackageNamespace(""),"setInfo")
+                                                                     flag METADATA
+                                                                     metadata "__go_to_definition_help"
+                                                                        item "pos" "17518"
+                                                                     end ; metadata
+                                                                     dispid 0
+                                                                     method
+                                                                        name "setInfo"
+                                                                        flag HAS_PARAM_NAMES
+                                                                        param QName(PackageNamespace("com.taomee.seer2.core.config"),"DreamItemInfo")
+                                                                        paramname "param1"
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 4
+                                                                           localcount 2
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                              debug 1, "param1", 0, 0
+                                                                              getlocal0
+                                                                              debugline 458
+                                                                              getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_icon")
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ItemConfig")
+                                                                              getlocal1
+                                                                              getproperty QName(PackageNamespace(""),"id")
+                                                                              callproperty QName(PackageNamespace(""),"getItemIconUrl"), 1
+                                                                              callpropvoid QName(PackageNamespace(""),"setIconUrl"), 1
+                                                                              getlocal0
+                                                                              debugline 459
+                                                                              getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_mc")
+                                                                              pushstring "mc"
+                                                                              getproperty MultinameL([PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),ProtectedNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),StaticProtectedNs("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),StaticProtectedNs("Object"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_icon")
+                                                                              callpropvoid Multiname("addChild",[PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),ProtectedNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),StaticProtectedNs("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),StaticProtectedNs("Object"),PrivateNamespace("FilePrivateNS:DreamAlert"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                                                                              debugline 460
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.ui.toolTip"),"TooltipManager")
+                                                                              getlocal0
+                                                                              getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_icon")
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ItemConfig")
+                                                                              getlocal1
+                                                                              getproperty QName(PackageNamespace(""),"id")
+                                                                              callproperty QName(PackageNamespace(""),"getItemName"), 1
+                                                                              callpropvoid QName(PackageNamespace(""),"addCommonTip"), 2
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  public function dispose() : void
+                                                                  {
+                                                                     trait method QName(PackageNamespace(""),"dispose")
+                                                                        flag METADATA
+                                                                        metadata "__go_to_definition_help"
+                                                                           item "pos" "17786"
+                                                                        end ; metadata
+                                                                        dispid 0
+                                                                        method
+                                                                           name "dispose"
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 2
+                                                                              localcount 1
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\popup\\alert;DreamAlert.as"
+                                                                                 debugline 464
+                                                                                 getlex QName(PackageNamespace("org.taomee.utils"),"DisplayUtil")
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_icon")
+                                                                                 callpropvoid QName(PackageNamespace(""),"removeForParent"), 1
+                                                                                 getlocal0
+                                                                                 debugline 465
+                                                                                 getproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert:DreamMiniItemIcon"),"_mc")
+                                                                                 pushfalse
+                                                                                 setproperty QName(PackageNamespace(""),"visible")
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                  }
+                                                                  
+                                                                  method
+                                                                     name null
+                                                                     returns null
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 1
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 7
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           getscopeobject 0
+                                                                           getlex QName(PackageNamespace(""),"Object")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                                           dup
+                                                                           pushscope
+                                                                           newclass 0
+                                                                           popscope
+                                                                           popscope
+                                                                           popscope
+                                                                           popscope
+                                                                           popscope
+                                                                           popscope
+                                                                           initproperty QName(PackageNamespace("com.taomee.seer2.app.popup.alert"),"DreamAlert")
+                                                                           getscopeobject 0
+                                                                           getlex QName(PackageNamespace(""),"Object")
+                                                                           dup
+                                                                           pushscope
+                                                                           newclass 1
+                                                                           popscope
+                                                                           initproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert"),"DreamMiniPetIcon")
+                                                                           getscopeobject 0
+                                                                           getlex QName(PackageNamespace(""),"Object")
+                                                                           dup
+                                                                           pushscope
+                                                                           newclass 2
+                                                                           popscope
+                                                                           initproperty QName(PrivateNamespace("FilePrivateNS:DreamAlert"),"DreamMiniItemIcon")
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                                  

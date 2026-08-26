@@ -1,0 +1,1288 @@
+package com.taomee.analytics
+{
+   import flash.display.Bitmap;
+   import flash.display.BitmapData;
+   import flash.display.DisplayObjectContainer;
+   import flash.display.Sprite;
+   import flash.display.Stage;
+   import flash.events.ContextMenuEvent;
+   import flash.events.Event;
+   import flash.geom.Rectangle;
+   import flash.system.System;
+   import flash.text.StyleSheet;
+   import flash.text.TextField;
+   import flash.ui.ContextMenu;
+   import flash.ui.ContextMenuItem;
+   import flash.utils.ByteArray;
+   import flash.utils.getTimer;
+   
+   internal class Stats extends Sprite
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _memMaxGraph:uint;
+      
+      private var _fpsPrev:uint;
+      
+      private var _text:TextField;
+      
+      private var _mem:uint;
+      
+      private const WIDTH:uint = 80;
+      
+      private const HEIGHT:uint = 100;
+      
+      private var _fps:uint;
+      
+      private var _style:StyleSheet;
+      
+      private var _rect:Rectangle;
+      
+      private var _fpsGraph:uint;
+      
+      private var _timer:uint;
+      
+      private const theme:Object;
+      
+      private var _graph:Bitmap;
+      
+      private var _memList:Array;
+      
+      private var _xml:XML;
+      
+      private var _memGraph:uint;
+      
+      private var _fpsList:Array;
+      
+      private var _memPrev:uint;
+      
+      private var _memMax:uint;
+      
+      private var _stage:Stage;
+      
+      public function Stats()
+      {
+         method
+            name "Stats"
+            returns null
+            
+            body
+               maxstack 8
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                  debugline 44
+                  pushstring "bg"
+                  pushbyte 0
+                  debugline 45
+                  pushstring "fps"
+                  pushint 16776960
+                  debugline 46
+                  pushstring "mem"
+                  pushint 65535
+                  debugline 47
+                  pushstring "memMax"
+                  pushint 15597568
+                  debugline 43
+                  newobject 4
+                  findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                  swap
+                  initproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                  debugline 67
+                  newarray 0
+                  findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                  swap
+                  setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                  debugline 68
+                  newarray 0
+                  findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memList")
+                  swap
+                  setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memList")
+                  debugline 69
+                  getlocal0
+                  debugline 69
+                  constructsuper 0
+                  debugline 70
+                  pushfalse
+                  findproperty QName(PackageNamespace(""),"mouseChildren")
+                  swap
+                  setproperty QName(PackageNamespace(""),"mouseChildren")
+                  debugline 71
+                  getlex QName(PackageNamespace(""),"graphics")
+                  getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                  getproperty Multiname("bg",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  callpropvoid QName(PackageNamespace(""),"beginFill"), 1
+                  debugline 72
+                  getlex QName(PackageNamespace(""),"graphics")
+                  pushbyte 0
+                  pushbyte 0
+                  pushbyte 80
+                  pushbyte 100
+                  callpropvoid QName(PackageNamespace(""),"drawRect"), 4
+                  debugline 73
+                  getlex QName(PackageNamespace(""),"graphics")
+                  callpropvoid QName(PackageNamespace(""),"endFill"), 0
+                  findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"createContextMenu")
+                  debugline 74
+                  callpropvoid QName(PrivateNamespace("com.taomee.analytics:Stats"),"createContextMenu"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      private function updateView(param1:uint, param2:uint, param3:uint) : void
+      {
+         trait method QName(PrivateNamespace("com.taomee.analytics:Stats"),"updateView")
+            dispid 0
+            method
+               name "updateView"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace(""),"uint")
+               param QName(PackageNamespace(""),"uint")
+               param QName(PackageNamespace(""),"uint")
+               paramname "param1"
+               paramname "param2"
+               paramname "param3"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 6
+                  localcount 4
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                     debug 1, "param3", 2, 0
+                     debug 1, "param1", 0, 0
+                     debug 1, "param2", 1, 0
+                     debugline 78
+                     getlex QName(PackageNamespace(""),"stage")
+                     iffalse ofs0115
+                     debugline 79
+                     getlex QName(PackageNamespace(""),"Math")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"height")
+                     getlocal1
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                     getproperty QName(PackageNamespace(""),"frameRate")
+                     divide
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"height")
+                     multiply
+                     callproperty QName(PackageNamespace(""),"min"), 2
+                     findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsGraph")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsGraph")
+                     debugline 80
+                     getlex QName(PackageNamespace(""),"Math")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"height")
+                     getlex QName(PackageNamespace(""),"Math")
+                     getlex QName(PackageNamespace(""),"Math")
+                     getlocal2
+                     pushshort 5000
+                     multiply
+                     callproperty QName(PackageNamespace(""),"sqrt"), 1
+                     callproperty QName(PackageNamespace(""),"sqrt"), 1
+                     callproperty QName(PackageNamespace(""),"min"), 2
+                     pushbyte 2
+                     subtract
+                     findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memGraph")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memGraph")
+                     debugline 81
+                     getlex QName(PackageNamespace(""),"Math")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"height")
+                     getlex QName(PackageNamespace(""),"Math")
+                     getlex QName(PackageNamespace(""),"Math")
+                     getlocal3
+                     pushshort 5000
+                     multiply
+                     callproperty QName(PackageNamespace(""),"sqrt"), 1
+                     callproperty QName(PackageNamespace(""),"sqrt"), 1
+                     callproperty QName(PackageNamespace(""),"min"), 2
+                     pushbyte 2
+                     subtract
+                     findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memMaxGraph")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memMaxGraph")
+                     debugline 82
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"bitmapData")
+                     pushbyte -1
+                     pushbyte 0
+                     callpropvoid QName(PackageNamespace(""),"scroll"), 2
+                     debugline 83
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"bitmapData")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_rect")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                     getproperty Multiname("bg",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(PackageNamespace(""),"fillRect"), 2
+                     debugline 84
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"bitmapData")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"width")
+                     pushbyte 1
+                     subtract
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"height")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsGraph")
+                     subtract
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                     getproperty Multiname("fps",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(PackageNamespace(""),"setPixel"), 3
+                     debugline 85
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"bitmapData")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"width")
+                     pushbyte 1
+                     subtract
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"height")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memGraph")
+                     subtract
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                     getproperty Multiname("mem",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(PackageNamespace(""),"setPixel"), 3
+                     debugline 86
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"bitmapData")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"width")
+                     pushbyte 1
+                     subtract
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                     getproperty QName(PackageNamespace(""),"height")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memMaxGraph")
+                     subtract
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                     getproperty Multiname("memMax",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(PackageNamespace(""),"setPixel"), 3
+                     debugline 87
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_xml")
+                     pushstring "fps: "
+                     getlocal1
+                     add
+                     pushstring " / "
+                     add
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                     getproperty QName(PackageNamespace(""),"frameRate")
+                     add
+                     setproperty Multiname("fps",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     debugline 88
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_xml")
+                     pushstring "mem: "
+                     getlocal2
+                     add
+                     setproperty Multiname("mem",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     debugline 89
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_xml")
+                     pushstring "memMax: "
+                     getlocal3
+                     add
+                     setproperty Multiname("memMax",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     debugline 90
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                     getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_xml")
+                     setproperty QName(PackageNamespace(""),"htmlText")
+            ofs0115:
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function init() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.analytics:Stats"),"init")
+               dispid 0
+               method
+                  name "init"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                        debugline 95
+                        getlex QName(PackageNamespace("flash.utils"),"getTimer")
+                        debugline 95
+                        getglobalscope
+                        debugline 95
+                        call 0
+                        findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsPrev")
+                        swap
+                        setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsPrev")
+                        debugline 96
+                        getlex QName(PackageNamespace("flash.utils"),"getTimer")
+                        debugline 96
+                        getglobalscope
+                        debugline 96
+                        call 0
+                        findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memPrev")
+                        swap
+                        setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memPrev")
+                        debugline 97
+                        getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                        pushstring "enterFrame"
+                        getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"onEnterFrame")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function createContextMenu() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.analytics:Stats"),"createContextMenu")
+                  dispid 0
+                  method
+                     name "createContextMenu"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 3
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                           debug 1, "_loc2_", 0, 0
+                           debug 1, "_loc1_", 1, 0
+                           debugline 101
+                           pushnull
+                           coerce QName(PackageNamespace("flash.ui"),"ContextMenu")
+                           setlocal2
+                           debugline 102
+                           pushnull
+                           coerce QName(PackageNamespace("flash.ui"),"ContextMenuItem")
+                           setlocal1
+                           debugline 103
+                           pushstring "isSupported"
+                           getlex QName(PackageNamespace("flash.ui"),"ContextMenu")
+                           in
+                           iffalse ofs006a
+                           debugline 104
+                           getlex QName(PackageNamespace("flash.ui"),"ContextMenu")
+                           pushstring "isSupported"
+                           getproperty MultinameL([PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           iffalse ofs006a
+                           findpropstrict QName(PackageNamespace("flash.ui"),"ContextMenu")
+                           debugline 105
+                           constructprop QName(PackageNamespace("flash.ui"),"ContextMenu"), 0
+                           coerce QName(PackageNamespace("flash.ui"),"ContextMenu")
+                           setlocal2
+                           getlocal2
+                           debugline 106
+                           callpropvoid QName(PackageNamespace(""),"hideBuiltInItems"), 0
+                           findpropstrict QName(PackageNamespace("flash.ui"),"ContextMenuItem")
+                           debugline 107
+                           pushstring "复制数据"
+                           constructprop QName(PackageNamespace("flash.ui"),"ContextMenuItem"), 1
+                           coerce QName(PackageNamespace("flash.ui"),"ContextMenuItem")
+                           setlocal1
+                           getlocal1
+                           pushstring "menuItemSelect"
+                           debugline 108
+                           getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"onContextMenu")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           getlocal2
+                           debugline 109
+                           getproperty QName(PackageNamespace(""),"customItems")
+                           getlocal1
+                           callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                           getlocal2
+                           findproperty QName(PackageNamespace(""),"contextMenu")
+                           debugline 110
+                           swap
+                           debugline 110
+                           setproperty QName(PackageNamespace(""),"contextMenu")
+                  ofs006a:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function onDeactivate(param1:Event) : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.analytics:Stats"),"onDeactivate")
+                     dispid 0
+                     method
+                        name "onDeactivate"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("flash.events"),"Event")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                              debug 1, "param1", 0, 0
+                              debugline 116
+                              getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                              pushstring "enterFrame"
+                              getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"onEnterFrame")
+                              callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  public function getMemoryBytes() : ByteArray
+                  {
+                     trait method QName(PackageNamespace(""),"getMemoryBytes")
+                        flag METADATA
+                        metadata "__go_to_definition_help"
+                           item "pos" "3550"
+                        end ; metadata
+                        dispid 0
+                        method
+                           name "getMemoryBytes"
+                           returns QName(PackageNamespace("flash.utils"),"ByteArray")
+                           
+                           body
+                              maxstack 2
+                              localcount 5
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                 debug 1, "_loc2_", 0, 0
+                                 debug 1, "_loc1_", 1, 0
+                                 debugline 120
+                                 pushbyte 0
+                                 convert_u
+                                 setlocal1
+                                 findpropstrict QName(PackageNamespace("flash.utils"),"ByteArray")
+                                 debugline 121
+                                 constructprop QName(PackageNamespace("flash.utils"),"ByteArray"), 0
+                                 coerce QName(PackageNamespace("flash.utils"),"ByteArray")
+                                 setlocal2
+                                 pushbyte 0
+                                 setlocal 4
+                                 debugline 122
+                                 getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memList")
+                                 setlocal3
+                                 jump ofs0039
+                        ofs002b:
+                                 label
+                                 getlocal3
+                                 getlocal 4
+                                 nextvalue
+                                 convert_u
+                                 setlocal1
+                                 getlocal2
+                                 getlocal1
+                                 debugline 123
+                                 callpropvoid QName(PackageNamespace(""),"writeShort"), 1
+                        ofs0039:
+                                 hasnext2 3, 4
+                                 iftrue ofs002b
+                                 getlocal2
+                                 debugline 125
+                                 pushbyte 0
+                                 setproperty QName(PackageNamespace(""),"position")
+                                 getlocal2
+                                 debugline 126
+                                 returnvalue
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onEnterFrame(param1:Event) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.analytics:Stats"),"onEnterFrame")
+                           dispid 0
+                           method
+                              name "onEnterFrame"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("flash.events"),"Event")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 4
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                    debug 1, "param1", 0, 0
+                                    debugline 130
+                                    getlex QName(PackageNamespace("flash.utils"),"getTimer")
+                                    debugline 130
+                                    getglobalscope
+                                    debugline 130
+                                    call 0
+                                    findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_timer")
+                                    swap
+                                    setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_timer")
+                                    debugline 131
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_timer")
+                                    pushshort 1000
+                                    subtract
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsPrev")
+                                    ifngt ofs0076
+                                    debugline 132
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_timer")
+                                    findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsPrev")
+                                    swap
+                                    setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsPrev")
+                                    debugline 133
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    pushshort 1000
+                                    ifnge ofs004e
+                                    debugline 134
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"shift"), 0
+                                    debugline 136
+                           ofs004e:
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fps")
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                                    getproperty QName(PackageNamespace(""),"frameRate")
+                                    divide
+                                    pushbyte 100
+                                    multiply
+                                    convert_u
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                    findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"updateView")
+                                    debugline 137
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fps")
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_mem")
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memMax")
+                                    callpropvoid QName(PrivateNamespace("com.taomee.analytics:Stats"),"updateView"), 3
+                                    debugline 138
+                                    pushbyte 0
+                                    findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fps")
+                                    swap
+                                    setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fps")
+                           ofs0076:
+                                    findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fps")
+                                    debugline 140
+                                    getproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fps")
+                                    debugline 140
+                                    increment
+                                    findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fps")
+                                    debugline 140
+                                    swap
+                                    debugline 140
+                                    setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fps")
+                                    debugline 141
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_timer")
+                                    pushshort 10000
+                                    subtract
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memPrev")
+                                    ifngt ofs00ee
+                                    debugline 142
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_timer")
+                                    findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memPrev")
+                                    swap
+                                    setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memPrev")
+                                    debugline 143
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memList")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    pushshort 1000
+                                    ifnge ofs00be
+                                    debugline 144
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memList")
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"shift"), 0
+                                    debugline 146
+                           ofs00be:
+                                    getlex QName(PackageNamespace("flash.system"),"System")
+                                    getproperty QName(PackageNamespace(""),"totalMemory")
+                                    pushdouble 9.54e-7
+                                    multiply
+                                    convert_u
+                                    findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_mem")
+                                    swap
+                                    setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_mem")
+                                    debugline 147
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memMax")
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_mem")
+                                    ifngt ofs00dc
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memMax")
+                                    jump ofs00df
+                           ofs00dc:
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_mem")
+                                    convert_u
+                           ofs00df:
+                                    findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memMax")
+                                    swap
+                                    setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memMax")
+                                    debugline 148
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memList")
+                                    getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_mem")
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                           ofs00ee:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        public function hide() : void
+                        {
+                           trait method QName(PackageNamespace(""),"hide")
+                              flag METADATA
+                              metadata "__go_to_definition_help"
+                                 item "pos" "4582"
+                              end ; metadata
+                              dispid 0
+                              method
+                                 name "hide"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                       debugline 153
+                                       getlex QName(PackageNamespace(""),"parent")
+                                       iffalse ofs007d
+                                       debugline 154
+                                       getlex QName(PackageNamespace(""),"parent")
+                                       getlocal0
+                                       callpropvoid QName(PackageNamespace(""),"removeChild"), 1
+                                       jump ofs0028
+                              ofs001a:
+                                       label
+                                       findpropstrict QName(PackageNamespace(""),"removeChildAt")
+                                       debugline 156
+                                       pushbyte 0
+                                       callpropvoid QName(PackageNamespace(""),"removeChildAt"), 1
+                                       debugline 155
+                              ofs0028:
+                                       getlex QName(PackageNamespace(""),"numChildren")
+                                       iftrue ofs001a
+                                       debugline 158
+                                       getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                       iffalse ofs004f
+                                       debugline 159
+                                       getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                       getproperty QName(PackageNamespace(""),"bitmapData")
+                                       iffalse ofs004f
+                                       debugline 160
+                                       getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                       getproperty QName(PackageNamespace(""),"bitmapData")
+                                       callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                       debugline 163
+                              ofs004f:
+                                       pushnull
+                                       findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_xml")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_xml")
+                                       debugline 164
+                                       pushnull
+                                       findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                       debugline 165
+                                       pushnull
+                                       findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                       debugline 166
+                                       pushnull
+                                       findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                       debugline 167
+                                       pushnull
+                                       findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_rect")
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_rect")
+                                       debugline 168
+                                       returnvoid
+                              ofs007d:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onContextMenu(param1:ContextMenuEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.analytics:Stats"),"onContextMenu")
+                                 dispid 0
+                                 method
+                                    name "onContextMenu"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.events"),"ContextMenuEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 4
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                          debug 1, "_loc2_", 1, 0
+                                          debug 1, "param1", 0, 0
+                                          debugline 173
+                                          pushstring "fps: "
+                                          getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                                          pushstring " "
+                                          callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"join"), 1
+                                          add
+                                          setlocal2
+                                          getlocal2
+                                          debugline 174
+                                          pushstring "\n"
+                                          add
+                                          setlocal2
+                                          getlocal2
+                                          debugline 175
+                                          pushstring "mem:"
+                                          getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_memList")
+                                          pushstring " "
+                                          callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"join"), 1
+                                          add
+                                          add
+                                          setlocal2
+                                          debugline 176
+                                          getlex QName(PackageNamespace("flash.system"),"System")
+                                          getlocal2
+                                          callpropvoid QName(PackageNamespace(""),"setClipboard"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public function getEqualityFps() : int
+                              {
+                                 trait method QName(PackageNamespace(""),"getEqualityFps")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "5336"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "getEqualityFps"
+                                       returns QName(PackageNamespace(""),"int")
+                                       
+                                       body
+                                          maxstack 2
+                                          localcount 5
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                             debug 1, "_loc2_", 0, 0
+                                             debug 1, "_loc1_", 1, 0
+                                             debugline 180
+                                             pushbyte 0
+                                             setlocal2
+                                             debugline 181
+                                             pushbyte 0
+                                             convert_u
+                                             setlocal1
+                                             pushbyte 0
+                                             setlocal 4
+                                             debugline 182
+                                             getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                                             setlocal3
+                                             jump ofs0041
+                                    ofs0029:
+                                             label
+                                             getlocal3
+                                             getlocal 4
+                                             nextvalue
+                                             convert_u
+                                             setlocal1
+                                             debugline 183
+                                             getlocal2
+                                             getlocal1
+                                             debugline 183
+                                             add
+                                             debugline 183
+                                             convert_i
+                                             debugline 183
+                                             setlocal2
+                                    ofs0041:
+                                             hasnext2 3, 4
+                                             iftrue ofs0029
+                                             getlocal2
+                                             debugline 185
+                                             getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                                             getproperty QName(PackageNamespace(""),"length")
+                                             divide
+                                             convert_i
+                                             returnvalue
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 public function start(param1:Stage) : void
+                                 {
+                                    trait method QName(PackageNamespace(""),"start")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "5577"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "start"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace("flash.display"),"Stage")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 2
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                                debug 1, "param1", 0, 0
+                                                getlocal1
+                                                findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                                                debugline 189
+                                                swap
+                                                debugline 189
+                                                setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                                                findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"init")
+                                                debugline 190
+                                                callpropvoid QName(PrivateNamespace("com.taomee.analytics:Stats"),"init"), 0
+                                                debugline 191
+                                                getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                                                pushstring "deactivate"
+                                                getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"onDeactivate")
+                                                callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                debugline 192
+                                                getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_stage")
+                                                pushstring "activate"
+                                                getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"onActivate")
+                                                callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function hex2css(param1:int) : String
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.analytics:Stats"),"hex2css")
+                                          dispid 0
+                                          method
+                                             name "hex2css"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace(""),"int")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"String")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                                   debug 1, "param1", 0, 0
+                                                   debugline 196
+                                                   pushstring "#"
+                                                   getlocal1
+                                                   pushbyte 16
+                                                   callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 1
+                                                   add
+                                                   returnvalue
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onActivate(param1:Event) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.analytics:Stats"),"onActivate")
+                                             dispid 0
+                                             method
+                                                name "onActivate"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace("flash.events"),"Event")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 1
+                                                   localcount 2
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                                      debug 1, "param1", 0, 0
+                                                      findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"init")
+                                                      debugline 200
+                                                      callpropvoid QName(PrivateNamespace("com.taomee.analytics:Stats"),"init"), 0
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          public function getFpsBytes() : ByteArray
+                                          {
+                                             trait method QName(PackageNamespace(""),"getFpsBytes")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "5988"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "getFpsBytes"
+                                                   returns QName(PackageNamespace("flash.utils"),"ByteArray")
+                                                   
+                                                   body
+                                                      maxstack 2
+                                                      localcount 5
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                                         debug 1, "_loc2_", 0, 0
+                                                         debug 1, "_loc1_", 1, 0
+                                                         debugline 204
+                                                         pushbyte 0
+                                                         convert_u
+                                                         setlocal1
+                                                         findpropstrict QName(PackageNamespace("flash.utils"),"ByteArray")
+                                                         debugline 205
+                                                         constructprop QName(PackageNamespace("flash.utils"),"ByteArray"), 0
+                                                         coerce QName(PackageNamespace("flash.utils"),"ByteArray")
+                                                         setlocal2
+                                                         pushbyte 0
+                                                         setlocal 4
+                                                         debugline 206
+                                                         getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_fpsList")
+                                                         setlocal3
+                                                         jump ofs003d
+                                                ofs002e:
+                                                         label
+                                                         getlocal3
+                                                         getlocal 4
+                                                         nextvalue
+                                                         convert_u
+                                                         setlocal1
+                                                         getlocal2
+                                                         getlocal1
+                                                         debugline 207
+                                                         callpropvoid QName(PackageNamespace(""),"writeByte"), 1
+                                                ofs003d:
+                                                         hasnext2 3, 4
+                                                         iftrue ofs002e
+                                                         getlocal2
+                                                         debugline 209
+                                                         pushbyte 0
+                                                         setproperty QName(PackageNamespace(""),"position")
+                                                         getlocal2
+                                                         debugline 210
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public function show(param1:DisplayObjectContainer) : void
+                                             {
+                                                trait method QName(PackageNamespace(""),"show")
+                                                   flag METADATA
+                                                   metadata "__go_to_definition_help"
+                                                      item "pos" "6267"
+                                                   end ; metadata
+                                                   dispid 0
+                                                   method
+                                                      name "show"
+                                                      flag HAS_PARAM_NAMES
+                                                      param QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                      paramname "param1"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 6
+                                                         localcount 2
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\analytics;Stats.as"
+                                                            debug 1, "param1", 0, 0
+                                                            debugline 214
+                                                            getlex QName(PackageNamespace(""),"parent")
+                                                            iffalse ofs002b
+                                                            getlocal1
+                                                            debugline 215
+                                                            getlex QName(PackageNamespace(""),"parent")
+                                                            ifeq ofs0027
+                                                            getlocal1
+                                                            getlocal0
+                                                            debugline 216
+                                                            callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                            debugline 218
+                                                   ofs0027:
+                                                            returnvoid
+                                                            debugline 220
+                                                   ofs002b:
+                                                            getlex QName(PackageNamespace(""),"XML")
+                                                            pushstring "<xml>\r\n            <fps>FPS:</fps>\r\n            <mem>MEM:</mem>\r\n            <memMax>MAX:</memMax>\r\n        </xml>"
+                                                            construct 1
+                                                            findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_xml")
+                                                            swap
+                                                            setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_xml")
+                                                            findpropstrict QName(PackageNamespace("flash.text"),"StyleSheet")
+                                                            debugline 225
+                                                            constructprop QName(PackageNamespace("flash.text"),"StyleSheet"), 0
+                                                            findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                                            swap
+                                                            setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                                            debugline 226
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                                            pushstring "xml"
+                                                            debugline 227
+                                                            pushstring "fontSize"
+                                                            pushstring "11px"
+                                                            debugline 228
+                                                            pushstring "fontFamily"
+                                                            pushstring "_sans"
+                                                            newobject 2
+                                                            callpropvoid QName(PackageNamespace(""),"setStyle"), 2
+                                                            debugline 230
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                                            pushstring "fps"
+                                                            pushstring "color"
+                                                            findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"hex2css")
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                                                            getproperty Multiname("fps",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            callproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"hex2css"), 1
+                                                            newobject 1
+                                                            callpropvoid QName(PackageNamespace(""),"setStyle"), 2
+                                                            debugline 231
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                                            pushstring "mem"
+                                                            pushstring "color"
+                                                            findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"hex2css")
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                                                            getproperty Multiname("mem",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            callproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"hex2css"), 1
+                                                            newobject 1
+                                                            callpropvoid QName(PackageNamespace(""),"setStyle"), 2
+                                                            debugline 232
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                                            pushstring "memMax"
+                                                            pushstring "color"
+                                                            findpropstrict QName(PrivateNamespace("com.taomee.analytics:Stats"),"hex2css")
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                                                            getproperty Multiname("memMax",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            callproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"hex2css"), 1
+                                                            newobject 1
+                                                            callpropvoid QName(PackageNamespace(""),"setStyle"), 2
+                                                            findpropstrict QName(PackageNamespace("flash.text"),"TextField")
+                                                            debugline 233
+                                                            constructprop QName(PackageNamespace("flash.text"),"TextField"), 0
+                                                            findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            swap
+                                                            setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            debugline 234
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            pushbyte 80
+                                                            setproperty QName(PackageNamespace(""),"width")
+                                                            debugline 235
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            pushbyte 50
+                                                            setproperty QName(PackageNamespace(""),"height")
+                                                            debugline 236
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_style")
+                                                            setproperty QName(PackageNamespace(""),"styleSheet")
+                                                            debugline 237
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            pushtrue
+                                                            setproperty QName(PackageNamespace(""),"condenseWhite")
+                                                            debugline 238
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            pushfalse
+                                                            setproperty QName(PackageNamespace(""),"selectable")
+                                                            findpropstrict QName(PackageNamespace(""),"addChild")
+                                                            debugline 239
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                            findpropstrict QName(PackageNamespace("flash.display"),"Bitmap")
+                                                            debugline 240
+                                                            constructprop QName(PackageNamespace("flash.display"),"Bitmap"), 0
+                                                            findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                                            swap
+                                                            setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                                            debugline 241
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            getproperty QName(PackageNamespace(""),"height")
+                                                            setproperty QName(PackageNamespace(""),"y")
+                                                            findpropstrict QName(PackageNamespace("flash.geom"),"Rectangle")
+                                                            debugline 242
+                                                            pushbyte 80
+                                                            pushbyte 1
+                                                            subtract
+                                                            pushbyte 0
+                                                            pushbyte 1
+                                                            pushbyte 100
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            getproperty QName(PackageNamespace(""),"height")
+                                                            subtract
+                                                            constructprop QName(PackageNamespace("flash.geom"),"Rectangle"), 4
+                                                            findproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_rect")
+                                                            swap
+                                                            setproperty QName(PrivateNamespace("com.taomee.analytics:Stats"),"_rect")
+                                                            findpropstrict QName(PackageNamespace(""),"addChild")
+                                                            debugline 243
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                                            callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                            debugline 244
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_graph")
+                                                            findpropstrict QName(PackageNamespace("flash.display"),"BitmapData")
+                                                            pushbyte 80
+                                                            pushbyte 100
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"_text")
+                                                            getproperty QName(PackageNamespace(""),"height")
+                                                            subtract
+                                                            pushfalse
+                                                            getlex QName(PrivateNamespace("com.taomee.analytics:Stats"),"theme")
+                                                            getproperty Multiname("bg",[PrivateNamespace("com.taomee.analytics:Stats"),ProtectedNamespace("com.taomee.analytics:Stats"),StaticProtectedNs("com.taomee.analytics:Stats"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.analytics"),PackageInternalNs("com.taomee.analytics"),PrivateNamespace("FilePrivateNS:Stats"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            constructprop QName(PackageNamespace("flash.display"),"BitmapData"), 4
+                                                            setproperty QName(PackageNamespace(""),"bitmapData")
+                                                            getlocal1
+                                                            getlocal0
+                                                            debugline 245
+                                                            callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                             }
+                                          }
+                                          
+                                          method
+                                             name null
+                                             returns null
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 7
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   getscopeobject 0
+                                                   getlex QName(PackageNamespace(""),"Object")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                   dup
+                                                   pushscope
+                                                   newclass 0
+                                                   popscope
+                                                   popscope
+                                                   popscope
+                                                   popscope
+                                                   popscope
+                                                   popscope
+                                                   initproperty QName(PackageInternalNs("com.taomee.analytics"),"Stats")
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                          

@@ -1,0 +1,1997 @@
+package com.taomee.seer2.app.gameRule.door.binary
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.arena.FightVerifyManager;
+   import com.taomee.seer2.app.component.ProgressiveAnimationPlayer;
+   import com.taomee.seer2.app.gameRule.door.core.IDoorServerPetable;
+   import com.taomee.seer2.app.gameRule.door.core.IMultiSelectable;
+   import com.taomee.seer2.app.gameRule.door.core.ServerReward;
+   import com.taomee.seer2.app.gameRule.door.core.vo.DoorInitData;
+   import com.taomee.seer2.app.gameRule.door.support.DoorSupportInfo;
+   import com.taomee.seer2.app.gameRule.door.support.IUpDoorSupport;
+   import com.taomee.seer2.app.gameRule.door.util.Door21LevelUtil;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.parser.Parser_1017;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.sound.SoundManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.utils.setTimeout;
+   
+   public class BinaryDoorSupport implements IUpDoorSupport, IMultiSelectable, IDoorServerPetable
+   {
+      
+      private static var _instance:BinaryDoorSupport;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _supportInfo:DoorSupportInfo;
+      
+      private var _map:MapModel;
+      
+      private var _doorLevel_MC:MovieClip;
+      
+      private var _guard:MovieClip;
+      
+      private var _guardInstance:MovieClip;
+      
+      private var _levelTip2:MovieClip;
+      
+      private var _doorLevel:uint = 1;
+      
+      private var _isGetServerGiveFlag:Boolean = false;
+      
+      private var _canLevelNow:Boolean = true;
+      
+      private var _animationPlayer:ProgressiveAnimationPlayer;
+      
+      private var _rewardId:uint;
+      
+      private var _rewardIDList:Vector.<ServerReward>;
+      
+      private var _petId:uint = 0;
+      
+      private var _resourceId:uint = 0;
+      
+      private var _serverGivePetInfo:PetInfo;
+      
+      public function BinaryDoorSupport()
+      {
+         method
+            name "BinaryDoorSupport"
+            returns null
+            
+            body
+               maxstack 6
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                  debugline 74
+                  getlocal0
+                  debugline 74
+                  constructsuper 0
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.support"),"DoorSupportInfo")
+                  pushbyte 5
+                  pushbyte 0
+                  pushshort 420
+                  pushstring "BinaryDoorStartPanel"
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.support"),"DoorSupportInfo"), 4
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : BinaryDoorSupport
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2907"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.binary"),"BinaryDoorSupport")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                     debugline 79
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_instance")
+                     pushnull
+                     ifne ofs001b
+                     debugline 80
+                     getlocal0
+                     debugline 80
+                     construct 0
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_instance")
+                     debugline 82
+            ofs001b:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function get doorLevel() : uint
+         {
+            trait getter QName(PackageNamespace(""),"doorLevel")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "3097"
+               end ; metadata
+               dispid 0
+               method
+                  name "doorLevel"
+                  returns QName(PackageNamespace(""),"uint")
+                  
+                  body
+                     maxstack 1
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                        getlocal0
+                        debugline 86
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                        returnvalue
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function get supportInfo() : DoorSupportInfo
+            {
+               trait getter QName(PackageNamespace(""),"supportInfo")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "3183"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "supportInfo"
+                     returns QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.support"),"DoorSupportInfo")
+                     
+                     body
+                        maxstack 1
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                           getlocal0
+                           debugline 90
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                           returnvalue
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public function init(param1:MapModel) : void
+               {
+                  trait method QName(PackageNamespace(""),"init")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "3280"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "init"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 2
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              debugline 94
+                              pushtrue
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_canLevelNow")
+                              getlocal0
+                              getlocal1
+                              debugline 95
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_map")
+                              getlocal0
+                              debugline 96
+                              callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"initUI"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function playAnimation(param1:Function) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"playAnimation")
+                        dispid 0
+                        method
+                           name "playAnimation"
+                           flag HAS_PARAM_NAMES
+                           flag NEED_ACTIVATION
+                           param QName(PackageNamespace(""),"Function")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 5
+                              localcount 3
+                              initscopedepth 0
+                              maxscopedepth 2
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                 slotid 1
+                                 type QName(PackageNamespace(""),"Function")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onAnimationEnd")
+                                 slotid 2
+                                 type QName(PackageNamespace(""),"Function")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onComplete")
+                                 slotid 3
+                                 type QName(PackageNamespace(""),"Function")
+                              end ; trait
+                              trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"animationName")
+                                 slotid 4
+                                 type QName(PackageNamespace(""),"String")
+                              end ; trait
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                 newactivation
+                                 dup
+                                 setlocal2
+                                 pushscope
+                                 findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                 getlocal1
+                                 setproperty QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "playAnimation$0", 1, 0
+                                 debugline 100
+                                 pushnull
+                                 coerce QName(PackageNamespace(""),"Function")
+                                 getlocal2
+                                 swap
+                                 setslot 2
+                                 debugline 101
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                 coerce QName(PackageNamespace(""),"Function")
+                                 getlocal2
+                                 swap
+                                 setslot 3
+                                 newfunction 6
+                                 debugline 102
+                                 coerce QName(PackageNamespace(""),"Function")
+                                 debugline 102
+                                 getlocal2
+                                 debugline 102
+                                 swap
+                                 debugline 102
+                                 setslot 2
+                                 debugline 111
+                                 pushstring ""
+                                 coerce_s
+                                 getlocal2
+                                 swap
+                                 setslot 4
+                                 getlocal0
+                                 debugline 112
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                 pushbyte 21
+                                 equals
+                                 debugline 112
+                                 iffalse ofs0060
+                                 debugline 113
+                                 pushstring "door_binary_1"
+                                 coerce_s
+                                 getlocal2
+                                 swap
+                                 setslot 4
+                                 debugline 112
+                                 jump ofs0079
+                        ofs0060:
+                                 getlocal0
+                                 debugline 114
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                 pushbyte 41
+                                 equals
+                                 debugline 112
+                                 iffalse ofs0079
+                                 debugline 115
+                                 pushstring "door_binary_2"
+                                 coerce_s
+                                 getlocal2
+                                 swap
+                                 setslot 4
+                                 debugline 117
+                        ofs0079:
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"animationName")
+                                 pushstring ""
+                                 equals
+                                 not
+                                 debugline 117
+                                 iffalse ofs00c0
+                                 debugline 118
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.sound"),"SoundManager")
+                                 pushfalse
+                                 setproperty QName(PackageNamespace(""),"backgroundSoundEnabled")
+                                 getlocal0
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.app.component"),"ProgressiveAnimationPlayer")
+                                 debugline 119
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                 pushstring "spt/"
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"animationName")
+                                 add
+                                 callproperty QName(PackageNamespace(""),"getQuestAnimation"), 1
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.app.component"),"ProgressiveAnimationPlayer"), 1
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_animationPlayer")
+                                 getlocal0
+                                 debugline 120
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_animationPlayer")
+                                 pushstring "end"
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onAnimationEnd")
+                                 callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                 debugline 121
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                 getproperty QName(PackageNamespace(""),"uiLayer")
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_animationPlayer")
+                                 callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                 debugline 117
+                                 jump ofs00d9
+                                 debugline 122
+                        ofs00c0:
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onComplete")
+                                 pushnull
+                                 equals
+                                 not
+                                 debugline 117
+                                 iffalse ofs00d9
+                                 debugline 123
+                                 getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onComplete")
+                                 debugline 123
+                                 getglobalscope
+                                 debugline 123
+                                 call 0
+                                 debugline 123
+                                 pop
+                        ofs00d9:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function initUI() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"initUI")
+                           dispid 0
+                           method
+                              name "initUI"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                    getlocal0
+                                    getlocal0
+                                    debugline 128
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_map")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    pushstring "levelTip"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),ProtectedNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),StaticProtectedNs("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.gameRule.door.binary"),PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),PrivateNamespace("FilePrivateNS:BinaryDoorSupport"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel_MC")
+                                    getlocal0
+                                    debugline 129
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel_MC")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                    callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                    getlocal0
+                                    getlocal0
+                                    debugline 130
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_map")
+                                    getproperty QName(PackageNamespace(""),"front")
+                                    pushstring "levelTip2"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),ProtectedNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),StaticProtectedNs("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.gameRule.door.binary"),PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),PrivateNamespace("FilePrivateNS:BinaryDoorSupport"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_levelTip2")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 131
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_map")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    pushstring "guard"
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),ProtectedNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),StaticProtectedNs("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.gameRule.door.binary"),PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),PrivateNamespace("FilePrivateNS:BinaryDoorSupport"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guard")
+                                    getlocal0
+                                    debugline 132
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guard")
+                                    pushtrue
+                                    setproperty QName(PackageNamespace(""),"buttonMode")
+                                    getlocal0
+                                    debugline 133
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guard")
+                                    pushtrue
+                                    setproperty QName(PackageNamespace(""),"useHandCursor")
+                                    getlocal0
+                                    debugline 134
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guard")
+                                    pushstring "click"
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"onGuardClick")
+                                    callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                    getlocal0
+                                    getlocal0
+                                    debugline 135
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"initResult")
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"updateGuardStatus"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function updateGuardStatus(param1:Function) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"updateGuardStatus")
+                              dispid 0
+                              method
+                                 name "updateGuardStatus"
+                                 flag HAS_PARAM_NAMES
+                                 flag NEED_ACTIVATION
+                                 param QName(PackageNamespace(""),"Function")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 3
+                                    initscopedepth 0
+                                    maxscopedepth 2
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                       slotid 1
+                                       type QName(PackageNamespace(""),"Function")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onEnterFrame")
+                                       slotid 2
+                                       type QName(PackageNamespace(""),"Function")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onComplete")
+                                       slotid 3
+                                       type QName(PackageNamespace(""),"Function")
+                                    end ; trait
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                       newactivation
+                                       dup
+                                       setlocal2
+                                       pushscope
+                                       findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                       getlocal1
+                                       setproperty QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "updateGuardStatus$0", 1, 0
+                                       debugline 139
+                                       pushnull
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       getlocal2
+                                       swap
+                                       setslot 2
+                                       debugline 140
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       getlocal2
+                                       swap
+                                       setslot 3
+                                       newfunction 9
+                                       debugline 141
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       debugline 141
+                                       getlocal2
+                                       debugline 141
+                                       swap
+                                       debugline 141
+                                       setslot 2
+                                       getlocal0
+                                       debugline 149
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guard")
+                                       pushstring "enterFrame"
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onEnterFrame")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       debugline 150
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guard")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.util"),"Door21LevelUtil")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                       callproperty QName(PackageNamespace(""),"getGuardIndex"), 1
+                                       pushbyte 1
+                                       add
+                                       callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function initResult() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"initResult")
+                                 dispid 0
+                                 method
+                                    name "initResult"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 2
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                          debugline 154
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                          getproperty QName(PackageNamespace(""),"prevSceneType")
+                                          pushbyte 2
+                                          equals
+                                          debugline 154
+                                          iffalse ofs0027
+                                          getlocal0
+                                          debugline 155
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                          getproperty QName(PackageNamespace(""),"fightWinnerSide")
+                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"dealWithFightResult"), 1
+                                          debugline 154
+                                          jump ofs0033
+                                 ofs0027:
+                                          getlocal0
+                                          getlocal0
+                                          debugline 157
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                          getproperty QName(PackageNamespace(""),"currentDoorLevel")
+                                          callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"setTrialLevel"), 1
+                                 ofs0033:
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public function dispose() : void
+                              {
+                                 trait method QName(PackageNamespace(""),"dispose")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "6108"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "dispose"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                             getlocal0
+                                             debugline 162
+                                             pushnull
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel_MC")
+                                             getlocal0
+                                             debugline 163
+                                             pushnull
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_levelTip2")
+                                             getlocal0
+                                             debugline 164
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guard")
+                                             pushstring "click"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"onGuardClick")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                             getlocal0
+                                             debugline 165
+                                             pushnull
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guard")
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function onGuardClick(param1:MouseEvent) : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"onGuardClick")
+                                       dispid 0
+                                       method
+                                          name "onGuardClick"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 5
+                                             localcount 4
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                debug 1, "_loc2_", 1, 0
+                                                debug 1, "param1", 0, 0
+                                                debug 1, "_loc3_", 2, 0
+                                                debugline 169
+                                                pushnull
+                                                coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                                setlocal2
+                                                debugline 170
+                                                pushnull
+                                                coerce QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                                setlocal3
+                                                getlocal0
+                                                debugline 171
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_canLevelNow")
+                                                iffalse ofs00d5
+                                                debugline 172
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightVerifyManager")
+                                                callproperty QName(PackageNamespace(""),"checkVerifyStatus"), 0
+                                                pushfalse
+                                                ifne ofs0041
+                                                debugline 173
+                                                returnvoid
+                                                debugline 175
+                                       ofs0041:
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                                coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")>)
+                                                setlocal2
+                                                getlocal2
+                                                debugline 176
+                                                getproperty QName(PackageNamespace(""),"length")
+                                                pushbyte 2
+                                                lessthan
+                                                debugline 176
+                                                iffalse ofs006b
+                                                debugline 177
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                pushstring "双精灵模式至少需要携带2只精灵!"
+                                                callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                                                debugline 176
+                                                jump ofs00d5
+                                       ofs006b:
+                                                findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                                debugline 179
+                                                constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData"), 0
+                                                coerce QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core.vo"),"DoorInitData")
+                                                setlocal3
+                                                getlocal3
+                                                debugline 180
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.util"),"Door21LevelUtil")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                callproperty QName(PackageNamespace(""),"getBinaryGuardName"), 1
+                                                setproperty QName(PackageNamespace(""),"npcName")
+                                                getlocal3
+                                                debugline 181
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.util"),"Door21LevelUtil")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                getproperty QName(PackageNamespace(""),"doorType")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                getproperty QName(PackageNamespace(""),"doorRule")
+                                                callproperty QName(PackageNamespace(""),"getGuardPets"), 3
+                                                setproperty QName(PackageNamespace(""),"npcPets")
+                                                getlocal3
+                                                debugline 182
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                getproperty QName(PackageNamespace(""),"actorInfo")
+                                                getproperty QName(PackageNamespace(""),"nick")
+                                                setproperty QName(PackageNamespace(""),"playerName")
+                                                getlocal3
+                                                getlocal2
+                                                debugline 183
+                                                setproperty QName(PackageNamespace(""),"playerPets")
+                                                getlocal3
+                                                getlocal0
+                                                debugline 184
+                                                setproperty QName(PackageNamespace(""),"supportInstance")
+                                                getlocal3
+                                                getlocal0
+                                                debugline 185
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                setproperty QName(PackageNamespace(""),"doorLevel")
+                                                debugline 186
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                getproperty QName(PackageNamespace(""),"doorStartPanel")
+                                                callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                pushstring "正在打开选择面板..."
+                                                getlocal3
+                                                callpropvoid QName(PackageNamespace(""),"toggleModule"), 3
+                                       ofs00d5:
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function setTrialLevel(param1:uint) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"setTrialLevel")
+                                          dispid 0
+                                          method
+                                             name "setTrialLevel"
+                                             flag HAS_PARAM_NAMES
+                                             param QName(PackageNamespace(""),"uint")
+                                             paramname "param1"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 2
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                   debug 1, "param1", 0, 0
+                                                   getlocal0
+                                                   getlocal1
+                                                   debugline 192
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                   getlocal0
+                                                   debugline 193
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                   setproperty QName(PackageNamespace(""),"currentDoorLevel")
+                                                   getlocal0
+                                                   debugline 194
+                                                   pushnull
+                                                   callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"updateGuardStatus"), 1
+                                                   getlocal0
+                                                   debugline 195
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel_MC")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                   callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                   getlocal0
+                                                   debugline 196
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_levelTip2")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                   callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function dealWithFightResult(param1:uint) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"dealWithFightResult")
+                                             dispid 0
+                                             method
+                                                name "dealWithFightResult"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace(""),"uint")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 6
+                                                   localcount 2
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                      debug 1, "param1", 0, 0
+                                                      getlocal1
+                                                      pushbyte 2
+                                                      equals
+                                                      debugline 200
+                                                      iffalse ofs0031
+                                                      debugline 201
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                      pushfalse
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                      getproperty QName(PackageNamespace(""),"doorType")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                      getproperty QName(PackageNamespace(""),"doorRule")
+                                                      pushnull
+                                                      pushbyte 0
+                                                      callpropvoid QName(PackageNamespace(""),"showDoorResult"), 5
+                                                      debugline 200
+                                                      jump ofs00c4
+                                             ofs0031:
+                                                      getlocal1
+                                                      pushbyte 1
+                                                      equals
+                                                      debugline 200
+                                                      iffalse ofs00c4
+                                                      getlocal0
+                                                      debugline 203
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                      pushbyte 7
+                                                      equals
+                                                      debugline 203
+                                                      iffalse ofs005a
+                                                      getlocal0
+                                                      debugline 204
+                                                      callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"reward_type1"), 0
+                                                      debugline 203
+                                                      jump ofs00c4
+                                             ofs005a:
+                                                      getlocal0
+                                                      debugline 205
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                      pushbyte 14
+                                                      equals
+                                                      dup
+                                                      iftrue ofs006f
+                                                      pop
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                      pushbyte 28
+                                                      equals
+                                             ofs006f:
+                                                      dup
+                                                      iftrue ofs007e
+                                                      pop
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                      pushbyte 35
+                                                      equals
+                                                      debugline 203
+                                             ofs007e:
+                                                      iffalse ofs0090
+                                                      getlocal0
+                                                      debugline 206
+                                                      callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"reward_type2"), 0
+                                                      debugline 203
+                                                      jump ofs00c4
+                                             ofs0090:
+                                                      getlocal0
+                                                      debugline 207
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                      pushbyte 21
+                                                      equals
+                                                      dup
+                                                      iftrue ofs00a8
+                                                      pop
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                      pushbyte 42
+                                                      equals
+                                                      debugline 203
+                                             ofs00a8:
+                                                      iffalse ofs00ba
+                                                      getlocal0
+                                                      debugline 208
+                                                      callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"reward_type3"), 0
+                                                      debugline 203
+                                                      jump ofs00c4
+                                             ofs00ba:
+                                                      getlocal0
+                                                      getlocal0
+                                                      debugline 210
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"afterReward")
+                                                      callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"playAnimation"), 1
+                                             ofs00c4:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function afterReward(param1:Function = null) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"afterReward")
+                                                dispid 0
+                                                method
+                                                   name "afterReward"
+                                                   flag HAS_OPTIONAL
+                                                   flag HAS_PARAM_NAMES
+                                                   flag NEED_ACTIVATION
+                                                   param QName(PackageNamespace(""),"Function")
+                                                   paramname "param1"
+                                                   optional Null()
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 4
+                                                      localcount 3
+                                                      initscopedepth 0
+                                                      maxscopedepth 2
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                                         slotid 1
+                                                         type QName(PackageNamespace(""),"Function")
+                                                      end ; trait
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onTimeOut")
+                                                         slotid 2
+                                                         type QName(PackageNamespace(""),"Function")
+                                                      end ; trait
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"updateComplete")
+                                                         slotid 3
+                                                         type QName(PackageNamespace(""),"Function")
+                                                      end ; trait
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                         newactivation
+                                                         dup
+                                                         setlocal2
+                                                         pushscope
+                                                         findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                                         getlocal1
+                                                         setproperty QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                                         debug 1, "param1", 0, 0
+                                                         debug 1, "afterReward$0", 1, 0
+                                                         debugline 216
+                                                         pushnull
+                                                         coerce QName(PackageNamespace(""),"Function")
+                                                         getlocal2
+                                                         swap
+                                                         setslot 2
+                                                         debugline 217
+                                                         getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"param1")
+                                                         coerce QName(PackageNamespace(""),"Function")
+                                                         getlocal2
+                                                         swap
+                                                         setslot 3
+                                                         newfunction 16
+                                                         debugline 218
+                                                         coerce QName(PackageNamespace(""),"Function")
+                                                         debugline 218
+                                                         getlocal2
+                                                         debugline 218
+                                                         swap
+                                                         debugline 218
+                                                         setslot 2
+                                                         getlocal0
+                                                         debugline 224
+                                                         pushfalse
+                                                         setproperty QName(PackageNamespace(""),"canLevelNow")
+                                                         getlocal0
+                                                         debugline 225
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_guardInstance")
+                                                         pushstring "escape"
+                                                         callpropvoid QName(PackageNamespace(""),"gotoAndPlay"), 1
+                                                         debugline 226
+                                                         getlex QName(PackageNamespace("flash.utils"),"setTimeout")
+                                                         getglobalscope
+                                                         getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"onTimeOut")
+                                                         pushshort 2000
+                                                         call 2
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function onUpdateNextTrail() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"onUpdateNextTrail")
+                                                   dispid 0
+                                                   method
+                                                      name "onUpdateNextTrail"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                            getlocal0
+                                                            debugline 230
+                                                            pushtrue
+                                                            setproperty QName(PackageNamespace(""),"canLevelNow")
+                                                            getlocal0
+                                                            getlocal0
+                                                            debugline 231
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                            pushbyte 1
+                                                            add
+                                                            callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"setTrialLevel"), 1
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function rewardComplete() : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete")
+                                                      dispid 0
+                                                      method
+                                                         name "rewardComplete"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 2
+                                                            localcount 1
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                               getlocal0
+                                                               getlocal0
+                                                               debugline 235
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"clearServerGive")
+                                                               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"afterReward"), 1
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function reward_type1() : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"reward_type1")
+                                                         dispid 0
+                                                         method
+                                                            name "reward_type1"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 8
+                                                               localcount 1
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                  getlocal0
+                                                                  debugline 239
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                  pushbyte 0
+                                                                  equals
+                                                                  not
+                                                                  debugline 239
+                                                                  iffalse ofs0064
+                                                                  getlocal0
+                                                                  debugline 240
+                                                                  getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                  applytype 1
+                                                                  getlocal0
+                                                                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                  pushint 200213
+                                                                  pushbyte 2
+                                                                  constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                  pushint 200214
+                                                                  pushbyte 2
+                                                                  constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                  pushint 200002
+                                                                  pushbyte 2
+                                                                  constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                  newarray 3
+                                                                  call 1
+                                                                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardIDList")
+                                                                  debugline 241
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                                  pushtrue
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                  getproperty QName(PackageNamespace(""),"doorType")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                  getproperty QName(PackageNamespace(""),"doorRule")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardIDList")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete")
+                                                                  callpropvoid QName(PackageNamespace(""),"showDoorReward"), 6
+                                                                  debugline 239
+                                                                  jump ofs006b
+                                                         ofs0064:
+                                                                  getlocal0
+                                                                  debugline 243
+                                                                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete"), 0
+                                                         ofs006b:
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function reward_type2() : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"reward_type2")
+                                                            dispid 0
+                                                            method
+                                                               name "reward_type2"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 8
+                                                                  localcount 1
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                     getlocal0
+                                                                     debugline 248
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                     pushbyte 0
+                                                                     equals
+                                                                     not
+                                                                     debugline 248
+                                                                     iffalse ofs0064
+                                                                     getlocal0
+                                                                     debugline 249
+                                                                     getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                     applytype 1
+                                                                     getlocal0
+                                                                     findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                     pushint 200214
+                                                                     pushbyte 2
+                                                                     constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                     findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                     pushint 200221
+                                                                     pushbyte 2
+                                                                     constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                     findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                     pushint 200003
+                                                                     pushbyte 2
+                                                                     constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                     newarray 3
+                                                                     call 1
+                                                                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardIDList")
+                                                                     debugline 250
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                                     pushtrue
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                     getproperty QName(PackageNamespace(""),"doorType")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                     getproperty QName(PackageNamespace(""),"doorRule")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardIDList")
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete")
+                                                                     callpropvoid QName(PackageNamespace(""),"showDoorReward"), 6
+                                                                     debugline 248
+                                                                     jump ofs006b
+                                                            ofs0064:
+                                                                     getlocal0
+                                                                     debugline 252
+                                                                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete"), 0
+                                                            ofs006b:
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function reward_type3() : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"reward_type3")
+                                                               dispid 0
+                                                               method
+                                                                  name "reward_type3"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 8
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                        getlocal0
+                                                                        debugline 257
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_petId")
+                                                                        pushbyte 0
+                                                                        equals
+                                                                        not
+                                                                        debugline 257
+                                                                        iffalse ofs0052
+                                                                        getlocal0
+                                                                        debugline 258
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_isGetServerGiveFlag")
+                                                                        debugline 258
+                                                                        iffalse ofs0044
+                                                                        debugline 259
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                                        pushtrue
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                        getproperty QName(PackageNamespace(""),"doorType")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                        getproperty QName(PackageNamespace(""),"doorRule")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_serverGivePetInfo")
+                                                                        pushbyte 0
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete")
+                                                                        callpropvoid QName(PackageNamespace(""),"showDoorResult"), 6
+                                                                        debugline 258
+                                                                        jump ofs004e
+                                                               ofs0044:
+                                                                        getlocal0
+                                                                        debugline 261
+                                                                        pushtrue
+                                                                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_isGetServerGiveFlag")
+                                                                        debugline 257
+                                                               ofs004e:
+                                                                        jump ofs00b9
+                                                               ofs0052:
+                                                                        getlocal0
+                                                                        debugline 263
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                        pushbyte 0
+                                                                        equals
+                                                                        not
+                                                                        debugline 257
+                                                                        iffalse ofs00b2
+                                                                        getlocal0
+                                                                        debugline 264
+                                                                        getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                        applytype 1
+                                                                        getlocal0
+                                                                        findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                        pushint 200214
+                                                                        pushbyte 2
+                                                                        constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                        findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                        pushint 200221
+                                                                        pushbyte 2
+                                                                        constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                        findpropstrict QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")
+                                                                        pushint 200003
+                                                                        pushbyte 2
+                                                                        constructprop QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward"), 2
+                                                                        newarray 3
+                                                                        call 1
+                                                                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardIDList")
+                                                                        debugline 265
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                                        pushtrue
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                        getproperty QName(PackageNamespace(""),"doorType")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                        getproperty QName(PackageNamespace(""),"doorRule")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardIDList")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete")
+                                                                        callpropvoid QName(PackageNamespace(""),"showDoorReward"), 6
+                                                                        debugline 257
+                                                                        jump ofs00b9
+                                                               ofs00b2:
+                                                                        getlocal0
+                                                                        debugline 267
+                                                                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete"), 0
+                                                               ofs00b9:
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function clearServerGive() : void
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"clearServerGive")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "clearServerGive"
+                                                                     flag NEED_ACTIVATION
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 2
+                                                                        trait slot QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"animationEnd")
+                                                                           slotid 1
+                                                                           type QName(PackageNamespace(""),"Function")
+                                                                        end ; trait
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                           newactivation
+                                                                           dup
+                                                                           setlocal1
+                                                                           pushscope
+                                                                           debug 1, "clearServerGive$0", 0, 0
+                                                                           debugline 272
+                                                                           pushnull
+                                                                           coerce QName(PackageNamespace(""),"Function")
+                                                                           getlocal1
+                                                                           swap
+                                                                           setslot 1
+                                                                           newfunction 23
+                                                                           debugline 273
+                                                                           coerce QName(PackageNamespace(""),"Function")
+                                                                           debugline 273
+                                                                           getlocal1
+                                                                           debugline 273
+                                                                           swap
+                                                                           debugline 273
+                                                                           setslot 1
+                                                                           getlocal0
+                                                                           debugline 277
+                                                                           pushbyte 0
+                                                                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_petId")
+                                                                           getlocal0
+                                                                           debugline 278
+                                                                           pushbyte 0
+                                                                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_resourceId")
+                                                                           getlocal0
+                                                                           debugline 279
+                                                                           pushfalse
+                                                                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_isGetServerGiveFlag")
+                                                                           getlocal0
+                                                                           debugline 280
+                                                                           pushnull
+                                                                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_serverGivePetInfo")
+                                                                           getlocal0
+                                                                           debugline 281
+                                                                           pushbyte 0
+                                                                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                           getlocal0
+                                                                           debugline 282
+                                                                           pushnull
+                                                                           setproperty QName(PackageNamespace(""),"rewardIDList")
+                                                                           getlocal0
+                                                                           debugline 283
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                                           pushbyte 21
+                                                                           greaterequals
+                                                                           debugline 283
+                                                                           iffalse ofs00ab
+                                                                           getlocal0
+                                                                           debugline 284
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                                           pushbyte 42
+                                                                           greaterequals
+                                                                           debugline 284
+                                                                           iffalse ofs009a
+                                                                           debugline 285
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                           getproperty QName(PackageNamespace(""),"DOOR_OUT_1049")
+                                                                           callpropvoid QName(PackageNamespace(""),"send"), 1
+                                                                           debugline 286
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                           pushbyte 1
+                                                                           pushbyte 86
+                                                                           callpropvoid QName(PackageNamespace(""),"changeScene"), 2
+                                                                           debugline 284
+                                                                           jump ofs00a7
+                                                                  ofs009a:
+                                                                           getlocal0
+                                                                           debugline 288
+                                                                           getlex QName(PackageInternalNs("com.taomee.seer2.app.gameRule.door.binary"),"animationEnd")
+                                                                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"playAnimation"), 1
+                                                                           debugline 283
+                                                                  ofs00a7:
+                                                                           jump ofs00b6
+                                                                  ofs00ab:
+                                                                           getlocal0
+                                                                           debugline 291
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                           pushshort 420
+                                                                           setproperty QName(PackageNamespace(""),"targetMapId")
+                                                                  ofs00b6:
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               public function reset() : void
+                                                               {
+                                                                  trait method QName(PackageNamespace(""),"reset")
+                                                                     flag METADATA
+                                                                     metadata "__go_to_definition_help"
+                                                                        item "pos" "12024"
+                                                                     end ; metadata
+                                                                     dispid 0
+                                                                     method
+                                                                        name "reset"
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 2
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                              getlocal0
+                                                                              debugline 296
+                                                                              pushbyte 1
+                                                                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_doorLevel")
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  public function get canLevelNow() : Boolean
+                                                                  {
+                                                                     trait getter QName(PackageNamespace(""),"canLevelNow")
+                                                                        flag METADATA
+                                                                        metadata "__go_to_definition_help"
+                                                                           item "pos" "12103"
+                                                                        end ; metadata
+                                                                        dispid 0
+                                                                        method
+                                                                           name "canLevelNow"
+                                                                           returns QName(PackageNamespace(""),"Boolean")
+                                                                           
+                                                                           body
+                                                                              maxstack 1
+                                                                              localcount 1
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                 getlocal0
+                                                                                 debugline 300
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_canLevelNow")
+                                                                                 returnvalue
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     public function set canLevelNow(param1:Boolean) : void
+                                                                     {
+                                                                        trait setter QName(PackageNamespace(""),"canLevelNow")
+                                                                           flag METADATA
+                                                                           metadata "__go_to_definition_help"
+                                                                              item "pos" "12196"
+                                                                           end ; metadata
+                                                                           dispid 0
+                                                                           method
+                                                                              name "canLevelNow"
+                                                                              flag HAS_PARAM_NAMES
+                                                                              param QName(PackageNamespace(""),"Boolean")
+                                                                              paramname "param1"
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 2
+                                                                                 localcount 2
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 1
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                    debug 1, "param1", 0, 0
+                                                                                    getlocal0
+                                                                                    getlocal1
+                                                                                    debugline 304
+                                                                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_canLevelNow")
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        public function get rewardId() : uint
+                                                                        {
+                                                                           trait getter QName(PackageNamespace(""),"rewardId")
+                                                                              flag METADATA
+                                                                              metadata "__go_to_definition_help"
+                                                                                 item "pos" "12302"
+                                                                              end ; metadata
+                                                                              dispid 0
+                                                                              method
+                                                                                 name "rewardId"
+                                                                                 returns QName(PackageNamespace(""),"uint")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 1
+                                                                                    localcount 1
+                                                                                    initscopedepth 0
+                                                                                    maxscopedepth 1
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                       getlocal0
+                                                                                       debugline 308
+                                                                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                                       returnvalue
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                           
+                                                                           public function set rewardId(param1:uint) : void
+                                                                           {
+                                                                              trait setter QName(PackageNamespace(""),"rewardId")
+                                                                                 flag METADATA
+                                                                                 metadata "__go_to_definition_help"
+                                                                                    item "pos" "12386"
+                                                                                 end ; metadata
+                                                                                 dispid 0
+                                                                                 method
+                                                                                    name "rewardId"
+                                                                                    flag HAS_PARAM_NAMES
+                                                                                    param QName(PackageNamespace(""),"uint")
+                                                                                    paramname "param1"
+                                                                                    returns QName(PackageNamespace(""),"void")
+                                                                                    
+                                                                                    body
+                                                                                       maxstack 2
+                                                                                       localcount 2
+                                                                                       initscopedepth 0
+                                                                                       maxscopedepth 1
+                                                                                       
+                                                                                       code
+                                                                                          getlocal0
+                                                                                          pushscope
+                                                                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                          debug 1, "param1", 0, 0
+                                                                                          getlocal0
+                                                                                          getlocal1
+                                                                                          debugline 312
+                                                                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardId")
+                                                                                          returnvoid
+                                                                                       end ; code
+                                                                                    end ; body
+                                                                                 end ; method
+                                                                              }
+                                                                              
+                                                                              public function get rewardIDList() : Vector.<ServerReward>
+                                                                              {
+                                                                                 trait getter QName(PackageNamespace(""),"rewardIDList")
+                                                                                    flag METADATA
+                                                                                    metadata "__go_to_definition_help"
+                                                                                       item "pos" "12483"
+                                                                                    end ; metadata
+                                                                                    dispid 0
+                                                                                    method
+                                                                                       name "rewardIDList"
+                                                                                       returns TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")>)
+                                                                                       
+                                                                                       body
+                                                                                          maxstack 1
+                                                                                          localcount 1
+                                                                                          initscopedepth 0
+                                                                                          maxscopedepth 1
+                                                                                          
+                                                                                          code
+                                                                                             getlocal0
+                                                                                             pushscope
+                                                                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                             getlocal0
+                                                                                             debugline 316
+                                                                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardIDList")
+                                                                                             returnvalue
+                                                                                          end ; code
+                                                                                       end ; body
+                                                                                    end ; method
+                                                                                 }
+                                                                                 
+                                                                                 public function set rewardIDList(param1:Vector.<ServerReward>) : void
+                                                                                 {
+                                                                                    trait setter QName(PackageNamespace(""),"rewardIDList")
+                                                                                       flag METADATA
+                                                                                       metadata "__go_to_definition_help"
+                                                                                          item "pos" "12592"
+                                                                                       end ; metadata
+                                                                                       dispid 0
+                                                                                       method
+                                                                                          name "rewardIDList"
+                                                                                          flag HAS_PARAM_NAMES
+                                                                                          param TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.core"),"ServerReward")>)
+                                                                                          paramname "param1"
+                                                                                          returns QName(PackageNamespace(""),"void")
+                                                                                          
+                                                                                          body
+                                                                                             maxstack 2
+                                                                                             localcount 2
+                                                                                             initscopedepth 0
+                                                                                             maxscopedepth 1
+                                                                                             
+                                                                                             code
+                                                                                                getlocal0
+                                                                                                pushscope
+                                                                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                                debug 1, "param1", 0, 0
+                                                                                                getlocal0
+                                                                                                getlocal1
+                                                                                                debugline 320
+                                                                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_rewardIDList")
+                                                                                                returnvoid
+                                                                                             end ; code
+                                                                                          end ; body
+                                                                                       end ; method
+                                                                                    }
+                                                                                    
+                                                                                    public function getPetSimpleInfo(param1:uint, param2:uint) : void
+                                                                                    {
+                                                                                       trait method QName(PackageNamespace(""),"getPetSimpleInfo")
+                                                                                          flag METADATA
+                                                                                          metadata "__go_to_definition_help"
+                                                                                             item "pos" "12710"
+                                                                                          end ; metadata
+                                                                                          dispid 0
+                                                                                          method
+                                                                                             name "getPetSimpleInfo"
+                                                                                             flag HAS_PARAM_NAMES
+                                                                                             param QName(PackageNamespace(""),"uint")
+                                                                                             param QName(PackageNamespace(""),"uint")
+                                                                                             paramname "param1"
+                                                                                             paramname "param2"
+                                                                                             returns QName(PackageNamespace(""),"void")
+                                                                                             
+                                                                                             body
+                                                                                                maxstack 3
+                                                                                                localcount 4
+                                                                                                initscopedepth 0
+                                                                                                maxscopedepth 1
+                                                                                                
+                                                                                                code
+                                                                                                   getlocal0
+                                                                                                   pushscope
+                                                                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                                   debug 1, "param1", 0, 0
+                                                                                                   debug 1, "param2", 1, 0
+                                                                                                   debug 1, "_loc3_", 2, 0
+                                                                                                   getlocal0
+                                                                                                   getlocal1
+                                                                                                   debugline 324
+                                                                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_petId")
+                                                                                                   getlocal0
+                                                                                                   getlocal2
+                                                                                                   debugline 325
+                                                                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_resourceId")
+                                                                                                   findpropstrict QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                                                                   debugline 326
+                                                                                                   constructprop QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo"), 0
+                                                                                                   coerce QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                                                                                                   setlocal3
+                                                                                                   getlocal3
+                                                                                                   getlocal0
+                                                                                                   debugline 327
+                                                                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_petId")
+                                                                                                   setproperty QName(PackageNamespace(""),"catchTime")
+                                                                                                   getlocal3
+                                                                                                   getlocal0
+                                                                                                   debugline 328
+                                                                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_resourceId")
+                                                                                                   setproperty QName(PackageNamespace(""),"resourceId")
+                                                                                                   debugline 329
+                                                                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                                                   getproperty QName(PackageNamespace(""),"PET_SIMPLE_INFO_1017")
+                                                                                                   getlocal0
+                                                                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"onGetPetSimpleInfo")
+                                                                                                   callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                                                                                   debugline 330
+                                                                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                                                   getproperty QName(PackageNamespace(""),"PET_SIMPLE_INFO_1017")
+                                                                                                   getlocal1
+                                                                                                   callpropvoid QName(PackageNamespace(""),"send"), 2
+                                                                                                   returnvoid
+                                                                                                end ; code
+                                                                                             end ; body
+                                                                                          end ; method
+                                                                                       }
+                                                                                       
+                                                                                       private function onGetPetSimpleInfo(param1:MessageEvent) : void
+                                                                                       {
+                                                                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"onGetPetSimpleInfo")
+                                                                                             dispid 0
+                                                                                             method
+                                                                                                name "onGetPetSimpleInfo"
+                                                                                                flag HAS_PARAM_NAMES
+                                                                                                param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                                                                                paramname "param1"
+                                                                                                returns QName(PackageNamespace(""),"void")
+                                                                                                
+                                                                                                body
+                                                                                                   maxstack 7
+                                                                                                   localcount 2
+                                                                                                   initscopedepth 0
+                                                                                                   maxscopedepth 1
+                                                                                                   
+                                                                                                   code
+                                                                                                      getlocal0
+                                                                                                      pushscope
+                                                                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                                      debug 1, "param1", 0, 0
+                                                                                                      debugline 334
+                                                                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                                                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                                                                                      getproperty QName(PackageNamespace(""),"PET_SIMPLE_INFO_1017")
+                                                                                                      getlocal0
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"onGetPetSimpleInfo")
+                                                                                                      callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                                                                                                      getlocal0
+                                                                                                      findpropstrict QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1017")
+                                                                                                      getlocal1
+                                                                                                      debugline 335
+                                                                                                      getproperty QName(PackageNamespace(""),"message")
+                                                                                                      callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                                                                                      constructprop QName(PackageNamespace("com.taomee.seer2.app.net.parser"),"Parser_1017"), 1
+                                                                                                      getproperty QName(PackageNamespace(""),"petInfo")
+                                                                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_serverGivePetInfo")
+                                                                                                      getlocal0
+                                                                                                      debugline 336
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_isGetServerGiveFlag")
+                                                                                                      debugline 336
+                                                                                                      iffalse ofs0061
+                                                                                                      debugline 337
+                                                                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                                                                      pushtrue
+                                                                                                      getlocal0
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                                                      getproperty QName(PackageNamespace(""),"doorType")
+                                                                                                      getlocal0
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_supportInfo")
+                                                                                                      getproperty QName(PackageNamespace(""),"doorRule")
+                                                                                                      getlocal0
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_serverGivePetInfo")
+                                                                                                      pushbyte 0
+                                                                                                      getlocal0
+                                                                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"rewardComplete")
+                                                                                                      callpropvoid QName(PackageNamespace(""),"showDoorResult"), 6
+                                                                                                      debugline 336
+                                                                                                      jump ofs0068
+                                                                                             ofs0061:
+                                                                                                      getlocal0
+                                                                                                      debugline 339
+                                                                                                      pushtrue
+                                                                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_isGetServerGiveFlag")
+                                                                                             ofs0068:
+                                                                                                      returnvoid
+                                                                                                   end ; code
+                                                                                                end ; body
+                                                                                             end ; method
+                                                                                          }
+                                                                                          
+                                                                                          public function get petId() : uint
+                                                                                          {
+                                                                                             trait getter QName(PackageNamespace(""),"petId")
+                                                                                                flag METADATA
+                                                                                                metadata "__go_to_definition_help"
+                                                                                                   item "pos" "13698"
+                                                                                                end ; metadata
+                                                                                                dispid 0
+                                                                                                method
+                                                                                                   name "petId"
+                                                                                                   returns QName(PackageNamespace(""),"uint")
+                                                                                                   
+                                                                                                   body
+                                                                                                      maxstack 2
+                                                                                                      localcount 2
+                                                                                                      initscopedepth 0
+                                                                                                      maxscopedepth 1
+                                                                                                      
+                                                                                                      code
+                                                                                                         getlocal0
+                                                                                                         pushscope
+                                                                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                                         debug 1, "_loc1_", 0, 0
+                                                                                                         getlocal0
+                                                                                                         debugline 344
+                                                                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_petId")
+                                                                                                         convert_u
+                                                                                                         setlocal1
+                                                                                                         getlocal0
+                                                                                                         debugline 345
+                                                                                                         pushbyte 0
+                                                                                                         setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_petId")
+                                                                                                         getlocal1
+                                                                                                         debugline 346
+                                                                                                         returnvalue
+                                                                                                      end ; code
+                                                                                                   end ; body
+                                                                                                end ; method
+                                                                                             }
+                                                                                             
+                                                                                             public function get resourceId() : uint
+                                                                                             {
+                                                                                                trait getter QName(PackageNamespace(""),"resourceId")
+                                                                                                   flag METADATA
+                                                                                                   metadata "__go_to_definition_help"
+                                                                                                      item "pos" "13837"
+                                                                                                   end ; metadata
+                                                                                                   dispid 0
+                                                                                                   method
+                                                                                                      name "resourceId"
+                                                                                                      returns QName(PackageNamespace(""),"uint")
+                                                                                                      
+                                                                                                      body
+                                                                                                         maxstack 2
+                                                                                                         localcount 2
+                                                                                                         initscopedepth 0
+                                                                                                         maxscopedepth 1
+                                                                                                         
+                                                                                                         code
+                                                                                                            getlocal0
+                                                                                                            pushscope
+                                                                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\gameRule\\door\\binary;BinaryDoorSupport.as"
+                                                                                                            debug 1, "_loc1_", 0, 0
+                                                                                                            getlocal0
+                                                                                                            debugline 350
+                                                                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_resourceId")
+                                                                                                            convert_u
+                                                                                                            setlocal1
+                                                                                                            getlocal0
+                                                                                                            debugline 351
+                                                                                                            pushbyte 0
+                                                                                                            setproperty QName(PrivateNamespace("com.taomee.seer2.app.gameRule.door.binary:BinaryDoorSupport"),"_resourceId")
+                                                                                                            getlocal1
+                                                                                                            debugline 352
+                                                                                                            returnvalue
+                                                                                                         end ; code
+                                                                                                      end ; body
+                                                                                                   end ; method
+                                                                                                }
+                                                                                             }
+                                                                                          }
+                                                                                          
+                                                                                          method
+                                                                                             name null
+                                                                                             returns null
+                                                                                             
+                                                                                             body
+                                                                                                maxstack 3
+                                                                                                localcount 1
+                                                                                                initscopedepth 0
+                                                                                                maxscopedepth 2
+                                                                                                
+                                                                                                code
+                                                                                                   getlocal0
+                                                                                                   pushscope
+                                                                                                   getscopeobject 0
+                                                                                                   getlex QName(PackageNamespace(""),"Object")
+                                                                                                   dup
+                                                                                                   pushscope
+                                                                                                   newclass 0
+                                                                                                   popscope
+                                                                                                   initproperty QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.binary"),"BinaryDoorSupport")
+                                                                                                   returnvoid
+                                                                                                end ; code
+                                                                                             end ; body
+                                                                                          end ; method
+                                                                                          

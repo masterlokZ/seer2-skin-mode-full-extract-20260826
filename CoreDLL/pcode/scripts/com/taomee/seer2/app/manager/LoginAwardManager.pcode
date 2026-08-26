@@ -1,0 +1,1394 @@
+package com.taomee.seer2.app.manager
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.announcement.AnnouncementTime;
+   import com.taomee.seer2.app.arena.data.FightResultInfo;
+   import com.taomee.seer2.app.arena.data.RevenueInfo;
+   import com.taomee.seer2.app.controls.GiftRemind;
+   import com.taomee.seer2.app.net.parser.Parser_1142;
+   import com.taomee.seer2.app.newPlayerGuideVerOne.NewPlayerGuideTimeManager;
+   import com.taomee.seer2.app.pet.data.PetInfoManager;
+   import com.taomee.seer2.app.pet.events.PetInfoEvent;
+   import com.taomee.seer2.app.quest.QuestManager;
+   import com.taomee.seer2.app.serverBuffer.ServerBuffer;
+   import com.taomee.seer2.app.serverBuffer.ServerBufferManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.app.vip.VipManager;
+   import com.taomee.seer2.core.manager.GlobalsManager;
+   import com.taomee.seer2.core.manager.TimeManager;
+   import com.taomee.seer2.core.module.ModuleEvent;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.events.SceneEvent;
+   import com.taomee.seer2.core.utils.DateUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.utils.IDataInput;
+   
+   public class LoginAwardManager
+   {
+      
+      private static var _loginData:uint;
+      
+      private static var _isewardShow:Boolean = false;
+      
+      private static const VIP_TIMES:uint = 2;
+      
+      private static const NOMARL_TIMES:uint = 1;
+      
+      private static const SUPER_PET_FOR:uint = 202957;
+      
+      private static const SUPER_PET_SWAP:int = 1632;
+      
+      private static const ASK_RANK_SWAP:int = 1622;
+      
+      private static const CUR_SIGN_DAY:int = 5018;
+      
+      private static const FOR_HAS_GET:uint = 250214;
+      
+      private static const FOR_LOGIN:uint = 250213;
+      
+      public static var isAskRankSwap:Boolean = false;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      public function LoginAwardManager()
+      {
+         method
+            name "LoginAwardManager"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                  debugline 57
+                  getlocal0
+                  debugline 57
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function isShowPanel(param1:uint) : void
+      {
+         trait method QName(PackageNamespace(""),"isShowPanel")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2179"
+            end ; metadata
+            dispid 0
+            method
+               name "isShowPanel"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace(""),"uint")
+               paramname "param1"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                     debug 1, "param1", 0, 0
+                     getlocal1
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"_loginData")
+                     debugline 61
+                     swap
+                     debugline 61
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"_loginData")
+                     debugline 62
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                     pushstring "switchComplete"
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onComplete")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private static function onComplete(param1:SceneEvent) : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onComplete")
+               dispid 0
+               method
+                  name "onComplete"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                        debug 1, "param1", 0, 0
+                        findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"isNewGuide")
+                        debugline 66
+                        callproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"isNewGuide"), 0
+                        iffalse ofs0017
+                        debugline 67
+                        returnvoid
+               ofs0017:
+                        findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showLoginReward")
+                        debugline 69
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showLoginReward"), 0
+                        findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showConisActivityPanel")
+                        debugline 70
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showConisActivityPanel"), 0
+                        findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showAttentionPanel")
+                        debugline 72
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showAttentionPanel"), 0
+                        findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"KingFightTrialWinHandle")
+                        debugline 73
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"KingFightTrialWinHandle"), 0
+                        debugline 74
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        getproperty QName(PackageNamespace(""),"active")
+                        getproperty QName(PackageNamespace(""),"type")
+                        pushbyte 1
+                        equals
+                        dup
+                        iffalse ofs004c
+                        pop
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        getproperty QName(PackageNamespace(""),"prevSceneType")
+                        pushbyte 2
+                        equals
+                        not
+               ofs004c:
+                        iffalse ofs0075
+                        debugline 75
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        pushstring "switchComplete"
+                        getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onComplete")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        debugline 76
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"GlobalsManager")
+                        getproperty QName(PackageNamespace(""),"isRemoteLogin")
+                        iffalse ofs0075
+                        debugline 77
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                        pushstring "RemoteLoginAlertPanel"
+                        callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                        pushstring "正在打开异地登录警告面板..."
+                        callpropvoid QName(PackageNamespace(""),"toggleModule"), 2
+               ofs0075:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private static function showPhoneGamePanle() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showPhoneGamePanle")
+                  dispid 0
+                  method
+                     name "showPhoneGamePanle"
+                     flag NEED_ACTIVATION
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 2
+                        trait slot QName(PackageInternalNs("com.taomee.seer2.app.manager"),"date")
+                           slotid 1
+                           type QName(PackageNamespace(""),"Date")
+                        end ; trait
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                           newactivation
+                           dup
+                           setlocal1
+                           pushscope
+                           debug 1, "showPhoneGamePanle$0", 0, 0
+                           debugline 83
+                           pushnull
+                           coerce QName(PackageNamespace(""),"Date")
+                           getlocal1
+                           swap
+                           setslot 1
+                           debugline 84
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                           pushstring "SeerShouyouPanel"
+                           callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                           pushstring "正在打开..."
+                           callpropvoid QName(PackageNamespace(""),"toggleModule"), 2
+                           findpropstrict QName(PackageNamespace(""),"Date")
+                           debugline 85
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                           callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                           pushshort 1000
+                           multiply
+                           constructprop QName(PackageNamespace(""),"Date"), 1
+                           coerce QName(PackageNamespace(""),"Date")
+                           getlocal1
+                           swap
+                           setslot 1
+                           debugline 86
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                           pushshort 458
+                           newfunction 4
+                           callpropvoid QName(PackageNamespace(""),"getServerBuffer"), 2
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private static function showAttentionPanel() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showAttentionPanel")
+                     dispid 0
+                     method
+                        name "showAttentionPanel"
+                        flag NEED_ACTIVATION
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 2
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                              newactivation
+                              pushscope
+                              debugline 93
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                              pushint 206230
+                              newfunction 6
+                              callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private static function isNewGuide() : Boolean
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"isNewGuide")
+                        dispid 0
+                        method
+                           name "isNewGuide"
+                           returns QName(PackageNamespace(""),"Boolean")
+                           
+                           body
+                              maxstack 4
+                              localcount 3
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                 debug 1, "_loc2_", 0, 0
+                                 debug 1, "_loc1_", 1, 0
+                                 debugline 101
+                                 pushfalse
+                                 setlocal2
+                                 findpropstrict QName(PackageNamespace(""),"Date")
+                                 debugline 102
+                                 pushshort 2014
+                                 pushbyte 8
+                                 pushbyte 26
+                                 constructprop QName(PackageNamespace(""),"Date"), 3
+                                 callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getTime"), 0
+                                 pushshort 1000
+                                 divide
+                                 convert_u
+                                 setlocal1
+                                 debugline 103
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getproperty QName(PackageNamespace(""),"actorInfo")
+                                 getproperty QName(PackageNamespace(""),"createTime")
+                                 getlocal1
+                                 ifnge ofs0089
+                                 debugline 104
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.newPlayerGuideVerOne"),"NewPlayerGuideTimeManager")
+                                 callproperty QName(PackageNamespace(""),"timeCheckNewGuide"), 0
+                                 debugline 104
+                                 iffalse ofs006a
+                                 debugline 105
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 pushbyte 99
+                                 callproperty QName(PackageNamespace(""),"isCanAccepted"), 1
+                                 dup
+                                 iftrue ofs005a
+                                 pop
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 pushbyte 99
+                                 callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                 convert_b
+                        ofs005a:
+                                 iffalse ofs0064
+                                 debugline 106
+                                 pushtrue
+                                 setlocal2
+                                 debugline 104
+                        ofs0064:
+                                 jump ofs0089
+                                 debugline 108
+                        ofs006a:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 pushbyte 83
+                                 callproperty QName(PackageNamespace(""),"isCanAccepted"), 1
+                                 dup
+                                 iftrue ofs0081
+                                 pop
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                 pushbyte 83
+                                 callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                 convert_b
+                                 debugline 104
+                        ofs0081:
+                                 iffalse ofs0089
+                                 debugline 109
+                                 pushtrue
+                                 setlocal2
+                        ofs0089:
+                                 getlocal2
+                                 debugline 112
+                                 returnvalue
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private static function showVipOverTip() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showVipOverTip")
+                           dispid 0
+                           method
+                              name "showVipOverTip"
+                              flag NEED_ACTIVATION
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 2
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                    newactivation
+                                    pushscope
+                                    debugline 116
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                    pushint 206029
+                                    newfunction 9
+                                    callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private static function showJLPanel() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showJLPanel")
+                              dispid 0
+                              method
+                                 name "showJLPanel"
+                                 flag NEED_ACTIVATION
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 2
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                       newactivation
+                                       pushscope
+                                       debugline 124
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                                       pushshort 382
+                                       newfunction 11
+                                       callpropvoid QName(PackageNamespace(""),"getServerBuffer"), 2
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private static function showLoginOnePanel() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showLoginOnePanel")
+                                 dispid 0
+                                 method
+                                    name "showLoginOnePanel"
+                                    flag NEED_ACTIVATION
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 2
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.manager"),"date")
+                                          slotid 1
+                                          type QName(PackageNamespace(""),"Date")
+                                       end ; trait
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                          newactivation
+                                          dup
+                                          setlocal1
+                                          pushscope
+                                          debug 1, "showLoginOnePanel$0", 0, 0
+                                          debugline 133
+                                          pushnull
+                                          coerce QName(PackageNamespace(""),"Date")
+                                          getlocal1
+                                          swap
+                                          setslot 1
+                                          findpropstrict QName(PackageNamespace(""),"Date")
+                                          debugline 134
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                          callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                          pushshort 1000
+                                          multiply
+                                          constructprop QName(PackageNamespace(""),"Date"), 1
+                                          coerce QName(PackageNamespace(""),"Date")
+                                          getlocal1
+                                          swap
+                                          setslot 1
+                                          debugline 135
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                                          pushshort 448
+                                          newfunction 13
+                                          callpropvoid QName(PackageNamespace(""),"getServerBuffer"), 2
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private static function showConisActivityPanel() : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showConisActivityPanel")
+                                    dispid 0
+                                    method
+                                       name "showConisActivityPanel"
+                                       flag NEED_ACTIVATION
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 2
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 2
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                             newactivation
+                                             pushscope
+                                             debugline 144
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"OnlyFlagManager")
+                                             newfunction 15
+                                             callpropvoid QName(PackageNamespace(""),"RequestFlag"), 1
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private static function checkHotWheelTip() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"checkHotWheelTip")
+                                       dispid 0
+                                       method
+                                          name "checkHotWheelTip"
+                                          flag NEED_ACTIVATION
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                newactivation
+                                                pushscope
+                                                debugline 158
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                pushint 204880
+                                                newfunction 18
+                                                callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private static function checkTianZun() : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"checkTianZun")
+                                          dispid 0
+                                          method
+                                             name "checkTianZun"
+                                             flag NEED_ACTIVATION
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 2
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                   newactivation
+                                                   pushscope
+                                                   debugline 175
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                   pushint 203664
+                                                   newfunction 21
+                                                   callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private static function showNewYearVip() : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showNewYearVip")
+                                             dispid 0
+                                             method
+                                                name "showNewYearVip"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 1
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private static function showLoginReward() : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showLoginReward")
+                                                dispid 0
+                                                method
+                                                   name "showLoginReward"
+                                                   flag NEED_ACTIVATION
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 2
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                         newactivation
+                                                         pushscope
+                                                         debugline 195
+                                                         getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"_isewardShow")
+                                                         iffalse ofs0016
+                                                         debugline 196
+                                                         returnvoid
+                                                         debugline 198
+                                                ofs0016:
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.announcement"),"AnnouncementTime")
+                                                         callpropvoid QName(PackageNamespace(""),"startRingerAnnoumce"), 0
+                                                         findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"playAnnouncementTime")
+                                                         debugline 199
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"playAnnouncementTime"), 0
+                                                         debugline 200
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"GiftRemind")
+                                                         getproperty QName(PackageNamespace(""),"instance")
+                                                         callpropvoid QName(PackageNamespace(""),"stateHandle"), 0
+                                                         findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"checkHotWheelTip")
+                                                         debugline 201
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"checkHotWheelTip"), 0
+                                                         findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"isGrassSignTime")
+                                                         debugline 202
+                                                         callproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"isGrassSignTime"), 0
+                                                         iffalse ofs004e
+                                                         debugline 203
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                                         pushshort 724
+                                                         newfunction 25
+                                                         callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                                ofs004e:
+                                                         findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"setSuperPetInitNum")
+                                                         debugline 217
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"setSuperPetInitNum"), 0
+                                                         findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showGanEnAwardPanel")
+                                                         debugline 218
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showGanEnAwardPanel"), 0
+                                                         findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"vipMonthBack")
+                                                         debugline 219
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"vipMonthBack"), 0
+                                                         findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"godFirePkAward")
+                                                         debugline 220
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"godFirePkAward"), 0
+                                                         findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"bestKingCatchAward")
+                                                         debugline 221
+                                                         callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"bestKingCatchAward"), 0
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private static function KingFightTrialWinHandle() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"KingFightTrialWinHandle")
+                                                   dispid 0
+                                                   method
+                                                      name "KingFightTrialWinHandle"
+                                                      flag NEED_ACTIVATION
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 2
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                            newactivation
+                                                            pushscope
+                                                            debugline 225
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                            pushint 250321
+                                                            newfunction 28
+                                                            callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private static function onPetExperenceChange(param1:PetInfoEvent) : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onPetExperenceChange")
+                                                      dispid 0
+                                                      method
+                                                         name "onPetExperenceChange"
+                                                         flag HAS_PARAM_NAMES
+                                                         param QName(PackageNamespace("com.taomee.seer2.app.pet.events"),"PetInfoEvent")
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 4
+                                                            localcount 4
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                               debug 1, "_loc2_", 1, 0
+                                                               debug 1, "param1", 0, 0
+                                                               debug 1, "_loc3_", 2, 0
+                                                               debugline 241
+                                                               pushnull
+                                                               coerce QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"RevenueInfo")
+                                                               setlocal2
+                                                               debugline 242
+                                                               pushnull
+                                                               coerce QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"FightResultInfo")
+                                                               setlocal3
+                                                               getlocal1
+                                                               debugline 243
+                                                               getproperty QName(PackageNamespace(""),"content")
+                                                               getproperty Multiname("revenueInfo",[PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),StaticProtectedNs("com.taomee.seer2.app.manager:LoginAwardManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:LoginAwardManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               coerce QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"RevenueInfo")
+                                                               setlocal2
+                                                               getlocal1
+                                                               debugline 244
+                                                               getproperty QName(PackageNamespace(""),"content")
+                                                               getproperty Multiname("resultInfo",[PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),StaticProtectedNs("com.taomee.seer2.app.manager:LoginAwardManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:LoginAwardManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                               coerce QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"FightResultInfo")
+                                                               setlocal3
+                                                               debugline 245
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                               pushstring "petExperenceChange"
+                                                               getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onPetExperenceChange")
+                                                               callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                               getlocal2
+                                                               debugline 246
+                                                               getproperty QName(PackageNamespace(""),"fighterRevenueInfoVec")
+                                                               getproperty QName(PackageNamespace(""),"length")
+                                                               pushbyte 0
+                                                               ifngt ofs0065
+                                                               findpropstrict QName(PackageNamespace("com.taomee.seer2.app.manager"),"FightResultPanelWrapper")
+                                                               debugline 247
+                                                               constructprop QName(PackageNamespace("com.taomee.seer2.app.manager"),"FightResultPanelWrapper"), 0
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfoManager")
+                                                               callproperty QName(PackageNamespace(""),"getAllBagPetInfo"), 0
+                                                               getlocal2
+                                                               getlocal3
+                                                               callpropvoid QName(PackageNamespace(""),"show"), 3
+                                                      ofs0065:
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private static function vipMonthBack() : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"vipMonthBack")
+                                                         dispid 0
+                                                         method
+                                                            name "vipMonthBack"
+                                                            flag NEED_ACTIVATION
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 3
+                                                               localcount 1
+                                                               initscopedepth 0
+                                                               maxscopedepth 2
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                  newactivation
+                                                                  pushscope
+                                                                  debugline 252
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                  pushint 250339
+                                                                  pushint 250337
+                                                                  newarray 2
+                                                                  newfunction 32
+                                                                  callpropvoid QName(PackageNamespace(""),"requestActiveCountList"), 2
+                                                                  debugline 260
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.vip"),"VipManager")
+                                                                  getproperty QName(PackageNamespace(""),"vipInfo")
+                                                                  callproperty QName(PackageNamespace(""),"isRealVip"), 0
+                                                                  iffalse ofs0024
+                                                         ofs0024:
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private static function godFirePkAward() : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"godFirePkAward")
+                                                            dispid 0
+                                                            method
+                                                               name "godFirePkAward"
+                                                               flag NEED_ACTIVATION
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 3
+                                                                  localcount 1
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 2
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                     newactivation
+                                                                     pushscope
+                                                                     debugline 265
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                     pushint 250200
+                                                                     pushint 250233
+                                                                     newarray 2
+                                                                     newfunction 34
+                                                                     callpropvoid QName(PackageNamespace(""),"requestActiveCountList"), 2
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private static function bestKingCatchAward() : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"bestKingCatchAward")
+                                                               dispid 0
+                                                               method
+                                                                  name "bestKingCatchAward"
+                                                                  flag NEED_ACTIVATION
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 3
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 2
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                        newactivation
+                                                                        pushscope
+                                                                        debugline 273
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                        pushint 250351
+                                                                        pushint 250431
+                                                                        newarray 2
+                                                                        newfunction 36
+                                                                        callpropvoid QName(PackageNamespace(""),"requestActiveCountList"), 2
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private static function showGanEnAwardPanel() : void
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"showGanEnAwardPanel")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "showGanEnAwardPanel"
+                                                                     flag NEED_ACTIVATION
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 3
+                                                                        localcount 1
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 2
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                           newactivation
+                                                                           pushscope
+                                                                           debugline 281
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                                                           pushshort 5018
+                                                                           newfunction 38
+                                                                           callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private static function setSuperPetInitNum() : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"setSuperPetInitNum")
+                                                                     dispid 0
+                                                                     method
+                                                                        name "setSuperPetInitNum"
+                                                                        flag NEED_ACTIVATION
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 7
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 2
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                              newactivation
+                                                                              pushscope
+                                                                              debugline 292
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DateUtil")
+                                                                              findpropstrict QName(PackageNamespace(""),"Date")
+                                                                              pushshort 2013
+                                                                              pushbyte 6
+                                                                              pushbyte 12
+                                                                              pushbyte 6
+                                                                              constructprop QName(PackageNamespace(""),"Date"), 4
+                                                                              findpropstrict QName(PackageNamespace(""),"Date")
+                                                                              pushshort 2013
+                                                                              pushbyte 7
+                                                                              pushbyte 29
+                                                                              pushbyte 21
+                                                                              constructprop QName(PackageNamespace(""),"Date"), 4
+                                                                              callproperty QName(PackageNamespace(""),"isInTime"), 2
+                                                                              iftrue ofs0035
+                                                                              debugline 293
+                                                                              returnvoid
+                                                                              debugline 295
+                                                                     ofs0035:
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                              pushuint 202957
+                                                                              newfunction 41
+                                                                              callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private static function isWinterSignTime() : Boolean
+                                                                  {
+                                                                     trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"isWinterSignTime")
+                                                                        dispid 0
+                                                                        method
+                                                                           name "isWinterSignTime"
+                                                                           returns QName(PackageNamespace(""),"Boolean")
+                                                                           
+                                                                           body
+                                                                              maxstack 5
+                                                                              localcount 3
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                                 debug 1, "_loc2_", 0, 0
+                                                                                 debug 1, "_loc1_", 1, 0
+                                                                                 findpropstrict QName(PackageNamespace(""),"Date")
+                                                                                 debugline 317
+                                                                                 pushshort 2013
+                                                                                 pushbyte 0
+                                                                                 pushbyte 25
+                                                                                 pushbyte 6
+                                                                                 constructprop QName(PackageNamespace(""),"Date"), 4
+                                                                                 callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getTime"), 0
+                                                                                 pushshort 1000
+                                                                                 divide
+                                                                                 convert_u
+                                                                                 setlocal2
+                                                                                 findpropstrict QName(PackageNamespace(""),"Date")
+                                                                                 debugline 318
+                                                                                 pushshort 2013
+                                                                                 pushbyte 1
+                                                                                 pushbyte 21
+                                                                                 pushbyte 24
+                                                                                 constructprop QName(PackageNamespace(""),"Date"), 4
+                                                                                 callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getTime"), 0
+                                                                                 pushshort 1000
+                                                                                 divide
+                                                                                 convert_u
+                                                                                 setlocal1
+                                                                                 debugline 319
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                                                 callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                                                                 getlocal1
+                                                                                 lessthan
+                                                                                 dup
+                                                                                 iffalse ofs0059
+                                                                                 pop
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                                                 callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                                                                 getlocal2
+                                                                                 greaterthan
+                                                                        ofs0059:
+                                                                                 iffalse ofs0065
+                                                                                 debugline 320
+                                                                                 pushtrue
+                                                                                 returnvalue
+                                                                                 debugline 322
+                                                                        ofs0065:
+                                                                                 pushfalse
+                                                                                 returnvalue
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private static function isGrassSignTime() : Boolean
+                                                                     {
+                                                                        trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"isGrassSignTime")
+                                                                           dispid 0
+                                                                           method
+                                                                              name "isGrassSignTime"
+                                                                              returns QName(PackageNamespace(""),"Boolean")
+                                                                              
+                                                                              body
+                                                                                 maxstack 5
+                                                                                 localcount 3
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 1
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                                    debug 1, "_loc2_", 0, 0
+                                                                                    debug 1, "_loc1_", 1, 0
+                                                                                    findpropstrict QName(PackageNamespace(""),"Date")
+                                                                                    debugline 326
+                                                                                    pushshort 2013
+                                                                                    pushbyte 10
+                                                                                    pushbyte 1
+                                                                                    pushbyte 6
+                                                                                    constructprop QName(PackageNamespace(""),"Date"), 4
+                                                                                    callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getTime"), 0
+                                                                                    pushshort 1000
+                                                                                    divide
+                                                                                    convert_u
+                                                                                    setlocal2
+                                                                                    findpropstrict QName(PackageNamespace(""),"Date")
+                                                                                    debugline 327
+                                                                                    pushshort 2013
+                                                                                    pushbyte 10
+                                                                                    pushbyte 21
+                                                                                    pushbyte 23
+                                                                                    constructprop QName(PackageNamespace(""),"Date"), 4
+                                                                                    callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getTime"), 0
+                                                                                    pushshort 1000
+                                                                                    divide
+                                                                                    convert_u
+                                                                                    setlocal1
+                                                                                    debugline 328
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                                                    callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                                                                    getlocal1
+                                                                                    lessthan
+                                                                                    dup
+                                                                                    iffalse ofs0059
+                                                                                    pop
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                                                    callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                                                                    getlocal2
+                                                                                    greaterthan
+                                                                           ofs0059:
+                                                                                    iffalse ofs0065
+                                                                                    debugline 329
+                                                                                    pushtrue
+                                                                                    returnvalue
+                                                                                    debugline 331
+                                                                           ofs0065:
+                                                                                    pushfalse
+                                                                                    returnvalue
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        private static function onGrassSignHide(param1:ModuleEvent) : void
+                                                                        {
+                                                                           trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onGrassSignHide")
+                                                                              dispid 0
+                                                                              method
+                                                                                 name "onGrassSignHide"
+                                                                                 flag HAS_PARAM_NAMES
+                                                                                 flag NEED_ACTIVATION
+                                                                                 param QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                                                 paramname "param1"
+                                                                                 returns QName(PackageNamespace(""),"void")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 4
+                                                                                    localcount 3
+                                                                                    initscopedepth 0
+                                                                                    maxscopedepth 2
+                                                                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.manager"),"param1")
+                                                                                       slotid 1
+                                                                                       type QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                                                    end ; trait
+                                                                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.manager"),"evt")
+                                                                                       slotid 2
+                                                                                       type QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                                                    end ; trait
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                                       newactivation
+                                                                                       dup
+                                                                                       setlocal2
+                                                                                       pushscope
+                                                                                       findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.manager"),"param1")
+                                                                                       getlocal1
+                                                                                       setproperty QName(PackageInternalNs("com.taomee.seer2.app.manager"),"param1")
+                                                                                       debug 1, "param1", 0, 0
+                                                                                       debug 1, "onGrassSignHide$0", 1, 0
+                                                                                       debugline 335
+                                                                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.manager"),"param1")
+                                                                                       coerce QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                                                                       getlocal2
+                                                                                       swap
+                                                                                       setslot 2
+                                                                                       debugline 336
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                                                       pushstring "GoSchoolSignPanel"
+                                                                                       pushstring "hide"
+                                                                                       getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onGrassSignHide")
+                                                                                       callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                                                                       debugline 337
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                                       pushint 203133
+                                                                                       newfunction 48
+                                                                                       callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                                                       returnvoid
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                           
+                                                                           private static function playAnnouncementTime() : void
+                                                                           {
+                                                                              trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"playAnnouncementTime")
+                                                                                 dispid 0
+                                                                                 method
+                                                                                    name "playAnnouncementTime"
+                                                                                    returns QName(PackageNamespace(""),"void")
+                                                                                    
+                                                                                    body
+                                                                                       maxstack 3
+                                                                                       localcount 1
+                                                                                       initscopedepth 0
+                                                                                       maxscopedepth 1
+                                                                                       
+                                                                                       code
+                                                                                          getlocal0
+                                                                                          pushscope
+                                                                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                                          findpropstrict QName(PackageNamespace(""),"isActivityTime")
+                                                                                          debugline 355
+                                                                                          callproperty QName(PackageNamespace(""),"isActivityTime"), 0
+                                                                                          iffalse ofs001c
+                                                                                          debugline 356
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                                                                                          pushbyte 9
+                                                                                          getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onGetBufferStatus")
+                                                                                          callpropvoid QName(PackageNamespace(""),"getServerBuffer"), 2
+                                                                                 ofs001c:
+                                                                                          returnvoid
+                                                                                       end ; code
+                                                                                    end ; body
+                                                                                 end ; method
+                                                                              }
+                                                                              
+                                                                              public static function isActivityTime() : Boolean
+                                                                              {
+                                                                                 trait method QName(PackageNamespace(""),"isActivityTime")
+                                                                                    flag METADATA
+                                                                                    metadata "__go_to_definition_help"
+                                                                                       item "pos" "15207"
+                                                                                    end ; metadata
+                                                                                    dispid 0
+                                                                                    method
+                                                                                       name "isActivityTime"
+                                                                                       returns QName(PackageNamespace(""),"Boolean")
+                                                                                       
+                                                                                       body
+                                                                                          maxstack 5
+                                                                                          localcount 3
+                                                                                          initscopedepth 0
+                                                                                          maxscopedepth 1
+                                                                                          
+                                                                                          code
+                                                                                             getlocal0
+                                                                                             pushscope
+                                                                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                                             debug 1, "_loc2_", 0, 0
+                                                                                             debug 1, "_loc1_", 1, 0
+                                                                                             findpropstrict QName(PackageNamespace(""),"Date")
+                                                                                             debugline 361
+                                                                                             pushshort 2012
+                                                                                             pushbyte 0
+                                                                                             pushbyte 19
+                                                                                             pushbyte 6
+                                                                                             constructprop QName(PackageNamespace(""),"Date"), 4
+                                                                                             callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getTime"), 0
+                                                                                             pushshort 1000
+                                                                                             divide
+                                                                                             convert_u
+                                                                                             setlocal2
+                                                                                             findpropstrict QName(PackageNamespace(""),"Date")
+                                                                                             debugline 362
+                                                                                             pushshort 2012
+                                                                                             pushbyte 0
+                                                                                             pushbyte 19
+                                                                                             pushbyte 24
+                                                                                             constructprop QName(PackageNamespace(""),"Date"), 4
+                                                                                             callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getTime"), 0
+                                                                                             pushshort 1000
+                                                                                             divide
+                                                                                             convert_u
+                                                                                             setlocal1
+                                                                                             debugline 363
+                                                                                             getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                                                             callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                                                                             getlocal1
+                                                                                             lessthan
+                                                                                             dup
+                                                                                             iffalse ofs0059
+                                                                                             pop
+                                                                                             getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                                                                             callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                                                                             getlocal2
+                                                                                             greaterthan
+                                                                                    ofs0059:
+                                                                                             iffalse ofs0065
+                                                                                             debugline 364
+                                                                                             pushtrue
+                                                                                             returnvalue
+                                                                                             debugline 366
+                                                                                    ofs0065:
+                                                                                             pushfalse
+                                                                                             returnvalue
+                                                                                          end ; code
+                                                                                       end ; body
+                                                                                    end ; method
+                                                                                 }
+                                                                                 
+                                                                                 private static function onGetBufferStatus(param1:ServerBuffer) : void
+                                                                                 {
+                                                                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:LoginAwardManager"),"onGetBufferStatus")
+                                                                                       dispid 0
+                                                                                       method
+                                                                                          name "onGetBufferStatus"
+                                                                                          flag HAS_PARAM_NAMES
+                                                                                          param QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBuffer")
+                                                                                          paramname "param1"
+                                                                                          returns QName(PackageNamespace(""),"void")
+                                                                                          
+                                                                                          body
+                                                                                             maxstack 4
+                                                                                             localcount 3
+                                                                                             initscopedepth 0
+                                                                                             maxscopedepth 1
+                                                                                             
+                                                                                             code
+                                                                                                getlocal0
+                                                                                                pushscope
+                                                                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;LoginAwardManager.as"
+                                                                                                debug 1, "_loc2_", 1, 0
+                                                                                                debug 1, "param1", 0, 0
+                                                                                                getlocal1
+                                                                                                debugline 370
+                                                                                                pushbyte 1
+                                                                                                callproperty QName(PackageNamespace(""),"readDataAtPostion"), 1
+                                                                                                convert_u
+                                                                                                setlocal2
+                                                                                                getlocal2
+                                                                                                debugline 371
+                                                                                                pushbyte 0
+                                                                                                ifne ofs003d
+                                                                                                debugline 372
+                                                                                                getlex QName(PackageNamespace("com.taomee.seer2.app.announcement"),"AnnouncementTime")
+                                                                                                pushstring "赛尔社最新消息：1月20日15:00至16:00，赛尔号空间传送过来的神秘新年礼物将会抵达赛尔号Ⅱ。"
+                                                                                                callpropvoid QName(PackageNamespace(""),"playAnnouncement"), 1
+                                                                                                debugline 373
+                                                                                                getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                                                                                                pushbyte 9
+                                                                                                pushbyte 1
+                                                                                                pushbyte 1
+                                                                                                callpropvoid QName(PackageNamespace(""),"updateServerBuffer"), 3
+                                                                                       ofs003d:
+                                                                                                returnvoid
+                                                                                             end ; code
+                                                                                          end ; body
+                                                                                       end ; method
+                                                                                    }
+                                                                                 }
+                                                                              }
+                                                                              
+                                                                              method
+                                                                                 name null
+                                                                                 returns null
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 3
+                                                                                    localcount 1
+                                                                                    initscopedepth 0
+                                                                                    maxscopedepth 2
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       getscopeobject 0
+                                                                                       getlex QName(PackageNamespace(""),"Object")
+                                                                                       dup
+                                                                                       pushscope
+                                                                                       newclass 0
+                                                                                       popscope
+                                                                                       initproperty QName(PackageNamespace("com.taomee.seer2.app.manager"),"LoginAwardManager")
+                                                                                       returnvoid
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                              

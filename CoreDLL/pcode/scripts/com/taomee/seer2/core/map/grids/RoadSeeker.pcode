@@ -1,0 +1,1802 @@
+package com.taomee.seer2.core.map.grids
+{
+   import flash.geom.Point;
+   
+   public class RoadSeeker
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _map:Array;
+      
+      private var _w:int;
+      
+      private var _h:int;
+      
+      private var _open:Array;
+      
+      private var _aveOpen:Number;
+      
+      private var _starPoint:Object;
+      
+      private var _endPoint:Object;
+      
+      private var _autoOptimize:Boolean;
+      
+      private var _cellWidth:Number;
+      
+      private var _cellHeight:Number;
+      
+      public var path:Array;
+      
+      private var _directEndPoint:Point;
+      
+      private var _directRow:int;
+      
+      private var _pMap:Array;
+      
+      public function RoadSeeker(param1:Array, param2:Number, param3:Number, param4:Boolean = true)
+      {
+         method
+            name "RoadSeeker"
+            flag HAS_OPTIONAL
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace(""),"Array")
+            param QName(PackageNamespace(""),"Number")
+            param QName(PackageNamespace(""),"Number")
+            param QName(PackageNamespace(""),"Boolean")
+            paramname "param1"
+            paramname "param2"
+            paramname "param3"
+            paramname "param4"
+            optional True()
+            returns null
+            
+            body
+               maxstack 26
+               localcount 7
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                  debug 1, "_loc6_", 4, 0
+                  debug 1, "_loc5_", 5, 0
+                  debug 1, "param3", 2, 0
+                  debug 1, "param4", 3, 0
+                  debug 1, "param1", 0, 0
+                  debug 1, "param2", 1, 0
+                  debugline 36
+                  pushbyte 0
+                  setlocal 5
+                  getlocal0
+                  debugline 37
+                  newarray 0
+                  setproperty QName(PackageNamespace(""),"path")
+                  debugline 38
+                  getlocal0
+                  debugline 38
+                  constructsuper 0
+                  getlocal0
+                  debugline 39
+                  newarray 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                  getlocal0
+                  getlocal1
+                  debugline 40
+                  pushbyte 0
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty Multiname("length",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_w")
+                  getlocal0
+                  getlocal1
+                  debugline 41
+                  getproperty QName(PackageNamespace(""),"length")
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_h")
+                  getlocal0
+                  getlocal2
+                  debugline 42
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_cellWidth")
+                  getlocal0
+                  getlocal3
+                  debugline 43
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_cellHeight")
+                  getlocal0
+                  getlocal1
+                  debugline 44
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_pMap")
+                  getlocal0
+                  getlocal 4
+                  debugline 45
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_autoOptimize")
+                  debugline 46
+                  pushbyte 0
+                  setlocal 6
+                  jump ofs011b
+         ofs0074:
+                  label
+                  getlocal0
+                  debugline 48
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                  getlocal 6
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  pushundefined
+                  ifne ofs0090
+                  getlocal0
+                  debugline 49
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                  getlocal 6
+                  newarray 0
+                  setproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  debugline 51
+         ofs0090:
+                  pushbyte 0
+                  setlocal 5
+                  jump ofs010c
+         ofs0098:
+                  label
+                  getlocal0
+                  debugline 53
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                  getlocal 6
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getlocal 5
+                  debugline 54
+                  pushstring "px"
+                  getlocal1
+                  getlocal 6
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getlocal 5
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty Multiname("px",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  debugline 55
+                  pushstring "py"
+                  getlocal1
+                  getlocal 6
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getlocal 5
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty Multiname("py",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  debugline 56
+                  pushstring "x"
+                  getlocal 5
+                  debugline 57
+                  pushstring "y"
+                  getlocal 6
+                  debugline 58
+                  pushstring "value"
+                  getlocal1
+                  getlocal 6
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getlocal 5
+                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  getproperty Multiname("value",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  debugline 59
+                  pushstring "block"
+                  pushfalse
+                  debugline 60
+                  pushstring "open"
+                  pushfalse
+                  debugline 61
+                  pushstring "value_g"
+                  pushbyte 0
+                  debugline 62
+                  pushstring "value_h"
+                  pushbyte 0
+                  debugline 63
+                  pushstring "value_f"
+                  pushbyte 0
+                  debugline 64
+                  pushstring "nodeparent"
+                  pushnull
+                  debugline 65
+                  pushstring "index"
+                  pushbyte -1
+                  newobject 12
+                  setproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                  debugline 67
+                  inclocal_i 5
+         ofs010c:
+                  getlocal 5
+                  getlocal0
+                  debugline 52
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_w")
+                  iflt ofs0098
+                  debugline 69
+                  inclocal_i 6
+         ofs011b:
+                  getlocal 6
+                  getlocal0
+                  debugline 47
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_h")
+                  iflt ofs0074
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function path8(param1:Point, param2:Point) : Array
+      {
+         trait method QName(PackageNamespace(""),"path8")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1893"
+            end ; metadata
+            dispid 0
+            method
+               name "path8"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace("flash.geom"),"Point")
+               param QName(PackageNamespace("flash.geom"),"Point")
+               paramname "param1"
+               paramname "param2"
+               returns QName(PackageNamespace(""),"Array")
+               
+               body
+                  maxstack 4
+                  localcount 9
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                     debug 1, "_loc6_", 2, 0
+                     debug 1, "_loc5_", 3, 0
+                     debug 1, "_loc8_", 4, 0
+                     debug 1, "_loc7_", 5, 0
+                     debug 1, "param1", 0, 0
+                     debug 1, "_loc4_", 6, 0
+                     debug 1, "param2", 1, 0
+                     debug 1, "_loc3_", 7, 0
+                     debugline 74
+                     pushnull
+                     coerce QName(PackageNamespace(""),"Array")
+                     setlocal 4
+                     debugline 75
+                     pushbyte 0
+                     setlocal3
+                     debugline 76
+                     pushbyte 0
+                     setlocal 6
+                     debugline 77
+                     pushnull
+                     coerce QName(PackageNamespace(""),"Object")
+                     setlocal 5
+                     getlocal0
+                     debugline 78
+                     newarray 0
+                     setproperty QName(PackageNamespace(""),"path")
+                     getlocal0
+                     getlocal0
+                     debugline 79
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal1
+                     getproperty QName(PackageNamespace(""),"y")
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal1
+                     getproperty QName(PackageNamespace(""),"x")
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_starPoint")
+                     getlocal0
+                     getlocal0
+                     debugline 80
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal2
+                     getproperty QName(PackageNamespace(""),"y")
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal2
+                     getproperty QName(PackageNamespace(""),"x")
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_endPoint")
+                     debugline 81
+                     pushfalse
+                     setlocal 8
+                     getlocal0
+                     debugline 82
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"initBlock"), 0
+                     getlocal0
+                     debugline 83
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_starPoint")
+                     coerce QName(PackageNamespace(""),"Object")
+                     setlocal 7
+                     jump ofs032f
+            ofs0088:
+                     label
+                     getlocal 8
+                     iffalse ofs00aa
+                     getlocal0
+                     debugline 86
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"drawPath"), 0
+                     getlocal0
+                     debugline 87
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_autoOptimize")
+                     iffalse ofs00a4
+                     getlocal0
+                     debugline 88
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"optimizePath"), 0
+            ofs00a4:
+                     getlocal0
+                     debugline 90
+                     getproperty QName(PackageNamespace(""),"path")
+                     returnvalue
+            ofs00aa:
+                     getlocal 7
+                     debugline 92
+                     pushtrue
+                     setproperty Multiname("block",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     debugline 93
+                     newarray 0
+                     coerce QName(PackageNamespace(""),"Array")
+                     setlocal 4
+                     getlocal 7
+                     debugline 94
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     greaterthan
+                     dup
+                     iffalse ofs00cf
+                     pop
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     greaterthan
+            ofs00cf:
+                     iffalse ofs00ef
+                     getlocal 4
+                     getlocal0
+                     debugline 95
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     subtract
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     subtract
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+            ofs00ef:
+                     getlocal 7
+                     debugline 97
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     ifngt ofs0114
+                     getlocal 4
+                     getlocal0
+                     debugline 98
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     subtract
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+            ofs0114:
+                     getlocal 7
+                     debugline 100
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_w")
+                     pushbyte 1
+                     subtract
+                     lessthan
+                     dup
+                     iffalse ofs012e
+                     pop
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     greaterthan
+            ofs012e:
+                     iffalse ofs014e
+                     getlocal 4
+                     getlocal0
+                     debugline 101
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     subtract
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+            ofs014e:
+                     getlocal 7
+                     debugline 103
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     ifngt ofs0173
+                     getlocal 4
+                     getlocal0
+                     debugline 104
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     subtract
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+            ofs0173:
+                     getlocal 7
+                     debugline 106
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_w")
+                     pushbyte 1
+                     subtract
+                     ifnlt ofs019c
+                     getlocal 4
+                     getlocal0
+                     debugline 107
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+            ofs019c:
+                     getlocal 7
+                     debugline 109
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     greaterthan
+                     dup
+                     iffalse ofs01b6
+                     pop
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_h")
+                     pushbyte 1
+                     subtract
+                     lessthan
+            ofs01b6:
+                     iffalse ofs01d6
+                     getlocal 4
+                     getlocal0
+                     debugline 110
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     subtract
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+            ofs01d6:
+                     getlocal 7
+                     debugline 112
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_h")
+                     pushbyte 1
+                     subtract
+                     ifnlt ofs01ff
+                     getlocal 4
+                     getlocal0
+                     debugline 113
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+            ofs01ff:
+                     getlocal 7
+                     debugline 115
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_w")
+                     pushbyte 1
+                     subtract
+                     lessthan
+                     dup
+                     iffalse ofs021d
+                     pop
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_h")
+                     pushbyte 1
+                     subtract
+                     lessthan
+            ofs021d:
+                     iffalse ofs023d
+                     getlocal 4
+                     getlocal0
+                     debugline 116
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 1
+                     add
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+            ofs023d:
+                     getlocal 4
+                     debugline 118
+                     getproperty QName(PackageNamespace(""),"length")
+                     convert_i
+                     setlocal3
+                     debugline 119
+                     pushbyte 0
+                     setlocal 6
+                     jump ofs0302
+            ofs024f:
+                     label
+                     getlocal 4
+                     getlocal 6
+                     debugline 121
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     coerce QName(PackageNamespace(""),"Object")
+                     setlocal 5
+                     getlocal0
+                     debugline 122
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 5
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty Multiname("value",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     equals
+                     dup
+                     iffalse ofs028c
+                     pop
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 5
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getproperty Multiname("value",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     equals
+            ofs028c:
+                     iffalse ofs0300
+                     getlocal 5
+                     getlocal0
+                     debugline 123
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_endPoint")
+                     ifne ofs02ac
+                     getlocal 5
+                     getlocal 7
+                     debugline 124
+                     setproperty Multiname("nodeparent",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     debugline 125
+                     pushtrue
+                     setlocal 8
+                     jump ofs030b
+            ofs02ac:
+                     getlocal 5
+                     debugline 128
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     equals
+                     dup
+                     iftrue ofs02ca
+                     pop
+                     getlocal 5
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     getlocal 7
+                     getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     equals
+                     debugline 128
+            ofs02ca:
+                     iffalse ofs02e0
+                     getlocal0
+                     getlocal 5
+                     getlocal 7
+                     debugline 129
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"count"), 2
+                     debugline 128
+                     jump ofs0300
+            ofs02e0:
+                     getlocal 5
+                     debugline 130
+                     getproperty Multiname("value",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushbyte 0
+                     equals
+                     debugline 128
+                     iffalse ofs0300
+                     getlocal0
+                     getlocal 5
+                     getlocal 7
+                     debugline 131
+                     pushtrue
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"count"), 3
+                     debugline 134
+            ofs0300:
+                     inclocal_i 6
+            ofs0302:
+                     getlocal 6
+                     getlocal3
+                     debugline 120
+                     iflt ofs024f
+            ofs030b:
+                     getlocal 8
+                     debugline 136
+                     iftrue ofs032f
+                     getlocal0
+                     debugline 137
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                     getproperty QName(PackageNamespace(""),"length")
+                     pushbyte 0
+                     ifle ofs0336
+                     getlocal0
+                     debugline 140
+                     callproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"getOpen"), 0
+                     coerce QName(PackageNamespace(""),"Object")
+                     setlocal 7
+                     debugline 84
+            ofs032f:
+                     jump ofs0088
+                     debugline 143
+            ofs0336:
+                     newarray 0
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function optimizePath() : Array
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"optimizePath")
+               dispid 0
+               method
+                  name "optimizePath"
+                  returns QName(PackageNamespace(""),"Array")
+                  
+                  body
+                     maxstack 4
+                     localcount 9
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                        debug 1, "_loc6_", 0, 0
+                        debug 1, "_loc5_", 1, 0
+                        debug 1, "_loc8_", 2, 0
+                        debug 1, "_loc7_", 3, 0
+                        debug 1, "_loc2_", 4, 0
+                        debug 1, "_loc1_", 5, 0
+                        debug 1, "_loc4_", 6, 0
+                        debug 1, "_loc3_", 7, 0
+                        debugline 147
+                        pushbyte 0
+                        setlocal 7
+                        debugline 148
+                        pushbyte 0
+                        setlocal3
+                        getlocal0
+                        debugline 149
+                        getproperty QName(PackageNamespace(""),"path")
+                        getproperty QName(PackageNamespace(""),"length")
+                        pushbyte 0
+                        ifne ofs004d
+                        debugline 150
+                        newarray 0
+                        returnvalue
+               ofs004d:
+                        getlocal0
+                        debugline 152
+                        getproperty QName(PackageNamespace(""),"path")
+                        getproperty QName(PackageNamespace(""),"length")
+                        convert_i
+                        setlocal 6
+                        debugline 153
+                        newarray 0
+                        coerce QName(PackageNamespace(""),"Array")
+                        setlocal 5
+                        debugline 154
+                        newarray 0
+                        coerce QName(PackageNamespace(""),"Array")
+                        setlocal 8
+                        debugline 155
+                        pushtrue
+                        setlocal2
+                        getlocal0
+                        debugline 156
+                        getproperty QName(PackageNamespace(""),"path")
+                        pushbyte 0
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        coerce QName(PackageNamespace("flash.geom"),"Point")
+                        setlocal1
+                        getlocal 5
+                        getlocal0
+                        debugline 157
+                        getproperty QName(PackageNamespace(""),"path")
+                        pushbyte 0
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                        debugline 158
+                        pushbyte 1
+                        setlocal 4
+                        jump ofs0136
+               ofs0096:
+                        label
+                        debugline 160
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"Diagonal")
+                        getlocal1
+                        getlocal0
+                        getproperty QName(PackageNamespace(""),"path")
+                        getlocal 4
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        callproperty QName(PackageNamespace(""),"each"), 2
+                        coerce QName(PackageNamespace(""),"Array")
+                        dup
+                        setlocal 8
+                        debugline 161
+                        getproperty QName(PackageNamespace(""),"length")
+                        convert_i
+                        setlocal 7
+                        debugline 162
+                        pushtrue
+                        setlocal2
+                        debugline 163
+                        pushbyte 0
+                        setlocal3
+                        jump ofs00f2
+               ofs00c3:
+                        label
+                        getlocal0
+                        debugline 165
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                        getlocal 8
+                        getlocal3
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        getlocal 8
+                        getlocal3
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        getproperty Multiname("value",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        pushbyte 1
+                        ifne ofs00f0
+                        debugline 166
+                        pushfalse
+                        setlocal2
+                        jump ofs00fc
+                        debugline 169
+               ofs00f0:
+                        inclocal_i 3
+               ofs00f2:
+                        getlocal3
+                        getlocal 7
+                        debugline 164
+                        iflt ofs00c3
+               ofs00fc:
+                        getlocal2
+                        debugline 171
+                        iftrue ofs0134
+                        getlocal 4
+                        debugline 172
+                        pushbyte 1
+                        ifngt ofs0134
+                        getlocal0
+                        debugline 173
+                        getproperty QName(PackageNamespace(""),"path")
+                        getlocal 4
+                        pushbyte 1
+                        subtract
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        coerce QName(PackageNamespace("flash.geom"),"Point")
+                        setlocal1
+                        getlocal 5
+                        getlocal0
+                        debugline 174
+                        getproperty QName(PackageNamespace(""),"path")
+                        getlocal 4
+                        pushbyte 1
+                        subtract
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                        debugline 177
+               ofs0134:
+                        inclocal_i 4
+               ofs0136:
+                        getlocal 4
+                        getlocal 6
+                        debugline 159
+                        iflt ofs0096
+                        getlocal 5
+                        getlocal0
+                        debugline 179
+                        getproperty QName(PackageNamespace(""),"path")
+                        getlocal 6
+                        pushbyte 1
+                        subtract
+                        getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                        callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                        getlocal0
+                        getlocal 5
+                        debugline 180
+                        callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"concat"), 0
+                        setproperty QName(PackageNamespace(""),"path")
+                        getlocal0
+                        debugline 181
+                        getproperty QName(PackageNamespace(""),"path")
+                        returnvalue
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function convertPath(param1:Array) : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"convertPath")
+                  dispid 0
+                  method
+                     name "convertPath"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace(""),"Array")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 2
+                        localcount 3
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                           debug 1, "_loc2_", 1, 0
+                           debug 1, "param1", 0, 0
+                           debugline 185
+                           pushbyte 0
+                           setlocal2
+                           jump ofs001e
+                  ofs0018:
+                           label
+                           debugline 187
+                           inclocal_i 2
+                  ofs001e:
+                           getlocal2
+                           getlocal1
+                           debugline 186
+                           getproperty QName(PackageNamespace(""),"length")
+                           iflt ofs0018
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public function set autoOptimize(param1:Boolean) : void
+               {
+                  trait setter QName(PackageNamespace(""),"autoOptimize")
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "6080"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "autoOptimize"
+                        flag HAS_PARAM_NAMES
+                        param QName(PackageNamespace(""),"Boolean")
+                        paramname "param1"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 2
+                           localcount 2
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                              debug 1, "param1", 0, 0
+                              getlocal0
+                              getlocal1
+                              debugline 192
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_autoOptimize")
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  public function get autoOptimize() : Boolean
+                  {
+                     trait getter QName(PackageNamespace(""),"autoOptimize")
+                        flag METADATA
+                        metadata "__go_to_definition_help"
+                           item "pos" "6188"
+                        end ; metadata
+                        dispid 0
+                        method
+                           name "autoOptimize"
+                           returns QName(PackageNamespace(""),"Boolean")
+                           
+                           body
+                              maxstack 1
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                 getlocal0
+                                 debugline 196
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_autoOptimize")
+                                 returnvalue
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function initBlock() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"initBlock")
+                           dispid 0
+                           method
+                              name "initBlock"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 3
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                    debug 1, "_loc2_", 0, 0
+                                    debug 1, "_loc1_", 1, 0
+                                    debugline 200
+                                    pushbyte 0
+                                    setlocal1
+                                    debugline 201
+                                    pushbyte 0
+                                    setlocal2
+                                    jump ofs00f7
+                           ofs001e:
+                                    label
+                                    debugline 203
+                                    pushbyte 0
+                                    setlocal1
+                                    jump ofs00e7
+                           ofs0029:
+                                    label
+                                    getlocal0
+                                    debugline 205
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushfalse
+                                    setproperty Multiname("open",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 206
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushfalse
+                                    setproperty Multiname("block",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 207
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushbyte 0
+                                    setproperty Multiname("value_g",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 208
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushbyte 0
+                                    setproperty Multiname("value_h",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 209
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushbyte 0
+                                    setproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 210
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushnull
+                                    setproperty Multiname("nodeparent",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 211
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushbyte -1
+                                    setproperty Multiname("index",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 212
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_pMap")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getproperty Multiname("px",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty Multiname("px",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 213
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_pMap")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getproperty Multiname("py",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty Multiname("py",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    debugline 214
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_pMap")
+                                    getlocal2
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getlocal1
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    getproperty Multiname("value",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    setproperty Multiname("value",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    debugline 215
+                                    inclocal_i 1
+                           ofs00e7:
+                                    getlocal1
+                                    getlocal0
+                                    debugline 204
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_w")
+                                    iflt ofs0029
+                                    debugline 217
+                                    inclocal_i 2
+                           ofs00f7:
+                                    getlocal2
+                                    getlocal0
+                                    debugline 202
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_h")
+                                    iflt ofs001e
+                                    getlocal0
+                                    debugline 219
+                                    newarray 0
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                    getlocal0
+                                    debugline 220
+                                    pushbyte 0
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function count(param1:Object, param2:Object, param3:Boolean = false) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"count")
+                              dispid 0
+                              method
+                                 name "count"
+                                 flag HAS_OPTIONAL
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace(""),"Object")
+                                 param QName(PackageNamespace(""),"Object")
+                                 param QName(PackageNamespace(""),"Boolean")
+                                 paramname "param1"
+                                 paramname "param2"
+                                 paramname "param3"
+                                 optional False()
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 6
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                       debug 1, "_loc5_", 3, 0
+                                       debug 1, "param3", 2, 0
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "_loc4_", 4, 0
+                                       debug 1, "param2", 1, 0
+                                       debugline 224
+                                       pushnan
+                                       setlocal 5
+                                       debugline 225
+                                       pushbyte 0
+                                       setlocal 4
+                                       getlocal1
+                                       debugline 226
+                                       getproperty Multiname("block",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       iftrue ofs00e0
+                                       getlocal3
+                                       iffalse ofs0046
+                                       getlocal2
+                                       debugline 227
+                                       getproperty Multiname("value_g",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushbyte 14
+                                       add
+                                       jump ofs004d
+                              ofs0046:
+                                       getlocal2
+                                       getproperty Multiname("value_g",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       pushbyte 10
+                                       add
+                                       coerce_a
+                              ofs004d:
+                                       convert_d
+                                       setlocal 5
+                                       getlocal1
+                                       debugline 228
+                                       getproperty Multiname("open",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       debugline 228
+                                       iffalse ofs00c1
+                                       getlocal1
+                                       debugline 229
+                                       getproperty Multiname("value_g",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlocal 5
+                                       ifnge ofs00bd
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                       getlocal0
+                                       debugline 230
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                       getlocal1
+                                       getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       subtract
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       divide
+                                       add
+                                       getlocal0
+                                       swap
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                       getlocal0
+                                       debugline 231
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                       getlocal1
+                                       callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                       convert_i
+                                       setlocal 4
+                                       getlocal0
+                                       debugline 232
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                       getlocal 4
+                                       pushbyte 1
+                                       callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 2
+                                       getlocal1
+                                       getlocal 5
+                                       debugline 233
+                                       setproperty Multiname("value_g",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlocal0
+                                       getlocal1
+                                       debugline 234
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"ghf"), 1
+                                       getlocal1
+                                       getlocal2
+                                       debugline 235
+                                       setproperty Multiname("nodeparent",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlocal0
+                                       getlocal1
+                                       debugline 236
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"setOpen"), 1
+                                       debugline 228
+                              ofs00bd:
+                                       jump ofs00e0
+                              ofs00c1:
+                                       getlocal1
+                                       getlocal 5
+                                       debugline 239
+                                       setproperty Multiname("value_g",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlocal0
+                                       getlocal1
+                                       debugline 240
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"ghf"), 1
+                                       getlocal1
+                                       getlocal2
+                                       debugline 241
+                                       setproperty Multiname("nodeparent",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       getlocal0
+                                       getlocal1
+                                       debugline 242
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"setOpen"), 1
+                              ofs00e0:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function drawPath() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"drawPath")
+                                 dispid 0
+                                 method
+                                    name "drawPath"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 4
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                          debug 1, "_loc1_", 0, 0
+                                          getlocal0
+                                          debugline 248
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_endPoint")
+                                          coerce QName(PackageNamespace(""),"Object")
+                                          setlocal1
+                                          jump ofs0034
+                                 ofs0016:
+                                          label
+                                          getlocal0
+                                          debugline 250
+                                          getproperty QName(PackageNamespace(""),"path")
+                                          findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                          getlocal1
+                                          getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          getlocal1
+                                          getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                          callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"unshift"), 1
+                                          getlocal1
+                                          debugline 251
+                                          getproperty Multiname("nodeparent",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          coerce QName(PackageNamespace(""),"Object")
+                                          setlocal1
+                                 ofs0034:
+                                          getlocal1
+                                          getlocal0
+                                          debugline 249
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_starPoint")
+                                          ifne ofs0016
+                                          getlocal0
+                                          debugline 253
+                                          getproperty QName(PackageNamespace(""),"path")
+                                          findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                          getlocal1
+                                          getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          getlocal1
+                                          getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                          callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"unshift"), 1
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function ghf(param1:Object) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"ghf")
+                                    dispid 0
+                                    method
+                                       name "ghf"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace(""),"Object")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 4
+                                          localcount 4
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                             debug 1, "_loc2_", 1, 0
+                                             debug 1, "param1", 0, 0
+                                             debug 1, "_loc3_", 2, 0
+                                             debugline 257
+                                             getlex QName(PackageNamespace(""),"Math")
+                                             getlocal1
+                                             getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_endPoint")
+                                             getproperty Multiname("x",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             subtract
+                                             callproperty QName(PackageNamespace(""),"abs"), 1
+                                             convert_d
+                                             setlocal2
+                                             debugline 258
+                                             getlex QName(PackageNamespace(""),"Math")
+                                             getlocal1
+                                             getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_endPoint")
+                                             getproperty Multiname("y",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             subtract
+                                             callproperty QName(PackageNamespace(""),"abs"), 1
+                                             convert_d
+                                             setlocal3
+                                             getlocal1
+                                             debugline 259
+                                             pushbyte 10
+                                             getlocal2
+                                             getlocal3
+                                             add
+                                             multiply
+                                             setproperty Multiname("value_h",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             getlocal1
+                                             getlocal1
+                                             debugline 260
+                                             getproperty Multiname("value_g",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             getlocal1
+                                             getproperty Multiname("value_h",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             add
+                                             setproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function setOpen(param1:Object) : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"setOpen")
+                                       dispid 0
+                                       method
+                                          name "setOpen"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace(""),"Object")
+                                          paramname "param1"
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 4
+                                             localcount 5
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                                debug 1, "_loc2_", 1, 0
+                                                debug 1, "param1", 0, 0
+                                                debug 1, "_loc4_", 2, 0
+                                                debug 1, "_loc3_", 3, 0
+                                                debugline 264
+                                                pushbyte 0
+                                                setlocal 4
+                                                debugline 265
+                                                pushbyte 0
+                                                setlocal3
+                                                getlocal1
+                                                debugline 266
+                                                pushtrue
+                                                setproperty Multiname("open",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal0
+                                                debugline 267
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                getproperty QName(PackageNamespace(""),"length")
+                                                convert_i
+                                                setlocal2
+                                                getlocal2
+                                                debugline 268
+                                                pushbyte 0
+                                                equals
+                                                debugline 268
+                                                iffalse ofs005e
+                                                getlocal0
+                                                debugline 269
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                getlocal1
+                                                callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                                getlocal0
+                                                getlocal1
+                                                debugline 270
+                                                getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                                debugline 268
+                                                jump ofs010d
+                                       ofs005e:
+                                                getlocal1
+                                                debugline 272
+                                                getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                                lessthan
+                                                debugline 272
+                                                iffalse ofs00b6
+                                                debugline 273
+                                                pushbyte 0
+                                                setlocal 4
+                                                jump ofs00a5
+                                       ofs007a:
+                                                label
+                                                getlocal1
+                                                debugline 275
+                                                getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                getlocal 4
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                ifnle ofs00a3
+                                                getlocal0
+                                                debugline 276
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                getlocal 4
+                                                pushbyte 0
+                                                getlocal1
+                                                callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 3
+                                                jump ofs00b2
+                                                debugline 279
+                                       ofs00a3:
+                                                inclocal_i 4
+                                       ofs00a5:
+                                                getlocal 4
+                                                getlocal2
+                                                debugline 274
+                                                iflt ofs007a
+                                                debugline 272
+                                       ofs00b2:
+                                                jump ofs00f5
+                                       ofs00b6:
+                                                getlocal2
+                                                debugline 282
+                                                setlocal3
+                                                jump ofs00eb
+                                       ofs00bf:
+                                                label
+                                                getlocal1
+                                                debugline 284
+                                                getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                getlocal3
+                                                pushbyte 1
+                                                subtract
+                                                getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                ifnge ofs00e9
+                                                getlocal0
+                                                debugline 285
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                getlocal3
+                                                pushbyte 0
+                                                getlocal1
+                                                callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 3
+                                                jump ofs00f5
+                                                debugline 288
+                                       ofs00e9:
+                                                declocal_i 3
+                                       ofs00eb:
+                                                getlocal3
+                                                debugline 283
+                                                pushbyte 0
+                                                ifgt ofs00bf
+                                       ofs00f5:
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                                getlocal1
+                                                debugline 291
+                                                getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                                subtract
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                getproperty QName(PackageNamespace(""),"length")
+                                                divide
+                                                add
+                                                getlocal0
+                                                swap
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                       ofs010d:
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function getOpen() : Object
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"getOpen")
+                                          dispid 0
+                                          method
+                                             name "getOpen"
+                                             returns QName(PackageNamespace(""),"Object")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 2
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                                   debug 1, "_loc1_", 0, 0
+                                                   getlocal0
+                                                   debugline 296
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                   pushbyte 0
+                                                   pushbyte 1
+                                                   callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 2
+                                                   pushbyte 0
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   coerce QName(PackageNamespace(""),"Object")
+                                                   setlocal1
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                                   getlocal0
+                                                   debugline 297
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                                   getlocal1
+                                                   getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   subtract
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                   getproperty QName(PackageNamespace(""),"length")
+                                                   divide
+                                                   add
+                                                   getlocal0
+                                                   swap
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_aveOpen")
+                                                   getlocal1
+                                                   debugline 298
+                                                   returnvalue
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function getMin() : int
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"getMin")
+                                             dispid 0
+                                             method
+                                                name "getMin"
+                                                returns QName(PackageNamespace(""),"int")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 5
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                                      debug 1, "_loc2_", 0, 0
+                                                      debug 1, "_loc1_", 1, 0
+                                                      debug 1, "_loc4_", 2, 0
+                                                      debug 1, "_loc3_", 3, 0
+                                                      getlocal0
+                                                      debugline 302
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                      getproperty QName(PackageNamespace(""),"length")
+                                                      convert_i
+                                                      setlocal2
+                                                      getlocal0
+                                                      debugline 303
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                      pushbyte 0
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      convert_d
+                                                      setlocal1
+                                                      debugline 304
+                                                      pushbyte 0
+                                                      setlocal 4
+                                                      debugline 305
+                                                      pushbyte 1
+                                                      setlocal3
+                                                      jump ofs006a
+                                             ofs0041:
+                                                      label
+                                                      getlocal1
+                                                      getlocal0
+                                                      debugline 307
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                      getlocal3
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      ifngt ofs0068
+                                                      getlocal0
+                                                      debugline 308
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_open")
+                                                      getlocal3
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      getproperty Multiname("value_f",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      convert_d
+                                                      setlocal1
+                                                      getlocal3
+                                                      debugline 309
+                                                      setlocal 4
+                                                      debugline 311
+                                             ofs0068:
+                                                      inclocal_i 3
+                                             ofs006a:
+                                                      getlocal3
+                                                      getlocal2
+                                                      debugline 306
+                                                      iflt ofs0041
+                                                      getlocal 4
+                                                      debugline 313
+                                                      returnvalue
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          public function value(param1:int, param2:int) : int
+                                          {
+                                             trait method QName(PackageNamespace(""),"value")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "10653"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "value"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace(""),"int")
+                                                   param QName(PackageNamespace(""),"int")
+                                                   paramname "param1"
+                                                   paramname "param2"
+                                                   returns QName(PackageNamespace(""),"int")
+                                                   
+                                                   body
+                                                      maxstack 2
+                                                      localcount 3
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\map\\grids;RoadSeeker.as"
+                                                         debug 1, "param1", 0, 0
+                                                         debug 1, "param2", 1, 0
+                                                         getlocal0
+                                                         debugline 317
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),"_map")
+                                                         getlocal2
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         getlocal1
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         getproperty Multiname("value",[PrivateNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),ProtectedNamespace("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("com.taomee.seer2.core.map.grids:RoadSeeker"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.map.grids"),PackageInternalNs("com.taomee.seer2.core.map.grids"),PrivateNamespace("FilePrivateNS:RoadSeeker"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                          }
+                                       }
+                                       
+                                       method
+                                          name null
+                                          returns null
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                getscopeobject 0
+                                                getlex QName(PackageNamespace(""),"Object")
+                                                dup
+                                                pushscope
+                                                newclass 0
+                                                popscope
+                                                initproperty QName(PackageNamespace("com.taomee.seer2.core.map.grids"),"RoadSeeker")
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                       

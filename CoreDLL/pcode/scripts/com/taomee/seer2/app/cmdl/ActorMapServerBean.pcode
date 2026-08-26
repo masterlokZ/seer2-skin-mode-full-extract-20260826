@@ -1,0 +1,892 @@
+package com.taomee.seer2.app.cmdl
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.actor.RemoteActor;
+   import com.taomee.seer2.app.actor.data.UserInfo;
+   import com.taomee.seer2.app.gameRule.ring.RingSupport;
+   import com.taomee.seer2.app.manager.MapUserStatusManager;
+   import com.taomee.seer2.app.morphSystem.MorphManager;
+   import com.taomee.seer2.app.morphSystem.MorphSwitch;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.net.helper.UserInfoParseHelper;
+   import com.taomee.seer2.app.processor.activity.ghostMorph.GhostMorphStart;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.SceneType;
+   import flash.geom.Point;
+   import flash.utils.ByteArray;
+   import org.taomee.bean.BaseBean;
+   
+   public class ActorMapServerBean extends BaseBean
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      public function ActorMapServerBean()
+      {
+         method
+            name "ActorMapServerBean"
+            returns null
+            
+            body
+               maxstack 3
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                  debugline 28
+                  getlocal0
+                  debugline 28
+                  constructsuper 0
+                  debugline 29
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                  getproperty QName(PackageNamespace(""),"LIST_USER_1004")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"onUserList")
+                  callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                  debugline 30
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                  getproperty QName(PackageNamespace(""),"USER_ENTER_MAP_1002")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"onUserEnterMap")
+                  callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                  debugline 31
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                  getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                  getproperty QName(PackageNamespace(""),"USER_LEAVE_MAP_1003")
+                  getlocal0
+                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"onUserLeaveMap")
+                  callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                  findpropstrict QName(ProtectedNamespace("org.taomee.bean:BaseBean"),"finish")
+                  debugline 32
+                  callpropvoid QName(ProtectedNamespace("org.taomee.bean:BaseBean"),"finish"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function syncToServer() : void
+      {
+         trait method QName(PackageNamespace(""),"syncToServer")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1436"
+            end ; metadata
+            dispid 0
+            method
+               name "syncToServer"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                     debugline 36
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                     getproperty QName(PackageNamespace(""),"active")
+                     getproperty QName(PackageNamespace(""),"type")
+                     pushbyte 2
+                     equals
+                     debugline 36
+                     iffalse ofs002b
+                     findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncLeaveMap")
+                     debugline 37
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncLeaveMap"), 0
+                     findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncEnterMap")
+                     debugline 38
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncEnterMap"), 0
+                     debugline 36
+                     jump ofs0043
+                     debugline 40
+            ofs002b:
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                     getproperty QName(PackageNamespace(""),"prevSceneType")
+                     pushbyte 2
+                     ifeq ofs003c
+                     findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncLeaveMap")
+                     debugline 41
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncLeaveMap"), 0
+            ofs003c:
+                     findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncEnterMap")
+                     debugline 43
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncEnterMap"), 0
+            ofs0043:
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private static function syncLeaveMap() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncLeaveMap")
+               dispid 0
+               method
+                  name "syncLeaveMap"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 2
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                        debugline 48
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                        getproperty QName(PackageNamespace(""),"USER_LEAVE_MAP_1003")
+                        callpropvoid QName(PackageNamespace(""),"send"), 1
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private static function syncEnterMap() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncEnterMap")
+                  dispid 0
+                  method
+                     name "syncEnterMap"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 7
+                        localcount 5
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                           debug 1, "_loc2_", 0, 0
+                           debug 1, "_loc1_", 1, 0
+                           debug 1, "_loc4_", 2, 0
+                           debug 1, "_loc3_", 3, 0
+                           debugline 52
+                           pushbyte 0
+                           setlocal2
+                           debugline 53
+                           pushbyte 0
+                           setlocal1
+                           debugline 54
+                           pushnull
+                           coerce QName(PackageNamespace("flash.geom"),"Point")
+                           setlocal 4
+                           debugline 55
+                           pushbyte 0
+                           setlocal3
+                           debugline 56
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"type")
+                           pushbyte 2
+                           equals
+                           not
+                           debugline 56
+                           iffalse ofs009c
+                           debugline 57
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapID")
+                           convert_i
+                           setlocal2
+                           debugline 58
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneType")
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"type")
+                           callproperty QName(PackageNamespace(""),"getServerType"), 1
+                           convert_i
+                           setlocal1
+                           debugline 59
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapModel")
+                           getproperty QName(PackageNamespace(""),"initialPoint")
+                           coerce QName(PackageNamespace("flash.geom"),"Point")
+                           setlocal 4
+                           debugline 60
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapModel")
+                           getproperty QName(PackageNamespace(""),"userBehavior")
+                           convert_i
+                           setlocal3
+                           debugline 61
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"USER_ENTER_MAP_1002")
+                           getlocal2
+                           getlocal1
+                           getlocal 4
+                           getproperty QName(PackageNamespace(""),"x")
+                           getlocal 4
+                           getproperty QName(PackageNamespace(""),"y")
+                           getlocal3
+                           callpropvoid QName(PackageNamespace(""),"send"), 6
+                           debugline 62
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"LIST_USER_1004")
+                           callpropvoid QName(PackageNamespace(""),"send"), 1
+                           debugline 56
+                           jump ofs00a3
+                           debugline 64
+                  ofs009c:
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                           pushstring "actorSyncSvr"
+                           callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                  ofs00a3:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private static function syncToServerComplete() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncToServerComplete")
+                     dispid 0
+                     method
+                        name "syncToServerComplete"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 2
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                              debugline 69
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              pushstring "actorSyncSvr"
+                              callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onUserList(param1:MessageEvent) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"onUserList")
+                        dispid 0
+                        method
+                           name "onUserList"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 4
+                              localcount 7
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                                 debug 1, "_loc6_", 1, 0
+                                 debug 1, "_loc5_", 2, 0
+                                 debug 1, "_loc2_", 3, 0
+                                 debug 1, "param1", 0, 0
+                                 debug 1, "_loc4_", 4, 0
+                                 debug 1, "_loc3_", 5, 0
+                                 debugline 73
+                                 pushnull
+                                 coerce QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                 setlocal3
+                                 debugline 74
+                                 pushbyte 0
+                                 convert_u
+                                 setlocal2
+                                 getlocal1
+                                 debugline 75
+                                 getproperty QName(PackageNamespace(""),"message")
+                                 callproperty QName(PackageNamespace(""),"getRawData"), 0
+                                 coerce QName(PackageNamespace("flash.utils"),"ByteArray")
+                                 dup
+                                 setlocal 4
+                                 debugline 76
+                                 callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                 convert_i
+                                 setlocal 6
+                                 debugline 77
+                                 pushbyte 0
+                                 setlocal 5
+                                 jump ofs018a
+                        ofs004d:
+                                 label
+                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                 debugline 79
+                                 constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo"), 0
+                                 coerce QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                 setlocal3
+                                 debugline 80
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.net.helper"),"UserInfoParseHelper")
+                                 getlocal3
+                                 getlocal 4
+                                 callpropvoid QName(PackageNamespace(""),"parseEnterMap"), 2
+                                 getlocal3
+                                 debugline 81
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getproperty QName(PackageNamespace(""),"actorInfo")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 ifeq ofs0090
+                                 debugline 82
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getlocal3
+                                 callpropvoid QName(PackageNamespace(""),"createRemoteActor"), 1
+                                 debugline 83
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"MapUserStatusManager")
+                                 getlocal3
+                                 callpropvoid QName(PackageNamespace(""),"addMapUser"), 1
+                                 debugline 84
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"MapUserStatusManager")
+                                 getlocal3
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 getlocal 4
+                                 callproperty QName(PackageNamespace(""),"readUnsignedByte"), 0
+                                 callpropvoid QName(PackageNamespace(""),"updateMapUser"), 2
+                        ofs0090:
+                                 getlocal3
+                                 getlocal 4
+                                 debugline 86
+                                 callpropvoid QName(PackageNamespace(""),"updateNonoInfo"), 1
+                                 getlocal3
+                                 debugline 87
+                                 getproperty QName(PackageNamespace(""),"morphInfo")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.morphSystem"),"MorphSwitch")
+                                 getlocal 4
+                                 callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                 callproperty QName(PackageNamespace(""),"morphSwitch"), 1
+                                 setproperty QName(PackageNamespace(""),"morphId")
+                                 getlocal 4
+                                 debugline 88
+                                 callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                 convert_u
+                                 setlocal2
+                                 getlocal3
+                                 getlocal 4
+                                 debugline 89
+                                 callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                 setproperty QName(PackageNamespace(""),"isYearVip")
+                                 getlocal2
+                                 debugline 90
+                                 pushbyte 0
+                                 ifeq ofs00f5
+                                 getlocal3
+                                 debugline 91
+                                 getproperty QName(PackageNamespace(""),"birthdayInfo")
+                                 pushtrue
+                                 setproperty QName(PackageNamespace(""),"isOpen")
+                                 getlocal3
+                                 debugline 92
+                                 getproperty QName(PackageNamespace(""),"birthdayInfo")
+                                 getlocal2
+                                 pushshort 10000
+                                 divide
+                                 convert_u
+                                 setproperty QName(PackageNamespace(""),"year")
+                                 getlocal3
+                                 debugline 93
+                                 getproperty QName(PackageNamespace(""),"birthdayInfo")
+                                 getlocal2
+                                 pushshort 10000
+                                 modulo
+                                 pushbyte 100
+                                 divide
+                                 convert_u
+                                 setproperty QName(PackageNamespace(""),"month")
+                                 getlocal3
+                                 debugline 94
+                                 getproperty QName(PackageNamespace(""),"birthdayInfo")
+                                 getlocal2
+                                 pushbyte 100
+                                 modulo
+                                 setproperty QName(PackageNamespace(""),"day")
+                        ofs00f5:
+                                 getlocal3
+                                 debugline 96
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getproperty QName(PackageNamespace(""),"actorInfo")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 equals
+                                 not
+                                 dup
+                                 iffalse ofs0113
+                                 pop
+                                 getlocal3
+                                 getproperty QName(PackageNamespace(""),"morphInfo")
+                                 getproperty QName(PackageNamespace(""),"morphId")
+                                 pushbyte 0
+                                 equals
+                                 not
+                                 debugline 96
+                        ofs0113:
+                                 iffalse ofs0131
+                                 debugline 97
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.morphSystem"),"MorphManager")
+                                 getlocal3
+                                 getproperty QName(PackageNamespace(""),"morphInfo")
+                                 getproperty QName(PackageNamespace(""),"morphId")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getlocal3
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callproperty QName(PackageNamespace(""),"getRemoteActor"), 1
+                                 callpropvoid QName(PackageNamespace(""),"startRemoteMorph"), 2
+                                 debugline 96
+                                 jump ofs0153
+                        ofs0131:
+                                 getlocal3
+                                 debugline 98
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getproperty QName(PackageNamespace(""),"actorInfo")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 equals
+                                 not
+                                 debugline 96
+                                 iffalse ofs0153
+                                 debugline 99
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.morphSystem"),"MorphManager")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getlocal3
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callproperty QName(PackageNamespace(""),"getRemoteActor"), 1
+                                 callpropvoid QName(PackageNamespace(""),"removeMorph"), 1
+                        ofs0153:
+                                 getlocal3
+                                 debugline 101
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getproperty QName(PackageNamespace(""),"actorInfo")
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 equals
+                                 debugline 101
+                                 iffalse ofs0179
+                                 debugline 102
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.processor.activity.ghostMorph"),"GhostMorphStart")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 callproperty QName(PackageNamespace(""),"getActor"), 0
+                                 callpropvoid QName(PackageNamespace(""),"startMorph"), 1
+                                 debugline 101
+                                 jump ofs0188
+                                 debugline 104
+                        ofs0179:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.processor.activity.ghostMorph"),"GhostMorphStart")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                 getlocal3
+                                 getproperty QName(PackageNamespace(""),"id")
+                                 callproperty QName(PackageNamespace(""),"getRemoteActor"), 1
+                                 callpropvoid QName(PackageNamespace(""),"startMorph"), 1
+                                 debugline 106
+                        ofs0188:
+                                 inclocal_i 5
+                        ofs018a:
+                                 getlocal 5
+                                 getlocal 6
+                                 debugline 78
+                                 iflt ofs004d
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onUserEnterMap(param1:MessageEvent) : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"onUserEnterMap")
+                           dispid 0
+                           method
+                              name "onUserEnterMap"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 6
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                                    debug 1, "_loc5_", 1, 0
+                                    debug 1, "_loc2_", 2, 0
+                                    debug 1, "param1", 0, 0
+                                    debug 1, "_loc4_", 3, 0
+                                    debug 1, "_loc3_", 4, 0
+                                    debugline 111
+                                    pushnull
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.actor"),"RemoteActor")
+                                    setlocal2
+                                    getlocal1
+                                    debugline 112
+                                    getproperty QName(PackageNamespace(""),"message")
+                                    callproperty QName(PackageNamespace(""),"getRawDataCopy"), 0
+                                    coerce QName(PackageNamespace("flash.utils"),"ByteArray")
+                                    setlocal3
+                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                    debugline 113
+                                    constructprop QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo"), 0
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.actor.data"),"UserInfo")
+                                    setlocal 5
+                                    debugline 114
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.net.helper"),"UserInfoParseHelper")
+                                    getlocal 5
+                                    getlocal3
+                                    callpropvoid QName(PackageNamespace(""),"parseEnterMap"), 2
+                                    debugline 115
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"MapUserStatusManager")
+                                    getlocal 5
+                                    getproperty QName(PackageNamespace(""),"id")
+                                    getlocal3
+                                    callproperty QName(PackageNamespace(""),"readUnsignedByte"), 0
+                                    callpropvoid QName(PackageNamespace(""),"updateMapUser"), 2
+                                    getlocal 5
+                                    getlocal3
+                                    debugline 116
+                                    callpropvoid QName(PackageNamespace(""),"updateNonoInfo"), 1
+                                    getlocal 5
+                                    debugline 117
+                                    getproperty QName(PackageNamespace(""),"morphInfo")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.morphSystem"),"MorphSwitch")
+                                    getlocal3
+                                    callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                    callproperty QName(PackageNamespace(""),"morphSwitch"), 1
+                                    setproperty QName(PackageNamespace(""),"morphId")
+                                    getlocal3
+                                    debugline 118
+                                    callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                    convert_u
+                                    setlocal 4
+                                    getlocal 5
+                                    getlocal3
+                                    debugline 119
+                                    callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                    setproperty QName(PackageNamespace(""),"isYearVip")
+                                    getlocal 4
+                                    debugline 120
+                                    pushbyte 0
+                                    ifeq ofs00bf
+                                    getlocal 5
+                                    debugline 121
+                                    getproperty QName(PackageNamespace(""),"birthdayInfo")
+                                    pushtrue
+                                    setproperty QName(PackageNamespace(""),"isOpen")
+                                    getlocal 5
+                                    debugline 122
+                                    getproperty QName(PackageNamespace(""),"birthdayInfo")
+                                    getlocal 4
+                                    pushshort 10000
+                                    divide
+                                    convert_u
+                                    setproperty QName(PackageNamespace(""),"year")
+                                    getlocal 5
+                                    debugline 123
+                                    getproperty QName(PackageNamespace(""),"birthdayInfo")
+                                    getlocal 4
+                                    pushshort 10000
+                                    modulo
+                                    pushbyte 100
+                                    divide
+                                    convert_u
+                                    setproperty QName(PackageNamespace(""),"month")
+                                    getlocal 5
+                                    debugline 124
+                                    getproperty QName(PackageNamespace(""),"birthdayInfo")
+                                    getlocal 4
+                                    pushbyte 100
+                                    modulo
+                                    setproperty QName(PackageNamespace(""),"day")
+                           ofs00bf:
+                                    getlocal 5
+                                    debugline 126
+                                    getproperty QName(PackageNamespace(""),"id")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                    callproperty QName(PackageNamespace(""),"getActor"), 0
+                                    getproperty QName(PackageNamespace(""),"id")
+                                    equals
+                                    debugline 126
+                                    iffalse ofs0102
+                                    debugline 127
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                    getproperty QName(PackageNamespace(""),"actorInfo")
+                                    getlocal 5
+                                    getproperty QName(PackageNamespace(""),"activityData")
+                                    setproperty QName(PackageNamespace(""),"activityData")
+                                    debugline 128
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"MapUserStatusManager")
+                                    callpropvoid QName(PackageNamespace(""),"clearMapUsers"), 0
+                                    debugline 129
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"MapUserStatusManager")
+                                    getlocal 5
+                                    callpropvoid QName(PackageNamespace(""),"addMapUser"), 1
+                                    findpropstrict QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncToServerComplete")
+                                    debugline 130
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"syncToServerComplete"), 0
+                                    debugline 126
+                                    jump ofs013d
+                                    debugline 131
+                           ofs0102:
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                    getlocal 5
+                                    getproperty QName(PackageNamespace(""),"id")
+                                    callproperty QName(PackageNamespace(""),"getRemoteActor"), 1
+                                    dup
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.actor"),"RemoteActor")
+                                    setlocal2
+                                    pushnull
+                                    equals
+                                    not
+                                    debugline 126
+                                    iffalse ofs0129
+                                    getlocal0
+                                    getlocal2
+                                    debugline 132
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"addMorph"), 1
+                                    debugline 126
+                                    jump ofs013d
+                                    debugline 134
+                           ofs0129:
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                    getlocal 5
+                                    callpropvoid QName(PackageNamespace(""),"createRemoteActor"), 1
+                                    debugline 135
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"MapUserStatusManager")
+                                    getlocal 5
+                                    callpropvoid QName(PackageNamespace(""),"addMapUser"), 1
+                                    debugline 137
+                           ofs013d:
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                    getproperty QName(PackageNamespace(""),"active")
+                                    pushnull
+                                    equals
+                                    not
+                                    dup
+                                    iffalse ofs0153
+                                    pop
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                    getproperty QName(PackageNamespace(""),"active")
+                                    getproperty QName(PackageNamespace(""),"mapID")
+                                    pushbyte 81
+                                    equals
+                           ofs0153:
+                                    iffalse ofs0162
+                                    debugline 138
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.ring"),"RingSupport")
+                                    callproperty QName(PackageNamespace(""),"getInstance"), 0
+                                    callpropvoid QName(PackageNamespace(""),"onEnterMapUpdate"), 0
+                           ofs0162:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function addMorph(param1:RemoteActor) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"addMorph")
+                              dispid 0
+                              method
+                                 name "addMorph"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace("com.taomee.seer2.app.actor"),"RemoteActor")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 2
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                                       debug 1, "param1", 0, 0
+                                       getlocal1
+                                       debugline 143
+                                       callproperty QName(PackageNamespace(""),"getInfo"), 0
+                                       getproperty QName(PackageNamespace(""),"morphInfo")
+                                       getproperty QName(PackageNamespace(""),"morphId")
+                                       pushbyte 0
+                                       equals
+                                       not
+                                       debugline 143
+                                       iffalse ofs003a
+                                       debugline 144
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.morphSystem"),"MorphManager")
+                                       getlocal1
+                                       callproperty QName(PackageNamespace(""),"getInfo"), 0
+                                       getproperty QName(PackageNamespace(""),"morphInfo")
+                                       getproperty QName(PackageNamespace(""),"morphId")
+                                       getlocal1
+                                       callpropvoid QName(PackageNamespace(""),"startRemoteMorph"), 2
+                                       debugline 143
+                                       jump ofs0043
+                                       debugline 146
+                              ofs003a:
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.morphSystem"),"MorphManager")
+                                       getlocal1
+                                       callpropvoid QName(PackageNamespace(""),"removeMorph"), 1
+                                       debugline 148
+                              ofs0043:
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.processor.activity.ghostMorph"),"GhostMorphStart")
+                                       getlocal1
+                                       callpropvoid QName(PackageNamespace(""),"startMorph"), 1
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function onUserLeaveMap(param1:MessageEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.cmdl:ActorMapServerBean"),"onUserLeaveMap")
+                                 dispid 0
+                                 method
+                                    name "onUserLeaveMap"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 5
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\cmdl;ActorMapServerBean.as"
+                                          debug 1, "_loc2_", 1, 0
+                                          debug 1, "param1", 0, 0
+                                          debug 1, "_loc4_", 2, 0
+                                          debug 1, "_loc3_", 3, 0
+                                          pushbyte 0
+                                          setlocal3
+                                          getlocal1
+                                          debugline 152
+                                          getproperty QName(PackageNamespace(""),"message")
+                                          callproperty QName(PackageNamespace(""),"getRawDataCopy"), 0
+                                          coerce QName(PackageNamespace("flash.utils"),"ByteArray")
+                                          setlocal2
+                                          getlocal2
+                                          debugline 153
+                                          callproperty QName(PackageNamespace(""),"readUnsignedInt"), 0
+                                          convert_i
+                                          setlocal 4
+                                          getlocal2
+                                          debugline 155
+                                          callproperty QName(PackageNamespace(""),"readUnsignedByte"), 0
+                                          convert_i
+                                          dup
+                                          convert_i
+                                          setlocal3
+                                          pushbyte 1
+                                          equals
+                                          debugline 155
+                                          iffalse ofs005c
+                                          debugline 156
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"MapUserStatusManager")
+                                          getlocal 4
+                                          pushbyte 1
+                                          callpropvoid QName(PackageNamespace(""),"updateMapUser"), 2
+                                          debugline 155
+                                          jump ofs006d
+                                          debugline 158
+                                 ofs005c:
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                          getlocal 4
+                                          callpropvoid QName(PackageNamespace(""),"removeRemoteActor"), 1
+                                          debugline 159
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"MapUserStatusManager")
+                                          getlocal 4
+                                          callpropvoid QName(PackageNamespace(""),"removeMapUser"), 1
+                                 ofs006d:
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                           }
+                        }
+                        
+                        method
+                           name null
+                           returns null
+                           
+                           body
+                              maxstack 3
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 3
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 getscopeobject 0
+                                 getlex QName(PackageNamespace(""),"Object")
+                                 pushscope
+                                 getlex QName(PackageNamespace("org.taomee.bean"),"BaseBean")
+                                 dup
+                                 pushscope
+                                 newclass 0
+                                 popscope
+                                 popscope
+                                 initproperty QName(PackageNamespace("com.taomee.seer2.app.cmdl"),"ActorMapServerBean")
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                        

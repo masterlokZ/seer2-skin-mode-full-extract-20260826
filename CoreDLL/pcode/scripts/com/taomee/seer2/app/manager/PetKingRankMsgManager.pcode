@@ -1,0 +1,678 @@
+package com.taomee.seer2.app.manager
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.popup.ServerMessager;
+   import com.taomee.seer2.app.quest.QuestManager;
+   import com.taomee.seer2.core.manager.TimeManager;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import flash.utils.IDataInput;
+   
+   public class PetKingRankMsgManager
+   {
+      
+      private static var _instance:PetKingRankMsgManager;
+      
+      public static const RED_TEAM:int = 1;
+      
+      public static const BLUE_TEAM:int = 2;
+      
+      public static const GREEN_TEAM:int = 3;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _teamName:String;
+      
+      private var _curtTeam:uint = 0;
+      
+      private var _teamNameList:Array;
+      
+      private var _teamList:Array;
+      
+      private var _curtHours:uint;
+      
+      public function PetKingRankMsgManager(param1:PrivateClass)
+      {
+         method
+            name "PetKingRankMsgManager"
+            flag HAS_PARAM_NAMES
+            param QName(PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),"PrivateClass")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 5
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                  debug 1, "param1", 0, 0
+                  getlocal0
+                  debugline 36
+                  pushnull
+                  pushstring "热辣队"
+                  pushstring "冰沁队"
+                  pushstring "丛林队"
+                  newarray 4
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamNameList")
+                  getlocal0
+                  debugline 37
+                  newarray 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                  debugline 38
+                  getlocal0
+                  debugline 38
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function instance() : PetKingRankMsgManager
+      {
+         trait method QName(PackageNamespace(""),"instance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1156"
+            end ; metadata
+            dispid 0
+            method
+               name "instance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.manager"),"PetKingRankMsgManager")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                     debugline 42
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_instance")
+                     pushnull
+                     ifne ofs001e
+                     getlocal0
+                     findpropstrict QName(PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),"PrivateClass")
+                     debugline 43
+                     constructprop QName(PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),"PrivateClass"), 0
+                     construct 1
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_instance")
+                     debugline 45
+            ofs001e:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function update() : void
+         {
+            trait method QName(PackageNamespace(""),"update")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "1365"
+               end ; metadata
+               dispid 0
+               method
+                  name "update"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 5
+                     localcount 3
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                        debug 1, "_loc2_", 0, 0
+                        debug 1, "_loc1_", 1, 0
+                        debugline 49
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                        callproperty QName(PackageNamespace(""),"isCompleteGudieTask"), 0
+                        pushfalse
+                        ifne ofs001f
+                        debugline 50
+                        returnvoid
+                        debugline 52
+               ofs001f:
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        getproperty QName(PackageNamespace(""),"currentSceneType")
+                        pushbyte 2
+                        ifne ofs002e
+                        debugline 53
+                        returnvoid
+                        debugline 55
+               ofs002e:
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                        callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                        convert_u
+                        setlocal2
+                        findpropstrict QName(PackageNamespace(""),"Date")
+                        getlocal2
+                        debugline 56
+                        pushshort 1000
+                        multiply
+                        constructprop QName(PackageNamespace(""),"Date"), 1
+                        coerce QName(PackageNamespace(""),"Date")
+                        setlocal1
+                        getlocal1
+                        debugline 57
+                        callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getMinutes"), 0
+                        pushbyte 30
+                        equals
+                        dup
+                        iffalse ofs005c
+                        pop
+                        getlocal1
+                        callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getHours"), 0
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_curtHours")
+                        equals
+                        not
+               ofs005c:
+                        iffalse ofs008e
+                        getlocal0
+                        debugline 58
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"setTeam"), 0
+                        debugline 59
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                        getproperty QName(PackageNamespace(""),"GET_TOTAL_VOTE_INFO_1219")
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"onGetTotalVote")
+                        callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                        debugline 60
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                        getproperty QName(PackageNamespace(""),"GET_TOTAL_VOTE_INFO_1219")
+                        pushbyte 1
+                        pushbyte 1
+                        pushbyte 3
+                        callpropvoid QName(PackageNamespace(""),"send"), 4
+                        getlocal0
+                        getlocal1
+                        debugline 61
+                        callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"getHours"), 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_curtHours")
+               ofs008e:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function onGetTotalVote(param1:MessageEvent) : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"onGetTotalVote")
+                  dispid 0
+                  method
+                     name "onGetTotalVote"
+                     flag HAS_PARAM_NAMES
+                     param QName(PackageNamespace("com.taomee.seer2.core.net"),"MessageEvent")
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 4
+                        localcount 9
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                           debug 1, "_loc6_", 1, 0
+                           debug 1, "_loc5_", 2, 0
+                           debug 1, "_loc8_", 3, 0
+                           debug 1, "_loc7_", 4, 0
+                           debug 1, "_loc2_", 5, 0
+                           debug 1, "param1", 0, 0
+                           debug 1, "_loc4_", 6, 0
+                           debug 1, "_loc3_", 7, 0
+                           debugline 66
+                           pushbyte 0
+                           convert_u
+                           setlocal3
+                           debugline 67
+                           pushbyte 0
+                           convert_u
+                           setlocal2
+                           debugline 68
+                           pushnull
+                           coerce QName(PackageNamespace(""),"Object")
+                           setlocal 5
+                           debugline 69
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                           getproperty QName(PackageNamespace(""),"GET_TOTAL_VOTE_INFO_1219")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"onGetTotalVote")
+                           callpropvoid QName(PackageNamespace(""),"removeCommandListener"), 2
+                           getlocal1
+                           debugline 70
+                           getproperty QName(PackageNamespace(""),"message")
+                           callproperty QName(PackageNamespace(""),"getRawData"), 0
+                           coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                           dup
+                           setlocal 6
+                           debugline 71
+                           callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                           convert_u
+                           setlocal 8
+                           getlocal 6
+                           debugline 72
+                           callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                           convert_u
+                           setlocal 7
+                           getlocal0
+                           debugline 73
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                           pushbyte 0
+                           setproperty QName(PackageNamespace(""),"length")
+                           debugline 74
+                           pushbyte 0
+                           setlocal 4
+                           jump ofs00b7
+                  ofs007f:
+                           label
+                           getlocal 6
+                           debugline 76
+                           callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                           convert_u
+                           setlocal3
+                           getlocal 6
+                           debugline 77
+                           callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                           convert_u
+                           setlocal2
+                           debugline 79
+                           pushstring "name"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamNameList")
+                           getlocal3
+                           getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                           debugline 80
+                           pushstring "count"
+                           getlocal2
+                           debugline 78
+                           newobject 2
+                           coerce QName(PackageNamespace(""),"Object")
+                           setlocal 5
+                           getlocal0
+                           debugline 82
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                           getlocal 5
+                           callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                           debugline 83
+                           inclocal_i 4
+                  ofs00b7:
+                           getlocal 4
+                           getlocal 7
+                           debugline 75
+                           iflt ofs007f
+                           getlocal0
+                           debugline 85
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"sortTeam"), 0
+                           getlocal0
+                           debugline 86
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"showTxt"), 0
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function sortTeam() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"sortTeam")
+                     dispid 0
+                     method
+                        name "sortTeam"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                              getlocal0
+                              debugline 90
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                              pushstring "count"
+                              pushbyte 16
+                              callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"sortOn"), 2
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function showTxt() : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"showTxt")
+                        dispid 0
+                        method
+                           name "showTxt"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 4
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                                 debugline 94
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"ServerMessager")
+                                 getlocal0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                                 pushbyte 2
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 pushstring "name"
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 callproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"checkColor"), 1
+                                 pushstring "精灵王争霸赛总积分为"
+                                 add
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                                 pushbyte 2
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 pushstring "count"
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 add
+                                 pushstring "，现在排名第一|查看详情|PetKingFightIntegralPanel|正在努力加载中..."
+                                 add
+                                 callpropvoid QName(PackageNamespace(""),"addMessage"), 1
+                                 debugline 95
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"ServerMessager")
+                                 getlocal0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                                 pushbyte 1
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 pushstring "name"
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 callproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"checkColor"), 1
+                                 pushstring "精灵王争霸赛总积分为"
+                                 add
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                                 pushbyte 1
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 pushstring "count"
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 add
+                                 pushstring "，现在排名第二|查看详情|PetKingFightIntegralPanel|正在努力加载中..."
+                                 add
+                                 callpropvoid QName(PackageNamespace(""),"addMessage"), 1
+                                 debugline 96
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"ServerMessager")
+                                 getlocal0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                                 pushbyte 0
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 pushstring "name"
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 callproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"checkColor"), 1
+                                 pushstring "精灵王争霸赛总积分为"
+                                 add
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamList")
+                                 pushbyte 0
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 pushstring "count"
+                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                 add
+                                 pushstring "，现在排名第三|查看详情|PetKingFightIntegralPanel|正在努力加载中..."
+                                 add
+                                 callpropvoid QName(PackageNamespace(""),"addMessage"), 1
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function checkColor(param1:String) : String
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"checkColor")
+                           dispid 0
+                           method
+                              name "checkColor"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace(""),"String")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"String")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 3
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                                    debug 1, "_loc2_", 1, 0
+                                    debug 1, "param1", 0, 0
+                                    getlocal1
+                                    debugline 100
+                                    setlocal2
+                                    getlocal1
+                                    getlocal0
+                                    debugline 101
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamName")
+                                    ifne ofs0028
+                                    debugline 102
+                                    pushstring "<font color=\'#ff0000\'>"
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamName")
+                                    add
+                                    pushstring "</font>"
+                                    add
+                                    setlocal2
+                           ofs0028:
+                                    getlocal2
+                                    debugline 104
+                                    returnvalue
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function setTeam() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"setTeam")
+                              dispid 0
+                              method
+                                 name "setTeam"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 2
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                                       debugline 108
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                       getproperty QName(PackageNamespace(""),"actorInfo")
+                                       getproperty QName(PackageNamespace(""),"activityData")
+                                       pushbyte 1
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),ProtectedNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("com.taomee.seer2.app.manager:PetKingRankMsgManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.manager"),PackageInternalNs("com.taomee.seer2.app.manager"),PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       debugline 108
+                                       convert_i
+                                       debugline 108
+                                       pushint 500508
+                                       debugline 108
+                                       subtract_i
+                                       debugline 108
+                                       lookupswitch ofs0060, [ofs002a, ofs003c, ofs004e]
+                              ofs002a:
+                                       getlocal0
+                                       debugline 110
+                                       pushbyte 1
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_curtTeam")
+                                       getlocal0
+                                       debugline 111
+                                       pushstring "热辣队"
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamName")
+                                       jump ofs0069
+                              ofs003c:
+                                       getlocal0
+                                       debugline 114
+                                       pushstring "冰沁队"
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamName")
+                                       getlocal0
+                                       debugline 115
+                                       pushbyte 2
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_curtTeam")
+                                       jump ofs0069
+                              ofs004e:
+                                       getlocal0
+                                       debugline 118
+                                       pushstring "丛林队"
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_teamName")
+                                       getlocal0
+                                       debugline 119
+                                       pushbyte 3
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_curtTeam")
+                                       jump ofs0069
+                              ofs0060:
+                                       getlocal0
+                                       debugline 122
+                                       pushbyte 0
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.manager:PetKingRankMsgManager"),"_curtTeam")
+                                       debugline 108
+                              ofs0069:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                        }
+                     }
+                     
+                     class PrivateClass
+                     {
+                        
+                        method
+                           name null
+                           returns null
+                           
+                           body
+                              maxstack 0
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 0
+                              
+                              code
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                        
+                        public function PrivateClass()
+                        {
+                           method
+                              name "PrivateClass"
+                              returns null
+                              
+                              body
+                                 maxstack 1
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\manager;PetKingRankMsgManager.as"
+                                    debugline 132
+                                    getlocal0
+                                    debugline 132
+                                    constructsuper 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                     }
+                     
+                     method
+                        name null
+                        returns null
+                        
+                        body
+                           maxstack 3
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 2
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              getscopeobject 0
+                              getlex QName(PackageNamespace(""),"Object")
+                              dup
+                              pushscope
+                              newclass 0
+                              popscope
+                              initproperty QName(PackageNamespace("com.taomee.seer2.app.manager"),"PetKingRankMsgManager")
+                              getscopeobject 0
+                              getlex QName(PackageNamespace(""),"Object")
+                              dup
+                              pushscope
+                              newclass 1
+                              popscope
+                              initproperty QName(PrivateNamespace("FilePrivateNS:PetKingRankMsgManager"),"PrivateClass")
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                     

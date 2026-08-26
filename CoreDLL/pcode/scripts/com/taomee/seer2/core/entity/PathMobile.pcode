@@ -1,0 +1,1445 @@
+package com.taomee.seer2.core.entity
+{
+   import com.taomee.seer2.core.entity.events.MoveEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import flash.geom.Point;
+   import org.taomee.algo.AStar;
+   import org.taomee.utils.GeomUtil;
+   
+   public class PathMobile extends Mobile
+   {
+      
+      public static const CLOSE_DISTANCE:uint = 20;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      public var walkSpeed:uint = 5;
+      
+      public var runSpeed:uint = 7;
+      
+      private var _speed:int;
+      
+      private var _path:Vector.<Point>;
+      
+      private var _isMoving:Boolean;
+      
+      private var _targetPos:Point;
+      
+      private var _currentPos:Point;
+      
+      private var _stepStartPos:Point;
+      
+      private var _stepEndPos:Point;
+      
+      private var _stepIndex:uint;
+      
+      private var _stepDisX:Number;
+      
+      private var _stepDisY:Number;
+      
+      private var _isBigMap:Boolean = false;
+      
+      public function PathMobile()
+      {
+         method
+            name "PathMobile"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                  debugline 44
+                  getlocal0
+                  debugline 44
+                  constructsuper 0
+                  getlocal0
+                  getlocal0
+                  debugline 45
+                  getproperty QName(PackageNamespace(""),"walkSpeed")
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_speed")
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function set speed(param1:int) : void
+      {
+         trait setter QName(PackageNamespace(""),"speed")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1086"
+            end ; metadata
+            dispid 0
+            method
+               name "speed"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace(""),"int")
+               paramname "param1"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 2
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                     debug 1, "param1", 0, 0
+                     getlocal0
+                     getlocal1
+                     debugline 49
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_speed")
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function get speed() : int
+         {
+            trait getter QName(PackageNamespace(""),"speed")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "1176"
+               end ; metadata
+               dispid 0
+               method
+                  name "speed"
+                  returns QName(PackageNamespace(""),"int")
+                  
+                  body
+                     maxstack 1
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                        getlocal0
+                        debugline 53
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_speed")
+                        returnvalue
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function setPath(param1:Vector.<Point>) : void
+            {
+               trait method QName(PackageNamespace(""),"setPath")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "1249"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "setPath"
+                     flag HAS_PARAM_NAMES
+                     param TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("flash.geom"),"Point")>)
+                     paramname "param1"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 2
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                           debug 1, "param1", 0, 0
+                           getlocal0
+                           getlocal1
+                           debugline 57
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                           getlocal0
+                           debugline 58
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"polishPath"), 0
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function polishPath() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"polishPath")
+                     dispid 0
+                     method
+                        name "polishPath"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 7
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                              debug 1, "_loc6_", 0, 0
+                              debug 1, "_loc5_", 1, 0
+                              debug 1, "_loc2_", 2, 0
+                              debug 1, "_loc1_", 3, 0
+                              debug 1, "_loc4_", 4, 0
+                              debug 1, "_loc3_", 5, 0
+                              debugline 62
+                              pushnull
+                              coerce QName(PackageNamespace("flash.geom"),"Point")
+                              setlocal 5
+                              debugline 63
+                              pushnull
+                              coerce QName(PackageNamespace("flash.geom"),"Point")
+                              setlocal2
+                              debugline 64
+                              pushnan
+                              setlocal1
+                              getlocal0
+                              debugline 65
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_speed")
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_speed")
+                              multiply
+                              convert_i
+                              setlocal 4
+                              getlocal0
+                              debugline 66
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                              getproperty QName(PackageNamespace(""),"length")
+                              convert_i
+                              setlocal3
+                              debugline 67
+                              pushbyte 1
+                              setlocal 6
+                              jump ofs009a
+                     ofs0052:
+                              label
+                              getlocal0
+                              debugline 69
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                              getlocal 6
+                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:Mobile"),StaticProtectedNs("com.taomee.seer2.core.entity:AnimateElement"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.entity"),PackageInternalNs("com.taomee.seer2.core.entity"),PrivateNamespace("FilePrivateNS:PathMobile"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              coerce QName(PackageNamespace("flash.geom"),"Point")
+                              setlocal 5
+                              getlocal0
+                              debugline 70
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                              getlocal 6
+                              pushbyte 1
+                              subtract
+                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:Mobile"),StaticProtectedNs("com.taomee.seer2.core.entity:AnimateElement"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.entity"),PackageInternalNs("com.taomee.seer2.core.entity"),PrivateNamespace("FilePrivateNS:PathMobile"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              coerce QName(PackageNamespace("flash.geom"),"Point")
+                              setlocal2
+                              debugline 71
+                              getlex QName(PackageNamespace("flash.geom"),"Point")
+                              getlocal2
+                              getlocal 5
+                              callproperty QName(PackageNamespace(""),"distance"), 2
+                              dup
+                              convert_d
+                              setlocal1
+                              getlocal 4
+                              ifnlt ofs0098
+                              getlocal0
+                              debugline 72
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                              getlocal 6
+                              pushbyte 1
+                              callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"splice"), 2
+                              debugline 73
+                              declocal_i 6
+                              debugline 74
+                              declocal_i 3
+                              debugline 76
+                     ofs0098:
+                              inclocal_i 6
+                     ofs009a:
+                              getlocal 6
+                              getlocal3
+                              debugline 68
+                              pushbyte 1
+                              subtract
+                              iflt ofs0052
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  public function getPath() : Vector.<Point>
+                  {
+                     trait method QName(PackageNamespace(""),"getPath")
+                        flag METADATA
+                        metadata "__go_to_definition_help"
+                           item "pos" "2008"
+                        end ; metadata
+                        dispid 0
+                        method
+                           name "getPath"
+                           returns TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("flash.geom"),"Point")>)
+                           
+                           body
+                              maxstack 1
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                 getlocal0
+                                 debugline 81
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                 returnvalue
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public function stand() : void
+                     {
+                        trait method QName(PackageNamespace(""),"stand")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "2093"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "stand"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 1
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                    getlocal0
+                                    debugline 85
+                                    pushfalse
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_isMoving")
+                                    getlocal0
+                                    pushstring "stand"
+                                    callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateMoveStyle"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        public function walkToLocation(param1:Number, param2:Number) : void
+                        {
+                           trait method QName(PackageNamespace(""),"walkToLocation")
+                              flag METADATA
+                              metadata "__go_to_definition_help"
+                                 item "pos" "2219"
+                              end ; metadata
+                              dispid 0
+                              method
+                                 name "walkToLocation"
+                                 flag HAS_PARAM_NAMES
+                                 param QName(PackageNamespace(""),"Number")
+                                 param QName(PackageNamespace(""),"Number")
+                                 paramname "param1"
+                                 paramname "param2"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 4
+                                    localcount 3
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "param2", 1, 0
+                                       getlocal0
+                                       getlocal0
+                                       debugline 90
+                                       getproperty QName(PackageNamespace(""),"walkSpeed")
+                                       setproperty QName(PackageNamespace(""),"speed")
+                                       getlocal0
+                                       getlocal1
+                                       getlocal2
+                                       debugline 91
+                                       callproperty QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"calculatePath"), 2
+                                       pushtrue
+                                       ifne ofs0035
+                                       getlocal0
+                                       findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                       getlocal1
+                                       getlocal2
+                                       debugline 92
+                                       constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_targetPos")
+                                       getlocal0
+                                       pushstring "walk"
+                                       callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"startMove"), 1
+                              ofs0035:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           public function runToLocation(param1:Number, param2:Number) : void
+                           {
+                              trait method QName(PackageNamespace(""),"runToLocation")
+                                 flag METADATA
+                                 metadata "__go_to_definition_help"
+                                    item "pos" "2512"
+                                 end ; metadata
+                                 dispid 0
+                                 method
+                                    name "runToLocation"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace(""),"Number")
+                                    param QName(PackageNamespace(""),"Number")
+                                    paramname "param1"
+                                    paramname "param2"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 4
+                                       localcount 3
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                          debug 1, "param1", 0, 0
+                                          debug 1, "param2", 1, 0
+                                          getlocal0
+                                          getlocal0
+                                          debugline 98
+                                          getproperty QName(PackageNamespace(""),"runSpeed")
+                                          setproperty QName(PackageNamespace(""),"speed")
+                                          getlocal0
+                                          getlocal1
+                                          getlocal2
+                                          debugline 99
+                                          callproperty QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"calculatePath"), 2
+                                          pushtrue
+                                          ifne ofs0035
+                                          getlocal0
+                                          findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                          getlocal1
+                                          getlocal2
+                                          debugline 100
+                                          constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_targetPos")
+                                          getlocal0
+                                          pushstring "run"
+                                          callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"startMove"), 1
+                                 ofs0035:
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public function runInBigMapToLocation(param1:Array, param2:Number, param3:Number) : void
+                              {
+                                 trait method QName(PackageNamespace(""),"runInBigMapToLocation")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "2802"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "runInBigMapToLocation"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace(""),"Array")
+                                       param QName(PackageNamespace(""),"Number")
+                                       param QName(PackageNamespace(""),"Number")
+                                       paramname "param1"
+                                       paramname "param2"
+                                       paramname "param3"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 4
+                                          localcount 4
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                             debug 1, "param3", 2, 0
+                                             debug 1, "param1", 0, 0
+                                             debug 1, "param2", 1, 0
+                                             getlocal0
+                                             debugline 106
+                                             pushtrue
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_isBigMap")
+                                             getlocal0
+                                             getlocal0
+                                             debugline 107
+                                             getproperty QName(PackageNamespace(""),"runSpeed")
+                                             setproperty QName(PackageNamespace(""),"speed")
+                                             getlocal0
+                                             debugline 108
+                                             getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                             getlex QName(PackageNamespace("flash.geom"),"Point")
+                                             applytype 1
+                                             getlocal0
+                                             getlocal1
+                                             call 1
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                             getlocal0
+                                             findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                             getlocal2
+                                             getlocal3
+                                             debugline 109
+                                             constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_targetPos")
+                                             getlocal0
+                                             pushstring "run"
+                                             callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"startMove"), 1
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 protected function calculatePath(param1:Number, param2:Number) : Boolean
+                                 {
+                                    trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"calculatePath")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "3117"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "calculatePath"
+                                          flag HAS_PARAM_NAMES
+                                          param QName(PackageNamespace(""),"Number")
+                                          param QName(PackageNamespace(""),"Number")
+                                          paramname "param1"
+                                          paramname "param2"
+                                          returns QName(PackageNamespace(""),"Boolean")
+                                          
+                                          body
+                                             maxstack 4
+                                             localcount 6
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                debug 1, "_loc5_", 2, 0
+                                                debug 1, "param1", 0, 0
+                                                debug 1, "_loc4_", 3, 0
+                                                debug 1, "param2", 1, 0
+                                                debug 1, "_loc3_", 4, 0
+                                                pushnull
+                                                setlocal3
+                                                findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                getlocal0
+                                                debugline 114
+                                                getproperty QName(PackageNamespace(""),"x")
+                                                getlocal0
+                                                getproperty QName(PackageNamespace(""),"y")
+                                                constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                coerce QName(PackageNamespace("flash.geom"),"Point")
+                                                setlocal 5
+                                                findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+                                                getlocal1
+                                                getlocal2
+                                                debugline 115
+                                                constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+                                                coerce QName(PackageNamespace("flash.geom"),"Point")
+                                                setlocal 4
+                                                debugline 117
+                                                getlex QName(PackageNamespace("org.taomee.algo"),"AStar")
+                                                getproperty QName(PackageNamespace(""),"instance")
+                                                getlocal 5
+                                                getlocal 4
+                                                callproperty QName(PackageNamespace(""),"find"), 2
+                                                dup
+                                                coerce QName(PackageNamespace(""),"Array")
+                                                setlocal3
+                                                pushnull
+                                                ifeq ofs006e
+                                                getlocal0
+                                                debugline 118
+                                                getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                                getlex QName(PackageNamespace("flash.geom"),"Point")
+                                                applytype 1
+                                                getlocal0
+                                                getlocal3
+                                                call 1
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                                getlocal0
+                                                debugline 119
+                                                callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"polishPath"), 0
+                                                debugline 120
+                                                pushtrue
+                                                returnvalue
+                                                debugline 122
+                                       ofs006e:
+                                                pushfalse
+                                                returnvalue
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    public function getTargetPoint() : Point
+                                    {
+                                       trait method QName(PackageNamespace(""),"getTargetPoint")
+                                          flag METADATA
+                                          metadata "__go_to_definition_help"
+                                             item "pos" "3551"
+                                          end ; metadata
+                                          dispid 0
+                                          method
+                                             name "getTargetPoint"
+                                             returns QName(PackageNamespace("flash.geom"),"Point")
+                                             
+                                             body
+                                                maxstack 1
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                   getlocal0
+                                                   debugline 126
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_targetPos")
+                                                   returnvalue
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       protected function startMove(param1:String) : void
+                                       {
+                                          trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"startMove")
+                                             flag METADATA
+                                             metadata "__go_to_definition_help"
+                                                item "pos" "3642"
+                                             end ; metadata
+                                             dispid 0
+                                             method
+                                                name "startMove"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace(""),"String")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 5
+                                                   localcount 3
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                      debug 1, "param1", 0, 0
+                                                      getlocal0
+                                                      debugline 130
+                                                      callproperty QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"isPathExist"), 0
+                                                      pushtrue
+                                                      ifne ofs0068
+                                                      getlocal0
+                                                      debugline 131
+                                                      pushbyte 0
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepIndex")
+                                                      getlocal0
+                                                      getlocal0
+                                                      debugline 132
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepIndex")
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:Mobile"),StaticProtectedNs("com.taomee.seer2.core.entity:AnimateElement"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.entity"),PackageInternalNs("com.taomee.seer2.core.entity"),PrivateNamespace("FilePrivateNS:PathMobile"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepStartPos")
+                                                      getlocal0
+                                                      getlocal0
+                                                      debugline 133
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepStartPos")
+                                                      callproperty QName(PackageNamespace(""),"clone"), 0
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                      getlocal0
+                                                      getlocal0
+                                                      debugline 134
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                                      getlocal0
+                                                      dup
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepIndex")
+                                                      increment
+                                                      dup
+                                                      setlocal2
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepIndex")
+                                                      getlocal2
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:Mobile"),StaticProtectedNs("com.taomee.seer2.core.entity:AnimateElement"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.entity"),PackageInternalNs("com.taomee.seer2.core.entity"),PrivateNamespace("FilePrivateNS:PathMobile"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepEndPos")
+                                                      getlocal0
+                                                      debugline 135
+                                                      callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateDirection"), 0
+                                                      getlocal0
+                                                      getlocal1
+                                                      debugline 136
+                                                      callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateMoveStyle"), 1
+                                                      getlocal0
+                                                      debugline 137
+                                                      pushtrue
+                                                      setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_isMoving")
+                                                      getlocal0
+                                                      pushstring "start"
+                                                      callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"dispathMoveEvent"), 1
+                                             ofs0068:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          protected function isPathExist() : Boolean
+                                          {
+                                             trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"isPathExist")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "4150"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "isPathExist"
+                                                   returns QName(PackageNamespace(""),"Boolean")
+                                                   
+                                                   body
+                                                      maxstack 2
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                         getlocal0
+                                                         debugline 143
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                                         convert_b
+                                                         dup
+                                                         iffalse ofs0019
+                                                         pop
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                                         getproperty QName(PackageNamespace(""),"length")
+                                                         pushbyte 1
+                                                         greaterthan
+                                                ofs0019:
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function dispathMoveEvent(param1:String) : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"dispathMoveEvent")
+                                                   dispid 0
+                                                   method
+                                                      name "dispathMoveEvent"
+                                                      flag HAS_PARAM_NAMES
+                                                      param QName(PackageNamespace(""),"String")
+                                                      paramname "param1"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 2
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                            debug 1, "param1", 0, 0
+                                                            findpropstrict QName(PackageNamespace(""),"hasEventListener")
+                                                            getlocal1
+                                                            debugline 147
+                                                            callproperty QName(PackageNamespace(""),"hasEventListener"), 1
+                                                            pushtrue
+                                                            ifne ofs0025
+                                                            findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                                            findpropstrict QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"MoveEvent")
+                                                            getlocal1
+                                                            debugline 148
+                                                            constructprop QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"MoveEvent"), 1
+                                                            callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                   ofs0025:
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                override public function update() : void
+                                                {
+                                                   trait method QName(PackageNamespace(""),"update")
+                                                      flag OVERRIDE
+                                                      flag METADATA
+                                                      metadata "__go_to_definition_help"
+                                                         item "pos" "4456"
+                                                      end ; metadata
+                                                      dispid 0
+                                                      method
+                                                         name "update"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 1
+                                                            localcount 1
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                               getlocal0
+                                                               debugline 153
+                                                               callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updatePostion"), 0
+                                                               debugline 154
+                                                               getlocal0
+                                                               debugline 154
+                                                               callsupervoid QName(PackageNamespace(""),"update"), 0
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   protected function updatePostion() : void
+                                                   {
+                                                      trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updatePostion")
+                                                         flag METADATA
+                                                         metadata "__go_to_definition_help"
+                                                            item "pos" "4561"
+                                                         end ; metadata
+                                                         dispid 0
+                                                         method
+                                                            name "updatePostion"
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 3
+                                                               localcount 3
+                                                               initscopedepth 0
+                                                               maxscopedepth 1
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                                  debug 1, "_loc2_", 0, 0
+                                                                  debug 1, "_loc1_", 1, 0
+                                                                  debugline 158
+                                                                  pushnull
+                                                                  coerce QName(PackageNamespace("flash.geom"),"Point")
+                                                                  setlocal2
+                                                                  debugline 159
+                                                                  pushnull
+                                                                  coerce QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"MoveEvent")
+                                                                  setlocal1
+                                                                  getlocal0
+                                                                  debugline 160
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_isMoving")
+                                                                  iffalse ofs0103
+                                                                  debugline 161
+                                                                  getlex QName(PackageNamespace("flash.geom"),"Point")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepEndPos")
+                                                                  callproperty QName(PackageNamespace(""),"distance"), 2
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_speed")
+                                                                  lessthan
+                                                                  debugline 161
+                                                                  iffalse ofs0073
+                                                                  getlocal0
+                                                                  getlocal0
+                                                                  debugline 162
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepEndPos")
+                                                                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepStartPos")
+                                                                  getlocal0
+                                                                  debugline 163
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepStartPos")
+                                                                  getproperty QName(PackageNamespace(""),"x")
+                                                                  setproperty QName(PackageNamespace(""),"x")
+                                                                  getlocal0
+                                                                  debugline 164
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepStartPos")
+                                                                  getproperty QName(PackageNamespace(""),"y")
+                                                                  setproperty QName(PackageNamespace(""),"y")
+                                                                  getlocal0
+                                                                  debugline 165
+                                                                  callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"getNextEndPos"), 0
+                                                                  debugline 161
+                                                                  jump ofs00bf
+                                                                  debugline 167
+                                                         ofs0073:
+                                                                  getlex QName(PackageNamespace("org.taomee.utils"),"GeomUtil")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepStartPos")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepEndPos")
+                                                                  callproperty QName(PackageNamespace(""),"angleSpeed"), 2
+                                                                  coerce QName(PackageNamespace("flash.geom"),"Point")
+                                                                  setlocal2
+                                                                  getlocal0
+                                                                  getlocal2
+                                                                  debugline 168
+                                                                  getproperty QName(PackageNamespace(""),"x")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_speed")
+                                                                  multiply
+                                                                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepDisX")
+                                                                  getlocal0
+                                                                  getlocal2
+                                                                  debugline 169
+                                                                  getproperty QName(PackageNamespace(""),"y")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_speed")
+                                                                  multiply
+                                                                  setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepDisY")
+                                                                  getlocal0
+                                                                  debugline 170
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  getproperty QName(PackageNamespace(""),"x")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepDisX")
+                                                                  subtract
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  swap
+                                                                  setproperty QName(PackageNamespace(""),"x")
+                                                                  getlocal0
+                                                                  debugline 171
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  getproperty QName(PackageNamespace(""),"y")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepDisY")
+                                                                  subtract
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  swap
+                                                                  setproperty QName(PackageNamespace(""),"y")
+                                                         ofs00bf:
+                                                                  getlocal0
+                                                                  getlocal0
+                                                                  debugline 173
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  getproperty QName(PackageNamespace(""),"x")
+                                                                  setproperty QName(PackageNamespace(""),"x")
+                                                                  getlocal0
+                                                                  getlocal0
+                                                                  debugline 174
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_currentPos")
+                                                                  getproperty QName(PackageNamespace(""),"y")
+                                                                  setproperty QName(PackageNamespace(""),"y")
+                                                                  findpropstrict QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"MoveEvent")
+                                                                  pushstring "move"
+                                                                  constructprop QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"MoveEvent"), 1
+                                                                  coerce QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"MoveEvent")
+                                                                  setlocal1
+                                                                  getlocal1
+                                                                  getlocal2
+                                                                  debugline 176
+                                                                  setproperty QName(PackageNamespace(""),"param")
+                                                                  findpropstrict QName(PackageNamespace(""),"hasEventListener")
+                                                                  pushstring "move"
+                                                                  callproperty QName(PackageNamespace(""),"hasEventListener"), 1
+                                                                  pushtrue
+                                                                  ifne ofs00fe
+                                                                  findpropstrict QName(PackageNamespace(""),"dispatchEvent")
+                                                                  getlocal1
+                                                                  debugline 178
+                                                                  callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                                                  debugline 180
+                                                         ofs00fe:
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                                  callpropvoid QName(PackageNamespace(""),"layout"), 0
+                                                         ofs0103:
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      protected function updateDirection() : void
+                                                      {
+                                                         trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateDirection")
+                                                            flag METADATA
+                                                            metadata "__go_to_definition_help"
+                                                               item "pos" "5704"
+                                                            end ; metadata
+                                                            dispid 0
+                                                            method
+                                                               name "updateDirection"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 1
+                                                                  localcount 1
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 1
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                                     getlocal0
+                                                                     debugline 185
+                                                                     callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateHorizontalDirection"), 0
+                                                                     getlocal0
+                                                                     debugline 186
+                                                                     callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateVerticalDirection"), 0
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         protected function updateHorizontalDirection() : void
+                                                         {
+                                                            trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateHorizontalDirection")
+                                                               flag METADATA
+                                                               metadata "__go_to_definition_help"
+                                                                  item "pos" "5846"
+                                                               end ; metadata
+                                                               dispid 0
+                                                               method
+                                                                  name "updateHorizontalDirection"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 2
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                                        getlocal0
+                                                                        debugline 190
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepStartPos")
+                                                                        getproperty QName(PackageNamespace(""),"x")
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepEndPos")
+                                                                        getproperty QName(PackageNamespace(""),"x")
+                                                                        lessequals
+                                                                        debugline 190
+                                                                        iffalse ofs002a
+                                                                        getlocal0
+                                                                        getproperty QName(PackageNamespace(""),"direction")
+                                                                        pushbyte 1
+                                                                        bitor
+                                                                        getlocal0
+                                                                        swap
+                                                                        setproperty QName(PackageNamespace(""),"direction")
+                                                                        debugline 190
+                                                                        jump ofs0034
+                                                               ofs002a:
+                                                                        getlocal0
+                                                                        getproperty QName(PackageNamespace(""),"direction")
+                                                                        pushbyte 2
+                                                                        bitand
+                                                                        getlocal0
+                                                                        swap
+                                                                        setproperty QName(PackageNamespace(""),"direction")
+                                                               ofs0034:
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            protected function updateVerticalDirection() : void
+                                                            {
+                                                               trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateVerticalDirection")
+                                                                  flag METADATA
+                                                                  metadata "__go_to_definition_help"
+                                                                     item "pos" "6144"
+                                                                  end ; metadata
+                                                                  dispid 0
+                                                                  method
+                                                                     name "updateVerticalDirection"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 2
+                                                                        localcount 2
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                                           debug 1, "_loc1_", 0, 0
+                                                                           getlocal0
+                                                                           debugline 198
+                                                                           getproperty QName(PackageNamespace(""),"direction")
+                                                                           convert_u
+                                                                           setlocal1
+                                                                           getlocal0
+                                                                           debugline 199
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepStartPos")
+                                                                           getproperty QName(PackageNamespace(""),"y")
+                                                                           getlocal0
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepEndPos")
+                                                                           getproperty QName(PackageNamespace(""),"y")
+                                                                           greaterthan
+                                                                           debugline 199
+                                                                           iffalse ofs0037
+                                                                           getlocal0
+                                                                           getproperty QName(PackageNamespace(""),"direction")
+                                                                           pushbyte 2
+                                                                           bitor
+                                                                           getlocal0
+                                                                           swap
+                                                                           setproperty QName(PackageNamespace(""),"direction")
+                                                                           debugline 199
+                                                                           jump ofs0041
+                                                                  ofs0037:
+                                                                           getlocal0
+                                                                           getproperty QName(PackageNamespace(""),"direction")
+                                                                           pushbyte 1
+                                                                           bitand
+                                                                           getlocal0
+                                                                           swap
+                                                                           setproperty QName(PackageNamespace(""),"direction")
+                                                                  ofs0041:
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               protected function updateMoveStyle(param1:String) : void
+                                                               {
+                                                                  trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateMoveStyle")
+                                                                     flag METADATA
+                                                                     metadata "__go_to_definition_help"
+                                                                        item "pos" "6488"
+                                                                     end ; metadata
+                                                                     dispid 0
+                                                                     method
+                                                                        name "updateMoveStyle"
+                                                                        flag HAS_PARAM_NAMES
+                                                                        param QName(PackageNamespace(""),"String")
+                                                                        paramname "param1"
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 2
+                                                                           localcount 2
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                                              debug 1, "param1", 0, 0
+                                                                              getlocal0
+                                                                              getlocal1
+                                                                              debugline 207
+                                                                              setproperty QName(PackageNamespace(""),"moveStyle")
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  protected function getNextEndPos() : void
+                                                                  {
+                                                                     trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"getNextEndPos")
+                                                                        flag METADATA
+                                                                        metadata "__go_to_definition_help"
+                                                                           item "pos" "6593"
+                                                                        end ; metadata
+                                                                        dispid 0
+                                                                        method
+                                                                           name "getNextEndPos"
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 5
+                                                                              localcount 2
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 1
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                                                 getlocal0
+                                                                                 debugline 211
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepIndex")
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                                                                 getproperty QName(PackageNamespace(""),"length")
+                                                                                 pushbyte 1
+                                                                                 subtract
+                                                                                 greaterequals
+                                                                                 debugline 211
+                                                                                 iffalse ofs003e
+                                                                                 getlocal0
+                                                                                 getlocal0
+                                                                                 debugline 212
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_targetPos")
+                                                                                 getproperty QName(PackageNamespace(""),"x")
+                                                                                 setproperty QName(PackageNamespace(""),"x")
+                                                                                 getlocal0
+                                                                                 getlocal0
+                                                                                 debugline 213
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_targetPos")
+                                                                                 getproperty QName(PackageNamespace(""),"y")
+                                                                                 setproperty QName(PackageNamespace(""),"y")
+                                                                                 getlocal0
+                                                                                 debugline 214
+                                                                                 callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"stopMove"), 0
+                                                                                 debugline 211
+                                                                                 jump ofs005a
+                                                                        ofs003e:
+                                                                                 getlocal0
+                                                                                 getlocal0
+                                                                                 debugline 216
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_path")
+                                                                                 getlocal0
+                                                                                 dup
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepIndex")
+                                                                                 increment
+                                                                                 dup
+                                                                                 setlocal1
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepIndex")
+                                                                                 getlocal1
+                                                                                 getproperty MultinameL([PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:PathMobile"),StaticProtectedNs("com.taomee.seer2.core.entity:Mobile"),StaticProtectedNs("com.taomee.seer2.core.entity:AnimateElement"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.core.entity"),PackageInternalNs("com.taomee.seer2.core.entity"),PrivateNamespace("FilePrivateNS:PathMobile"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_stepEndPos")
+                                                                                 getlocal0
+                                                                                 debugline 217
+                                                                                 callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateDirection"), 0
+                                                                        ofs005a:
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     protected function stopMove() : void
+                                                                     {
+                                                                        trait method QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"stopMove")
+                                                                           flag METADATA
+                                                                           metadata "__go_to_definition_help"
+                                                                              item "pos" "6947"
+                                                                           end ; metadata
+                                                                           dispid 0
+                                                                           method
+                                                                              name "stopMove"
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 2
+                                                                                 localcount 1
+                                                                                 initscopedepth 0
+                                                                                 maxscopedepth 1
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                                                    getlocal0
+                                                                                    debugline 222
+                                                                                    pushfalse
+                                                                                    setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_isMoving")
+                                                                                    getlocal0
+                                                                                    debugline 223
+                                                                                    pushfalse
+                                                                                    setproperty QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"_isBigMap")
+                                                                                    getlocal0
+                                                                                    pushstring "stand"
+                                                                                    callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.entity:PathMobile"),"updateMoveStyle"), 1
+                                                                                    getlocal0
+                                                                                    pushstring "finished"
+                                                                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.core.entity:PathMobile"),"dispathMoveEvent"), 1
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        public function isArrivedPosition(param1:Point) : Boolean
+                                                                        {
+                                                                           trait method QName(PackageNamespace(""),"isArrivedPosition")
+                                                                              flag METADATA
+                                                                              metadata "__go_to_definition_help"
+                                                                                 item "pos" "7161"
+                                                                              end ; metadata
+                                                                              dispid 0
+                                                                              method
+                                                                                 name "isArrivedPosition"
+                                                                                 flag HAS_PARAM_NAMES
+                                                                                 param QName(PackageNamespace("flash.geom"),"Point")
+                                                                                 paramname "param1"
+                                                                                 returns QName(PackageNamespace(""),"Boolean")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 3
+                                                                                    localcount 4
+                                                                                    initscopedepth 0
+                                                                                    maxscopedepth 1
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\core\\entity;PathMobile.as"
+                                                                                       debug 1, "_loc2_", 1, 0
+                                                                                       debug 1, "param1", 0, 0
+                                                                                       debug 1, "_loc3_", 2, 0
+                                                                                       debugline 229
+                                                                                       getlex QName(PackageNamespace(""),"Math")
+                                                                                       getlocal0
+                                                                                       getproperty QName(PackageNamespace(""),"x")
+                                                                                       getlocal1
+                                                                                       getproperty QName(PackageNamespace(""),"x")
+                                                                                       subtract
+                                                                                       callproperty QName(PackageNamespace(""),"abs"), 1
+                                                                                       convert_i
+                                                                                       setlocal2
+                                                                                       debugline 230
+                                                                                       getlex QName(PackageNamespace(""),"Math")
+                                                                                       getlocal0
+                                                                                       getproperty QName(PackageNamespace(""),"y")
+                                                                                       getlocal1
+                                                                                       getproperty QName(PackageNamespace(""),"y")
+                                                                                       subtract
+                                                                                       callproperty QName(PackageNamespace(""),"abs"), 1
+                                                                                       convert_i
+                                                                                       setlocal3
+                                                                                       getlocal2
+                                                                                       debugline 231
+                                                                                       pushbyte 20
+                                                                                       lessthan
+                                                                                       dup
+                                                                                       iffalse ofs0046
+                                                                                       pop
+                                                                                       getlocal3
+                                                                                       pushbyte 20
+                                                                                       lessthan
+                                                                              ofs0046:
+                                                                                       returnvalue
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                        }
+                                                                     }
+                                                                     
+                                                                     method
+                                                                        name null
+                                                                        returns null
+                                                                        
+                                                                        body
+                                                                           maxstack 3
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 9
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              getscopeobject 0
+                                                                              getlex QName(PackageNamespace(""),"Object")
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"AnimateElement")
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile")
+                                                                              dup
+                                                                              pushscope
+                                                                              newclass 0
+                                                                              popscope
+                                                                              popscope
+                                                                              popscope
+                                                                              popscope
+                                                                              popscope
+                                                                              popscope
+                                                                              popscope
+                                                                              popscope
+                                                                              initproperty QName(PackageNamespace("com.taomee.seer2.core.entity"),"PathMobile")
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                     

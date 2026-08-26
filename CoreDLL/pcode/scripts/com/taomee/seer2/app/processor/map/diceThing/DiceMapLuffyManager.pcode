@@ -1,0 +1,1878 @@
+package com.taomee.seer2.app.processor.map.diceThing
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.config.DiceMapThingConfig;
+   import com.taomee.seer2.app.config.ShopPanelConfig;
+   import com.taomee.seer2.app.config.info.DiceMapTileInfo;
+   import com.taomee.seer2.app.config.info.DiceThingInfo;
+   import com.taomee.seer2.app.controls.PetAvatarPanel;
+   import com.taomee.seer2.app.lobby.LobbyScene;
+   import com.taomee.seer2.app.manager.DayLimitManager;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.popup.ServerMessager;
+   import com.taomee.seer2.app.processor.map.diceThing.event.DiceThingEvent;
+   import com.taomee.seer2.app.shopManager.PayManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.app.swap.special.SpecialInfo;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.core.entity.MobileManager;
+   import com.taomee.seer2.core.entity.PathMobile;
+   import com.taomee.seer2.core.entity.events.MoveEvent;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.module.ModuleEvent;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.scene.events.SceneEvent;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.display.SimpleButton;
+   import flash.events.MouseEvent;
+   import flash.geom.Point;
+   import flash.text.TextField;
+   import flash.utils.IDataInput;
+   import org.taomee.utils.DomainUtil;
+   
+   public class DiceMapLuffyManager
+   {
+      
+      private static var _instance:DiceMapLuffyManager;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      protected var tileXml:XML;
+      
+      private var tileVec:Vector.<DiceMapTileInfo>;
+      
+      private var diceMc:MovieClip;
+      
+      private var diceResult:int;
+      
+      private var scene:LobbyScene;
+      
+      private var _map:MapModel;
+      
+      private var roleMobile:PathMobile;
+      
+      private var roleMobileID:int;
+      
+      private var currentTileSeat:int = 0;
+      
+      private var maxSeat:int;
+      
+      private var totalSeat:int;
+      
+      private var _leftCount:int = 0;
+      
+      private var freeCount:int;
+      
+      private var useCount:int;
+      
+      private var useCountId:uint;
+      
+      private var vipCount:int;
+      
+      private var normalCount:int;
+      
+      private var seatInfoId:uint;
+      
+      private var buyedCountId:uint;
+      
+      private var coinId:uint;
+      
+      private var fightId:uint;
+      
+      private var randomPoint:uint;
+      
+      private var swapNpc:SimpleButton;
+      
+      private var curCoinTextField:TextField;
+      
+      private var _curCoin:int;
+      
+      private var currentThing:BaseDiceThing;
+      
+      private const BUY_DICE:uint = 604103;
+      
+      public function DiceMapLuffyManager(param1:instancs)
+      {
+         method
+            name "DiceMapLuffyManager"
+            flag HAS_PARAM_NAMES
+            param QName(PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),"instancs")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 1
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                  debug 1, "param1", 0, 0
+                  debugline 106
+                  getlocal0
+                  debugline 106
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function getInstance() : DiceMapLuffyManager
+      {
+         trait method QName(PackageNamespace(""),"getInstance")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "3290"
+            end ; metadata
+            dispid 0
+            method
+               name "getInstance"
+               returns QName(PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),"DiceMapLuffyManager")
+               
+               body
+                  maxstack 2
+                  localcount 1
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                     debugline 110
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_instance")
+                     iftrue ofs001d
+                     getlocal0
+                     findpropstrict QName(PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),"instancs")
+                     debugline 111
+                     constructprop QName(PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),"instancs"), 0
+                     construct 1
+                     findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_instance")
+                     swap
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_instance")
+                     debugline 113
+            ofs001d:
+                     getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_instance")
+                     returnvalue
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         public function dispose(param1:SceneEvent) : void
+         {
+            trait method QName(PackageNamespace(""),"dispose")
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "3487"
+               end ; metadata
+               dispid 0
+               method
+                  name "dispose"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 3
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                        debug 1, "param1", 0, 0
+                        getlocal0
+                        debugline 117
+                        pushnull
+                        setproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                        getlocal0
+                        debugline 118
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                        getlocal0
+                        debugline 119
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                        iffalse ofs0031
+                        getlocal0
+                        debugline 120
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"clickDice")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        getlocal0
+                        debugline 121
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+               ofs0031:
+                        getlocal0
+                        debugline 123
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"swapNpc")
+                        iffalse ofs0047
+                        getlocal0
+                        debugline 124
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"swapNpc")
+                        pushstring "click"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"toSwap")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+               ofs0047:
+                        getlocal0
+                        debugline 126
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                        getlocal0
+                        debugline 127
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"curCoinTextField")
+                        getlocal0
+                        debugline 128
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_curCoin")
+                        getlocal0
+                        debugline 129
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceResult")
+                        getlocal0
+                        debugline 130
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobileID")
+                        getlocal0
+                        debugline 131
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                        getlocal0
+                        debugline 132
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"maxSeat")
+                        getlocal0
+                        debugline 133
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"totalSeat")
+                        getlocal0
+                        debugline 134
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"freeCount")
+                        getlocal0
+                        debugline 135
+                        pushbyte 0
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"useCount")
+                        debugline 136
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                        callproperty QName(PackageNamespace(""),"getActor"), 0
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"blockFollowingPet")
+                        debugline 137
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                        callproperty QName(PackageNamespace(""),"getActor"), 0
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"blockNoNo")
+                        debugline 138
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                        pushtrue
+                        setproperty QName(PackageNamespace(""),"showRemoteActor")
+                        debugline 139
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                        callproperty QName(PackageNamespace(""),"getActor"), 0
+                        callpropvoid QName(PackageNamespace(""),"show"), 0
+                        getlocal0
+                        debugline 140
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+                        iffalse ofs00d8
+                        getlocal0
+                        debugline 141
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+                        getproperty QName(PackageNamespace(""),"ground")
+                        pushtrue
+                        setproperty QName(PackageNamespace(""),"mouseEnabled")
+                        getlocal0
+                        debugline 142
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+               ofs00d8:
+                        getlocal0
+                        debugline 144
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"scene")
+                        iffalse ofs00f5
+                        getlocal0
+                        debugline 145
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"scene")
+                        callpropvoid QName(PackageNamespace(""),"showToolbar"), 0
+                        getlocal0
+                        debugline 146
+                        pushnull
+                        setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"scene")
+                        debugline 148
+               ofs00f5:
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        pushstring "switchStart"
+                        getlocal0
+                        getproperty QName(PackageNamespace(""),"dispose")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        debugline 149
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                        pushstring "switchComplete"
+                        getlocal0
+                        getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"onComplete")
+                        callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public function setup() : void
+            {
+               trait method QName(PackageNamespace(""),"setup")
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "4788"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "setup"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 4
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                           getlocal0
+                           debugline 153
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           getproperty QName(PackageNamespace(""),"active")
+                           getproperty QName(PackageNamespace(""),"mapModel")
+                           setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+                           getlocal0
+                           debugline 154
+                           callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"setEnvironment"), 0
+                           debugline 155
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+                           getproperty QName(PackageNamespace(""),"id")
+                           callproperty QName(PackageNamespace(""),"getDiceMapData"), 1
+                           pushstring "text"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"onXmlLoaded")
+                           callpropvoid QName(PackageNamespace(""),"load"), 3
+                           debugline 156
+                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                           pushstring "switchStart"
+                           getlocal0
+                           getproperty QName(PackageNamespace(""),"dispose")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function setEnvironment() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"setEnvironment")
+                     dispid 0
+                     method
+                        name "setEnvironment"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                              debugline 160
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              callproperty QName(PackageNamespace(""),"getActor"), 0
+                              callpropvoid QName(PackageNamespace(""),"hide"), 0
+                              debugline 161
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              callproperty QName(PackageNamespace(""),"getActor"), 0
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"blockFollowingPet")
+                              debugline 162
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              callproperty QName(PackageNamespace(""),"getActor"), 0
+                              pushtrue
+                              setproperty QName(PackageNamespace(""),"blockNoNo")
+                              getlocal0
+                              debugline 163
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+                              getproperty QName(PackageNamespace(""),"ground")
+                              pushfalse
+                              setproperty QName(PackageNamespace(""),"mouseEnabled")
+                              debugline 164
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                              pushfalse
+                              setproperty QName(PackageNamespace(""),"showRemoteActor")
+                              getlocal0
+                              debugline 165
+                              getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                              getproperty QName(PackageNamespace(""),"active")
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.lobby"),"LobbyScene")
+                              astypelate
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"scene")
+                              getlocal0
+                              debugline 166
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"scene")
+                              callpropvoid QName(PackageNamespace(""),"hideToolbar"), 0
+                              debugline 167
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.controls"),"PetAvatarPanel")
+                              callpropvoid QName(PackageNamespace(""),"show"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onXmlLoaded(param1:ContentInfo) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"onXmlLoaded")
+                        dispid 0
+                        method
+                           name "onXmlLoaded"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("com.taomee.seer2.core.loader"),"ContentInfo")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 4
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 debugline 171
+                                 getlex QName(PackageNamespace(""),"XML")
+                                 getglobalscope
+                                 getlocal1
+                                 getproperty QName(PackageNamespace(""),"content")
+                                 call 1
+                                 setproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                 getlocal0
+                                 debugline 172
+                                 callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"parseXml"), 0
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function parseXml() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"parseXml")
+                           dispid 0
+                           method
+                              name "parseXml"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 6
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                    debug 1, "_loc2_", 0, 0
+                                    debug 1, "_loc1_", 1, 0
+                                    debug 1, "_loc3_", 2, 0
+                                    debugline 176
+                                    pushnull
+                                    coerce QName(PackageNamespace(""),"XML")
+                                    setlocal1
+                                    debugline 177
+                                    pushnull
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                    setlocal3
+                                    getlocal0
+                                    debugline 178
+                                    getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                    debugline 178
+                                    applytype 1
+                                    debugline 178
+                                    construct 0
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 179
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("mobileId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobileID")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 180
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("seatInfoId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"seatInfoId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 181
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("vipCount",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"vipCount")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 182
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("normalCount",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"normalCount")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 183
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("useCountId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"useCountId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 184
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("buyedCountId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"buyedCountId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 185
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("coinId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"coinId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 186
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("fightId",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"fightId")
+                                    getlocal0
+                                    getlocal0
+                                    debugline 187
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    getproperty MultinameA("randomPoint",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_u
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"randomPoint")
+                                    getlocal0
+                                    debugline 188
+                                    getproperty QName(ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileXml")
+                                    pushstring "tile"
+                                    callproperty Multiname("descendants",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")]), 1
+                                    coerce QName(PackageNamespace(""),"XMLList")
+                                    setlocal2
+                                    pushbyte 0
+                                    setlocal 5
+                                    getlocal2
+                                    setlocal 4
+                                    jump ofs0101
+                           ofs00bb:
+                                    label
+                                    getlocal 4
+                                    getlocal 5
+                                    nextvalue
+                                    coerce QName(PackageNamespace(""),"XML")
+                                    setlocal1
+                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                    debugline 190
+                                    constructprop QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo"), 0
+                                    coerce QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                    setlocal3
+                                    getlocal3
+                                    getlocal1
+                                    debugline 191
+                                    getproperty MultinameA("seat",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setproperty QName(PackageNamespace(""),"seat")
+                                    getlocal3
+                                    getlocal1
+                                    debugline 192
+                                    getproperty MultinameA("tileType",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_s
+                                    setproperty QName(PackageNamespace(""),"thingType")
+                                    getlocal3
+                                    getlocal1
+                                    debugline 193
+                                    getproperty MultinameA("x",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setproperty QName(PackageNamespace(""),"x")
+                                    getlocal3
+                                    getlocal1
+                                    debugline 194
+                                    getproperty MultinameA("y",[PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    convert_i
+                                    setproperty QName(PackageNamespace(""),"y")
+                                    getlocal0
+                                    debugline 195
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                    getlocal3
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                           ofs0101:
+                                    hasnext2 4, 5
+                                    iftrue ofs00bb
+                                    getlocal0
+                                    debugline 197
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"sortVec")
+                                    callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"sort"), 1
+                                    getlocal0
+                                    getlocal0
+                                    debugline 198
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                    getproperty QName(PackageNamespace(""),"length")
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"maxSeat")
+                                    debugline 199
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                    getproperty QName(PackageNamespace(""),"actorInfo")
+                                    getproperty QName(PackageNamespace(""),"vipInfo")
+                                    callproperty QName(PackageNamespace(""),"isVip"), 0
+                                    debugline 199
+                                    iffalse ofs0142
+                                    getlocal0
+                                    getlocal0
+                                    debugline 200
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"vipCount")
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"freeCount")
+                                    debugline 199
+                                    jump ofs014b
+                           ofs0142:
+                                    getlocal0
+                                    getlocal0
+                                    debugline 202
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"normalCount")
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"freeCount")
+                           ofs014b:
+                                    getlocal0
+                                    debugline 204
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"initUI"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function initUI() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"initUI")
+                              dispid 0
+                              method
+                                 name "initUI"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                       getlocal0
+                                       getlocal0
+                                       debugline 208
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+                                       getproperty QName(PackageNamespace(""),"content")
+                                       pushstring "dice"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                       getlocal0
+                                       debugline 209
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                       pushbyte 1
+                                       callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                       getlocal0
+                                       debugline 210
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                       pushtrue
+                                       setproperty QName(PackageNamespace(""),"buttonMode")
+                                       getlocal0
+                                       debugline 211
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                       pushfalse
+                                       setproperty QName(PackageNamespace(""),"mouseChildren")
+                                       getlocal0
+                                       debugline 212
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"clickDice")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       getlocal0
+                                       debugline 213
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+                                       getproperty QName(PackageNamespace(""),"content")
+                                       pushstring "swapNpc"
+                                       getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"swapNpc")
+                                       getlocal0
+                                       debugline 214
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"swapNpc")
+                                       pushstring "click"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"toSwap")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       getlocal0
+                                       debugline 215
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                       iftrue ofs006d
+                                       getlocal0
+                                       debugline 216
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"initMobile"), 0
+                              ofs006d:
+                                       getlocal0
+                                       debugline 218
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"getCoinNum"), 0
+                                       getlocal0
+                                       debugline 219
+                                       callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"getLeftCount"), 0
+                                       debugline 220
+                                       getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                       pushstring "switchComplete"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"onComplete")
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function toSwap(param1:MouseEvent) : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"toSwap")
+                                 dispid 0
+                                 method
+                                    name "toSwap"
+                                    flag HAS_PARAM_NAMES
+                                    param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                    paramname "param1"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 4
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                          debug 1, "param1", 0, 0
+                                          debugline 224
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                          pushstring "LuffySwapPanel"
+                                          callpropvoid QName(PackageNamespace(""),"showAppModule"), 1
+                                          debugline 225
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                          pushstring "LuffySwapPanel"
+                                          pushstring "dispose"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"onDispose")
+                                          callpropvoid QName(PackageNamespace(""),"addEventListener"), 3
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function onDispose(param1:ModuleEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"onDispose")
+                                    dispid 0
+                                    method
+                                       name "onDispose"
+                                       flag HAS_PARAM_NAMES
+                                       param QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleEvent")
+                                       paramname "param1"
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 4
+                                          localcount 2
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                             debug 1, "param1", 0, 0
+                                             debugline 229
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                             pushstring "LuffySwapPanel"
+                                             pushstring "dispose"
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"onDispose")
+                                             callpropvoid QName(PackageNamespace(""),"removeEventListener"), 3
+                                             getlocal0
+                                             debugline 230
+                                             callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"getCoinNum"), 0
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function getCoinNum() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"getCoinNum")
+                                       dispid 0
+                                       method
+                                          name "getCoinNum"
+                                          flag NEED_ACTIVATION
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                newactivation
+                                                pushscope
+                                                debugline 234
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"coinId")
+                                                newfunction 11
+                                                callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function getLeftCount() : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"getLeftCount")
+                                          dispid 0
+                                          method
+                                             name "getLeftCount"
+                                             flag NEED_ACTIVATION
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 2
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                   newactivation
+                                                   pushscope
+                                                   debugline 244
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"useCountId")
+                                                   newfunction 13
+                                                   callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function clickDice(param1:MouseEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"clickDice")
+                                             dispid 0
+                                             method
+                                                name "clickDice"
+                                                flag HAS_PARAM_NAMES
+                                                flag NEED_ACTIVATION
+                                                param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 4
+                                                   localcount 3
+                                                   initscopedepth 0
+                                                   maxscopedepth 2
+                                                   trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                      slotid 1
+                                                      type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                   end ; trait
+                                                   trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"event")
+                                                      slotid 2
+                                                      type QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                   end ; trait
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                      newactivation
+                                                      dup
+                                                      setlocal2
+                                                      pushscope
+                                                      findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                      getlocal1
+                                                      setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                      debug 1, "param1", 0, 0
+                                                      debug 1, "clickDice$0", 1, 0
+                                                      debugline 261
+                                                      getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                      coerce QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                      getlocal2
+                                                      swap
+                                                      setslot 2
+                                                      getlocal0
+                                                      debugline 262
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_leftCount")
+                                                      pushbyte 0
+                                                      lessequals
+                                                      debugline 262
+                                                      iffalse ofs0068
+                                                      getlocal0
+                                                      debugline 263
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                                      pushfalse
+                                                      setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                      debugline 264
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                                      pushstring "你没有可以用的骰子了\n花费"
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.config"),"ShopPanelConfig")
+                                                      pushuint 604103
+                                                      callproperty QName(PackageNamespace(""),"getItemPrice"), 1
+                                                      add
+                                                      pushstring "星钻买一个?"
+                                                      add
+                                                      newfunction 16
+                                                      newfunction 19
+                                                      callpropvoid QName(PackageNamespace(""),"showConfirm"), 3
+                                                      debugline 262
+                                                      jump ofs0077
+                                                      debugline 275
+                                             ofs0068:
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                      pushshort 3054
+                                                      pushbyte 1
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"dicePlay")
+                                                      callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                             ofs0077:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function dicePlay(param1:IDataInput = null) : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"dicePlay")
+                                                dispid 0
+                                                method
+                                                   name "dicePlay"
+                                                   flag HAS_OPTIONAL
+                                                   flag HAS_PARAM_NAMES
+                                                   flag NEED_ACTIVATION
+                                                   param QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                   paramname "param1"
+                                                   optional Null()
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 5
+                                                      localcount 3
+                                                      initscopedepth 0
+                                                      maxscopedepth 2
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                         slotid 1
+                                                         type QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                      end ; trait
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"leftTxt")
+                                                         slotid 2
+                                                         type QName(PackageNamespace("flash.text"),"TextField")
+                                                      end ; trait
+                                                      trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"data")
+                                                         slotid 3
+                                                         type QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                      end ; trait
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                         newactivation
+                                                         dup
+                                                         setlocal2
+                                                         pushscope
+                                                         findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                         getlocal1
+                                                         setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                         debug 1, "param1", 0, 0
+                                                         debug 1, "dicePlay$0", 1, 0
+                                                         debugline 281
+                                                         getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                         coerce QName(PackageNamespace("flash.utils"),"IDataInput")
+                                                         getlocal2
+                                                         swap
+                                                         setslot 3
+                                                         getlocal0
+                                                         debugline 282
+                                                         dup
+                                                         debugline 282
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_leftCount")
+                                                         debugline 282
+                                                         decrement
+                                                         debugline 282
+                                                         setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_leftCount")
+                                                         getlocal0
+                                                         debugline 283
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_map")
+                                                         getproperty QName(PackageNamespace(""),"content")
+                                                         pushstring "countTxt"
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         pushstring "leftTxt"
+                                                         getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                         coerce QName(PackageNamespace("flash.text"),"TextField")
+                                                         getlocal2
+                                                         swap
+                                                         setslot 2
+                                                         debugline 284
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"ServerMessager")
+                                                         pushstring "消耗300赛尔豆,抛一次骰子！"
+                                                         callpropvoid QName(PackageNamespace(""),"addMessage"), 1
+                                                         debugline 285
+                                                         getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"leftTxt")
+                                                         pushstring "还可以抛"
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"_leftCount")
+                                                         callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                                         add
+                                                         pushstring "次"
+                                                         add
+                                                         setproperty QName(PackageNamespace(""),"text")
+                                                         getlocal0
+                                                         debugline 286
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                                         pushfalse
+                                                         setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                         getlocal0
+                                                         debugline 287
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                                         pushfalse
+                                                         setproperty QName(PackageNamespace(""),"buttonMode")
+                                                         debugline 288
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                                         pushstring "旋转"
+                                                         pushstring "停止"
+                                                         newfunction 21
+                                                         callpropvoid QName(PackageNamespace(""),"playMc"), 4
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function moveSeat() : void
+                                             {
+                                                trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"moveSeat")
+                                                   dispid 0
+                                                   method
+                                                      name "moveSeat"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 4
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                            getlocal0
+                                                            debugline 310
+                                                            dup
+                                                            debugline 310
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                            debugline 310
+                                                            increment
+                                                            debugline 310
+                                                            setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                            getlocal0
+                                                            debugline 311
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"maxSeat")
+                                                            ifnge ofs0032
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                            getlocal0
+                                                            debugline 312
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"maxSeat")
+                                                            subtract
+                                                            getlocal0
+                                                            swap
+                                                            setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                   ofs0032:
+                                                            getlocal0
+                                                            debugline 314
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                            pushstring "finished"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"moveFinished")
+                                                            callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                            getlocal0
+                                                            debugline 315
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobileID")
+                                                            pushbyte 0
+                                                            equals
+                                                            not
+                                                            debugline 315
+                                                            iffalse ofs0077
+                                                            getlocal0
+                                                            debugline 316
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                            getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            getproperty QName(PackageNamespace(""),"x")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                            getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            getproperty QName(PackageNamespace(""),"y")
+                                                            callpropvoid QName(PackageNamespace(""),"walkToLocation"), 2
+                                                            debugline 315
+                                                            jump ofs0095
+                                                   ofs0077:
+                                                            getlocal0
+                                                            debugline 318
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                            getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            getproperty QName(PackageNamespace(""),"x")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                            getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                            getproperty QName(PackageNamespace(""),"y")
+                                                            callpropvoid QName(PackageNamespace(""),"runToLocation"), 2
+                                                   ofs0095:
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function moveFinished(param1:MoveEvent) : void
+                                                {
+                                                   trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"moveFinished")
+                                                      dispid 0
+                                                      method
+                                                         name "moveFinished"
+                                                         flag HAS_PARAM_NAMES
+                                                         param QName(PackageNamespace("com.taomee.seer2.core.entity.events"),"MoveEvent")
+                                                         paramname "param1"
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 2
+                                                            initscopedepth 0
+                                                            maxscopedepth 1
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                               debug 1, "param1", 0, 0
+                                                               getlocal0
+                                                               debugline 323
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                               pushstring "finished"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"moveFinished")
+                                                               callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                               getlocal0
+                                                               debugline 324
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"totalSeat")
+                                                               equals
+                                                               not
+                                                               debugline 324
+                                                               iffalse ofs0038
+                                                               getlocal0
+                                                               debugline 325
+                                                               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"moveSeat"), 0
+                                                               debugline 324
+                                                               jump ofs003f
+                                                      ofs0038:
+                                                               getlocal0
+                                                               debugline 327
+                                                               callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"checkThing"), 0
+                                                      ofs003f:
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function checkThing() : void
+                                                   {
+                                                      trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"checkThing")
+                                                         dispid 0
+                                                         method
+                                                            name "checkThing"
+                                                            flag NEED_ACTIVATION
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 5
+                                                               localcount 3
+                                                               initscopedepth 0
+                                                               maxscopedepth 2
+                                                               trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"tileInfo")
+                                                                  slotid 1
+                                                                  type QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                                               end ; trait
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                                  newactivation
+                                                                  dup
+                                                                  setlocal1
+                                                                  pushscope
+                                                                  debug 1, "checkThing$0", 0, 0
+                                                                  debugline 332
+                                                                  pushnull
+                                                                  coerce QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                                                  getlocal1
+                                                                  swap
+                                                                  setslot 1
+                                                                  getlocal0
+                                                                  debugline 333
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"tileVec")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentTileSeat")
+                                                                  getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),ProtectedNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                                  coerce QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                                                  getlocal1
+                                                                  swap
+                                                                  setslot 1
+                                                                  debugline 334
+                                                                  getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"tileInfo")
+                                                                  getproperty QName(PackageNamespace(""),"thingType")
+                                                                  debugline 334
+                                                                  setlocal2
+                                                                  debugline 334
+                                                                  jump ofs00f0
+                                                         ofs003c:
+                                                                  label
+                                                                  debugline 336
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3057
+                                                                  pushbyte 1
+                                                                  newfunction 27
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                                  jump ofs0175
+                                                         ofs0052:
+                                                                  label
+                                                                  debugline 341
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3122
+                                                                  pushbyte 1
+                                                                  newfunction 28
+                                                                  newfunction 29
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 4
+                                                                  jump ofs0175
+                                                         ofs006a:
+                                                                  label
+                                                                  debugline 356
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3061
+                                                                  pushbyte 1
+                                                                  newfunction 30
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                                  jump ofs0175
+                                                         ofs0080:
+                                                                  label
+                                                                  debugline 362
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3060
+                                                                  pushbyte 1
+                                                                  newfunction 31
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                                  jump ofs0175
+                                                         ofs0096:
+                                                                  label
+                                                                  debugline 368
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3059
+                                                                  pushbyte 1
+                                                                  newfunction 32
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                                  jump ofs0175
+                                                         ofs00ac:
+                                                                  label
+                                                                  debugline 374
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3058
+                                                                  pushbyte 1
+                                                                  newfunction 33
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                                  jump ofs0175
+                                                         ofs00c2:
+                                                                  label
+                                                                  debugline 380
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3056
+                                                                  pushbyte 1
+                                                                  newfunction 34
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                                  jump ofs0175
+                                                         ofs00d8:
+                                                                  label
+                                                                  debugline 388
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3124
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 1
+                                                                  debugline 334
+                                                                  jump ofs0175
+                                                                  debugline 335
+                                                         ofs00f0:
+                                                                  pushstring "box"
+                                                                  debugline 334
+                                                                  getlocal2
+                                                                  debugline 334
+                                                                  ifstricteq ofs003c
+                                                                  debugline 340
+                                                                  pushstring "chance"
+                                                                  debugline 334
+                                                                  getlocal2
+                                                                  debugline 334
+                                                                  ifstricteq ofs0052
+                                                                  debugline 355
+                                                                  pushstring "add10"
+                                                                  debugline 334
+                                                                  getlocal2
+                                                                  debugline 334
+                                                                  ifstricteq ofs006a
+                                                                  debugline 361
+                                                                  pushstring "addMoney"
+                                                                  debugline 334
+                                                                  getlocal2
+                                                                  debugline 334
+                                                                  ifstricteq ofs0080
+                                                                  debugline 367
+                                                                  pushstring "subMoney"
+                                                                  debugline 334
+                                                                  getlocal2
+                                                                  debugline 334
+                                                                  ifstricteq ofs0096
+                                                                  debugline 373
+                                                                  pushstring "reverse"
+                                                                  debugline 334
+                                                                  getlocal2
+                                                                  debugline 334
+                                                                  ifstricteq ofs00ac
+                                                                  debugline 379
+                                                                  pushstring "fight"
+                                                                  debugline 334
+                                                                  getlocal2
+                                                                  debugline 334
+                                                                  ifstricteq ofs00c2
+                                                                  debugline 387
+                                                                  pushstring "empty"
+                                                                  debugline 334
+                                                                  getlocal2
+                                                                  debugline 334
+                                                                  ifstricteq ofs00d8
+                                                         ofs0175:
+                                                                  getlocal0
+                                                                  debugline 390
+                                                                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"resetDice"), 0
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function thingOver(param1:DiceThingEvent) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"thingOver")
+                                                            dispid 0
+                                                            method
+                                                               name "thingOver"
+                                                               flag HAS_PARAM_NAMES
+                                                               flag NEED_ACTIVATION
+                                                               param QName(PackageNamespace("com.taomee.seer2.app.processor.map.diceThing.event"),"DiceThingEvent")
+                                                               paramname "param1"
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 5
+                                                                  localcount 3
+                                                                  initscopedepth 0
+                                                                  maxscopedepth 2
+                                                                  trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                                     slotid 1
+                                                                     type QName(PackageNamespace("com.taomee.seer2.app.processor.map.diceThing.event"),"DiceThingEvent")
+                                                                  end ; trait
+                                                                  trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"event")
+                                                                     slotid 2
+                                                                     type QName(PackageNamespace("com.taomee.seer2.app.processor.map.diceThing.event"),"DiceThingEvent")
+                                                                  end ; trait
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                                     newactivation
+                                                                     dup
+                                                                     setlocal2
+                                                                     pushscope
+                                                                     findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                                     getlocal1
+                                                                     setproperty QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                                     debug 1, "param1", 0, 0
+                                                                     debug 1, "thingOver$0", 1, 0
+                                                                     debugline 394
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"param1")
+                                                                     coerce QName(PackageNamespace("com.taomee.seer2.app.processor.map.diceThing.event"),"DiceThingEvent")
+                                                                     getlocal2
+                                                                     swap
+                                                                     setslot 2
+                                                                     getlocal0
+                                                                     debugline 395
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentThing")
+                                                                     pushstring "thing_over"
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"thingOver")
+                                                                     callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                     getlocal0
+                                                                     debugline 396
+                                                                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentThing")
+                                                                     callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                                                                     getlocal0
+                                                                     debugline 397
+                                                                     pushnull
+                                                                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"currentThing")
+                                                                     debugline 398
+                                                                     getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map.diceThing"),"event")
+                                                                     getproperty QName(PackageNamespace(""),"resultInfo")
+                                                                     debugline 398
+                                                                     iffalse ofs0073
+                                                                     debugline 399
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                     pushshort 3123
+                                                                     pushbyte 1
+                                                                     newfunction 37
+                                                                     newfunction 40
+                                                                     callpropvoid QName(PackageNamespace(""),"swapItem"), 4
+                                                                     debugline 398
+                                                                     jump ofs0081
+                                                                     debugline 415
+                                                            ofs0073:
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                     pushshort 3123
+                                                                     pushbyte 1
+                                                                     newfunction 41
+                                                                     callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                                                            ofs0081:
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function onComplete(param1:SceneEvent) : void
+                                                         {
+                                                            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"onComplete")
+                                                               dispid 0
+                                                               method
+                                                                  name "onComplete"
+                                                                  flag HAS_PARAM_NAMES
+                                                                  param QName(PackageNamespace("com.taomee.seer2.core.scene.events"),"SceneEvent")
+                                                                  paramname "param1"
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 2
+                                                                     localcount 2
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 1
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                                        debug 1, "param1", 0, 0
+                                                                        debugline 426
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                                                        getproperty QName(PackageNamespace(""),"prevSceneType")
+                                                                        pushbyte 2
+                                                                        ifne ofs003a
+                                                                        debugline 427
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                                        getproperty QName(PackageNamespace(""),"fightWinnerSide")
+                                                                        pushbyte 1
+                                                                        ifne ofs003a
+                                                                        debugline 428
+                                                                        getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"ServerMessager")
+                                                                        pushstring "战斗胜利+2海盗币"
+                                                                        callpropvoid QName(PackageNamespace(""),"addMessage"), 1
+                                                                        getlocal0
+                                                                        debugline 429
+                                                                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"getCoinNum"), 0
+                                                               ofs003a:
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function resetDice() : void
+                                                            {
+                                                               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"resetDice")
+                                                                  dispid 0
+                                                                  method
+                                                                     name "resetDice"
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 2
+                                                                        localcount 1
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 1
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                                           getlocal0
+                                                                           debugline 435
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                                                           iffalse ofs002a
+                                                                           getlocal0
+                                                                           debugline 436
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                                                           pushtrue
+                                                                           setproperty QName(PackageNamespace(""),"mouseEnabled")
+                                                                           getlocal0
+                                                                           debugline 437
+                                                                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"diceMc")
+                                                                           pushtrue
+                                                                           setproperty QName(PackageNamespace(""),"buttonMode")
+                                                                           debugline 438
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                                                           callpropvoid QName(PackageNamespace(""),"resetOperation"), 0
+                                                                  ofs002a:
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function sortVec(param1:DiceMapTileInfo, param2:DiceMapTileInfo) : int
+                                                               {
+                                                                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"sortVec")
+                                                                     dispid 0
+                                                                     method
+                                                                        name "sortVec"
+                                                                        flag HAS_PARAM_NAMES
+                                                                        param QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                                                        param QName(PackageNamespace("com.taomee.seer2.app.config.info"),"DiceMapTileInfo")
+                                                                        paramname "param1"
+                                                                        paramname "param2"
+                                                                        returns QName(PackageNamespace(""),"int")
+                                                                        
+                                                                        body
+                                                                           maxstack 2
+                                                                           localcount 3
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                                              debug 1, "param1", 0, 0
+                                                                              debug 1, "param2", 1, 0
+                                                                              getlocal1
+                                                                              debugline 443
+                                                                              getproperty QName(PackageNamespace(""),"seat")
+                                                                              getlocal2
+                                                                              getproperty QName(PackageNamespace(""),"seat")
+                                                                              ifngt ofs0022
+                                                                              debugline 444
+                                                                              pushbyte 1
+                                                                              returnvalue
+                                                                     ofs0022:
+                                                                              getlocal1
+                                                                              debugline 446
+                                                                              getproperty QName(PackageNamespace(""),"seat")
+                                                                              getlocal2
+                                                                              getproperty QName(PackageNamespace(""),"seat")
+                                                                              ifnlt ofs0038
+                                                                              debugline 447
+                                                                              pushbyte -1
+                                                                              returnvalue
+                                                                              debugline 449
+                                                                     ofs0038:
+                                                                              pushbyte 0
+                                                                              returnvalue
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function initMobile() : void
+                                                                  {
+                                                                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"initMobile")
+                                                                        dispid 0
+                                                                        method
+                                                                           name "initMobile"
+                                                                           flag NEED_ACTIVATION
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 3
+                                                                              localcount 1
+                                                                              initscopedepth 0
+                                                                              maxscopedepth 2
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                                                 newactivation
+                                                                                 pushscope
+                                                                                 getlocal0
+                                                                                 debugline 453
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                                                 iffalse ofs0027
+                                                                                 debugline 454
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                                                 pushstring "pet"
+                                                                                 callpropvoid QName(PackageNamespace(""),"removeMobile"), 2
+                                                                                 getlocal0
+                                                                                 debugline 455
+                                                                                 pushnull
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                                        ofs0027:
+                                                                                 getlocal0
+                                                                                 debugline 457
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobileID")
+                                                                                 pushbyte 0
+                                                                                 equals
+                                                                                 not
+                                                                                 debugline 457
+                                                                                 iffalse ofs006c
+                                                                                 getlocal0
+                                                                                 findpropstrict QName(PackageNamespace("com.taomee.seer2.core.entity"),"PathMobile")
+                                                                                 debugline 458
+                                                                                 constructprop QName(PackageNamespace("com.taomee.seer2.core.entity"),"PathMobile"), 0
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                                                 getlocal0
+                                                                                 debugline 459
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobileID")
+                                                                                 callproperty QName(PackageNamespace(""),"getPetSwf"), 1
+                                                                                 setproperty QName(PackageNamespace(""),"resourceUrl")
+                                                                                 debugline 460
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                                                 pushstring "pet"
+                                                                                 callpropvoid QName(PackageNamespace(""),"addMobile"), 2
+                                                                                 debugline 457
+                                                                                 jump ofs009b
+                                                                        ofs006c:
+                                                                                 getlocal0
+                                                                                 debugline 462
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                 callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"roleMobile")
+                                                                                 debugline 463
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                 callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                                 callpropvoid QName(PackageNamespace(""),"show"), 0
+                                                                                 debugline 464
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                 callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                                 pushtrue
+                                                                                 setproperty QName(PackageNamespace(""),"blockNoNo")
+                                                                                 debugline 465
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                                                                 callproperty QName(PackageNamespace(""),"getActor"), 0
+                                                                                 pushtrue
+                                                                                 setproperty QName(PackageNamespace(""),"blockFollowingPet")
+                                                                                 debugline 467
+                                                                        ofs009b:
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                                                 getlocal0
+                                                                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map.diceThing:DiceMapLuffyManager"),"seatInfoId")
+                                                                                 newfunction 48
+                                                                                 callpropvoid QName(PackageNamespace(""),"requestActiveCount"), 2
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                  }
+                                                               }
+                                                               
+                                                               class instancs
+                                                               {
+                                                                  
+                                                                  method
+                                                                     name null
+                                                                     returns null
+                                                                     
+                                                                     body
+                                                                        maxstack 0
+                                                                        localcount 1
+                                                                        initscopedepth 0
+                                                                        maxscopedepth 0
+                                                                        
+                                                                        code
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                                  
+                                                                  public function instancs()
+                                                                  {
+                                                                     method
+                                                                        name "instancs"
+                                                                        returns null
+                                                                        
+                                                                        body
+                                                                           maxstack 1
+                                                                           localcount 1
+                                                                           initscopedepth 0
+                                                                           maxscopedepth 1
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map\\diceThing;DiceMapLuffyManager.as"
+                                                                              debugline 479
+                                                                              getlocal0
+                                                                              debugline 479
+                                                                              constructsuper 0
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                               }
+                                                               
+                                                               method
+                                                                  name null
+                                                                  returns null
+                                                                  
+                                                                  body
+                                                                     maxstack 3
+                                                                     localcount 1
+                                                                     initscopedepth 0
+                                                                     maxscopedepth 2
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        getscopeobject 0
+                                                                        getlex QName(PackageNamespace(""),"Object")
+                                                                        dup
+                                                                        pushscope
+                                                                        newclass 0
+                                                                        popscope
+                                                                        initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.map.diceThing"),"DiceMapLuffyManager")
+                                                                        getscopeobject 0
+                                                                        getlex QName(PackageNamespace(""),"Object")
+                                                                        dup
+                                                                        pushscope
+                                                                        newclass 1
+                                                                        popscope
+                                                                        initproperty QName(PrivateNamespace("FilePrivateNS:DiceMapLuffyManager"),"instancs")
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                               

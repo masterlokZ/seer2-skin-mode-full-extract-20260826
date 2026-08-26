@@ -1,0 +1,505 @@
+package com.taomee.seer2.app.rightToolbar.toolbar
+{
+   import com.taomee.seer2.app.activity.onlineControl.OnlineControl;
+   import com.taomee.seer2.app.activity.onlineReward.Nono1122Info;
+   import com.taomee.seer2.app.manager.DayLimitManager;
+   import com.taomee.seer2.app.manager.StatisticsManager;
+   import com.taomee.seer2.app.rightToolbar.RightToolbar;
+   import com.taomee.seer2.app.rightToolbar.config.RightToolbarInfo;
+   import com.taomee.seer2.core.effects.SoundEffects;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.utils.IDataInput;
+   import org.taomee.manager.EventManager;
+   
+   public class OnlineRewardToolbar extends RightToolbar
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _isVipReward:uint;
+      
+      private var _totalVipTime:uint;
+      
+      private var _whichStage:uint;
+      
+      private var _count:uint = 10000;
+      
+      private var _resideTime:uint;
+      
+      private var _resideLevel:uint;
+      
+      private var _dayGetList:Vector.<Boolean>;
+      
+      public function OnlineRewardToolbar()
+      {
+         method
+            name "OnlineRewardToolbar"
+            returns null
+            
+            body
+               maxstack 4
+               localcount 1
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\rightToolbar\\toolbar;OnlineRewardToolbar.as"
+                  getlocal0
+                  debugline 36
+                  getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                  getlex QName(PackageNamespace(""),"Boolean")
+                  applytype 1
+                  getlocal0
+                  newarray 0
+                  call 1
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_dayGetList")
+                  debugline 37
+                  getlocal0
+                  debugline 37
+                  constructsuper 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      override public function init(param1:RightToolbarInfo) : void
+      {
+         trait method QName(PackageNamespace(""),"init")
+            flag OVERRIDE
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1197"
+            end ; metadata
+            dispid 0
+            method
+               name "init"
+               flag HAS_PARAM_NAMES
+               param QName(PackageNamespace("com.taomee.seer2.app.rightToolbar.config"),"RightToolbarInfo")
+               paramname "param1"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\rightToolbar\\toolbar;OnlineRewardToolbar.as"
+                     debug 1, "param1", 0, 0
+                     debugline 41
+                     getlocal0
+                     getlocal1
+                     debugline 41
+                     callsupervoid QName(PackageNamespace(""),"init"), 1
+                     debugline 42
+                     getlex QName(PackageNamespace("org.taomee.manager"),"EventManager")
+                     pushstring "SwapOnlineReward"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"onOnline")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     getlocal0
+                     debugline 43
+                     callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"updateDayOnline"), 0
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function onOnline(param1:Event) : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"onOnline")
+               dispid 0
+               method
+                  name "onOnline"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace("flash.events"),"Event")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 1
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\rightToolbar\\toolbar;OnlineRewardToolbar.as"
+                        debug 1, "param1", 0, 0
+                        getlocal0
+                        debugline 47
+                        callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"updateDayOnline"), 0
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function updateDayOnline() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"updateDayOnline")
+                  dispid 0
+                  method
+                     name "updateDayOnline"
+                     flag NEED_ACTIVATION
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 2
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\rightToolbar\\toolbar;OnlineRewardToolbar.as"
+                           newactivation
+                           pushscope
+                           debugline 51
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"DayLimitManager")
+                           pushshort 900
+                           newfunction 4
+                           callpropvoid QName(PackageNamespace(""),"getDoCount"), 2
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function setTime() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"setTime")
+                     dispid 0
+                     method
+                        name "setTime"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 3
+                           localcount 3
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\rightToolbar\\toolbar;OnlineRewardToolbar.as"
+                              debug 1, "_loc2_", 0, 0
+                              debug 1, "_loc1_", 1, 0
+                              getlocal0
+                              debugline 64
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.activity.onlineControl"),"OnlineControl")
+                              callproperty QName(PackageNamespace(""),"getOnlineLevel"), 0
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideLevel")
+                              debugline 65
+                              pushtrue
+                              setlocal2
+                              debugline 66
+                              pushbyte 0
+                              setlocal1
+                              jump ofs003f
+                     ofs0025:
+                              label
+                              getlocal0
+                              debugline 68
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_dayGetList")
+                              getlocal1
+                              getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),ProtectedNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),StaticProtectedNs("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),StaticProtectedNs("com.taomee.seer2.app.rightToolbar:RightToolbar"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.rightToolbar.toolbar"),PackageInternalNs("com.taomee.seer2.app.rightToolbar.toolbar"),PrivateNamespace("FilePrivateNS:OnlineRewardToolbar"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                              pushfalse
+                              ifne ofs003d
+                              debugline 69
+                              pushfalse
+                              setlocal2
+                              jump ofs0049
+                              debugline 72
+                     ofs003d:
+                              inclocal_i 1
+                     ofs003f:
+                              getlocal1
+                              getlocal0
+                              debugline 67
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideLevel")
+                              iflt ofs0025
+                     ofs0049:
+                              getlocal2
+                              debugline 74
+                              iffalse ofs006b
+                              getlocal0
+                              debugline 75
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.activity.onlineControl"),"OnlineControl")
+                              callproperty QName(PackageNamespace(""),"currGiftTime"), 0
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideTime")
+                              findpropstrict QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTime")
+                              debugline 76
+                              pushtrue
+                              getlocal0
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideTime")
+                              callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTime"), 2
+                              debugline 74
+                              jump ofs0088
+                     ofs006b:
+                              findpropstrict QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTime")
+                              debugline 78
+                              pushfalse
+                              pushbyte 0
+                              callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTime"), 2
+                              getlocal0
+                              debugline 79
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideLevel")
+                              pushbyte 0
+                              ifeq ofs0088
+                              findpropstrict QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTimeComplete")
+                              debugline 80
+                              pushtrue
+                              callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTimeComplete"), 1
+                     ofs0088:
+                              findpropstrict QName(PackageNamespace(""),"update")
+                              debugline 83
+                              callpropvoid QName(PackageNamespace(""),"update"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onGetOnlineInfo(param1:IDataInput) : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"onGetOnlineInfo")
+                        dispid 0
+                        method
+                           name "onGetOnlineInfo"
+                           flag HAS_PARAM_NAMES
+                           param QName(PackageNamespace("flash.utils"),"IDataInput")
+                           paramname "param1"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\rightToolbar\\toolbar;OnlineRewardToolbar.as"
+                                 debug 1, "param1", 0, 0
+                                 getlocal0
+                                 getlocal1
+                                 debugline 87
+                                 callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_isVipReward")
+                                 getlocal0
+                                 getlocal1
+                                 debugline 88
+                                 callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_totalVipTime")
+                                 getlocal0
+                                 getlocal1
+                                 debugline 89
+                                 callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_whichStage")
+                                 getlocal0
+                                 getlocal1
+                                 debugline 90
+                                 callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_count")
+                                 getlocal0
+                                 getlocal1
+                                 debugline 91
+                                 callproperty QName(Namespace("flash.utils:IDataInput"),"readUnsignedInt"), 0
+                                 setproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideTime")
+                                 debugline 92
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.activity.onlineReward"),"Nono1122Info")
+                                 callproperty QName(PackageNamespace(""),"instance"), 0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_isVipReward")
+                                 setproperty QName(PackageNamespace(""),"isVipReward")
+                                 debugline 93
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.activity.onlineReward"),"Nono1122Info")
+                                 callproperty QName(PackageNamespace(""),"instance"), 0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_totalVipTime")
+                                 setproperty QName(PackageNamespace(""),"totalVipTime")
+                                 debugline 94
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.activity.onlineReward"),"Nono1122Info")
+                                 callproperty QName(PackageNamespace(""),"instance"), 0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_whichStage")
+                                 setproperty QName(PackageNamespace(""),"whichStage")
+                                 debugline 95
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.activity.onlineReward"),"Nono1122Info")
+                                 callproperty QName(PackageNamespace(""),"instance"), 0
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideTime")
+                                 setproperty QName(PackageNamespace(""),"resideTime")
+                                 getlocal0
+                                 debugline 96
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_whichStage")
+                                 pushbyte 5
+                                 equals
+                                 not
+                                 dup
+                                 iffalse ofs007b
+                                 pop
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideTime")
+                                 pushbyte 0
+                                 lessequals
+                        ofs007b:
+                                 iffalse ofs008e
+                                 findpropstrict QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTimeComplete")
+                                 debugline 97
+                                 pushtrue
+                                 callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTimeComplete"), 1
+                                 findpropstrict QName(PackageNamespace(""),"update")
+                                 debugline 98
+                                 callpropvoid QName(PackageNamespace(""),"update"), 0
+                        ofs008e:
+                                 getlocal0
+                                 debugline 100
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideTime")
+                                 pushbyte 0
+                                 ifngt ofs00ab
+                                 findpropstrict QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTime")
+                                 debugline 101
+                                 pushtrue
+                                 getlocal0
+                                 getproperty QName(PrivateNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"_resideTime")
+                                 callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"setShowTime"), 2
+                                 findpropstrict QName(PackageNamespace(""),"update")
+                                 debugline 102
+                                 callpropvoid QName(PackageNamespace(""),"update"), 0
+                        ofs00ab:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     override protected function onClick(param1:MouseEvent) : void
+                     {
+                        trait method QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar.toolbar:OnlineRewardToolbar"),"onClick")
+                           flag OVERRIDE
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "3582"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "onClick"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace("flash.events"),"MouseEvent")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 3
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\rightToolbar\\toolbar;OnlineRewardToolbar.as"
+                                    debug 1, "param1", 0, 0
+                                    debugline 107
+                                    pushfalse
+                                    findproperty QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"_isShowTimeComplete")
+                                    swap
+                                    setproperty QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"_isShowTimeComplete")
+                                    findpropstrict QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"removeTimeComplete")
+                                    debugline 108
+                                    callpropvoid QName(ProtectedNamespace("com.taomee.seer2.app.rightToolbar:RightToolbar"),"removeTimeComplete"), 0
+                                    debugline 109
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.manager"),"StatisticsManager")
+                                    pushstring "0x10033001"
+                                    callpropvoid QName(PackageNamespace(""),"sendNovice"), 1
+                                    debugline 110
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                    pushstring "OnlineRewardPanel"
+                                    callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                    pushstring "正在NONO在线领奖"
+                                    callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                                    debugline 111
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.effects"),"SoundEffects")
+                                    callpropvoid QName(PackageNamespace(""),"playSoundMouseClick"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                     }
+                  }
+                  
+                  method
+                     name null
+                     returns null
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 8
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           getscopeobject 0
+                           getlex QName(PackageNamespace(""),"Object")
+                           pushscope
+                           getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                           pushscope
+                           getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                           pushscope
+                           getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                           pushscope
+                           getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                           pushscope
+                           getlex QName(PackageNamespace("flash.display"),"Sprite")
+                           pushscope
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.rightToolbar"),"RightToolbar")
+                           dup
+                           pushscope
+                           newclass 0
+                           popscope
+                           popscope
+                           popscope
+                           popscope
+                           popscope
+                           popscope
+                           popscope
+                           initproperty QName(PackageNamespace("com.taomee.seer2.app.rightToolbar.toolbar"),"OnlineRewardToolbar")
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+                  

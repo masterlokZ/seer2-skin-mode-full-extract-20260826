@@ -1,0 +1,1628 @@
+package com.taomee.seer2.module.app.starMagic
+{
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.dialog.NpcDialog;
+   import com.taomee.seer2.app.net.parser.Parser_1142;
+   import com.taomee.seer2.app.pet.data.PetInfo;
+   import com.taomee.seer2.app.quest.QuestManager;
+   import com.taomee.seer2.app.serverBuffer.ServerBuffer;
+   import com.taomee.seer2.app.serverBuffer.ServerBufferManager;
+   import com.taomee.seer2.app.starMagic.StarInfo;
+   import com.taomee.seer2.app.starMagic.StarMagicManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.swap.info.SwapInfo;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.core.module.ModuleManager;
+   import com.taomee.seer2.core.quest.events.QuestEvent;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.MovieClip;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.utils.IDataInput;
+   
+   public class StarBagShowPanel extends Sprite
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 1
+            localcount 1
+            initscopedepth 8
+            maxscopedepth 9
+            
+            code
+               getlocal0
+               pushscope
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _mc:MovieClip;
+      
+      private var _icon:Vector.<StarMagicIcon>;
+      
+      private var _starMagicTip:StarMagicTip;
+      
+      private var _mc1:MovieClip;
+      
+      private var _btnShow:MovieClip;
+      
+      public function StarBagShowPanel()
+      {
+         method
+            name null
+            returns null
+            
+            body
+               maxstack 2
+               localcount 1
+               initscopedepth 9
+               maxscopedepth 10
+               
+               code
+                  getlocal0
+                  pushscope
+                  getlocal0
+                  constructsuper 0
+                  getlocal0
+                  findpropstrict QName(PackageNamespace(""),"bagShowPanel")
+                  constructprop QName(PackageNamespace(""),"bagShowPanel"), 0
+                  initproperty QName(PrivateNamespace(null,"6"),"_mc")
+                  getlocal0
+                  getlocal0
+                  getproperty QName(PrivateNamespace(null,"6"),"_mc")
+                  callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                  getlocal0
+                  callpropvoid QName(PrivateNamespace(null,"6"),"initSet"), 0
+                  getlocal0
+                  callpropvoid QName(PrivateNamespace(null,"6"),"addListener"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function setData(param1:PetInfo) : void
+      {
+         trait method QName(PackageNamespace(""),"setData")
+            dispid 0
+            method
+               name null
+               flag NEED_ACTIVATION
+               param QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 6
+                  localcount 3
+                  initscopedepth 10
+                  maxscopedepth 12
+                  trait slot QName(PackageInternalNs("com.taomee.seer2.module.app.starMagic"),"info")
+                     slotid 1
+                     type QName(PackageNamespace("com.taomee.seer2.app.pet.data"),"PetInfo")
+                  end ; trait
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     newactivation
+                     dup
+                     setlocal2
+                     pushscope
+                     getscopeobject 1
+                     getlocal1
+                     setslot 1
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10247
+                     callproperty QName(PackageNamespace(""),"isComplete"), 1
+                     iffalse ofs0032
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                     pushbyte 2
+                     setproperty QName(PackageNamespace(""),"TASK")
+                     jump ofs0164
+            ofs0032:
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     callproperty QName(PackageNamespace(""),"isComplete"), 1
+                     iffalse ofs0052
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                     pushbyte 2
+                     setproperty QName(PackageNamespace(""),"TASK")
+                     jump ofs0164
+            ofs0052:
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                     iftrue ofs0072
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                     pushshort 3434
+                     pushbyte 1
+                     newfunction 43
+                     pushnull
+                     pushnull
+                     callpropvoid QName(PackageNamespace(""),"swapItem"), 5
+                     jump ofs0164
+            ofs0072:
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     callproperty QName(PackageNamespace(""),"isComplete"), 1
+                     iftrue ofs0164
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                     pushbyte 1
+                     setproperty QName(PackageNamespace(""),"TASK")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     pushbyte 1
+                     callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                     iftrue ofs00a5
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlocal0
+                     callpropvoid QName(PrivateNamespace(null,"6"),"talk1"), 0
+                     jump ofs0164
+            ofs00a5:
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     pushbyte 2
+                     callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                     not
+                     dup
+                     iffalse ofs00c6
+                     pop
+                     findpropstrict QName(PackageNamespace(""),"Boolean")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     pushbyte 1
+                     callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                     callproperty QName(PackageNamespace(""),"Boolean"), 1
+                     convert_b
+            ofs00c6:
+                     iffalse ofs00da
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                     pushfalse
+                     setproperty QName(PackageNamespace(""),"visible")
+                     getlocal0
+                     callpropvoid QName(PrivateNamespace(null,"6"),"step1"), 0
+                     jump ofs0164
+            ofs00da:
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     pushbyte 3
+                     callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                     not
+                     dup
+                     iffalse ofs00fb
+                     pop
+                     findpropstrict QName(PackageNamespace(""),"Boolean")
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     pushbyte 2
+                     callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                     callproperty QName(PackageNamespace(""),"Boolean"), 1
+                     convert_b
+            ofs00fb:
+                     iffalse ofs011c
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                     pushstring "PetBagPanel"
+                     callpropvoid QName(PackageNamespace(""),"closeForName"), 1
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                     pushstring "StarMagicBagPanel"
+                     callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                     pushstring "正在打开拔保护面板..."
+                     callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                     jump ofs0164
+            ofs011c:
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10246
+                     pushbyte 3
+                     callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                     iffalse ofs0164
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10247
+                     callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                     iffalse ofs0150
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushstring "complete"
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"onComplete")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10247
+                     pushbyte 1
+                     callpropvoid QName(PackageNamespace(""),"completeStep"), 2
+                     jump ofs0164
+            ofs0150:
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushstring "accept"
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"onAccepted10247")
+                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                     pushshort 10247
+                     callpropvoid QName(PackageNamespace(""),"accept"), 1
+            ofs0164:
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                     getscopeobject 1
+                     getslot 1
+                     getproperty QName(PackageNamespace(""),"catchTime")
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"resetPos")
+                     getlocal0
+                     getproperty QName(PrivateNamespace(null,"6"),"resetPos")
+                     callpropvoid QName(PackageNamespace(""),"getPetStar"), 3
+                     getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                     pushshort 3063
+                     pushbyte 1
+                     newfunction 44
+                     callpropvoid QName(PackageNamespace(""),"swapItem"), 3
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function initSet() : void
+         {
+            trait method QName(PrivateNamespace(null,"6"),"initSet")
+               dispid 0
+               method
+                  name null
+                  flag NEED_ACTIVATION
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 5
+                     localcount 2
+                     initscopedepth 10
+                     maxscopedepth 12
+                     trait slot QName(PackageInternalNs("com.taomee.seer2.module.app.starMagic"),"i")
+                        slotid 1
+                        type QName(PackageNamespace(""),"int")
+                     end ; trait
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        newactivation
+                        dup
+                        setlocal1
+                        pushscope
+                        getscopeobject 1
+                        pushbyte 0
+                        setslot 1
+                        getlocal0
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_mc")
+                        pushstring "_btnShow"
+                        getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        setproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"mouseChildren")
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"mouseEnabled")
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"visible")
+                        getlocal0
+                        getlex Multiname("Vector",[PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PackageNamespace("__AS3__.vec")])
+                        getlex QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarMagicIcon")
+                        applytype 1
+                        construct 0
+                        setproperty QName(PrivateNamespace(null,"6"),"_icon")
+                        getscopeobject 1
+                        pushbyte 0
+                        setslot 1
+                        jump ofs00b7
+               ofs0046:
+                        label
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_icon")
+                        getscopeobject 1
+                        getslot 1
+                        findpropstrict QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarMagicIcon")
+                        pushbyte 0
+                        dup
+                        constructprop QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarMagicIcon"), 2
+                        setproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_icon")
+                        getscopeobject 1
+                        getslot 1
+                        getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        pushbyte 5
+                        setproperty QName(PackageNamespace(""),"x")
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_mc")
+                        pushstring "pet"
+                        getscopeobject 1
+                        getslot 1
+                        add
+                        getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_icon")
+                        getscopeobject 1
+                        getslot 1
+                        getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        callpropvoid Multiname("addChild",[PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")]), 1
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_icon")
+                        getscopeobject 1
+                        getslot 1
+                        getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        pushstring "mouseOver"
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"onMouseOver")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_icon")
+                        getscopeobject 1
+                        getslot 1
+                        getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                        pushstring "mouseOut"
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"onMouseOut")
+                        callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                        getscopeobject 1
+                        getslot 1
+                        increment_i
+                        getscopeobject 1
+                        swap
+                        setslot 1
+               ofs00b7:
+                        getscopeobject 1
+                        getslot 1
+                        pushbyte 5
+                        iflt ofs0046
+                        getlocal0
+                        findpropstrict QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarMagicTip")
+                        constructprop QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarMagicTip"), 0
+                        setproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"mouseEnabled")
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"mouseChildren")
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_mc")
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                        callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                        getlocal0
+                        getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                        pushfalse
+                        setproperty QName(PackageNamespace(""),"visible")
+                        getlex QName(PackageNamespace("com.taomee.seer2.app.serverBuffer"),"ServerBufferManager")
+                        pushshort 326
+                        newfunction 46
+                        callpropvoid QName(PackageNamespace(""),"getServerBuffer"), 2
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function addTip(param1:StarInfo) : void
+            {
+               trait method QName(PrivateNamespace(null,"6"),"addTip")
+                  dispid 0
+                  method
+                     name null
+                     param QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarInfo")
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 4
+                        localcount 2
+                        initscopedepth 9
+                        maxscopedepth 10
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           getlocal0
+                           getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                           getlocal1
+                           callpropvoid QName(PackageNamespace(""),"update"), 1
+                           getlocal0
+                           getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                           pushtrue
+                           setproperty QName(PackageNamespace(""),"visible")
+                           getlocal0
+                           getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                           getlex QName(PackageNamespace(""),"mouseX")
+                           pushbyte 10
+                           subtract
+                           setproperty QName(PackageNamespace(""),"x")
+                           getlocal0
+                           getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                           getlex QName(PackageNamespace(""),"mouseY")
+                           pushbyte 10
+                           add
+                           setproperty QName(PackageNamespace(""),"y")
+                           getlocal0
+                           getproperty QName(PrivateNamespace(null,"6"),"_mc")
+                           getlocal0
+                           getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                           getlocal0
+                           getproperty QName(PrivateNamespace(null,"6"),"_mc")
+                           getproperty QName(PackageNamespace(""),"numChildren")
+                           decrement
+                           callpropvoid QName(PackageNamespace(""),"setChildIndex"), 2
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function removeTip(param1:StarInfo) : void
+               {
+                  trait method QName(PrivateNamespace(null,"6"),"removeTip")
+                     dispid 0
+                     method
+                        name null
+                        param QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarInfo")
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 2
+                           localcount 2
+                           initscopedepth 9
+                           maxscopedepth 10
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              getlocal0
+                              getproperty QName(PrivateNamespace(null,"6"),"_starMagicTip")
+                              pushfalse
+                              setproperty QName(PackageNamespace(""),"visible")
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function onMouseOver(param1:MouseEvent) : void
+                  {
+                     trait method QName(PrivateNamespace(null,"6"),"onMouseOver")
+                        dispid 0
+                        method
+                           name null
+                           param QName(PackageNamespace("flash.events"),"MouseEvent")
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 2
+                              localcount 3
+                              initscopedepth 9
+                              maxscopedepth 10
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 pushnull
+                                 coerce QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarInfo")
+                                 setlocal2
+                                 getlocal1
+                                 getproperty QName(PackageNamespace(""),"target")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarMagicIcon")
+                                 istypelate
+                                 iffalse ofs003b
+                                 getlocal1
+                                 getproperty QName(PackageNamespace(""),"target")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarMagicIcon")
+                                 astypelate
+                                 getproperty QName(PackageNamespace(""),"indexId")
+                                 pushbyte 0
+                                 ifne ofs0025
+                                 returnvoid
+                        ofs0025:
+                                 getlocal1
+                                 getproperty QName(PackageNamespace(""),"target")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarMagicIcon")
+                                 astypelate
+                                 callproperty QName(PackageNamespace(""),"getInfo"), 0
+                                 coerce QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarInfo")
+                                 setlocal2
+                                 getlocal0
+                                 getlocal2
+                                 callpropvoid QName(PrivateNamespace(null,"6"),"addTip"), 1
+                        ofs003b:
+                                 findpropstrict QName(PackageNamespace(""),"trace")
+                                 pushstring "覆盖ICON"
+                                 callpropvoid QName(PackageNamespace(""),"trace"), 1
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onMouseOut(param1:MouseEvent) : void
+                     {
+                        trait method QName(PrivateNamespace(null,"6"),"onMouseOut")
+                           dispid 0
+                           method
+                              name null
+                              param QName(PackageNamespace("flash.events"),"MouseEvent")
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 2
+                                 initscopedepth 9
+                                 maxscopedepth 10
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    findpropstrict QName(PackageNamespace(""),"trace")
+                                    pushstring "覆盖ICON"
+                                    callpropvoid QName(PackageNamespace(""),"trace"), 1
+                                    getlocal0
+                                    pushnull
+                                    callpropvoid QName(PrivateNamespace(null,"6"),"removeTip"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function resetPos() : void
+                        {
+                           trait method QName(PrivateNamespace(null,"6"),"resetPos")
+                              dispid 0
+                              method
+                                 name null
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 2
+                                    initscopedepth 9
+                                    maxscopedepth 10
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       pushbyte 0
+                                       setlocal1
+                                       jump ofs003d
+                              ofs0009:
+                                       label
+                                       getlocal1
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                                       getproperty QName(PackageNamespace(""),"curPet")
+                                       getproperty QName(PackageNamespace(""),"length")
+                                       ifnlt ofs002f
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"6"),"_icon")
+                                       getlocal1
+                                       getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                                       getproperty QName(PackageNamespace(""),"curPet")
+                                       getlocal1
+                                       getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                                       callpropvoid QName(PackageNamespace(""),"updateDateInfo"), 1
+                                       jump ofs003b
+                              ofs002f:
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace(null,"6"),"_icon")
+                                       getlocal1
+                                       getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                                       pushnull
+                                       callpropvoid QName(PackageNamespace(""),"updateDateInfo"), 1
+                              ofs003b:
+                                       inclocal_i 1
+                              ofs003d:
+                                       getlocal1
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                                       getproperty QName(PackageNamespace(""),"petNum")
+                                       iflt ofs0009
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function addListener() : void
+                           {
+                              trait method QName(PrivateNamespace(null,"6"),"addListener")
+                                 dispid 0
+                                 method
+                                    name null
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 1
+                                       initscopedepth 9
+                                       maxscopedepth 10
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace(null,"6"),"_mc")
+                                          pushstring "bagBtn"
+                                          getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                                          pushstring "click"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace(null,"6"),"onMouseClick2")
+                                          callpropvoid Multiname("addEventListener",[PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")]), 2
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace(null,"6"),"_mc")
+                                          pushstring "goBag"
+                                          getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                                          pushstring "click"
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace(null,"6"),"onMouseClick")
+                                          callpropvoid Multiname("addEventListener",[PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")]), 2
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function onMouseClick(param1:MouseEvent) : void
+                              {
+                                 trait method QName(PrivateNamespace(null,"6"),"onMouseClick")
+                                    dispid 0
+                                    method
+                                       name null
+                                       param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 3
+                                          localcount 2
+                                          initscopedepth 9
+                                          maxscopedepth 10
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                                             getproperty QName(PackageNamespace(""),"TASK")
+                                             pushbyte 2
+                                             ifeq ofs000f
+                                             returnvoid
+                                    ofs000f:
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                             pushstring "PetBagPanel"
+                                             callpropvoid QName(PackageNamespace(""),"closeForName"), 1
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                             getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                             pushstring "StarMagicBagPanel"
+                                             callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                             pushstring "正在打开拔保护面板..."
+                                             callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function onMouseClick2(param1:MouseEvent) : void
+                                 {
+                                    trait method QName(PrivateNamespace(null,"6"),"onMouseClick2")
+                                       dispid 0
+                                       method
+                                          name null
+                                          param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 4
+                                             localcount 2
+                                             initscopedepth 9
+                                             maxscopedepth 10
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                                                getproperty QName(PackageNamespace(""),"TASK")
+                                                pushbyte 1
+                                                lessequals
+                                                dup
+                                                iffalse ofs001c
+                                                pop
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                pushshort 10246
+                                                pushbyte 2
+                                                callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                not
+                                       ofs001c:
+                                                dup
+                                                iffalse ofs0032
+                                                pop
+                                                findpropstrict QName(PackageNamespace(""),"Boolean")
+                                                getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                pushshort 10246
+                                                pushbyte 1
+                                                callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                callproperty QName(PackageNamespace(""),"Boolean"), 1
+                                                convert_b
+                                       ofs0032:
+                                                iffalse ofs003c
+                                                getlocal0
+                                                callpropvoid QName(PrivateNamespace(null,"6"),"step1"), 0
+                                                returnvoid
+                                       ofs003c:
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                pushstring "PetBagPanel"
+                                                callpropvoid QName(PackageNamespace(""),"closeForName"), 1
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.module"),"ModuleManager")
+                                                getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                pushstring "GetStarMagicPanel"
+                                                callproperty QName(PackageNamespace(""),"getAppModule"), 1
+                                                pushstring "正在打开拔保护面板..."
+                                                callpropvoid QName(PackageNamespace(""),"showModule"), 2
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function update() : void
+                                    {
+                                       trait method QName(PrivateNamespace(null,"6"),"update")
+                                          dispid 0
+                                          method
+                                             name null
+                                             flag NEED_ACTIVATION
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 2
+                                                initscopedepth 10
+                                                maxscopedepth 12
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   newactivation
+                                                   dup
+                                                   setlocal1
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                                   pushint 205142
+                                                   newarray 1
+                                                   newfunction 47
+                                                   callpropvoid QName(PackageNamespace(""),"requestActiveCountList"), 2
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function NewTaskZhiYing() : void
+                                       {
+                                          trait method QName(PrivateNamespace(null,"6"),"NewTaskZhiYing")
+                                             dispid 0
+                                             method
+                                                name null
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 1
+                                                   initscopedepth 9
+                                                   maxscopedepth 10
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                      pushshort 10246
+                                                      callproperty QName(PackageNamespace(""),"isAccepted"), 1
+                                                      iftrue ofs0022
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                      pushstring "accept"
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace(null,"6"),"onAccepted")
+                                                      callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                      pushshort 10246
+                                                      callpropvoid QName(PackageNamespace(""),"accept"), 1
+                                             ofs0022:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function onAccepted10247(param1:QuestEvent) : void
+                                          {
+                                             trait method QName(PrivateNamespace(null,"6"),"onAccepted10247")
+                                                dispid 0
+                                                method
+                                                   name null
+                                                   param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 2
+                                                      initscopedepth 9
+                                                      maxscopedepth 10
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                         pushstring "complete"
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace(null,"6"),"onAccepted10247")
+                                                         callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                         pushstring "complete"
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace(null,"6"),"onComplete")
+                                                         callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                         getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                         pushshort 10247
+                                                         pushbyte 1
+                                                         callpropvoid QName(PackageNamespace(""),"completeStep"), 2
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             private function onAccepted(param1:QuestEvent) : void
+                                             {
+                                                trait method QName(PrivateNamespace(null,"6"),"onAccepted")
+                                                   dispid 0
+                                                   method
+                                                      name null
+                                                      param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 2
+                                                         initscopedepth 9
+                                                         maxscopedepth 10
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                            pushstring "complete"
+                                                            getlocal0
+                                                            getproperty QName(PrivateNamespace(null,"6"),"onAccepted")
+                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                            getlocal0
+                                                            callpropvoid QName(PrivateNamespace(null,"6"),"talk1"), 0
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                                
+                                                private function onComplete(param1:QuestEvent) : void
+                                                {
+                                                   trait method QName(PrivateNamespace(null,"6"),"onComplete")
+                                                      dispid 0
+                                                      method
+                                                         name null
+                                                         param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                         returns QName(PackageNamespace(""),"void")
+                                                         
+                                                         body
+                                                            maxstack 3
+                                                            localcount 2
+                                                            initscopedepth 9
+                                                            maxscopedepth 10
+                                                            
+                                                            code
+                                                               getlocal0
+                                                               pushscope
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                               pushstring "complete"
+                                                               getlocal0
+                                                               getproperty QName(PrivateNamespace(null,"6"),"onComplete")
+                                                               callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                               getlex QName(PackageNamespace("com.taomee.seer2.app.starMagic"),"StarMagicManager")
+                                                               pushbyte 2
+                                                               setproperty QName(PackageNamespace(""),"TASK")
+                                                               returnvoid
+                                                            end ; code
+                                                         end ; body
+                                                      end ; method
+                                                   }
+                                                   
+                                                   private function onStepComplete(param1:QuestEvent) : void
+                                                   {
+                                                      trait method QName(PrivateNamespace(null,"6"),"onStepComplete")
+                                                         dispid 0
+                                                         method
+                                                            name null
+                                                            flag NEED_ACTIVATION
+                                                            param QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                            returns QName(PackageNamespace(""),"void")
+                                                            
+                                                            body
+                                                               maxstack 6
+                                                               localcount 3
+                                                               initscopedepth 10
+                                                               maxscopedepth 12
+                                                               trait slot QName(PackageInternalNs("com.taomee.seer2.module.app.starMagic"),"event")
+                                                                  slotid 1
+                                                                  type QName(PackageNamespace("com.taomee.seer2.core.quest.events"),"QuestEvent")
+                                                               end ; trait
+                                                               
+                                                               code
+                                                                  getlocal0
+                                                                  pushscope
+                                                                  newactivation
+                                                                  dup
+                                                                  setlocal2
+                                                                  pushscope
+                                                                  getscopeobject 1
+                                                                  getlocal1
+                                                                  setslot 1
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushstring "complete"
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace(null,"6"),"onComplete")
+                                                                  callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushshort 10246
+                                                                  pushbyte 2
+                                                                  callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                                  not
+                                                                  dup
+                                                                  iffalse ofs0037
+                                                                  pop
+                                                                  findpropstrict QName(PackageNamespace(""),"Boolean")
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushshort 10246
+                                                                  pushbyte 1
+                                                                  callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                                  callproperty QName(PackageNamespace(""),"Boolean"), 1
+                                                                  convert_b
+                                                         ofs0037:
+                                                                  iffalse ofs004d
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                                                                  pushtrue
+                                                                  setproperty QName(PackageNamespace(""),"visible")
+                                                                  getlocal0
+                                                                  getproperty QName(PrivateNamespace(null,"6"),"_btnShow")
+                                                                  pushfalse
+                                                                  setproperty QName(PackageNamespace(""),"mouseChildren")
+                                                                  jump ofs0082
+                                                         ofs004d:
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushshort 10246
+                                                                  pushbyte 3
+                                                                  callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                                  not
+                                                                  dup
+                                                                  iffalse ofs006e
+                                                                  pop
+                                                                  findpropstrict QName(PackageNamespace(""),"Boolean")
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                  pushshort 10246
+                                                                  pushbyte 2
+                                                                  callproperty QName(PackageNamespace(""),"isStepComplete"), 2
+                                                                  callproperty QName(PackageNamespace(""),"Boolean"), 1
+                                                                  convert_b
+                                                         ofs006e:
+                                                                  iffalse ofs0082
+                                                                  getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                                                                  pushshort 3435
+                                                                  pushbyte 1
+                                                                  newfunction 48
+                                                                  pushnull
+                                                                  pushnull
+                                                                  callpropvoid QName(PackageNamespace(""),"swapItem"), 5
+                                                         ofs0082:
+                                                                  returnvoid
+                                                               end ; code
+                                                            end ; body
+                                                         end ; method
+                                                      }
+                                                      
+                                                      private function onFrame(param1:Event) : void
+                                                      {
+                                                         trait method QName(PrivateNamespace(null,"6"),"onFrame")
+                                                            dispid 0
+                                                            method
+                                                               name null
+                                                               param QName(PackageNamespace("flash.events"),"Event")
+                                                               returns QName(PackageNamespace(""),"void")
+                                                               
+                                                               body
+                                                                  maxstack 3
+                                                                  localcount 2
+                                                                  initscopedepth 9
+                                                                  maxscopedepth 10
+                                                                  
+                                                                  code
+                                                                     getlocal0
+                                                                     pushscope
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                     pushbyte 21
+                                                                     ifne ofs001e
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     pushbyte 22
+                                                                     callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                     getlocal0
+                                                                     callpropvoid QName(PrivateNamespace(null,"6"),"talk2"), 0
+                                                                     jump ofs00dc
+                                                            ofs001e:
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                     pushbyte 59
+                                                                     ifne ofs003a
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     pushbyte 60
+                                                                     callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                     getlocal0
+                                                                     callpropvoid QName(PrivateNamespace(null,"6"),"talk3"), 0
+                                                                     jump ofs00dc
+                                                            ofs003a:
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                     pushbyte 99
+                                                                     ifne ofs0056
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     pushbyte 100
+                                                                     callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                     getlocal0
+                                                                     callpropvoid QName(PrivateNamespace(null,"6"),"talk4"), 0
+                                                                     jump ofs00dc
+                                                            ofs0056:
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                     pushshort 138
+                                                                     ifne ofs0074
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     pushshort 139
+                                                                     callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                     getlocal0
+                                                                     callpropvoid QName(PrivateNamespace(null,"6"),"talk5"), 0
+                                                                     jump ofs00dc
+                                                            ofs0074:
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                     pushshort 229
+                                                                     ifne ofs0092
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     pushshort 230
+                                                                     callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                     getlocal0
+                                                                     callpropvoid QName(PrivateNamespace(null,"6"),"talk6"), 0
+                                                                     jump ofs00dc
+                                                            ofs0092:
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                     pushshort 302
+                                                                     ifne ofs00b0
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     pushshort 303
+                                                                     callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                     getlocal0
+                                                                     callpropvoid QName(PrivateNamespace(null,"6"),"talk7"), 0
+                                                                     jump ofs00dc
+                                                            ofs00b0:
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                     pushshort 364
+                                                                     ifne ofs00dc
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                     pushshort 365
+                                                                     callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                     pushstring "stepComplete"
+                                                                     getlocal0
+                                                                     getproperty QName(PrivateNamespace(null,"6"),"onStepComplete")
+                                                                     callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                                     getlex QName(PackageNamespace("com.taomee.seer2.app.quest"),"QuestManager")
+                                                                     pushshort 10246
+                                                                     pushbyte 2
+                                                                     callpropvoid QName(PackageNamespace(""),"completeStep"), 2
+                                                            ofs00dc:
+                                                                     returnvoid
+                                                                  end ; code
+                                                               end ; body
+                                                            end ; method
+                                                         }
+                                                         
+                                                         private function onClick(param1:MouseEvent) : void
+                                                         {
+                                                            trait method QName(PrivateNamespace(null,"6"),"onClick")
+                                                               dispid 0
+                                                               method
+                                                                  name null
+                                                                  param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                                  returns QName(PackageNamespace(""),"void")
+                                                                  
+                                                                  body
+                                                                     maxstack 3
+                                                                     localcount 2
+                                                                     initscopedepth 9
+                                                                     maxscopedepth 10
+                                                                     
+                                                                     code
+                                                                        getlocal0
+                                                                        pushscope
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        pushstring "btn"
+                                                                        getproperty MultinameL([PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")])
+                                                                        pushstring "click"
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"onClick")
+                                                                        callpropvoid Multiname("removeEventListener",[PrivateNamespace(null,"6"),PackageNamespace(""),PrivateNamespace(null,"29"),PackageNamespace("com.taomee.seer2.module.app.starMagic"),PackageInternalNs("com.taomee.seer2.module.app.starMagic"),Namespace("http://adobe.com/AS3/2006/builtin"),ProtectedNamespace("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("com.taomee.seer2.module.app.starMagic:StarBagShowPanel"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher")]), 2
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                        pushbyte 22
+                                                                        ifne ofs0029
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        callpropvoid QName(PackageNamespace(""),"play"), 0
+                                                                        jump ofs0096
+                                                               ofs0029:
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                        pushbyte 60
+                                                                        ifne ofs003f
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        callpropvoid QName(PackageNamespace(""),"play"), 0
+                                                                        jump ofs0096
+                                                               ofs003f:
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                        pushbyte 100
+                                                                        ifne ofs0055
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        callpropvoid QName(PackageNamespace(""),"play"), 0
+                                                                        jump ofs0096
+                                                               ofs0055:
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                        pushshort 139
+                                                                        ifne ofs006c
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        callpropvoid QName(PackageNamespace(""),"play"), 0
+                                                                        jump ofs0096
+                                                               ofs006c:
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                        pushshort 230
+                                                                        ifne ofs0083
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        callpropvoid QName(PackageNamespace(""),"play"), 0
+                                                                        jump ofs0096
+                                                               ofs0083:
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        getproperty QName(PackageNamespace(""),"currentFrame")
+                                                                        pushshort 303
+                                                                        ifne ofs0096
+                                                                        getlocal0
+                                                                        getproperty QName(PrivateNamespace(null,"6"),"_mc1")
+                                                                        callpropvoid QName(PackageNamespace(""),"play"), 0
+                                                               ofs0096:
+                                                                        returnvoid
+                                                                     end ; code
+                                                                  end ; body
+                                                               end ; method
+                                                            }
+                                                            
+                                                            private function talk1() : void
+                                                            {
+                                                               trait method QName(PrivateNamespace(null,"6"),"talk1")
+                                                                  dispid 0
+                                                                  method
+                                                                     name null
+                                                                     flag NEED_ACTIVATION
+                                                                     returns QName(PackageNamespace(""),"void")
+                                                                     
+                                                                     body
+                                                                        maxstack 6
+                                                                        localcount 2
+                                                                        initscopedepth 10
+                                                                        maxscopedepth 12
+                                                                        
+                                                                        code
+                                                                           getlocal0
+                                                                           pushscope
+                                                                           newactivation
+                                                                           dup
+                                                                           setlocal1
+                                                                           pushscope
+                                                                           getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                                           pushbyte 113
+                                                                           pushstring "超级NONO"
+                                                                           pushbyte 0
+                                                                           pushstring "这是你第一次使用“星魂”哦！星魂可以使精灵变得更加强大！~"
+                                                                           newarray 2
+                                                                           newarray 1
+                                                                           pushstring " 星魂？！"
+                                                                           newarray 1
+                                                                           newfunction 49
+                                                                           newarray 1
+                                                                           callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                                           returnvoid
+                                                                        end ; code
+                                                                     end ; body
+                                                                  end ; method
+                                                               }
+                                                               
+                                                               private function talk2() : void
+                                                               {
+                                                                  trait method QName(PrivateNamespace(null,"6"),"talk2")
+                                                                     dispid 0
+                                                                     method
+                                                                        name null
+                                                                        flag NEED_ACTIVATION
+                                                                        returns QName(PackageNamespace(""),"void")
+                                                                        
+                                                                        body
+                                                                           maxstack 6
+                                                                           localcount 2
+                                                                           initscopedepth 10
+                                                                           maxscopedepth 12
+                                                                           
+                                                                           code
+                                                                              getlocal0
+                                                                              pushscope
+                                                                              newactivation
+                                                                              dup
+                                                                              setlocal1
+                                                                              pushscope
+                                                                              getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                                              pushbyte 113
+                                                                              pushstring "超级NONO"
+                                                                              pushbyte 0
+                                                                              pushstring "星魂获取一共有5种等级，等级越高的方式获得的星魂质量也越好！当然，召唤星魂需要大量赛尔豆。快试试最简单的“冥想”获取吧！~"
+                                                                              newarray 2
+                                                                              newarray 1
+                                                                              pushstring " 好的！"
+                                                                              newarray 1
+                                                                              newfunction 51
+                                                                              newarray 1
+                                                                              callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                                              returnvoid
+                                                                           end ; code
+                                                                        end ; body
+                                                                     end ; method
+                                                                  }
+                                                                  
+                                                                  private function talk3() : void
+                                                                  {
+                                                                     trait method QName(PrivateNamespace(null,"6"),"talk3")
+                                                                        dispid 0
+                                                                        method
+                                                                           name null
+                                                                           flag NEED_ACTIVATION
+                                                                           returns QName(PackageNamespace(""),"void")
+                                                                           
+                                                                           body
+                                                                              maxstack 6
+                                                                              localcount 2
+                                                                              initscopedepth 10
+                                                                              maxscopedepth 12
+                                                                              
+                                                                              code
+                                                                                 getlocal0
+                                                                                 pushscope
+                                                                                 newactivation
+                                                                                 dup
+                                                                                 setlocal1
+                                                                                 pushscope
+                                                                                 getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                                                 pushbyte 113
+                                                                                 pushstring "超级NONO"
+                                                                                 pushbyte 0
+                                                                                 pushstring "好诶！成功进阶到了光华阶段了！还获得了一块大碎片——碎片虽然没有实际作用，但是没有实际作用哦！~"
+                                                                                 newarray 2
+                                                                                 newarray 1
+                                                                                 pushstring " 我去，那不就是占格子的垃圾吗"
+                                                                                 newarray 1
+                                                                                 newfunction 52
+                                                                                 newarray 1
+                                                                                 callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                                                 returnvoid
+                                                                              end ; code
+                                                                           end ; body
+                                                                        end ; method
+                                                                     }
+                                                                     
+                                                                     private function talk4() : void
+                                                                     {
+                                                                        trait method QName(PrivateNamespace(null,"6"),"talk4")
+                                                                           dispid 0
+                                                                           method
+                                                                              name null
+                                                                              flag NEED_ACTIVATION
+                                                                              returns QName(PackageNamespace(""),"void")
+                                                                              
+                                                                              body
+                                                                                 maxstack 6
+                                                                                 localcount 2
+                                                                                 initscopedepth 10
+                                                                                 maxscopedepth 12
+                                                                                 
+                                                                                 code
+                                                                                    getlocal0
+                                                                                    pushscope
+                                                                                    newactivation
+                                                                                    dup
+                                                                                    setlocal1
+                                                                                    pushscope
+                                                                                    getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                                                    pushbyte 113
+                                                                                    pushstring "超级NONO"
+                                                                                    pushbyte 0
+                                                                                    pushstring "光华进阶到了神启！虽然吊用没有，但是这是教程，还得把流程走完~"
+                                                                                    newarray 2
+                                                                                    newarray 1
+                                                                                    pushstring " 忍者听了都忍不了了.jpg！"
+                                                                                    newarray 1
+                                                                                    newfunction 54
+                                                                                    newarray 1
+                                                                                    callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                                                    returnvoid
+                                                                                 end ; code
+                                                                              end ; body
+                                                                           end ; method
+                                                                        }
+                                                                        
+                                                                        private function talk5() : void
+                                                                        {
+                                                                           trait method QName(PrivateNamespace(null,"6"),"talk5")
+                                                                              dispid 0
+                                                                              method
+                                                                                 name null
+                                                                                 flag NEED_ACTIVATION
+                                                                                 returns QName(PackageNamespace(""),"void")
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 6
+                                                                                    localcount 2
+                                                                                    initscopedepth 10
+                                                                                    maxscopedepth 12
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       newactivation
+                                                                                       dup
+                                                                                       setlocal1
+                                                                                       pushscope
+                                                                                       getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                                                       pushbyte 113
+                                                                                       pushstring "超级NONO"
+                                                                                       pushbyte 0
+                                                                                       pushstring "看来这次神启的进阶失败了。你应该看出来了，单次召唤很麻烦，而且吊用没有。~"
+                                                                                       newarray 2
+                                                                                       newarray 1
+                                                                                       pushstring " 你说得对"
+                                                                                       newarray 1
+                                                                                       newfunction 56
+                                                                                       newarray 1
+                                                                                       callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                                                       returnvoid
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                           }
+                                                                           
+                                                                           private function talk6() : void
+                                                                           {
+                                                                              trait method QName(PrivateNamespace(null,"6"),"talk6")
+                                                                                 dispid 0
+                                                                                 method
+                                                                                    name null
+                                                                                    flag NEED_ACTIVATION
+                                                                                    returns QName(PackageNamespace(""),"void")
+                                                                                    
+                                                                                    body
+                                                                                       maxstack 6
+                                                                                       localcount 2
+                                                                                       initscopedepth 10
+                                                                                       maxscopedepth 12
+                                                                                       
+                                                                                       code
+                                                                                          getlocal0
+                                                                                          pushscope
+                                                                                          newactivation
+                                                                                          dup
+                                                                                          setlocal1
+                                                                                          pushscope
+                                                                                          getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                                                          pushbyte 113
+                                                                                          pushstring "超级NONO"
+                                                                                          pushbyte 0
+                                                                                          pushstring "那有什么，改服功能比这还方便！我们先把没用的碎片分解吧！点击出售碎片按钮~"
+                                                                                          newarray 2
+                                                                                          newarray 1
+                                                                                          pushstring "好好"
+                                                                                          newarray 1
+                                                                                          newfunction 58
+                                                                                          newarray 1
+                                                                                          callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                                                          returnvoid
+                                                                                       end ; code
+                                                                                    end ; body
+                                                                                 end ; method
+                                                                              }
+                                                                              
+                                                                              private function talk7() : void
+                                                                              {
+                                                                                 trait method QName(PrivateNamespace(null,"6"),"talk7")
+                                                                                    dispid 0
+                                                                                    method
+                                                                                       name null
+                                                                                       flag NEED_ACTIVATION
+                                                                                       returns QName(PackageNamespace(""),"void")
+                                                                                       
+                                                                                       body
+                                                                                          maxstack 6
+                                                                                          localcount 2
+                                                                                          initscopedepth 10
+                                                                                          maxscopedepth 12
+                                                                                          
+                                                                                          code
+                                                                                             getlocal0
+                                                                                             pushscope
+                                                                                             newactivation
+                                                                                             dup
+                                                                                             setlocal1
+                                                                                             pushscope
+                                                                                             getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"NpcDialog")
+                                                                                             pushbyte 113
+                                                                                             pushstring "超级NONO"
+                                                                                             pushbyte 0
+                                                                                             pushstring "使用改服功能前记得阅读注意事项。好了，现在把这次获得的星魂都放到星魂背包里，然后进星魂背包来升级星魂吧！"
+                                                                                             newarray 2
+                                                                                             newarray 1
+                                                                                             pushstring "好"
+                                                                                             newarray 1
+                                                                                             newfunction 59
+                                                                                             newarray 1
+                                                                                             callpropvoid QName(PackageNamespace(""),"show"), 5
+                                                                                             returnvoid
+                                                                                          end ; code
+                                                                                       end ; body
+                                                                                    end ; method
+                                                                                 }
+                                                                                 
+                                                                                 private function step1() : void
+                                                                                 {
+                                                                                    trait method QName(PrivateNamespace(null,"6"),"step1")
+                                                                                       dispid 0
+                                                                                       method
+                                                                                          name null
+                                                                                          flag NEED_ACTIVATION
+                                                                                          returns QName(PackageNamespace(""),"void")
+                                                                                          
+                                                                                          body
+                                                                                             maxstack 4
+                                                                                             localcount 2
+                                                                                             initscopedepth 10
+                                                                                             maxscopedepth 12
+                                                                                             
+                                                                                             code
+                                                                                                getlocal0
+                                                                                                pushscope
+                                                                                                newactivation
+                                                                                                dup
+                                                                                                setlocal1
+                                                                                                pushscope
+                                                                                                getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                                                                                getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                                                                pushstring "10246_1"
+                                                                                                callproperty QName(PackageNamespace(""),"getQuestFullScreenAnimation"), 1
+                                                                                                newfunction 60
+                                                                                                pushstring "加载全屏资源"
+                                                                                                callpropvoid QName(PackageNamespace(""),"getSwfContent"), 3
+                                                                                                returnvoid
+                                                                                             end ; code
+                                                                                          end ; body
+                                                                                       end ; method
+                                                                                    }
+                                                                                 }
+                                                                              }
+                                                                              
+                                                                              method
+                                                                                 name null
+                                                                                 returns null
+                                                                                 
+                                                                                 body
+                                                                                    maxstack 2
+                                                                                    localcount 1
+                                                                                    initscopedepth 1
+                                                                                    maxscopedepth 8
+                                                                                    
+                                                                                    code
+                                                                                       getlocal0
+                                                                                       pushscope
+                                                                                       findpropstrict Multiname("StarBagShowPanel",[PackageNamespace("com.taomee.seer2.module.app.starMagic")])
+                                                                                       getlex QName(PackageNamespace(""),"Object")
+                                                                                       pushscope
+                                                                                       getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                                                       pushscope
+                                                                                       getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                                                       pushscope
+                                                                                       getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                                                       pushscope
+                                                                                       getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                                                       pushscope
+                                                                                       getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                                                       pushscope
+                                                                                       getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                                                       newclass 94
+                                                                                       popscope
+                                                                                       popscope
+                                                                                       popscope
+                                                                                       popscope
+                                                                                       popscope
+                                                                                       popscope
+                                                                                       initproperty QName(PackageNamespace("com.taomee.seer2.module.app.starMagic"),"StarBagShowPanel")
+                                                                                       returnvoid
+                                                                                    end ; code
+                                                                                 end ; body
+                                                                              end ; method
+                                                                              

@@ -1,0 +1,1346 @@
+package com.chunshu.seer2.uclient
+{
+   import flash.display.DisplayObject;
+   import flash.display.DisplayObjectContainer;
+   import flash.display.MovieClip;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.geom.Rectangle;
+   import flash.utils.Dictionary;
+   import flash.utils.getQualifiedClassName;
+   import flash.utils.getTimer;
+   
+   [SWF(frameRate="40",backgroundColor="#000000",width="1",height="1")]
+   public class UClientUniversalBattleAdapter extends Sprite
+   {
+      
+      public static const VERSION:String = "1.3.0-clock-capability";
+      
+      public static const IDLE_SOURCE_FPS:Number = 15;
+      
+      public static const MAX_SIZE_MULTIPLIER:Number = 1.18;
+      
+      public static const TARGET_VISIBLE_WIDTH:Number = 480;
+      
+      public static const TARGET_VISIBLE_HEIGHT:Number = 400;
+      
+      private static const sessions:Dictionary;
+      
+      method
+         name ""
+         returns null
+         
+         body
+            maxstack 3
+            localcount 1
+            initscopedepth 8
+            maxscopedepth 9
+            
+            code
+               getlocal0
+               pushscope
+               findproperty QName(PackageNamespace(""),"VERSION")
+               pushstring "1.3.0-clock-capability"
+               initproperty QName(PackageNamespace(""),"VERSION")
+               findproperty QName(PackageNamespace(""),"IDLE_SOURCE_FPS")
+               pushbyte 15
+               initproperty QName(PackageNamespace(""),"IDLE_SOURCE_FPS")
+               findproperty QName(PackageNamespace(""),"MAX_SIZE_MULTIPLIER")
+               pushdouble 1.18
+               initproperty QName(PackageNamespace(""),"MAX_SIZE_MULTIPLIER")
+               findproperty QName(PackageNamespace(""),"TARGET_VISIBLE_WIDTH")
+               pushshort 480
+               initproperty QName(PackageNamespace(""),"TARGET_VISIBLE_WIDTH")
+               findproperty QName(PackageNamespace(""),"TARGET_VISIBLE_HEIGHT")
+               pushshort 400
+               initproperty QName(PackageNamespace(""),"TARGET_VISIBLE_HEIGHT")
+               findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"sessions")
+               findpropstrict QName(PackageNamespace("flash.utils"),"Dictionary")
+               pushtrue
+               constructprop QName(PackageNamespace("flash.utils"),"Dictionary"), 1
+               initproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"sessions")
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var pet:MovieClip;
+      
+      private var action:MovieClip;
+      
+      private var idleStartedAt:int;
+      
+      private var idleStartFrame:int = 1;
+      
+      private var lastLabel:String = "";
+      
+      private var disposed:Boolean = false;
+      
+      private var uclientResource:Boolean = false;
+      
+      public function UClientUniversalBattleAdapter(target:MovieClip = null)
+      {
+         method
+            name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/UClientUniversalBattleAdapter"
+            flag HAS_OPTIONAL
+            param QName(PackageNamespace("flash.display"),"MovieClip")
+            optional Null()
+            returns null
+            
+            body
+               maxstack 2
+               localcount 2
+               initscopedepth 9
+               maxscopedepth 10
+               
+               code
+                  getlocal0
+                  pushscope
+                  debug 1, "target", 0, 0
+                  getlocal0
+                  constructsuper 0
+                  findproperty QName(PackageNamespace(""),"mouseEnabled")
+                  pushfalse
+                  setproperty QName(PackageNamespace(""),"mouseEnabled")
+                  findproperty QName(PackageNamespace(""),"mouseChildren")
+                  pushfalse
+                  setproperty QName(PackageNamespace(""),"mouseChildren")
+                  getlocal1
+                  pushnull
+                  ifeq ofs0020
+                  findpropstrict QName(PackageNamespace(""),"bind")
+                  getlocal1
+                  callpropvoid QName(PackageNamespace(""),"bind"), 1
+         ofs0020:
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public static function supports(target:MovieClip) : Boolean
+      {
+         trait method QName(PackageNamespace(""),"supports")
+            flag FINAL
+            dispid 3
+            method
+               name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/supports"
+               flag NEED_ACTIVATION
+               param QName(PackageNamespace("flash.display"),"MovieClip")
+               returns QName(PackageNamespace(""),"Boolean")
+               
+               body
+                  maxstack 3
+                  localcount 4
+                  initscopedepth 9
+                  maxscopedepth 14
+                  trait slot QName(PackageInternalNs("com.chunshu.seer2.uclient"),"target")
+                     slotid 1
+                     type QName(PackageNamespace("flash.display"),"MovieClip")
+                  end ; trait
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debug 1, "target", 0, 0
+                     debug 1, "+$activation", 1, 0
+                     newactivation
+                     dup
+                     setlocal2
+                     pushscope
+                     getscopeobject 1
+                     getlocal1
+                     coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                     setslot 1
+                     getscopeobject 1
+                     getslot 1
+                     pushnull
+                     ifne ofs0022
+                     pushfalse
+                     returnvalue
+            ofs0022:
+                     pushstring "uClientBattleReady"
+                     getscopeobject 1
+                     getslot 1
+                     in
+                     convert_b
+                     dup
+                     iffalse ofs003c
+                     pop
+                     getscopeobject 1
+                     getslot 1
+                     pushstring "uClientBattleReady"
+                     getproperty MultinameL([PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")])
+                     convert_b
+                     convert_b
+            ofs003c:
+                     returnvalue
+            ofs003d:
+                     jump ofs0041
+            ofs0041:
+                     getlocal0
+                     pushscope
+                     getlocal2
+                     pushscope
+                     newcatch 0
+                     dup
+                     setlocal3
+                     dup
+                     pushscope
+                     swap
+                     setslot 1
+                     popscope
+                     kill 3
+                     pushfalse
+                     returnvalue
+                  end ; code
+                  try from ofs0022 to ofs003d target ofs0041 type null name QName(PackageNamespace(""),"ignored") end
+               end ; body
+            end ; method
+         }
+         
+         public static function attach(target:MovieClip) : UClientUniversalBattleAdapter
+         {
+            trait method QName(PackageNamespace(""),"attach")
+               flag FINAL
+               dispid 4
+               method
+                  name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/attach"
+                  param QName(PackageNamespace("flash.display"),"MovieClip")
+                  returns QName(PackageNamespace("com.chunshu.seer2.uclient"),"UClientUniversalBattleAdapter")
+                  
+                  body
+                     maxstack 3
+                     localcount 4
+                     initscopedepth 8
+                     maxscopedepth 9
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debug 1, "target", 0, 0
+                        debug 1, "existing", 1, 80
+                        debug 1, "created", 2, 85
+                        getlocal1
+                        pushnull
+                        ifne ofs001b
+                        pushnull
+                        returnvalue
+               ofs001b:
+                        findpropstrict QName(PackageNamespace(""),"supports")
+                        getlocal1
+                        callproperty QName(PackageNamespace(""),"supports"), 1
+                        not
+                        iffalse ofs0028
+                        pushnull
+                        returnvalue
+               ofs0028:
+                        getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"sessions")
+                        getlocal1
+                        getproperty MultinameL([PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")])
+                        getlocal0
+                        astypelate
+                        coerce QName(PackageNamespace("com.chunshu.seer2.uclient"),"UClientUniversalBattleAdapter")
+                        setlocal2
+                        getlocal2
+                        pushnull
+                        ifeq ofs003a
+                        getlocal2
+                        returnvalue
+               ofs003a:
+                        getlocal0
+                        getlocal1
+                        construct 1
+                        coerce QName(PackageNamespace("com.chunshu.seer2.uclient"),"UClientUniversalBattleAdapter")
+                        setlocal3
+                        getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"sessions")
+                        getlocal1
+                        getlocal3
+                        setproperty MultinameL([PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")])
+                        getlocal3
+                        returnvalue
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            public static function detach(target:MovieClip) : void
+            {
+               trait method QName(PackageNamespace(""),"detach")
+                  flag FINAL
+                  dispid 5
+                  method
+                     name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/detach"
+                     param QName(PackageNamespace("flash.display"),"MovieClip")
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 2
+                        localcount 3
+                        initscopedepth 8
+                        maxscopedepth 9
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debug 1, "target", 0, 0
+                           debug 1, "existing", 1, 92
+                           getlocal1
+                           pushnull
+                           ifne ofs0018
+                           pushnull
+                           jump ofs001f
+                  ofs0018:
+                           getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"sessions")
+                           getlocal1
+                           getproperty MultinameL([PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")])
+                           getlocal0
+                           astypelate
+                  ofs001f:
+                           coerce QName(PackageNamespace("com.chunshu.seer2.uclient"),"UClientUniversalBattleAdapter")
+                           setlocal2
+                           getlocal2
+                           pushnull
+                           ifeq ofs002c
+                           getlocal2
+                           callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                  ofs002c:
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               public static function fitMultiplier(target:MovieClip, bounds:Rectangle) : Number
+               {
+                  trait method QName(PackageNamespace(""),"fitMultiplier")
+                     flag FINAL
+                     dispid 6
+                     method
+                        name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/fitMultiplier"
+                        param QName(PackageNamespace("flash.display"),"MovieClip")
+                        param QName(PackageNamespace("flash.geom"),"Rectangle")
+                        returns QName(PackageNamespace(""),"Number")
+                        
+                        body
+                           maxstack 4
+                           localcount 4
+                           initscopedepth 8
+                           maxscopedepth 9
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debug 1, "target", 0, 0
+                              debug 1, "bounds", 1, 0
+                              debug 1, "desired", 2, 105
+                              findpropstrict QName(PackageNamespace(""),"supports")
+                              getlocal1
+                              callproperty QName(PackageNamespace(""),"supports"), 1
+                              not
+                              dup
+                              iftrue ofs0022
+                              pop
+                              getlocal2
+                              pushnull
+                              equals
+                     ofs0022:
+                              dup
+                              iftrue ofs002e
+                              pop
+                              getlocal2
+                              getproperty QName(PackageNamespace(""),"width")
+                              pushbyte 1
+                              lessequals
+                     ofs002e:
+                              dup
+                              iftrue ofs003a
+                              pop
+                              getlocal2
+                              getproperty QName(PackageNamespace(""),"height")
+                              pushbyte 1
+                              lessequals
+                     ofs003a:
+                              iffalse ofs0041
+                              pushbyte 1
+                              returnvalue
+                     ofs0041:
+                              getlex QName(PackageNamespace(""),"Math")
+                              getlex QName(PackageNamespace(""),"TARGET_VISIBLE_WIDTH")
+                              getlocal2
+                              getproperty QName(PackageNamespace(""),"width")
+                              divide
+                              getlex QName(PackageNamespace(""),"TARGET_VISIBLE_HEIGHT")
+                              getlocal2
+                              getproperty QName(PackageNamespace(""),"height")
+                              divide
+                              callproperty QName(PackageNamespace(""),"min"), 2
+                              convert_d
+                              setlocal3
+                              findpropstrict Multiname("isNaN",[PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")])
+                              getlocal3
+                              callproperty Multiname("isNaN",[PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")]), 1
+                              dup
+                              convert_b
+                              iftrue ofs0065
+                              pop
+                              getlocal3
+                              pushbyte 1
+                              lessequals
+                     ofs0065:
+                              iffalse ofs006c
+                              pushbyte 1
+                              returnvalue
+                     ofs006c:
+                              getlex QName(PackageNamespace(""),"Math")
+                              getlex QName(PackageNamespace(""),"MAX_SIZE_MULTIPLIER")
+                              getlocal3
+                              callproperty QName(PackageNamespace(""),"min"), 2
+                              returnvalue
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  public function bind(target:MovieClip) : void
+                  {
+                     trait method QName(PackageNamespace(""),"bind")
+                        dispid 0
+                        method
+                           name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/bind"
+                           param QName(PackageNamespace("flash.display"),"MovieClip")
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 6
+                              localcount 2
+                              initscopedepth 9
+                              maxscopedepth 10
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debug 1, "target", 0, 0
+                                 getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"disposed")
+                                 dup
+                                 iftrue ofs0012
+                                 pop
+                                 getlocal1
+                                 pushnull
+                                 equals
+                        ofs0012:
+                                 dup
+                                 iftrue ofs001c
+                                 pop
+                                 getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                 getlocal1
+                                 strictequals
+                        ofs001c:
+                                 iffalse ofs0021
+                                 returnvoid
+                        ofs0021:
+                                 findpropstrict QName(PackageNamespace(""),"supports")
+                                 getlocal1
+                                 callproperty QName(PackageNamespace(""),"supports"), 1
+                                 not
+                                 iffalse ofs002d
+                                 returnvoid
+                        ofs002d:
+                                 findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"unbindAction")
+                                 callpropvoid QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"unbindAction"), 0
+                                 findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                 getlocal1
+                                 setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                 findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"uclientResource")
+                                 findpropstrict QName(PackageNamespace(""),"supports")
+                                 getlocal1
+                                 callproperty QName(PackageNamespace(""),"supports"), 1
+                                 setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"uclientResource")
+                                 getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                 getlex QName(PackageNamespace("flash.events"),"Event")
+                                 getproperty QName(PackageNamespace(""),"ENTER_FRAME")
+                                 getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"onPetFrame")
+                                 pushfalse
+                                 pushshort -2000
+                                 pushtrue
+                                 callpropvoid QName(PackageNamespace(""),"addEventListener"), 5
+                                 getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"uclientResource")
+                                 iffalse ofs005f
+                                 findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"refreshAction")
+                                 callpropvoid QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"refreshAction"), 0
+                        ofs005f:
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function onPetFrame(event:Event) : void
+                     {
+                        trait method QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"onPetFrame")
+                           dispid 0
+                           method
+                              name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/private/onPetFrame"
+                              param QName(PackageNamespace("flash.events"),"Event")
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 2
+                                 localcount 2
+                                 initscopedepth 9
+                                 maxscopedepth 10
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debug 1, "event", 0, 0
+                                    getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"disposed")
+                                    dup
+                                    iftrue ofs0013
+                                    pop
+                                    getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                    pushnull
+                                    equals
+                           ofs0013:
+                                    iffalse ofs0018
+                                    returnvoid
+                           ofs0018:
+                                    getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"uclientResource")
+                                    iffalse ofs0023
+                                    findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"refreshAction")
+                                    callpropvoid QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"refreshAction"), 0
+                           ofs0023:
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function refreshAction() : void
+                        {
+                           trait method QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"refreshAction")
+                              dispid 0
+                              method
+                                 name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/private/refreshAction"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 6
+                                    localcount 2
+                                    initscopedepth 9
+                                    maxscopedepth 10
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debug 1, "next", 0, 147
+                                       findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"findAction")
+                                       getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                       pushbyte 0
+                                       callproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"findAction"), 2
+                                       coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                       setlocal1
+                                       getlocal1
+                                       getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                       ifstrictne ofs001c
+                                       returnvoid
+                              ofs001c:
+                                       findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"unbindAction")
+                                       callpropvoid QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"unbindAction"), 0
+                                       findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                       getlocal1
+                                       setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                       getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                       pushnull
+                                       ifeq ofs0063
+                                       findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged")
+                                       getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                       callproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged"), 1
+                                       not
+                                       dup
+                                       iffalse ofs0043
+                                       pop
+                                       findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged")
+                                       getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                       callproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged"), 1
+                                       not
+                              ofs0043:
+                                       iffalse ofs005a
+                                       getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                       getlex QName(PackageNamespace("flash.events"),"Event")
+                                       getproperty QName(PackageNamespace(""),"ENTER_FRAME")
+                                       getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"onActionFrame")
+                                       pushfalse
+                                       pushshort -1000
+                                       pushfalse
+                                       callpropvoid QName(PackageNamespace(""),"addEventListener"), 5
+                              ofs005a:
+                                       findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"resetIdleClock")
+                                       getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                       getproperty QName(PackageNamespace(""),"currentFrame")
+                                       callpropvoid QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"resetIdleClock"), 1
+                              ofs0063:
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function clockManaged(target:Object) : Boolean
+                           {
+                              trait method QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged")
+                                 dispid 0
+                                 method
+                                    name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/private/clockManaged"
+                                    flag NEED_ACTIVATION
+                                    param QName(PackageNamespace(""),"Object")
+                                    returns QName(PackageNamespace(""),"Boolean")
+                                    
+                                    body
+                                       maxstack 3
+                                       localcount 4
+                                       initscopedepth 10
+                                       maxscopedepth 15
+                                       trait slot QName(PackageInternalNs("com.chunshu.seer2.uclient"),"target")
+                                          slotid 1
+                                          type QName(PackageNamespace(""),"Object")
+                                       end ; trait
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debug 1, "target", 0, 0
+                                          debug 1, "+$activation", 1, 0
+                                          newactivation
+                                          dup
+                                          setlocal2
+                                          pushscope
+                                          getscopeobject 1
+                                          getlocal1
+                                          coerce QName(PackageNamespace(""),"Object")
+                                          setslot 1
+                                          getscopeobject 1
+                                          getslot 1
+                                          pushnull
+                                          ifne ofs0022
+                                          pushfalse
+                                          returnvalue
+                                 ofs0022:
+                                          pushstring "uClientBattleClockManaged"
+                                          getscopeobject 1
+                                          getslot 1
+                                          in
+                                          convert_b
+                                          dup
+                                          iffalse ofs003c
+                                          pop
+                                          getscopeobject 1
+                                          getslot 1
+                                          pushstring "uClientBattleClockManaged"
+                                          getproperty MultinameL([PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")])
+                                          convert_b
+                                          convert_b
+                                 ofs003c:
+                                          returnvalue
+                                 ofs003d:
+                                          jump ofs0041
+                                 ofs0041:
+                                          getlocal0
+                                          pushscope
+                                          getlocal2
+                                          pushscope
+                                          newcatch 0
+                                          dup
+                                          setlocal3
+                                          dup
+                                          pushscope
+                                          swap
+                                          setslot 1
+                                          popscope
+                                          kill 3
+                                          pushfalse
+                                          returnvalue
+                                       end ; code
+                                       try from ofs0022 to ofs003d target ofs0041 type null name QName(PackageNamespace(""),"ignored") end
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function findAction(container:DisplayObjectContainer, depth:int) : MovieClip
+                              {
+                                 trait method QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"findAction")
+                                    dispid 0
+                                    method
+                                       name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/private/findAction"
+                                       param QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                       param QName(PackageNamespace(""),"int")
+                                       returns QName(PackageNamespace("flash.display"),"MovieClip")
+                                       
+                                       body
+                                          maxstack 4
+                                          localcount 9
+                                          initscopedepth 9
+                                          maxscopedepth 10
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debug 1, "container", 0, 0
+                                             debug 1, "depth", 1, 0
+                                             debug 1, "fallback", 2, 186
+                                             debug 1, "index", 3, 187
+                                             debug 1, "child", 4, 190
+                                             debug 1, "clip", 5, 191
+                                             debug 1, "qualified", 6, 194
+                                             debug 1, "nested", 7, 204
+                                             getlocal1
+                                             pushnull
+                                             equals
+                                             dup
+                                             iftrue ofs003d
+                                             pop
+                                             getlocal2
+                                             pushbyte 5
+                                             greaterthan
+                                    ofs003d:
+                                             iffalse ofs0043
+                                             pushnull
+                                             returnvalue
+                                    ofs0043:
+                                             pushnull
+                                             coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                             setlocal3
+                                             pushbyte 0
+                                             convert_i
+                                             setlocal 4
+                                             jump ofs00d6
+                                    ofs0050:
+                                             label
+                                             getlocal1
+                                             getlocal 4
+                                             callproperty QName(PackageNamespace(""),"getChildAt"), 1
+                                             coerce QName(PackageNamespace("flash.display"),"DisplayObject")
+                                             setlocal 5
+                                             getlocal 5
+                                             getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                             astypelate
+                                             coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                             setlocal 6
+                                             getlocal 6
+                                             pushnull
+                                             ifeq ofs00b8
+                                             findpropstrict QName(PackageNamespace("flash.utils"),"getQualifiedClassName")
+                                             getlocal 6
+                                             callproperty QName(PackageNamespace("flash.utils"),"getQualifiedClassName"), 1
+                                             coerce_s
+                                             setlocal 7
+                                             getlocal 7
+                                             pushstring "UClientActionClip"
+                                             callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"indexOf"), 1
+                                             pushbyte 0
+                                             greaterequals
+                                             dup
+                                             iftrue ofs0098
+                                             pop
+                                             pushstring "ready"
+                                             getlocal 6
+                                             in
+                                             dup
+                                             iffalse ofs0098
+                                             pop
+                                             getlocal 6
+                                             getproperty QName(PackageNamespace(""),"totalFrames")
+                                             pushbyte 1
+                                             greaterthan
+                                    ofs0098:
+                                             iffalse ofs009f
+                                             getlocal 6
+                                             returnvalue
+                                    ofs009f:
+                                             getlocal3
+                                             pushnull
+                                             equals
+                                             dup
+                                             iffalse ofs00af
+                                             pop
+                                             getlocal 6
+                                             getproperty QName(PackageNamespace(""),"totalFrames")
+                                             pushbyte 1
+                                             greaterthan
+                                    ofs00af:
+                                             iffalse ofs00b8
+                                             getlocal 6
+                                             coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                             setlocal3
+                                    ofs00b8:
+                                             findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"findAction")
+                                             getlocal 5
+                                             getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                             astypelate
+                                             getlocal2
+                                             pushbyte 1
+                                             add
+                                             callproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"findAction"), 2
+                                             coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                             setlocal 8
+                                             getlocal 8
+                                             pushnull
+                                             ifeq ofs00d4
+                                             getlocal 8
+                                             returnvalue
+                                    ofs00d4:
+                                             inclocal_i 4
+                                    ofs00d6:
+                                             getlocal 4
+                                             getlocal1
+                                             getproperty QName(PackageNamespace(""),"numChildren")
+                                             iflt ofs0050
+                                             getlocal2
+                                             pushbyte 0
+                                             ifne ofs00eb
+                                             getlocal3
+                                             jump ofs00ec
+                                    ofs00eb:
+                                             pushnull
+                                    ofs00ec:
+                                             returnvalue
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function isIdle() : Boolean
+                                 {
+                                    trait method QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"isIdle")
+                                       dispid 0
+                                       method
+                                          name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/private/isIdle"
+                                          flag NEED_ACTIVATION
+                                          returns QName(PackageNamespace(""),"Boolean")
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 3
+                                             initscopedepth 10
+                                             maxscopedepth 15
+                                             trait slot QName(PackageInternalNs("com.chunshu.seer2.uclient"),"label")
+                                                slotid 1
+                                                type QName(PackageNamespace(""),"String")
+                                             end ; trait
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debug 1, "+$activation", 0, 0
+                                                newactivation
+                                                dup
+                                                setlocal1
+                                                pushscope
+                                                getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                pushnull
+                                                ifne ofs0014
+                                                pushfalse
+                                                returnvalue
+                                       ofs0014:
+                                                getscopeobject 1
+                                                pushstring ""
+                                                coerce_s
+                                                setslot 1
+                                       ofs001b:
+                                                getscopeobject 1
+                                                getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                getproperty QName(PackageNamespace(""),"currentLabel")
+                                                dup
+                                                convert_b
+                                                iftrue ofs002c
+                                                pop
+                                                getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                getproperty QName(PackageNamespace(""),"currentFrameLabel")
+                                       ofs002c:
+                                                dup
+                                                iftrue ofs0034
+                                                pop
+                                                pushstring ""
+                                       ofs0034:
+                                                convert_s
+                                                callproperty Multiname("toLowerCase",[PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")]), 0
+                                                coerce_s
+                                                setslot 1
+                                       ofs003b:
+                                                jump ofs004f
+                                       ofs003f:
+                                                getlocal0
+                                                pushscope
+                                                getlocal1
+                                                pushscope
+                                                newcatch 0
+                                                dup
+                                                setlocal2
+                                                dup
+                                                pushscope
+                                                swap
+                                                setslot 1
+                                                popscope
+                                                kill 2
+                                       ofs004f:
+                                                getscopeobject 1
+                                                getslot 1
+                                                pushstring "standby"
+                                                equals
+                                                convert_b
+                                                dup
+                                                iftrue ofs0065
+                                                pop
+                                                getscopeobject 1
+                                                getslot 1
+                                                pushstring "idle"
+                                                equals
+                                                convert_b
+                                       ofs0065:
+                                                dup
+                                                iftrue ofs0073
+                                                pop
+                                                getscopeobject 1
+                                                getslot 1
+                                                pushstring "stand"
+                                                equals
+                                                convert_b
+                                       ofs0073:
+                                                dup
+                                                iftrue ofs0081
+                                                pop
+                                                getscopeobject 1
+                                                getslot 1
+                                                pushstring "wait"
+                                                equals
+                                                convert_b
+                                       ofs0081:
+                                                dup
+                                                iftrue ofs008f
+                                                pop
+                                                getscopeobject 1
+                                                getslot 1
+                                                pushstring "待机"
+                                                equals
+                                                convert_b
+                                       ofs008f:
+                                                returnvalue
+                                             end ; code
+                                             try from ofs001b to ofs003b target ofs003f type null name QName(PackageNamespace(""),"ignored") end
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function resetIdleClock(frame:int) : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"resetIdleClock")
+                                          dispid 0
+                                          method
+                                             name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/private/resetIdleClock"
+                                             param QName(PackageNamespace(""),"int")
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 4
+                                                localcount 2
+                                                initscopedepth 9
+                                                maxscopedepth 10
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debug 1, "frame", 0, 0
+                                                   findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"idleStartedAt")
+                                                   findpropstrict QName(PackageNamespace("flash.utils"),"getTimer")
+                                                   callproperty QName(PackageNamespace("flash.utils"),"getTimer"), 0
+                                                   setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"idleStartedAt")
+                                                   findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"idleStartFrame")
+                                                   getlex QName(PackageNamespace(""),"Math")
+                                                   pushbyte 1
+                                                   getlocal1
+                                                   callproperty QName(PackageNamespace(""),"max"), 2
+                                                   setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"idleStartFrame")
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function onActionFrame(event:Event) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"onActionFrame")
+                                             dispid 0
+                                             method
+                                                name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/private/onActionFrame"
+                                                flag NEED_ACTIVATION
+                                                param QName(PackageNamespace("flash.events"),"Event")
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 5
+                                                   localcount 5
+                                                   initscopedepth 10
+                                                   maxscopedepth 20
+                                                   trait slot QName(PackageInternalNs("com.chunshu.seer2.uclient"),"event")
+                                                      slotid 1
+                                                      type QName(PackageNamespace("flash.events"),"Event")
+                                                   end ; trait
+                                                   trait slot QName(PackageInternalNs("com.chunshu.seer2.uclient"),"label")
+                                                      slotid 2
+                                                      type QName(PackageNamespace(""),"String")
+                                                   end ; trait
+                                                   trait slot QName(PackageInternalNs("com.chunshu.seer2.uclient"),"total")
+                                                      slotid 3
+                                                      type QName(PackageNamespace(""),"int")
+                                                   end ; trait
+                                                   trait slot QName(PackageInternalNs("com.chunshu.seer2.uclient"),"elapsed")
+                                                      slotid 4
+                                                      type QName(PackageNamespace(""),"int")
+                                                   end ; trait
+                                                   trait slot QName(PackageInternalNs("com.chunshu.seer2.uclient"),"desired")
+                                                      slotid 5
+                                                      type QName(PackageNamespace(""),"int")
+                                                   end ; trait
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debug 1, "event", 0, 0
+                                                      debug 1, "+$activation", 1, 0
+                                                      newactivation
+                                                      dup
+                                                      setlocal2
+                                                      pushscope
+                                                      getscopeobject 1
+                                                      getlocal1
+                                                      coerce QName(PackageNamespace("flash.events"),"Event")
+                                                      setslot 1
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"disposed")
+                                                      dup
+                                                      iftrue ofs0023
+                                                      pop
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                      pushnull
+                                                      equals
+                                             ofs0023:
+                                                      dup
+                                                      iftrue ofs002c
+                                                      pop
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"uclientResource")
+                                                      not
+                                             ofs002c:
+                                                      iffalse ofs0031
+                                                      returnvoid
+                                             ofs0031:
+                                                      findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged")
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                      callproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged"), 1
+                                                      dup
+                                                      convert_b
+                                                      iftrue ofs0046
+                                                      pop
+                                                      findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged")
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                      callproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"clockManaged"), 1
+                                             ofs0046:
+                                                      iffalse ofs004b
+                                                      returnvoid
+                                             ofs004b:
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                      pushnull
+                                                      equals
+                                                      dup
+                                                      iftrue ofs005b
+                                                      pop
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                      getproperty QName(PackageNamespace(""),"parent")
+                                                      pushnull
+                                                      equals
+                                             ofs005b:
+                                                      iffalse ofs0065
+                                                      findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"refreshAction")
+                                                      callpropvoid QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"refreshAction"), 0
+                                                      returnvoid
+                                             ofs0065:
+                                                      getscopeobject 1
+                                                      pushstring ""
+                                                      coerce_s
+                                                      setslot 2
+                                             ofs006c:
+                                                      getscopeobject 1
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                      getproperty QName(PackageNamespace(""),"currentLabel")
+                                                      dup
+                                                      convert_b
+                                                      iftrue ofs007d
+                                                      pop
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                      getproperty QName(PackageNamespace(""),"currentFrameLabel")
+                                             ofs007d:
+                                                      dup
+                                                      iftrue ofs0085
+                                                      pop
+                                                      pushstring ""
+                                             ofs0085:
+                                                      convert_s
+                                                      callproperty Multiname("toLowerCase",[PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")]), 0
+                                                      coerce_s
+                                                      setslot 2
+                                             ofs008c:
+                                                      jump ofs00a0
+                                             ofs0090:
+                                                      getlocal0
+                                                      pushscope
+                                                      getlocal2
+                                                      pushscope
+                                                      newcatch 0
+                                                      dup
+                                                      setlocal3
+                                                      dup
+                                                      pushscope
+                                                      swap
+                                                      setslot 1
+                                                      popscope
+                                                      kill 3
+                                             ofs00a0:
+                                                      getscopeobject 1
+                                                      getslot 2
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"lastLabel")
+                                                      ifeq ofs00bb
+                                                      findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"lastLabel")
+                                                      getscopeobject 1
+                                                      getslot 2
+                                                      setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"lastLabel")
+                                                      findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"resetIdleClock")
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                      getproperty QName(PackageNamespace(""),"currentFrame")
+                                                      callpropvoid QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"resetIdleClock"), 1
+                                             ofs00bb:
+                                                      findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"isIdle")
+                                                      callproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"isIdle"), 0
+                                                      not
+                                                      iffalse ofs00c6
+                                                      returnvoid
+                                             ofs00c6:
+                                                      getscopeobject 1
+                                                      getlex QName(PackageNamespace(""),"Math")
+                                                      pushbyte 2
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                      getproperty QName(PackageNamespace(""),"totalFrames")
+                                                      callproperty QName(PackageNamespace(""),"max"), 2
+                                                      convert_i
+                                                      setslot 3
+                                                      getscopeobject 1
+                                                      getlex QName(PackageNamespace(""),"Math")
+                                                      pushbyte 0
+                                                      findpropstrict QName(PackageNamespace("flash.utils"),"getTimer")
+                                                      callproperty QName(PackageNamespace("flash.utils"),"getTimer"), 0
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"idleStartedAt")
+                                                      subtract
+                                                      callproperty QName(PackageNamespace(""),"max"), 2
+                                                      convert_i
+                                                      setslot 4
+                                                      getscopeobject 1
+                                                      pushbyte 1
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"idleStartFrame")
+                                                      pushbyte 1
+                                                      subtract
+                                                      getscopeobject 1
+                                                      getslot 4
+                                                      getlex QName(PackageNamespace(""),"IDLE_SOURCE_FPS")
+                                                      multiply
+                                                      pushshort 1000
+                                                      divide
+                                                      convert_i
+                                                      add
+                                                      getscopeobject 1
+                                                      getslot 3
+                                                      modulo
+                                                      add
+                                                      convert_i
+                                                      setslot 5
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                      getproperty QName(PackageNamespace(""),"currentFrame")
+                                                      getscopeobject 1
+                                                      getslot 5
+                                                      ifeq ofs0152
+                                             ofs0115:
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                      getscopeobject 1
+                                                      getslot 5
+                                                      callpropvoid QName(PackageNamespace(""),"gotoAndPlay"), 1
+                                             ofs011e:
+                                                      jump ofs0152
+                                             ofs0122:
+                                                      getlocal0
+                                                      pushscope
+                                                      getlocal2
+                                                      pushscope
+                                                      newcatch 1
+                                                      dup
+                                                      setlocal3
+                                                      dup
+                                                      pushscope
+                                                      swap
+                                                      setslot 1
+                                             ofs012f:
+                                                      getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                      getscopeobject 1
+                                                      getslot 5
+                                                      callpropvoid QName(PackageNamespace(""),"gotoAndStop"), 1
+                                             ofs0138:
+                                                      jump ofs014f
+                                             ofs013c:
+                                                      getlocal0
+                                                      pushscope
+                                                      getlocal2
+                                                      pushscope
+                                                      getlocal3
+                                                      pushscope
+                                                      newcatch 2
+                                                      dup
+                                                      setlocal 4
+                                                      dup
+                                                      pushscope
+                                                      swap
+                                                      setslot 1
+                                                      popscope
+                                                      kill 4
+                                             ofs014f:
+                                                      popscope
+                                                      kill 3
+                                             ofs0152:
+                                                      returnvoid
+                                                   end ; code
+                                                   try from ofs006c to ofs008c target ofs0090 type null name QName(PackageNamespace(""),"ignored") end
+                                                   try from ofs0115 to ofs011e target ofs0122 type null name QName(PackageNamespace(""),"playError") end
+                                                   try from ofs012f to ofs0138 target ofs013c type null name QName(PackageNamespace(""),"ignored") end
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function unbindAction() : void
+                                          {
+                                             trait method QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"unbindAction")
+                                                dispid 0
+                                                method
+                                                   name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/private/unbindAction"
+                                                   returns QName(PackageNamespace(""),"void")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 1
+                                                      initscopedepth 9
+                                                      maxscopedepth 10
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                         pushnull
+                                                         ifeq ofs0014
+                                                         getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                         getlex QName(PackageNamespace("flash.events"),"Event")
+                                                         getproperty QName(PackageNamespace(""),"ENTER_FRAME")
+                                                         getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"onActionFrame")
+                                                         callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                ofs0014:
+                                                         findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                         pushnull
+                                                         setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"action")
+                                                         returnvoid
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public function dispose() : void
+                                             {
+                                                trait method QName(PackageNamespace(""),"dispose")
+                                                   dispid 0
+                                                   method
+                                                      name "com.chunshu.seer2.uclient:UClientUniversalBattleAdapter/dispose"
+                                                      returns QName(PackageNamespace(""),"void")
+                                                      
+                                                      body
+                                                         maxstack 3
+                                                         localcount 1
+                                                         initscopedepth 9
+                                                         maxscopedepth 10
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"disposed")
+                                                            iffalse ofs0009
+                                                            returnvoid
+                                                   ofs0009:
+                                                            findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"disposed")
+                                                            pushtrue
+                                                            setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"disposed")
+                                                            findpropstrict QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"unbindAction")
+                                                            callpropvoid QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"unbindAction"), 0
+                                                            getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                            pushnull
+                                                            ifeq ofs002c
+                                                            getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                            getlex QName(PackageNamespace("flash.events"),"Event")
+                                                            getproperty QName(PackageNamespace(""),"ENTER_FRAME")
+                                                            getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"onPetFrame")
+                                                            callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                                            getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"sessions")
+                                                            getlex QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                            deleteproperty MultinameL([PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin"),PackageNamespace("com.chunshu.seer2.uclient"),PackageInternalNs("com.chunshu.seer2.uclient"),StaticProtectedNs("flash.display:Sprite"),StaticProtectedNs("flash.display:DisplayObjectContainer"),StaticProtectedNs("flash.display:InteractiveObject"),StaticProtectedNs("flash.display:DisplayObject"),StaticProtectedNs("flash.events:EventDispatcher"),PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),ProtectedNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),StaticProtectedNs("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),PrivateNamespace("H5UniversalBattleAdapter.as$0")])
+                                                            pop
+                                                   ofs002c:
+                                                            findproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                            pushnull
+                                                            setproperty QName(PrivateNamespace("com.chunshu.seer2.uclient:UClientUniversalBattleAdapter"),"pet")
+                                                            returnvoid
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                             }
+                                          }
+                                          
+                                          method
+                                             name ""
+                                             returns null
+                                             
+                                             body
+                                                maxstack 2
+                                                localcount 1
+                                                initscopedepth 1
+                                                maxscopedepth 8
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   findpropstrict Multiname("UClientUniversalBattleAdapter",[PackageNamespace("com.chunshu.seer2.uclient")])
+                                                   getlex QName(PackageNamespace(""),"Object")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.events"),"EventDispatcher")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"InteractiveObject")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"DisplayObjectContainer")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("flash.display"),"Sprite")
+                                                   newclass 0
+                                                   popscope
+                                                   popscope
+                                                   popscope
+                                                   popscope
+                                                   popscope
+                                                   popscope
+                                                   initproperty QName(PackageNamespace("com.chunshu.seer2.uclient"),"UClientUniversalBattleAdapter")
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                          

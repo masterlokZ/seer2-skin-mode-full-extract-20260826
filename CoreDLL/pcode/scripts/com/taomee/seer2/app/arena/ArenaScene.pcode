@@ -1,0 +1,1105 @@
+package com.taomee.seer2.app.arena
+{
+   import com.taomee.seer2.app.actor.ActorManager;
+   import com.taomee.seer2.app.actor.events.ActorEvent;
+   import com.taomee.seer2.app.arena.cmd.ArenaResourceLoadCMD;
+   import com.taomee.seer2.app.arena.controller.ArenaUIController;
+   import com.taomee.seer2.app.arena.controller.FightController;
+   import com.taomee.seer2.app.arena.controller.FightWeatherController;
+   import com.taomee.seer2.app.arena.controller.IArenaUIController;
+   import com.taomee.seer2.app.arena.controller.IFightController;
+   import com.taomee.seer2.app.arena.data.ArenaDataInfo;
+   import com.taomee.seer2.app.arena.data.FightResultInfo;
+   import com.taomee.seer2.app.arena.data.FighterTeam;
+   import com.taomee.seer2.app.arena.events.FightStartEvent;
+   import com.taomee.seer2.app.arena.resource.ArenaResourceLoader;
+   import com.taomee.seer2.app.dialog.DialogPanel;
+   import com.taomee.seer2.app.gameRule.door.support.PVPDoorSupport;
+   import com.taomee.seer2.app.net.CommandSet;
+   import com.taomee.seer2.app.net.Connection;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.core.net.MessageEvent;
+   import com.taomee.seer2.core.scene.BaseScene;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.utils.setTimeout;
+   import seer2.next.fight.auto.AutoFightPanel;
+   
+   public class ArenaScene extends BaseScene
+   {
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 0
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 0
+            
+            code
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _arenaData:ArenaDataInfo;
+      
+      private var _fightController:IFightController;
+      
+      private var _arenaUIController:IArenaUIController;
+      
+      private var _weatherController:FightWeatherController;
+      
+      public function ArenaScene(param1:int)
+      {
+         method
+            name "ArenaScene"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace(""),"int")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                  debug 1, "param1", 0, 0
+                  getlocal0
+                  findpropstrict QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"ArenaDataInfo")
+                  debugline 44
+                  constructprop QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"ArenaDataInfo"), 0
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaData")
+                  debugline 45
+                  getlocal0
+                  getlocal1
+                  debugline 45
+                  constructsuper 1
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      override protected function updateScene() : void
+      {
+         trait method QName(ProtectedNamespace("com.taomee.seer2.app.arena:ArenaScene"),"updateScene")
+            flag OVERRIDE
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "1889"
+            end ; metadata
+            dispid 0
+            method
+               name "updateScene"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                     debug 1, "_loc1_", 0, 0
+                     debugline 49
+                     getlocal0
+                     debugline 49
+                     callsupervoid QName(ProtectedNamespace("com.taomee.seer2.core.scene:BaseScene"),"updateScene"), 0
+                     debugline 50
+                     getlex QName(PackageNamespace(""),"mapModel")
+                     getproperty QName(PackageNamespace(""),"ground")
+                     getproperty QName(PackageNamespace(""),"width")
+                     convert_i
+                     setlocal1
+                     debugline 51
+                     getlex QName(PackageNamespace(""),"mapModel")
+                     getproperty QName(PackageNamespace(""),"ground")
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                     getproperty QName(PackageNamespace(""),"root")
+                     getproperty QName(PackageNamespace(""),"width")
+                     getlocal1
+                     subtract
+                     pushbyte 1
+                     rshift
+                     setproperty QName(PackageNamespace(""),"x")
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         override protected function onTick(param1:int) : void
+         {
+            trait method QName(ProtectedNamespace("com.taomee.seer2.app.arena:ArenaScene"),"onTick")
+               flag OVERRIDE
+               flag METADATA
+               metadata "__go_to_definition_help"
+                  item "pos" "2104"
+               end ; metadata
+               dispid 0
+               method
+                  name "onTick"
+                  flag HAS_PARAM_NAMES
+                  param QName(PackageNamespace(""),"int")
+                  paramname "param1"
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 2
+                     localcount 2
+                     initscopedepth 0
+                     maxscopedepth 1
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                        debug 1, "param1", 0, 0
+                        debugline 55
+                        getlocal0
+                        getlocal1
+                        debugline 55
+                        callsupervoid QName(ProtectedNamespace("com.taomee.seer2.core.scene:BaseScene"),"onTick"), 1
+                        debugline 56
+                        getlex QName(PackageNamespace(""),"mapModel")
+                        dup
+                        iffalse ofs0021
+                        pop
+                        getlex QName(PackageNamespace(""),"mapModel")
+                        getproperty QName(PackageNamespace(""),"front")
+                        coerce_a
+               ofs0021:
+                        dup
+                        iffalse ofs002e
+                        pop
+                        getlex QName(PackageNamespace(""),"mapModel")
+                        getproperty QName(PackageNamespace(""),"front")
+                        getproperty QName(PackageNamespace(""),"parent")
+                        coerce_a
+               ofs002e:
+                        dup
+                        iffalse ofs004f
+                        pop
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                        getproperty QName(PackageNamespace(""),"stage")
+                        getproperty QName(PackageNamespace(""),"stageWidth")
+                        pushshort 1200
+                        lessthan
+                        dup
+                        iftrue ofs004e
+                        pop
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                        getproperty QName(PackageNamespace(""),"stage")
+                        getproperty QName(PackageNamespace(""),"stageHeight")
+                        pushshort 660
+                        lessthan
+               ofs004e:
+                        coerce_a
+               ofs004f:
+                        iffalse ofs006b
+                        debugline 57
+                        getlex QName(PackageNamespace(""),"mapModel")
+                        getproperty QName(PackageNamespace(""),"front")
+                        getproperty QName(PackageNamespace(""),"parent")
+                        pushbyte 0
+                        setproperty QName(PackageNamespace(""),"x")
+                        debugline 58
+                        getlex QName(PackageNamespace(""),"mapModel")
+                        getproperty QName(PackageNamespace(""),"front")
+                        getproperty QName(PackageNamespace(""),"parent")
+                        pushbyte 0
+                        setproperty QName(PackageNamespace(""),"y")
+               ofs006b:
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            override protected function syncToServer() : void
+            {
+               trait method QName(ProtectedNamespace("com.taomee.seer2.app.arena:ArenaScene"),"syncToServer")
+                  flag OVERRIDE
+                  flag METADATA
+                  metadata "__go_to_definition_help"
+                     item "pos" "2448"
+                  end ; metadata
+                  dispid 0
+                  method
+                     name "syncToServer"
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 3
+                        localcount 1
+                        initscopedepth 0
+                        maxscopedepth 1
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                           debugline 63
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                           pushstring "actorSyncSvr"
+                           getlocal0
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"onActorSyncSvr")
+                           callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                           debugline 64
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                           callpropvoid QName(PackageNamespace(""),"syncToServer"), 0
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               override public function dispose() : void
+               {
+                  trait method QName(PackageNamespace(""),"dispose")
+                     flag OVERRIDE
+                     flag METADATA
+                     metadata "__go_to_definition_help"
+                        item "pos" "2635"
+                     end ; metadata
+                     dispid 0
+                     method
+                        name "dispose"
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 2
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 1
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                              getlocal0
+                              debugline 68
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_fightController")
+                              pushnull
+                              ifeq ofs001c
+                              getlocal0
+                              debugline 69
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_fightController")
+                              callpropvoid QName(Namespace("com.taomee.seer2.app.arena.controller:IFightController"),"dispose"), 0
+                              getlocal0
+                              debugline 70
+                              pushnull
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_fightController")
+                     ofs001c:
+                              getlocal0
+                              debugline 72
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaUIController")
+                              pushnull
+                              ifeq ofs0034
+                              getlocal0
+                              debugline 73
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaUIController")
+                              callpropvoid QName(Namespace("com.taomee.seer2.app.arena.controller:IArenaUIController"),"dispose"), 0
+                              getlocal0
+                              debugline 74
+                              pushnull
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaUIController")
+                     ofs0034:
+                              getlocal0
+                              debugline 76
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_weatherController")
+                              pushnull
+                              ifeq ofs004c
+                              getlocal0
+                              debugline 77
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_weatherController")
+                              callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                              getlocal0
+                              debugline 78
+                              pushnull
+                              setproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_weatherController")
+                     ofs004c:
+                              getlocal0
+                              debugline 80
+                              getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaData")
+                              callpropvoid QName(PackageNamespace(""),"dispose"), 0
+                              debugline 81
+                              getlocal0
+                              debugline 81
+                              callsupervoid QName(PackageNamespace(""),"dispose"), 0
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  public function exitFight() : void
+                  {
+                     trait method QName(PackageNamespace(""),"exitFight")
+                        flag METADATA
+                        metadata "__go_to_definition_help"
+                           item "pos" "3194"
+                        end ; metadata
+                        dispid 0
+                        method
+                           name "exitFight"
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 2
+                              initscopedepth 0
+                              maxscopedepth 1
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                 debug 1, "_loc1_", 0, 0
+                                 debugline 85
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                 getproperty QName(PackageNamespace(""),"prevMapID")
+                                 convert_u
+                                 setlocal1
+                                 getlocal0
+                                 debugline 86
+                                 getproperty QName(PackageNamespace(""),"fightMode")
+                                 pushbyte 102
+                                 equals
+                                 dup
+                                 iftrue ofs0025
+                                 pop
+                                 getlocal0
+                                 getproperty QName(PackageNamespace(""),"fightMode")
+                                 pushbyte 103
+                                 equals
+                        ofs0025:
+                                 iffalse ofs0038
+                                 debugline 87
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.gameRule.door.support"),"PVPDoorSupport")
+                                 callproperty QName(PackageNamespace(""),"getInstance"), 0
+                                 getproperty QName(PackageNamespace(""),"supportInfo")
+                                 getproperty QName(PackageNamespace(""),"targetMapId")
+                                 convert_u
+                                 setlocal1
+                                 debugline 89
+                        ofs0038:
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                 getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"SceneManager")
+                                 getproperty QName(PackageNamespace(""),"prevSceneType")
+                                 getlocal1
+                                 callpropvoid QName(PackageNamespace(""),"changeScene"), 2
+                                 debugline 90
+                                 getlex QName(PackageNamespace("seer2.next.fight.auto"),"AutoFightPanel")
+                                 getproperty QName(PackageNamespace(""),"FightOverEvent")
+                                 findpropstrict QName(PackageNamespace("flash.events"),"Event")
+                                 pushstring "fightOverEvent"
+                                 constructprop QName(PackageNamespace("flash.events"),"Event"), 1
+                                 callpropvoid QName(PackageNamespace(""),"dispatchEvent"), 1
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     public function updateWeather(param1:uint) : void
+                     {
+                        trait method QName(PackageNamespace(""),"updateWeather")
+                           flag METADATA
+                           metadata "__go_to_definition_help"
+                              item "pos" "3659"
+                           end ; metadata
+                           dispid 0
+                           method
+                              name "updateWeather"
+                              flag HAS_PARAM_NAMES
+                              param QName(PackageNamespace(""),"uint")
+                              paramname "param1"
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 4
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 1
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                    debug 1, "param1", 0, 0
+                                    getlocal0
+                                    debugline 94
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_weatherController")
+                                    pushnull
+                                    ifne ofs0046
+                                    getlocal0
+                                    findpropstrict QName(PackageNamespace("com.taomee.seer2.app.arena.controller"),"FightWeatherController")
+                                    getlocal0
+                                    debugline 95
+                                    getproperty QName(PackageNamespace(""),"fightMode")
+                                    getlocal0
+                                    constructprop QName(PackageNamespace("com.taomee.seer2.app.arena.controller"),"FightWeatherController"), 2
+                                    setproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_weatherController")
+                                    getlocal0
+                                    debugline 96
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaUIController")
+                                    convert_b
+                                    dup
+                                    iffalse ofs0034
+                                    pop
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaUIController")
+                                    callproperty QName(Namespace("com.taomee.seer2.app.arena.controller:IArenaUIController"),"getContent"), 0
+                                    convert_b
+                           ofs0034:
+                                    iffalse ofs0046
+                                    getlocal0
+                                    debugline 97
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_weatherController")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaUIController")
+                                    callproperty QName(Namespace("com.taomee.seer2.app.arena.controller:IArenaUIController"),"getContent"), 0
+                                    callpropvoid QName(PackageNamespace(""),"addPar"), 1
+                           ofs0046:
+                                    getlocal0
+                                    debugline 100
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_weatherController")
+                                    getlocal1
+                                    callpropvoid QName(PackageNamespace(""),"updateWeather"), 1
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function onActorSyncSvr(param1:ActorEvent) : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"onActorSyncSvr")
+                              dispid 0
+                              method
+                                 name "onActorSyncSvr"
+                                 flag HAS_PARAM_NAMES
+                                 flag NEED_ACTIVATION
+                                 param QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"ActorEvent")
+                                 paramname "param1"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 5
+                                    localcount 3
+                                    initscopedepth 0
+                                    maxscopedepth 2
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"param1")
+                                       slotid 1
+                                       type QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"ActorEvent")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"arenaResourceLoader")
+                                       slotid 2
+                                       type QName(PackageNamespace("com.taomee.seer2.app.arena.resource"),"ArenaResourceLoader")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"scene")
+                                       slotid 3
+                                       type QName(PackageNamespace("com.taomee.seer2.app.arena"),"ArenaScene")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"interruptFlag")
+                                       slotid 4
+                                       type QName(PackageNamespace(""),"Boolean")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"onGetInfoComplete")
+                                       slotid 5
+                                       type QName(PackageNamespace(""),"Function")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"startLoadingFightResource")
+                                       slotid 6
+                                       type QName(PackageNamespace(""),"Function")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"onFightEnd")
+                                       slotid 7
+                                       type QName(PackageNamespace(""),"Function")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"onArenaLoadingBarClose")
+                                       slotid 8
+                                       type QName(PackageNamespace(""),"Function")
+                                    end ; trait
+                                    trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"evt")
+                                       slotid 9
+                                       type QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"ActorEvent")
+                                    end ; trait
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                       newactivation
+                                       dup
+                                       setlocal2
+                                       pushscope
+                                       findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.arena"),"param1")
+                                       getlocal1
+                                       setproperty QName(PackageInternalNs("com.taomee.seer2.app.arena"),"param1")
+                                       debug 1, "param1", 0, 0
+                                       debug 1, "onActorSyncSvr$0", 1, 0
+                                       debugline 104
+                                       pushnull
+                                       coerce QName(PackageNamespace("com.taomee.seer2.app.arena.resource"),"ArenaResourceLoader")
+                                       getlocal2
+                                       swap
+                                       setslot 2
+                                       debugline 105
+                                       pushnull
+                                       coerce QName(PackageNamespace("com.taomee.seer2.app.arena"),"ArenaScene")
+                                       getlocal2
+                                       swap
+                                       setslot 3
+                                       debugline 106
+                                       pushfalse
+                                       getlocal2
+                                       swap
+                                       setslot 4
+                                       debugline 107
+                                       pushnull
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       getlocal2
+                                       swap
+                                       setslot 5
+                                       debugline 108
+                                       pushnull
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       getlocal2
+                                       swap
+                                       setslot 6
+                                       debugline 109
+                                       pushnull
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       getlocal2
+                                       swap
+                                       setslot 7
+                                       debugline 110
+                                       pushnull
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       getlocal2
+                                       swap
+                                       setslot 8
+                                       debugline 111
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"param1")
+                                       coerce QName(PackageNamespace("com.taomee.seer2.app.actor.events"),"ActorEvent")
+                                       getlocal2
+                                       swap
+                                       setslot 9
+                                       newfunction 8
+                                       debugline 112
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       debugline 112
+                                       getlocal2
+                                       debugline 112
+                                       swap
+                                       debugline 112
+                                       setslot 5
+                                       newfunction 9
+                                       debugline 119
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       debugline 119
+                                       getlocal2
+                                       debugline 119
+                                       swap
+                                       debugline 119
+                                       setslot 6
+                                       newfunction 10
+                                       debugline 122
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       debugline 122
+                                       getlocal2
+                                       debugline 122
+                                       swap
+                                       debugline 122
+                                       setslot 7
+                                       newfunction 11
+                                       debugline 131
+                                       coerce QName(PackageNamespace(""),"Function")
+                                       debugline 131
+                                       getlocal2
+                                       debugline 131
+                                       swap
+                                       debugline 131
+                                       setslot 8
+                                       debugline 144
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.actor"),"ActorManager")
+                                       pushstring "actorSyncSvr"
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"onActorSyncSvr")
+                                       callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                                       findpropstrict QName(ProtectedNamespace("com.taomee.seer2.core.scene:BaseScene"),"completeMap")
+                                       debugline 145
+                                       callpropvoid QName(ProtectedNamespace("com.taomee.seer2.core.scene:BaseScene"),"completeMap"), 0
+                                       getlocal0
+                                       debugline 146
+                                       getlocal2
+                                       debugline 146
+                                       swap
+                                       debugline 146
+                                       setslot 3
+                                       debugline 147
+                                       pushfalse
+                                       getlocal2
+                                       swap
+                                       setslot 4
+                                       debugline 148
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.dialog"),"DialogPanel")
+                                       callpropvoid QName(PackageNamespace(""),"hide"), 0
+                                       debugline 149
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"Connection")
+                                       getlex QName(PackageNamespace("com.taomee.seer2.app.net"),"CommandSet")
+                                       getproperty QName(PackageNamespace(""),"FIGHT_END_1507")
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"onFightEnd")
+                                       callpropvoid QName(PackageNamespace(""),"addCommandListener"), 2
+                                       findpropstrict QName(PackageNamespace("com.taomee.seer2.app.arena.cmd"),"ArenaResourceLoadCMD")
+                                       getlocal0
+                                       debugline 150
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaData")
+                                       getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"onGetInfoComplete")
+                                       getlocal0
+                                       newfunction 12
+                                       constructprop QName(PackageNamespace("com.taomee.seer2.app.arena.cmd"),"ArenaResourceLoadCMD"), 4
+                                       callpropvoid QName(PackageNamespace(""),"send"), 0
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           public function sortAllFighters() : void
+                           {
+                              trait method QName(PackageNamespace(""),"sortAllFighters")
+                                 flag METADATA
+                                 metadata "__go_to_definition_help"
+                                    item "pos" "6945"
+                                 end ; metadata
+                                 dispid 0
+                                 method
+                                    name "sortAllFighters"
+                                    flag NEED_ACTIVATION
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 4
+                                       localcount 2
+                                       initscopedepth 0
+                                       maxscopedepth 2
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"ctt")
+                                          slotid 1
+                                          type QName(PackageNamespace("flash.display"),"Sprite")
+                                       end ; trait
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"len")
+                                          slotid 2
+                                          type QName(PackageNamespace(""),"uint")
+                                       end ; trait
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"i")
+                                          slotid 3
+                                          type QName(PackageNamespace(""),"uint")
+                                       end ; trait
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"sortByY")
+                                          slotid 4
+                                          type QName(PackageNamespace(""),"Function")
+                                       end ; trait
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"addToSortArray")
+                                          slotid 5
+                                          type QName(PackageNamespace(""),"Function")
+                                       end ; trait
+                                       trait slot QName(PackageInternalNs("com.taomee.seer2.app.arena"),"fighters")
+                                          slotid 6
+                                          type TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.arena"),"Fighter")>)
+                                       end ; trait
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                          newactivation
+                                          dup
+                                          setlocal1
+                                          pushscope
+                                          debug 1, "sortAllFighters$0", 0, 0
+                                          debugline 159
+                                          pushnull
+                                          coerce QName(PackageNamespace(""),"Function")
+                                          getlocal1
+                                          swap
+                                          setslot 4
+                                          newfunction 14
+                                          debugline 160
+                                          coerce QName(PackageNamespace(""),"Function")
+                                          debugline 160
+                                          getlocal1
+                                          debugline 160
+                                          swap
+                                          debugline 160
+                                          setslot 5
+                                          newfunction 15
+                                          debugline 165
+                                          coerce QName(PackageNamespace(""),"Function")
+                                          debugline 165
+                                          getlocal1
+                                          debugline 165
+                                          swap
+                                          debugline 165
+                                          setslot 4
+                                          debugline 183
+                                          getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"Fighter")
+                                          debugline 183
+                                          applytype 1
+                                          debugline 183
+                                          construct 0
+                                          coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.arena"),"Fighter")>)
+                                          getlocal1
+                                          swap
+                                          setslot 6
+                                          getlocal0
+                                          debugline 184
+                                          getproperty QName(PackageNamespace(""),"leftTeam")
+                                          getproperty QName(PackageNamespace(""),"subFighter")
+                                          pushnull
+                                          ifeq ofs0084
+                                          debugline 185
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"addToSortArray")
+                                          getglobalscope
+                                          getlocal0
+                                          getproperty QName(PackageNamespace(""),"leftTeam")
+                                          getproperty QName(PackageNamespace(""),"mainFighter")
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"fighters")
+                                          call 2
+                                          pop
+                                          debugline 186
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"addToSortArray")
+                                          getglobalscope
+                                          getlocal0
+                                          getproperty QName(PackageNamespace(""),"leftTeam")
+                                          getproperty QName(PackageNamespace(""),"subFighter")
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"fighters")
+                                          call 2
+                                          pop
+                                 ofs0084:
+                                          getlocal0
+                                          debugline 188
+                                          getproperty QName(PackageNamespace(""),"rightTeam")
+                                          getproperty QName(PackageNamespace(""),"subFighter")
+                                          pushnull
+                                          ifeq ofs00b4
+                                          debugline 189
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"addToSortArray")
+                                          getglobalscope
+                                          getlocal0
+                                          getproperty QName(PackageNamespace(""),"rightTeam")
+                                          getproperty QName(PackageNamespace(""),"mainFighter")
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"fighters")
+                                          call 2
+                                          pop
+                                          debugline 190
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"addToSortArray")
+                                          getglobalscope
+                                          getlocal0
+                                          getproperty QName(PackageNamespace(""),"rightTeam")
+                                          getproperty QName(PackageNamespace(""),"subFighter")
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"fighters")
+                                          call 2
+                                          pop
+                                          debugline 192
+                                 ofs00b4:
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"fighters")
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"sortByY")
+                                          callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"sort"), 1
+                                          coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.arena"),"Fighter")>)
+                                          getlocal1
+                                          swap
+                                          setslot 6
+                                          debugline 193
+                                          getlex QName(PackageNamespace(""),"mapModel")
+                                          getproperty QName(PackageNamespace(""),"content")
+                                          coerce QName(PackageNamespace("flash.display"),"Sprite")
+                                          getlocal1
+                                          swap
+                                          setslot 1
+                                          debugline 194
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"fighters")
+                                          getproperty QName(PackageNamespace(""),"length")
+                                          convert_u
+                                          getlocal1
+                                          swap
+                                          setslot 2
+                                          debugline 195
+                                          pushbyte 0
+                                          convert_u
+                                          getlocal1
+                                          swap
+                                          setslot 3
+                                          jump ofs0116
+                                 ofs00e8:
+                                          label
+                                          debugline 197
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"ctt")
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"fighters")
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"i")
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),ProtectedNamespace("com.taomee.seer2.app.arena:ArenaScene"),StaticProtectedNs("com.taomee.seer2.app.arena:ArenaScene"),StaticProtectedNs("com.taomee.seer2.core.scene:BaseScene"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.arena"),PackageInternalNs("com.taomee.seer2.app.arena"),PrivateNamespace("FilePrivateNS:ArenaScene"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                          findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.arena"),"i")
+                                          debugline 198
+                                          getproperty QName(PackageInternalNs("com.taomee.seer2.app.arena"),"i")
+                                          debugline 198
+                                          convert_d
+                                          debugline 198
+                                          increment
+                                          findpropstrict QName(PackageInternalNs("com.taomee.seer2.app.arena"),"i")
+                                          debugline 198
+                                          swap
+                                          debugline 198
+                                          setproperty QName(PackageInternalNs("com.taomee.seer2.app.arena"),"i")
+                                          debugline 196
+                                 ofs0116:
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"i")
+                                          getlex QName(PackageInternalNs("com.taomee.seer2.app.arena"),"len")
+                                          iflt ofs00e8
+                                          debugline 200
+                                          pushnull
+                                          coerce TypeName(QName(PackageNamespace("__AS3__.vec"),"Vector")<QName(PackageNamespace("com.taomee.seer2.app.arena"),"Fighter")>)
+                                          getlocal1
+                                          swap
+                                          setslot 6
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              public function get fightController() : IFightController
+                              {
+                                 trait getter QName(PackageNamespace(""),"fightController")
+                                    flag METADATA
+                                    metadata "__go_to_definition_help"
+                                       item "pos" "8648"
+                                    end ; metadata
+                                    dispid 0
+                                    method
+                                       name "fightController"
+                                       returns QName(PackageNamespace("com.taomee.seer2.app.arena.controller"),"IFightController")
+                                       
+                                       body
+                                          maxstack 1
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 1
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                             getlocal0
+                                             debugline 204
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_fightController")
+                                             returnvalue
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 public function get arenaUIController() : IArenaUIController
+                                 {
+                                    trait getter QName(PackageNamespace(""),"arenaUIController")
+                                       flag METADATA
+                                       metadata "__go_to_definition_help"
+                                          item "pos" "8758"
+                                       end ; metadata
+                                       dispid 0
+                                       method
+                                          name "arenaUIController"
+                                          returns QName(PackageNamespace("com.taomee.seer2.app.arena.controller"),"IArenaUIController")
+                                          
+                                          body
+                                             maxstack 1
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 1
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                                getlocal0
+                                                debugline 208
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaUIController")
+                                                returnvalue
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    public function get leftTeam() : FighterTeam
+                                    {
+                                       trait getter QName(PackageNamespace(""),"leftTeam")
+                                          flag METADATA
+                                          metadata "__go_to_definition_help"
+                                             item "pos" "8874"
+                                          end ; metadata
+                                          dispid 0
+                                          method
+                                             name "leftTeam"
+                                             returns QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"FighterTeam")
+                                             
+                                             body
+                                                maxstack 1
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                                   getlocal0
+                                                   debugline 212
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaData")
+                                                   getproperty QName(PackageNamespace(""),"leftTeam")
+                                                   returnvalue
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       public function get rightTeam() : FighterTeam
+                                       {
+                                          trait getter QName(PackageNamespace(""),"rightTeam")
+                                             flag METADATA
+                                             metadata "__go_to_definition_help"
+                                                item "pos" "8975"
+                                             end ; metadata
+                                             dispid 0
+                                             method
+                                                name "rightTeam"
+                                                returns QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"FighterTeam")
+                                                
+                                                body
+                                                   maxstack 1
+                                                   localcount 1
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                                      getlocal0
+                                                      debugline 216
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaData")
+                                                      getproperty QName(PackageNamespace(""),"rightTeam")
+                                                      returnvalue
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          public function get fightMode() : uint
+                                          {
+                                             trait getter QName(PackageNamespace(""),"fightMode")
+                                                flag METADATA
+                                                metadata "__go_to_definition_help"
+                                                   item "pos" "9078"
+                                                end ; metadata
+                                                dispid 0
+                                                method
+                                                   name "fightMode"
+                                                   returns QName(PackageNamespace(""),"uint")
+                                                   
+                                                   body
+                                                      maxstack 1
+                                                      localcount 1
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                                         getlocal0
+                                                         debugline 220
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaData")
+                                                         getproperty QName(PackageNamespace(""),"fightMode")
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                             
+                                             public function get arenaData() : ArenaDataInfo
+                                             {
+                                                trait getter QName(PackageNamespace(""),"arenaData")
+                                                   flag METADATA
+                                                   metadata "__go_to_definition_help"
+                                                      item "pos" "9174"
+                                                   end ; metadata
+                                                   dispid 0
+                                                   method
+                                                      name "arenaData"
+                                                      returns QName(PackageNamespace("com.taomee.seer2.app.arena.data"),"ArenaDataInfo")
+                                                      
+                                                      body
+                                                         maxstack 1
+                                                         localcount 1
+                                                         initscopedepth 0
+                                                         maxscopedepth 1
+                                                         
+                                                         code
+                                                            getlocal0
+                                                            pushscope
+                                                            debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\arena;ArenaScene.as"
+                                                            getlocal0
+                                                            debugline 224
+                                                            getproperty QName(PrivateNamespace("com.taomee.seer2.app.arena:ArenaScene"),"_arenaData")
+                                                            returnvalue
+                                                         end ; code
+                                                      end ; body
+                                                   end ; method
+                                                }
+                                             }
+                                          }
+                                          
+                                          method
+                                             name null
+                                             returns null
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 1
+                                                initscopedepth 0
+                                                maxscopedepth 3
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   getscopeobject 0
+                                                   getlex QName(PackageNamespace(""),"Object")
+                                                   pushscope
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"BaseScene")
+                                                   dup
+                                                   pushscope
+                                                   newclass 0
+                                                   popscope
+                                                   popscope
+                                                   initproperty QName(PackageNamespace("com.taomee.seer2.app.arena"),"ArenaScene")
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                          

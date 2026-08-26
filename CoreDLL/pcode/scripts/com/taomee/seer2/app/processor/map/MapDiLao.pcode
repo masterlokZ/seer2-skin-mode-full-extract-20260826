@@ -1,0 +1,1122 @@
+package com.taomee.seer2.app.processor.map
+{
+   import com.greensock.TweenLite;
+   import com.taomee.seer2.app.activeCount.ActiveCountManager;
+   import com.taomee.seer2.app.arena.FightManager;
+   import com.taomee.seer2.app.net.parser.Parser_1142;
+   import com.taomee.seer2.app.popup.AlertManager;
+   import com.taomee.seer2.app.swap.SwapManager;
+   import com.taomee.seer2.app.utils.MovieClipUtil;
+   import com.taomee.seer2.core.entity.Mobile;
+   import com.taomee.seer2.core.entity.MobileManager;
+   import com.taomee.seer2.core.loader.ContentInfo;
+   import com.taomee.seer2.core.loader.QueueLoader;
+   import com.taomee.seer2.core.manager.TimeManager;
+   import com.taomee.seer2.core.map.MapModel;
+   import com.taomee.seer2.core.scene.LayerManager;
+   import com.taomee.seer2.core.scene.SceneManager;
+   import com.taomee.seer2.core.utils.DisplayObjectUtil;
+   import com.taomee.seer2.core.utils.URLUtil;
+   import flash.display.DisplayObject;
+   import flash.display.MovieClip;
+   import flash.events.MouseEvent;
+   import flash.geom.Point;
+   import flash.system.ApplicationDomain;
+   import flash.text.TextField;
+   import org.taomee.utils.DomainUtil;
+   
+   public class MapDiLao
+   {
+      
+      private static const LayerMaxWave:Array;
+      
+      private static const Positions:Array;
+      
+      private static const limitIdList:Array;
+      
+      private static const timeBetweenLayer:Array;
+      
+      method
+         name null
+         returns null
+         
+         body
+            maxstack 10
+            localcount 1
+            initscopedepth 0
+            maxscopedepth 1
+            
+            code
+               getlocal0
+               pushscope
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+               debugline 34
+               pushbyte 2
+               pushbyte 3
+               pushbyte 4
+               pushbyte 5
+               pushbyte 6
+               pushbyte 10
+               newarray 6
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"LayerMaxWave")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"LayerMaxWave")
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+               debugline 36
+               pushshort 770
+               pushshort 350
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 700
+               pushshort 400
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 800
+               pushshort 400
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 570
+               pushshort 440
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 716
+               pushshort 440
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 850
+               pushshort 440
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 520
+               pushshort 490
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               findpropstrict QName(PackageNamespace("flash.geom"),"Point")
+               pushshort 596
+               pushshort 529
+               constructprop QName(PackageNamespace("flash.geom"),"Point"), 2
+               newarray 8
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"Positions")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"Positions")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+               debugline 38
+               pushint 203300
+               pushint 203310
+               pushint 203311
+               pushint 203299
+               pushint 203298
+               newarray 5
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"limitIdList")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"limitIdList")
+               debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+               debugline 40
+               pushbyte 0
+               pushbyte 5
+               pushbyte 10
+               pushbyte 20
+               pushbyte 30
+               pushshort 1440
+               newarray 6
+               findproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"timeBetweenLayer")
+               swap
+               initproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"timeBetweenLayer")
+               returnvoid
+            end ; code
+         end ; body
+      end ; method
+      
+      private var _mapModel:MapModel;
+      
+      private var _resLibs:ApplicationDomain;
+      
+      private var currentWave:int = 0;
+      
+      private var currentLayer:int = 0;
+      
+      private var currentWavePetCount:int = 0;
+      
+      private var lastTime:int;
+      
+      private var currentWaveMaxPetCount:int;
+      
+      private var petList:Vector.<Mobile>;
+      
+      private var currentLayerContainer:MovieClip;
+      
+      private var currentLayerTxt:TextField;
+      
+      private var moveTip:MovieClip;
+      
+      private var petsToghter:MovieClip;
+      
+      public function MapDiLao(param1:MapModel)
+      {
+         method
+            name "MapDiLao"
+            flag HAS_PARAM_NAMES
+            param QName(PackageNamespace("com.taomee.seer2.core.map"),"MapModel")
+            paramname "param1"
+            returns null
+            
+            body
+               maxstack 2
+               localcount 2
+               initscopedepth 0
+               maxscopedepth 1
+               
+               code
+                  getlocal0
+                  pushscope
+                  debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                  debug 1, "param1", 0, 0
+                  debugline 68
+                  getlocal0
+                  debugline 68
+                  constructsuper 0
+                  getlocal0
+                  getlocal1
+                  debugline 69
+                  setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_mapModel")
+                  getlocal0
+                  debugline 70
+                  callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"init"), 0
+                  returnvoid
+               end ; code
+            end ; body
+         end ; method
+      }
+      
+      public function dispose() : void
+      {
+         trait method QName(PackageNamespace(""),"dispose")
+            flag METADATA
+            metadata "__go_to_definition_help"
+               item "pos" "2430"
+            end ; metadata
+            dispid 0
+            method
+               name "dispose"
+               returns QName(PackageNamespace(""),"void")
+               
+               body
+                  maxstack 3
+                  localcount 2
+                  initscopedepth 0
+                  maxscopedepth 1
+                  
+                  code
+                     getlocal0
+                     pushscope
+                     debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                     debug 1, "_loc1_", 0, 0
+                     debugline 74
+                     pushbyte 0
+                     setlocal1
+                     getlocal0
+                     debugline 75
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                     iffalse ofs0050
+                     debugline 76
+                     pushbyte 0
+                     setlocal1
+                     jump ofs0044
+            ofs0020:
+                     label
+                     getlocal0
+                     debugline 78
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                     getlocal1
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushstring "click"
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"toFight")
+                     callpropvoid QName(PackageNamespace(""),"removeEventListener"), 2
+                     debugline 79
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                     getlocal1
+                     getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                     pushstring "modelPet"
+                     callpropvoid QName(PackageNamespace(""),"removeMobile"), 2
+                     debugline 80
+                     inclocal_i 1
+            ofs0044:
+                     getlocal1
+                     getlocal0
+                     debugline 77
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                     getproperty QName(PackageNamespace(""),"length")
+                     iflt ofs0020
+            ofs0050:
+                     getlocal0
+                     debugline 83
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                     iffalse ofs0069
+                     debugline 84
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                     callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                     getlocal0
+                     debugline 85
+                     pushnull
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+            ofs0069:
+                     getlocal0
+                     debugline 87
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                     iffalse ofs008c
+                     debugline 88
+                     getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"DisplayObjectUtil")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                     callpropvoid QName(PackageNamespace(""),"removeFromParent"), 1
+                     debugline 89
+                     getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                     getlocal0
+                     getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                     callpropvoid QName(PackageNamespace(""),"killTweensOf"), 1
+                     getlocal0
+                     debugline 90
+                     pushnull
+                     setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+            ofs008c:
+                     returnvoid
+                  end ; code
+               end ; body
+            end ; method
+         }
+         
+         private function init() : void
+         {
+            trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"init")
+               dispid 0
+               method
+                  name "init"
+                  flag NEED_ACTIVATION
+                  returns QName(PackageNamespace(""),"void")
+                  
+                  body
+                     maxstack 4
+                     localcount 1
+                     initscopedepth 0
+                     maxscopedepth 2
+                     
+                     code
+                        getlocal0
+                        pushscope
+                        debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                        newactivation
+                        pushscope
+                        debugline 95
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.loader"),"QueueLoader")
+                        getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                        pushstring "mapLayerGame/MapLayerGameDiLao"
+                        callproperty QName(PackageNamespace(""),"getActivityAnimation"), 1
+                        pushstring "swf"
+                        newfunction 3
+                        callpropvoid QName(PackageNamespace(""),"load"), 3
+                        returnvoid
+                     end ; code
+                  end ; body
+               end ; method
+            }
+            
+            private function test() : void
+            {
+               trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"test")
+                  dispid 0
+                  method
+                     name "test"
+                     flag NEED_ACTIVATION
+                     returns QName(PackageNamespace(""),"void")
+                     
+                     body
+                        maxstack 5
+                        localcount 2
+                        initscopedepth 0
+                        maxscopedepth 2
+                        trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                           slotid 1
+                           type QName(PackageNamespace("flash.display"),"MovieClip")
+                        end ; trait
+                        
+                        code
+                           getlocal0
+                           pushscope
+                           debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                           newactivation
+                           dup
+                           setlocal1
+                           pushscope
+                           debug 1, "test$0", 0, 0
+                           debugline 102
+                           pushnull
+                           coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                           getlocal1
+                           swap
+                           setslot 1
+                           getlocal0
+                           debugline 103
+                           pushstring "releaseMC"
+                           callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"getMovie"), 1
+                           getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                           astypelate
+                           coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                           getlocal1
+                           swap
+                           setslot 1
+                           getlocal0
+                           debugline 104
+                           getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_mapModel")
+                           getproperty QName(PackageNamespace(""),"content")
+                           getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                           callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                           debugline 105
+                           getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                           pushshort 300
+                           setproperty QName(PackageNamespace(""),"x")
+                           debugline 106
+                           getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                           getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                           pushbyte 1
+                           getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                           getproperty QName(PackageNamespace(""),"totalFrames")
+                           newfunction 5
+                           callpropvoid QName(PackageNamespace(""),"playMc"), 4
+                           returnvoid
+                        end ; code
+                     end ; body
+                  end ; method
+               }
+               
+               private function initMap() : void
+               {
+                  trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"initMap")
+                     dispid 0
+                     method
+                        name "initMap"
+                        flag NEED_ACTIVATION
+                        returns QName(PackageNamespace(""),"void")
+                        
+                        body
+                           maxstack 5
+                           localcount 1
+                           initscopedepth 0
+                           maxscopedepth 2
+                           
+                           code
+                              getlocal0
+                              pushscope
+                              debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                              newactivation
+                              pushscope
+                              debugline 115
+                              getlex QName(PackageNamespace("com.taomee.seer2.app.swap"),"SwapManager")
+                              pushshort 2017
+                              pushbyte 1
+                              newfunction 8
+                              newfunction 9
+                              callpropvoid QName(PackageNamespace(""),"swapItem"), 4
+                              returnvoid
+                           end ; code
+                        end ; body
+                     end ; method
+                  }
+                  
+                  private function requestData() : void
+                  {
+                     trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"requestData")
+                        dispid 0
+                        method
+                           name "requestData"
+                           flag NEED_ACTIVATION
+                           returns QName(PackageNamespace(""),"void")
+                           
+                           body
+                              maxstack 3
+                              localcount 1
+                              initscopedepth 0
+                              maxscopedepth 2
+                              
+                              code
+                                 getlocal0
+                                 pushscope
+                                 debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                 newactivation
+                                 pushscope
+                                 debugline 133
+                                 getlex QName(PackageNamespace("com.taomee.seer2.app.activeCount"),"ActiveCountManager")
+                                 getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"limitIdList")
+                                 newfunction 13
+                                 callpropvoid QName(PackageNamespace(""),"requestActiveCountList"), 2
+                                 returnvoid
+                              end ; code
+                           end ; body
+                        end ; method
+                     }
+                     
+                     private function analyseData() : void
+                     {
+                        trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"analyseData")
+                           dispid 0
+                           method
+                              name "analyseData"
+                              flag NEED_ACTIVATION
+                              returns QName(PackageNamespace(""),"void")
+                              
+                              body
+                                 maxstack 5
+                                 localcount 2
+                                 initscopedepth 0
+                                 maxscopedepth 2
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                    slotid 1
+                                    type QName(PackageNamespace("flash.display"),"MovieClip")
+                                 end ; trait
+                                 trait slot QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"count")
+                                    slotid 2
+                                    type QName(PackageNamespace(""),"int")
+                                 end ; trait
+                                 
+                                 code
+                                    getlocal0
+                                    pushscope
+                                    debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                    newactivation
+                                    dup
+                                    setlocal1
+                                    pushscope
+                                    debug 1, "analyseData$0", 0, 0
+                                    debugline 144
+                                    pushnull
+                                    coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                    getlocal1
+                                    swap
+                                    setslot 1
+                                    debugline 145
+                                    pushbyte 0
+                                    getlocal1
+                                    swap
+                                    setslot 2
+                                    getlocal0
+                                    debugline 146
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayer")
+                                    pushbyte 6
+                                    ifne ofs006b
+                                    getlocal0
+                                    debugline 147
+                                    pushstring "releaseMC"
+                                    callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"getMovie"), 1
+                                    getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                    astypelate
+                                    coerce QName(PackageNamespace("flash.display"),"MovieClip")
+                                    getlocal1
+                                    swap
+                                    setslot 1
+                                    getlocal0
+                                    debugline 148
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_mapModel")
+                                    getproperty QName(PackageNamespace(""),"content")
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                    callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                    debugline 149
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                    pushshort 300
+                                    setproperty QName(PackageNamespace(""),"x")
+                                    debugline 150
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.utils"),"MovieClipUtil")
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                    pushbyte 1
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"mc")
+                                    getproperty QName(PackageNamespace(""),"totalFrames")
+                                    newfunction 15
+                                    callpropvoid QName(PackageNamespace(""),"playMc"), 4
+                                    debugline 157
+                                    returnvoid
+                           ofs006b:
+                                    getlocal0
+                                    debugline 159
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentWave")
+                                    pushbyte 0
+                                    ifne ofs00ac
+                                    getlocal0
+                                    debugline 160
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"lastTime")
+                                    getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"timeBetweenLayer")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayer")
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushbyte 60
+                                    multiply
+                                    add
+                                    getlex QName(PackageNamespace("com.taomee.seer2.core.manager"),"TimeManager")
+                                    callproperty QName(PackageNamespace(""),"getServerTime"), 0
+                                    subtract
+                                    convert_i
+                                    getlocal1
+                                    swap
+                                    setslot 2
+                                    debugline 161
+                                    getlex QName(PackageInternalNs("com.taomee.seer2.app.processor.map"),"count")
+                                    pushbyte 0
+                                    ifngt ofs00ac
+                                    debugline 162
+                                    getlex QName(PackageNamespace("com.taomee.seer2.app.popup"),"AlertManager")
+                                    pushstring "你已经打完该层，等cd时间结束再进行下一层"
+                                    callpropvoid QName(PackageNamespace(""),"showAlert"), 1
+                                    debugline 163
+                                    returnvoid
+                           ofs00ac:
+                                    getlocal0
+                                    debugline 166
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentWavePetCount")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentWaveMaxPetCount")
+                                    ifne ofs00e6
+                                    getlocal0
+                                    debugline 167
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentWave")
+                                    getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"LayerMaxWave")
+                                    getlocal0
+                                    getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayer")
+                                    getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                    pushbyte 1
+                                    subtract
+                                    equals
+                                    debugline 167
+                                    iffalse ofs00df
+                                    getlocal0
+                                    debugline 168
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"displayBossTip"), 0
+                                    debugline 167
+                                    jump ofs00e6
+                           ofs00df:
+                                    getlocal0
+                                    debugline 170
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"displayNormalTip"), 0
+                           ofs00e6:
+                                    getlocal0
+                                    debugline 173
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"addPets"), 0
+                                    getlocal0
+                                    debugline 174
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"addLayerTxt"), 0
+                                    getlocal0
+                                    debugline 175
+                                    callpropvoid QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"addPetToghter"), 0
+                                    returnvoid
+                                 end ; code
+                              end ; body
+                           end ; method
+                        }
+                        
+                        private function addPetToghter() : void
+                        {
+                           trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"addPetToghter")
+                              dispid 0
+                              method
+                                 name "addPetToghter"
+                                 returns QName(PackageNamespace(""),"void")
+                                 
+                                 body
+                                    maxstack 3
+                                    localcount 1
+                                    initscopedepth 0
+                                    maxscopedepth 1
+                                    
+                                    code
+                                       getlocal0
+                                       pushscope
+                                       debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                       getlocal0
+                                       getlocal0
+                                       debugline 179
+                                       pushstring "petsToghter"
+                                       callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"getMovie"), 1
+                                       getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                       astypelate
+                                       setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petsToghter")
+                                       getlocal0
+                                       debugline 180
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_mapModel")
+                                       getproperty QName(PackageNamespace(""),"content")
+                                       getlocal0
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petsToghter")
+                                       callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                       getlocal0
+                                       debugline 181
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petsToghter")
+                                       pushshort 821
+                                       setproperty QName(PackageNamespace(""),"x")
+                                       getlocal0
+                                       debugline 182
+                                       getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petsToghter")
+                                       pushshort 294
+                                       setproperty QName(PackageNamespace(""),"y")
+                                       returnvoid
+                                    end ; code
+                                 end ; body
+                              end ; method
+                           }
+                           
+                           private function addLayerTxt() : void
+                           {
+                              trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"addLayerTxt")
+                                 dispid 0
+                                 method
+                                    name "addLayerTxt"
+                                    returns QName(PackageNamespace(""),"void")
+                                    
+                                    body
+                                       maxstack 4
+                                       localcount 1
+                                       initscopedepth 0
+                                       maxscopedepth 1
+                                       
+                                       code
+                                          getlocal0
+                                          pushscope
+                                          debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                          getlocal0
+                                          getlocal0
+                                          debugline 186
+                                          pushstring "currentLayerContainer"
+                                          callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"getMovie"), 1
+                                          getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                          astypelate
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                                          getlocal0
+                                          debugline 187
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_mapModel")
+                                          getproperty QName(PackageNamespace(""),"content")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                                          callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                          getlocal0
+                                          debugline 188
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                                          getlex QName(PackageNamespace("com.taomee.seer2.core.scene"),"LayerManager")
+                                          getproperty QName(PackageNamespace(""),"stage")
+                                          getproperty QName(PackageNamespace(""),"stageWidth")
+                                          pushbyte 2
+                                          divide
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                                          getproperty QName(PackageNamespace(""),"width")
+                                          pushbyte 2
+                                          divide
+                                          subtract
+                                          setproperty QName(PackageNamespace(""),"x")
+                                          getlocal0
+                                          debugline 189
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                                          pushbyte 70
+                                          setproperty QName(PackageNamespace(""),"y")
+                                          getlocal0
+                                          getlocal0
+                                          debugline 190
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerContainer")
+                                          pushstring "currentLayerTxt"
+                                          getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                          setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerTxt")
+                                          getlocal0
+                                          debugline 191
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayerTxt")
+                                          getlocal0
+                                          getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayer")
+                                          pushbyte 1
+                                          add
+                                          callproperty QName(Namespace("http://adobe.com/AS3/2006/builtin"),"toString"), 0
+                                          setproperty QName(PackageNamespace(""),"text")
+                                          returnvoid
+                                       end ; code
+                                    end ; body
+                                 end ; method
+                              }
+                              
+                              private function displayBossTip() : void
+                              {
+                                 trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"displayBossTip")
+                                    dispid 0
+                                    method
+                                       name "displayBossTip"
+                                       flag NEED_ACTIVATION
+                                       returns QName(PackageNamespace(""),"void")
+                                       
+                                       body
+                                          maxstack 7
+                                          localcount 1
+                                          initscopedepth 0
+                                          maxscopedepth 2
+                                          
+                                          code
+                                             getlocal0
+                                             pushscope
+                                             debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                             newactivation
+                                             pushscope
+                                             getlocal0
+                                             getlocal0
+                                             debugline 195
+                                             pushstring "BossTip"
+                                             callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"getMovie"), 1
+                                             getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                             astypelate
+                                             setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                             getlocal0
+                                             debugline 196
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_mapModel")
+                                             getproperty QName(PackageNamespace(""),"content")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                             callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                             getlocal0
+                                             debugline 197
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                             pushbyte 100
+                                             setproperty QName(PackageNamespace(""),"x")
+                                             getlocal0
+                                             debugline 198
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                             pushshort 300
+                                             setproperty QName(PackageNamespace(""),"y")
+                                             debugline 199
+                                             getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                                             getlocal0
+                                             getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                             pushbyte 3
+                                             debugline 200
+                                             pushstring "y"
+                                             pushbyte 100
+                                             debugline 201
+                                             pushstring "onComplete"
+                                             newfunction 20
+                                             newobject 2
+                                             callpropvoid QName(PackageNamespace(""),"to"), 3
+                                             returnvoid
+                                          end ; code
+                                       end ; body
+                                    end ; method
+                                 }
+                                 
+                                 private function displayNormalTip() : void
+                                 {
+                                    trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"displayNormalTip")
+                                       dispid 0
+                                       method
+                                          name "displayNormalTip"
+                                          flag NEED_ACTIVATION
+                                          returns QName(PackageNamespace(""),"void")
+                                          
+                                          body
+                                             maxstack 7
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                                newactivation
+                                                pushscope
+                                                getlocal0
+                                                getlocal0
+                                                debugline 209
+                                                pushstring "NormalTip"
+                                                callproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"getMovie"), 1
+                                                getlex QName(PackageNamespace("flash.display"),"MovieClip")
+                                                astypelate
+                                                setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                                getlocal0
+                                                debugline 210
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_mapModel")
+                                                getproperty QName(PackageNamespace(""),"content")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                                callpropvoid QName(PackageNamespace(""),"addChild"), 1
+                                                getlocal0
+                                                debugline 211
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                                pushbyte 100
+                                                setproperty QName(PackageNamespace(""),"x")
+                                                getlocal0
+                                                debugline 212
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                                pushshort 300
+                                                setproperty QName(PackageNamespace(""),"y")
+                                                debugline 213
+                                                getlex QName(PackageNamespace("com.greensock"),"TweenLite")
+                                                getlocal0
+                                                getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"moveTip")
+                                                pushbyte 3
+                                                debugline 214
+                                                pushstring "y"
+                                                pushbyte 100
+                                                debugline 215
+                                                pushstring "onComplete"
+                                                newfunction 22
+                                                newobject 2
+                                                callpropvoid QName(PackageNamespace(""),"to"), 3
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                    }
+                                    
+                                    private function addPets() : void
+                                    {
+                                       trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"addPets")
+                                          dispid 0
+                                          method
+                                             name "addPets"
+                                             returns QName(PackageNamespace(""),"void")
+                                             
+                                             body
+                                                maxstack 3
+                                                localcount 4
+                                                initscopedepth 0
+                                                maxscopedepth 1
+                                                
+                                                code
+                                                   getlocal0
+                                                   pushscope
+                                                   debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                                   debug 1, "_loc2_", 0, 0
+                                                   debug 1, "_loc1_", 1, 0
+                                                   debug 1, "_loc3_", 2, 0
+                                                   debugline 223
+                                                   pushbyte 0
+                                                   setlocal2
+                                                   debugline 224
+                                                   pushnull
+                                                   coerce QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile")
+                                                   setlocal1
+                                                   getlocal0
+                                                   debugline 225
+                                                   getlex QName(PackageNamespace("__AS3__.vec"),"Vector")
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile")
+                                                   debugline 225
+                                                   applytype 1
+                                                   debugline 225
+                                                   construct 0
+                                                   setproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                                                   getlocal0
+                                                   debugline 226
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentWave")
+                                                   getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"LayerMaxWave")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayer")
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   pushbyte 1
+                                                   subtract
+                                                   equals
+                                                   debugline 226
+                                                   iffalse ofs005f
+                                                   debugline 227
+                                                   pushshort 635
+                                                   setlocal2
+                                                   debugline 226
+                                                   jump ofs0066
+                                                   debugline 229
+                                          ofs005f:
+                                                   pushshort 634
+                                                   setlocal2
+                                                   debugline 231
+                                          ofs0066:
+                                                   pushbyte 0
+                                                   setlocal3
+                                                   jump ofs00d8
+                                          ofs006d:
+                                                   label
+                                                   findpropstrict QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile")
+                                                   debugline 233
+                                                   constructprop QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile"), 0
+                                                   coerce QName(PackageNamespace("com.taomee.seer2.core.entity"),"Mobile")
+                                                   setlocal1
+                                                   getlocal0
+                                                   debugline 234
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                                                   getlocal1
+                                                   callpropvoid QName(Namespace("http://adobe.com/AS3/2006/builtin"),"push"), 1
+                                                   getlocal0
+                                                   debugline 235
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                                                   getlocal3
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.utils"),"URLUtil")
+                                                   getlocal2
+                                                   callproperty QName(PackageNamespace(""),"getNpcSwf"), 1
+                                                   setproperty QName(PackageNamespace(""),"resourceUrl")
+                                                   getlocal0
+                                                   debugline 236
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                                                   getlocal3
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   pushtrue
+                                                   setproperty QName(PackageNamespace(""),"buttonMode")
+                                                   getlocal0
+                                                   debugline 237
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                                                   getlocal3
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   pushstring "click"
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"toFight")
+                                                   callpropvoid QName(PackageNamespace(""),"addEventListener"), 2
+                                                   getlocal0
+                                                   debugline 238
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                                                   getlocal3
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"Positions")
+                                                   getlocal3
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   callpropvoid QName(PackageNamespace(""),"setPostion"), 1
+                                                   debugline 239
+                                                   getlex QName(PackageNamespace("com.taomee.seer2.core.entity"),"MobileManager")
+                                                   getlocal0
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"petList")
+                                                   getlocal3
+                                                   getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                   pushstring "npc"
+                                                   callpropvoid QName(PackageNamespace(""),"addMobile"), 2
+                                                   debugline 240
+                                                   inclocal_i 3
+                                          ofs00d8:
+                                                   getlocal3
+                                                   getlocal0
+                                                   debugline 232
+                                                   getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentWavePetCount")
+                                                   iflt ofs006d
+                                                   returnvoid
+                                                end ; code
+                                             end ; body
+                                          end ; method
+                                       }
+                                       
+                                       private function toFight(param1:MouseEvent) : void
+                                       {
+                                          trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"toFight")
+                                             dispid 0
+                                             method
+                                                name "toFight"
+                                                flag HAS_PARAM_NAMES
+                                                param QName(PackageNamespace("flash.events"),"MouseEvent")
+                                                paramname "param1"
+                                                returns QName(PackageNamespace(""),"void")
+                                                
+                                                body
+                                                   maxstack 3
+                                                   localcount 2
+                                                   initscopedepth 0
+                                                   maxscopedepth 1
+                                                   
+                                                   code
+                                                      getlocal0
+                                                      pushscope
+                                                      debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                                      debug 1, "param1", 0, 0
+                                                      getlocal0
+                                                      debugline 245
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentWave")
+                                                      getlex QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"LayerMaxWave")
+                                                      getlocal0
+                                                      getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"currentLayer")
+                                                      getproperty MultinameL([PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),ProtectedNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("com.taomee.seer2.app.processor.map:MapDiLao"),StaticProtectedNs("Object"),PackageNamespace("com.taomee.seer2.app.processor.map"),PackageInternalNs("com.taomee.seer2.app.processor.map"),PrivateNamespace("FilePrivateNS:MapDiLao"),PackageNamespace(""),Namespace("http://adobe.com/AS3/2006/builtin")])
+                                                      pushbyte 1
+                                                      subtract
+                                                      equals
+                                                      debugline 245
+                                                      iffalse ofs0036
+                                                      debugline 246
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                      pushshort 631
+                                                      callpropvoid QName(PackageNamespace(""),"startFightWithWild"), 1
+                                                      debugline 245
+                                                      jump ofs003e
+                                                      debugline 248
+                                             ofs0036:
+                                                      getlex QName(PackageNamespace("com.taomee.seer2.app.arena"),"FightManager")
+                                                      pushshort 630
+                                                      callpropvoid QName(PackageNamespace(""),"startFightWithWild"), 1
+                                             ofs003e:
+                                                      returnvoid
+                                                   end ; code
+                                                end ; body
+                                             end ; method
+                                          }
+                                          
+                                          private function getMovie(param1:String) : DisplayObject
+                                          {
+                                             trait method QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"getMovie")
+                                                dispid 0
+                                                method
+                                                   name "getMovie"
+                                                   flag HAS_PARAM_NAMES
+                                                   param QName(PackageNamespace(""),"String")
+                                                   paramname "param1"
+                                                   returns QName(PackageNamespace("flash.display"),"DisplayObject")
+                                                   
+                                                   body
+                                                      maxstack 3
+                                                      localcount 2
+                                                      initscopedepth 0
+                                                      maxscopedepth 1
+                                                      
+                                                      code
+                                                         getlocal0
+                                                         pushscope
+                                                         debugfile "D:\\a\\seer2-origin-as3\\seer2-origin-as3\\src;com\\taomee\\seer2\\app\\processor\\map;MapDiLao.as"
+                                                         debug 1, "param1", 0, 0
+                                                         getlocal0
+                                                         debugline 253
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_resLibs")
+                                                         iffalse ofs0023
+                                                         debugline 254
+                                                         getlex QName(PackageNamespace("org.taomee.utils"),"DomainUtil")
+                                                         getlocal1
+                                                         getlocal0
+                                                         getproperty QName(PrivateNamespace("com.taomee.seer2.app.processor.map:MapDiLao"),"_resLibs")
+                                                         callproperty QName(PackageNamespace(""),"getDisplayObject"), 2
+                                                         returnvalue
+                                                         debugline 256
+                                                ofs0023:
+                                                         pushnull
+                                                         returnvalue
+                                                      end ; code
+                                                   end ; body
+                                                end ; method
+                                             }
+                                          }
+                                       }
+                                       
+                                       method
+                                          name null
+                                          returns null
+                                          
+                                          body
+                                             maxstack 3
+                                             localcount 1
+                                             initscopedepth 0
+                                             maxscopedepth 2
+                                             
+                                             code
+                                                getlocal0
+                                                pushscope
+                                                getscopeobject 0
+                                                getlex QName(PackageNamespace(""),"Object")
+                                                dup
+                                                pushscope
+                                                newclass 0
+                                                popscope
+                                                initproperty QName(PackageNamespace("com.taomee.seer2.app.processor.map"),"MapDiLao")
+                                                returnvoid
+                                             end ; code
+                                          end ; body
+                                       end ; method
+                                       
