@@ -6,6 +6,7 @@ package com.taomee.seer2.app.arena
    import com.taomee.seer2.app.arena.util.HitInfoConfig;
    import com.taomee.seer2.core.animation.IAnimation;
    import com.taomee.seer2.core.player.FighterMoviePlayer;
+   import com.taomee.seer2.core.scene.SceneManager;
    import com.taomee.seer2.core.utils.URLUtil;
    import flash.display.BitmapData;
    import flash.display.BlendMode;
@@ -288,6 +289,7 @@ package com.taomee.seer2.app.arena
             throw new Error("没有战斗精灵的素材资源！[" + this._fighterResourceId + "]");
          }
          this._mc = param1;
+         this.enableUClientBattleComposite(this._mc);
          this._externalBaseX = this._mc.x;
          this._externalBaseY = this._mc.y;
          this._externalBaseScaleX = this._mc.scaleX;
@@ -322,6 +324,68 @@ package com.taomee.seer2.app.arena
          this._uclientAdapter = UClientUniversalBattleAdapter.attach(this._mc);
          this.prewarmExternalAttackCover();
          this.preloadCustomSkill();
+         this.bindDefaultBattleBackdropHost();
+         this.addEventListener(Event.ADDED_TO_STAGE,this.onAddedToStageForBackdrop,false,0,true);
+      }
+
+      private function onAddedToStageForBackdrop(event:Event) : void
+      {
+         this.bindDefaultBattleBackdropHost();
+      }
+
+      private function bindDefaultBattleBackdropHost() : void
+      {
+         var host:Object = null;
+         try
+         {
+            if(SceneManager.active != null && SceneManager.active.mapModel != null && SceneManager.active.mapModel.content != null)
+            {
+               host = SceneManager.active.mapModel.content;
+            }
+            else if(this.parent != null && this.parent.parent != null)
+            {
+               host = this.parent.parent;
+            }
+         }
+         catch(ignored:*)
+         {
+            host = null;
+         }
+         if(host != null)
+         {
+            this.setUClientBattleBackdropHost(host);
+         }
+      }
+
+      public function setUClientBattleBackdropHost(param1:Object) : Boolean
+      {
+         var target:Object = this._mc;
+         try
+         {
+            if(target != null && target["setUClientBattleBackdropHost"] is Function)
+            {
+               return Boolean(target["setUClientBattleBackdropHost"](param1,this._mc));
+            }
+         }
+         catch(ignored:*)
+         {
+         }
+         return false;
+      }
+
+      private function enableUClientBattleComposite(param1:MovieClip) : void
+      {
+         var target:Object = param1;
+         try
+         {
+            if(target != null && target["setUClientBattleCompositeMode"] is Function)
+            {
+               target["setUClientBattleCompositeMode"](true);
+            }
+         }
+         catch(ignored:*)
+         {
+         }
       }
       
       private function createExternalIdleInstance() : void
@@ -4079,9 +4143,11 @@ package com.taomee.seer2.app.arena
             }
             this._externalIdleRoot = null;
          }
+         this.removeEventListener(Event.ADDED_TO_STAGE,this.onAddedToStageForBackdrop);
          this._actionAnimation = null;
          if(this._mc != null)
          {
+            this.setUClientBattleBackdropHost(null);
             UClientUniversalBattleAdapter.detach(this._mc);
             this._uclientAdapter = null;
             this._mc.removeEventListener(Event.FRAME_CONSTRUCTED,this.onFrameConstructed);

@@ -1766,6 +1766,7 @@ package animation.layer
                pet.scaleY = fighter.scaleY;
                fighter.url = url;
                fighter.pet = pet;
+               enableUClientBattleComposite(pet);
                UClientUniversalBattleAdapter.attach(pet);
                prewarmExternalAttackCover(pet);
                if(isExternalCompactTimeline(pet))
@@ -1846,6 +1847,21 @@ package animation.layer
                resolve();
             }
          });
+      }
+
+      private function enableUClientBattleComposite(param1:MovieClip) : void
+      {
+         var target:Object = param1;
+         try
+         {
+            if(target != null && target["setUClientBattleCompositeMode"] is Function)
+            {
+               target["setUClientBattleCompositeMode"](true);
+            }
+         }
+         catch(ignored:*)
+         {
+         }
       }
       
       private function checkVersion(param1:int) : Boolean
