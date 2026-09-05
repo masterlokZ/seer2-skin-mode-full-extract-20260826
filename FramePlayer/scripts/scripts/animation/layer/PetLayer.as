@@ -57,6 +57,8 @@ package animation.layer
       private static const EXTERNAL_TARGET_BASELINE_Y:Number = 375;
       
       private static const EXTERNAL_UClient_TARGET_BASELINE_Y:Number = 425;
+
+      private static const EXTERNAL_LEGACY_SCENE_SCALE:Number = 0.9;
       
       private var fighters:Vector.<FightPet>;
       
@@ -623,7 +625,7 @@ package animation.layer
          var pet:MovieClip = param1;
          var action:MovieClip = param2;
          var terminalHurtFallback:Boolean = param3;
-         var ownAction:Boolean = param4;
+         var ownAction:Boolean = param4 && !isExternalLegacySceneTimeline(pet);
          var continuousCover:Boolean = param5;
          var hitSent:Boolean = false;
          var lastFrame:int = -1;
@@ -1472,6 +1474,18 @@ package animation.layer
          }
          return findTimelineLabel(param1,["attack","atk","attack1","sa","sa5","cp","hidemove","hited","hurt","hit"]) != "" || findDedicatedMoveLabel(param1) != "";
       }
+
+      private function isExternalLegacySceneTimeline(param1:MovieClip) : Boolean
+      {
+         var action:MovieClip = null;
+         if(param1 == null || UClientUniversalBattleAdapter.supports(param1) || !isExternalCompactTimeline(param1))
+         {
+            return false;
+         }
+         action = findExternalAction(param1);
+         return action != null && action.totalFrames >= 120 &&
+            findTimelineLabel(param1,["idle","stand","standby","wait","待机"]) == "";
+      }
       
       private function resolveExternalLabel(param1:MovieClip, param2:String) : String
       {
@@ -1572,6 +1586,11 @@ package animation.layer
          var pet:MovieClip = param1;
          var fighter:FightPet = param2;
          var bounds:Rectangle = null;
+         var action:MovieClip = null;
+         var subject:Object = null;
+         var centerX:Number = 0;
+         var bottom:Number = 0;
+         var legacyScene:Boolean = false;
          var fitScale:Number = 1;
          var targetBaselineY:Number = EXTERNAL_TARGET_BASELINE_Y;
          if(pet == null || fighter == null || externalPlaced[pet] === true || !isExternalCompactTimeline(pet))
@@ -1588,15 +1607,28 @@ package animation.layer
             }
             if(isFinite(bounds.width) && isFinite(bounds.height) && bounds.width < 10000 && bounds.height < 10000)
             {
-               fitScale = Math.min(1,EXTERNAL_MAX_RENDER_WIDTH / bounds.width,EXTERNAL_MAX_RENDER_HEIGHT / bounds.height) * UClientUniversalBattleAdapter.fitMultiplier(pet,bounds);
+               action = findExternalAction(pet);
+               subject = action == null ? null : measureStructuralSubject(pet,action,bounds);
+               centerX = subject == null ? bounds.x + bounds.width * 0.5 : Number(subject.centerX);
+               bottom = subject == null ? bounds.bottom : Number(subject.bottom);
+               legacyScene = isExternalLegacySceneTimeline(pet);
+               fitScale = legacyScene ? EXTERNAL_LEGACY_SCENE_SCALE : Math.min(1,EXTERNAL_MAX_RENDER_WIDTH / bounds.width,EXTERNAL_MAX_RENDER_HEIGHT / bounds.height) * UClientUniversalBattleAdapter.fitMultiplier(pet,bounds);
                if(UClientUniversalBattleAdapter.supports(pet))
                {
                   targetBaselineY = EXTERNAL_UClient_TARGET_BASELINE_Y;
                }
                pet.scaleX = fighter.scaleX * fitScale;
                pet.scaleY = fighter.scaleY * fitScale;
-               pet.x = fighter.x + (EXTERNAL_TARGET_CENTER_X - EXTERNAL_TEMPLATE_CENTER_X * fitScale) * fighter.scaleX;
-               pet.y = fighter.y + (targetBaselineY - EXTERNAL_TEMPLATE_BASELINE_Y * fitScale) * fighter.scaleY;
+               if(legacyScene)
+               {
+                  pet.x = fighter.x + (EXTERNAL_TARGET_CENTER_X - centerX * fitScale) * fighter.scaleX;
+                  pet.y = fighter.y + (targetBaselineY - bottom * fitScale) * fighter.scaleY;
+               }
+               else
+               {
+                  pet.x = fighter.x + (EXTERNAL_TARGET_CENTER_X - EXTERNAL_TEMPLATE_CENTER_X * fitScale) * fighter.scaleX;
+                  pet.y = fighter.y + (targetBaselineY - EXTERNAL_TEMPLATE_BASELINE_Y * fitScale) * fighter.scaleY;
+               }
                externalPlaced[pet] = true;
                delete externalPlacementAttempts[pet];
             }
