@@ -1483,7 +1483,7 @@ package animation.layer
             return false;
          }
          action = findExternalAction(param1);
-         return action != null && action.totalFrames >= 120 &&
+         return action != null && action.totalFrames > 120 &&
             findTimelineLabel(param1,["idle","stand","standby","wait","待机"]) == "";
       }
       
