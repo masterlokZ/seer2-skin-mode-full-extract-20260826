@@ -1666,6 +1666,10 @@ package animation.layer
          var item:Object = null;
          var candidate:String = null;
          var actual:String = "";
+         if(param1 == null || param2 == null)
+         {
+            return "";
+         }
          for each(candidate in param2)
          {
             for each(item in param1.currentLabels)
@@ -2005,8 +2009,8 @@ package animation.layer
          best = pool[0];
          for each(candidate in pool)
          {
-            bestScore = scoreMoveCandidate(String(best.label),int(best.totalFrames));
-            candScore = scoreMoveCandidate(String(candidate.label),int(candidate.totalFrames));
+            bestScore = this.scoreMoveCandidate(String(best.label),int(best.totalFrames),best.child as MovieClip);
+            candScore = this.scoreMoveCandidate(String(candidate.label),int(candidate.totalFrames),candidate.child as MovieClip);
             if(candScore > bestScore)
             {
                best = candidate;
@@ -2015,12 +2019,27 @@ package animation.layer
          return String(best.label);
       }
       
-      private function scoreMoveCandidate(param1:String, param2:int) : int
+      private function scoreMoveCandidate(param1:String, param2:int, param3:MovieClip = null) : int
       {
-         var idMatch:Array = param1.match(/moves?_?(\d+)/i);
-         var moveId:int = idMatch != null && idMatch.length > 1 ? int(idMatch[1]) : 0;
-         var isAttack:Boolean = moveId == 0 || moveId >= 30000;
-         return (isAttack ? 1000000 : 0) + param2;
+         var hasHit:Boolean = false;
+         if(param3 != null)
+         {
+            try
+            {
+               if("hit" in param3 || "damage" in param3 || "beHit" in param3)
+               {
+                  hasHit = true;
+               }
+            }
+            catch(err:*)
+            {
+            }
+            if(!hasHit)
+            {
+               hasHit = this.findTimelineLabel(param3,["hit","damage","attack","atk"]) != "";
+            }
+         }
+         return (hasHit ? 1000000 : 0) + param2;
       }
       
       private function getActionLabelStats(param1:MovieClip, param2:String) : Object

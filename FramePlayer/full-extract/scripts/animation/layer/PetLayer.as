@@ -25,6 +25,8 @@ package animation.layer
    import flash.geom.Point;
    import flash.geom.Rectangle;
    import flash.utils.Dictionary;
+   import flash.utils.getQualifiedClassName;
+   import flash.utils.getTimer;
    import flash.utils.setTimeout;
    import utils.CacheUtils;
    import utils.Utils;
@@ -44,6 +46,10 @@ package animation.layer
       
       private static const MOVE_ACTION_END:String = "fuiMoveActionEnd";
       
+      private static const NATIVE_FRAME_RATE:Number = 40;
+      
+      private static const NATIVE_FRAME_INTERVAL_MS:Number = 25;
+      
       private static const EXTERNAL_MAX_RENDER_WIDTH:Number = 720;
       
       private static const EXTERNAL_MAX_RENDER_HEIGHT:Number = 650;
@@ -56,9 +62,9 @@ package animation.layer
       
       private static const EXTERNAL_TARGET_BASELINE_Y:Number = 375;
       
-      private static const EXTERNAL_UClient_TARGET_BASELINE_Y:Number = 425;
-
-      private static const EXTERNAL_LEGACY_SCENE_SCALE:Number = 0.9;
+      private static const EXTERNAL_UClient_TARGET_BASELINE_Y:Number = 375;
+      
+      private var nativeActions:Dictionary = new Dictionary(true);
       
       private var fighters:Vector.<FightPet>;
       
@@ -89,6 +95,8 @@ package animation.layer
       private var externalAttackCoverBounds:Dictionary = new Dictionary(true);
       
       private var externalAttackCoverPending:Dictionary = new Dictionary(true);
+      
+      private var _dedicatedMovesCache:Dictionary = new Dictionary(true);
       
       public function PetLayer()
       {
@@ -447,11 +455,17 @@ package animation.layer
          var pet:MovieClip = param1;
          var label:String = param2;
          var version:int = param3;
+         if(isExternalIdleOnlyPose(pet))
+         {
+            updateExternalIdleOnlyStatus(pet,label);
+            return;
+         }
          if(isExternalCompactTimeline(pet))
          {
             updateExternalStatus(pet,label);
             return;
          }
+         stopNativeAction(pet);
          if(!Utils.hasLabel(pet,label))
          {
             if(FighterActionType.atk().indexOf(label) >= 0)
@@ -468,7 +482,7 @@ package animation.layer
             }
          }
          pet.gotoAndStop(label);
-         startNativeAction(pet);
+         startNativeAction(pet,label);
          if(FighterActionType.end().indexOf(label) >= 0)
          {
             onChild0Complete(pet,function():void
@@ -625,7 +639,7 @@ package animation.layer
          var pet:MovieClip = param1;
          var action:MovieClip = param2;
          var terminalHurtFallback:Boolean = param3;
-         var ownAction:Boolean = param4 && !isExternalLegacySceneTimeline(pet);
+         var ownAction:Boolean = param4;
          var continuousCover:Boolean = param5;
          var hitSent:Boolean = false;
          var lastFrame:int = -1;
@@ -1425,6 +1439,10 @@ package animation.layer
          {
             stopExternalAction(key as MovieClip);
          }
+         for(var nativeKey in nativeActions)
+         {
+            stopNativeAction(nativeKey as MovieClip);
+         }
          for(key in externalShapeCoverStates)
          {
             resetExternalShapeCover(key as MovieClip);
@@ -1466,25 +1484,142 @@ package animation.layer
          return false;
       }
       
+      private function updateExternalIdleOnlyStatus(param1:MovieClip, param2:String) : void
+      {
+         var pet:MovieClip = param1;
+         var status:String = param2;
+         var shouldHit:Boolean = FighterActionType.atk().indexOf(status) >= 0;
+         var action:MovieClip = null;
+         if(pet == null)
+         {
+            return;
+         }
+         stopExternalAction(pet);
+         externalTerminalSuppressed[pet] = true;
+         try
+         {
+            pet.gotoAndStop(1);
+         }
+         catch(ignored:*)
+         {
+         }
+         action = findExternalAction(pet);
+         if(action != null)
+         {
+            resumeExternalIdleOnlyPose(action,0);
+         }
+         if(shouldHit)
+         {
+            setTimeout(function():void
+            {
+               if(pet != null && pet.parent != null)
+               {
+                  pet.dispatchEvent(new Event("hit"));
+               }
+            },0);
+         }
+      }
+      
+      private function isExternalIdleOnlyPose(param1:MovieClip) : Boolean
+      {
+         var item:Object = null;
+         var name:String = "";
+         if(param1 == null || param1.totalFrames > 1 || param1.numChildren <= 0)
+         {
+            return false;
+         }
+         try
+         {
+            for each(item in param1.currentLabels)
+            {
+               name = item == null || item.name == null ? "" : item.name.toLowerCase();
+               if(name != "" && name != "attack" && name != "atk" && name != "attack1")
+               {
+                  return false;
+               }
+            }
+         }
+         catch(ignored:*)
+         {
+            return false;
+         }
+         return findExternalAction(param1) != null;
+      }
+      
+      private function resumeExternalIdleOnlyPose(param1:DisplayObject, param2:int = 0) : void
+      {
+         var container:DisplayObjectContainer = param1 as DisplayObjectContainer;
+         var child:DisplayObject = null;
+         var clip:MovieClip = param1 as MovieClip;
+         var index:int = 0;
+         if(param1 == null || param2 > 8)
+         {
+            return;
+         }
+         if(clip != null)
+         {
+            if(clip.totalFrames > 1)
+            {
+               try
+               {
+                  clip.play();
+               }
+               catch(ignored:*)
+               {
+               }
+            }
+         }
+         if(container == null)
+         {
+            return;
+         }
+         while(index < container.numChildren)
+         {
+            try
+            {
+               child = container.getChildAt(index);
+               resumeExternalIdleOnlyPose(child,param2 + 1);
+            }
+            catch(ignored:*)
+            {
+            }
+            index++;
+         }
+      }
+      
       private function isExternalCompactTimeline(param1:MovieClip) : Boolean
       {
+         if(isExternalIdleOnlyPose(param1))
+         {
+            return true;
+         }
          if(param1 == null || findTimelineLabel(param1,["待机","物理攻击","属性攻击","特殊攻击","被打","必杀"]) != "")
          {
             return false;
          }
-         return findTimelineLabel(param1,["attack","atk","attack1","sa","sa5","cp","hidemove","hited","hurt","hit"]) != "" || findDedicatedMoveLabel(param1) != "";
+         return findTimelineLabel(param1,["attack","atk","attack1","sa","sa5","cp","hidemove","hited","hurt","hit"]) != "" || hasAnyMoveLabel(param1);
       }
-
-      private function isExternalLegacySceneTimeline(param1:MovieClip) : Boolean
+      
+      private function hasAnyMoveLabel(param1:MovieClip) : Boolean
       {
-         var action:MovieClip = null;
-         if(param1 == null || UClientUniversalBattleAdapter.supports(param1) || !isExternalCompactTimeline(param1))
+         var item:Object = null;
+         var name:String = null;
+         if(param1 == null)
          {
             return false;
          }
-         action = findExternalAction(param1);
-         return action != null && action.totalFrames > 120 &&
-            findTimelineLabel(param1,["idle","stand","standby","wait","待机"]) == "";
+         for each(item in param1.currentLabels)
+         {
+            if(item != null && item.name != null)
+            {
+               name = String(item.name).toLowerCase();
+               if(name.indexOf("moves_") == 0 || name.indexOf("move_") == 0)
+               {
+                  return true;
+               }
+            }
+         }
+         return false;
       }
       
       private function resolveExternalLabel(param1:MovieClip, param2:String) : String
@@ -1509,7 +1644,7 @@ package animation.layer
          if(FighterActionType.superAtk().indexOf(param2) >= 0)
          {
             dedicated = findDedicatedMoveLabel(param1);
-            return dedicated != "" ? dedicated : findTimelineLabel(param1,["hidemove","sa5","ultimate","ultra","power","attack","atk","attack1","normalAttack","sa","special"]);
+            return dedicated != "" ? dedicated : findTimelineLabel(param1,["hidemove","sa5","as5","attack5","ultimate","ultra","power","attack1","normalAttack","attack","atk","physical"]);
          }
          if(FighterActionType.hurt().indexOf(param2) >= 0)
          {
@@ -1531,6 +1666,10 @@ package animation.layer
          var item:Object = null;
          var candidate:String = null;
          var actual:String = "";
+         if(param1 == null || param2 == null)
+         {
+            return "";
+         }
          for each(candidate in param2)
          {
             for each(item in param1.currentLabels)
@@ -1547,17 +1686,558 @@ package animation.layer
       
       private function findDedicatedMoveLabel(param1:MovieClip) : String
       {
+         var authoritative:String = null;
+         var moveList:Array = null;
+         var moveRegex:RegExp = null;
+         var distinctAttack:Boolean = false;
+         var authList:Array = null;
+         var lblName:String = null;
          var item:Object = null;
-         var name:String = "";
+         var availableMoves:Array = null;
+         var len:int = 0;
+         if(param1 == null)
+         {
+            return "";
+         }
+         if(this._dedicatedMovesCache[param1] !== undefined)
+         {
+            availableMoves = this._dedicatedMovesCache[param1] as Array;
+            if(availableMoves == null)
+            {
+               return "";
+            }
+            len = int(availableMoves.length);
+            if(len == 0)
+            {
+               return "";
+            }
+            if(len == 1)
+            {
+               return String(availableMoves[0]);
+            }
+            return String(availableMoves[int(Math.random() * len)]);
+         }
+         distinctAttack = findTimelineLabel(param1,["attack","atk","physical"]) != "";
+         authList = distinctAttack ? ["sa5","as5","attack5","attack1","hidemove","ultimate","ultra","power","add1"] : ["sa5","as5","attack5","hidemove","ultimate","ultra","power","add1"];
+         authoritative = findTimelineLabel(param1,authList);
+         if(authoritative != "")
+         {
+            this._dedicatedMovesCache[param1] = [authoritative];
+            return authoritative;
+         }
+         moveList = [];
+         moveRegex = /^moves?_?\d+(?:_\d+)?$/i;
          for each(item in param1.currentLabels)
          {
-            name = item == null || item.name == null ? "" : item.name.toLowerCase();
-            if(name.indexOf("moves_") == 0)
+            if(item != null && item.name != null)
             {
-               return item.name;
+               lblName = String(item.name);
+               if(moveRegex.test(lblName) || /^add\d+$/i.test(lblName) || /^attack\d+$/i.test(lblName) && lblName.toLowerCase() != "attack" && lblName.toLowerCase() != "atk")
+               {
+                  moveList.push(item.name);
+               }
             }
          }
-         return "";
+         if(moveList.length >= 1)
+         {
+            availableMoves = collectDedicatedMoveCandidates(param1,moveList);
+         }
+         else
+         {
+            availableMoves = [];
+         }
+         this._dedicatedMovesCache[param1] = availableMoves;
+         if(availableMoves == null)
+         {
+            return "";
+         }
+         len = int(availableMoves.length);
+         if(len == 0)
+         {
+            return "";
+         }
+         if(len == 1)
+         {
+            return String(availableMoves[0]);
+         }
+         return String(availableMoves[int(Math.random() * len)]);
+      }
+      
+      private function collectDedicatedMoveCandidates(param1:MovieClip, param2:Array) : Array
+      {
+         var hasLaterFrame:Boolean;
+         var distItem:Object;
+         var nonFrame1:Array;
+         var fallbackMoves:Array;
+         var physLabel:String = null;
+         var specLabel:String = null;
+         var propLabel:String = null;
+         var currentF:int = 0;
+         var physStats:Object = null;
+         var specStats:Object = null;
+         var propStats:Object = null;
+         var distinct:Array = null;
+         var m:String = null;
+         var st:Object = null;
+         var isDup:Boolean = false;
+         var pool:Array = null;
+         var candItem:Object = null;
+         var multiFrameMoves:Array = null;
+         var lbl:String = null;
+         if(param2 == null || param2.length == 0)
+         {
+            return [];
+         }
+         if(param1 == null)
+         {
+            return [String(param2[0])];
+         }
+         physLabel = findTimelineLabel(param1,["attack","atk","attack1","at1","physical"]);
+         specLabel = findTimelineLabel(param1,["sa","special","magic","attack2","at2","add2"]);
+         propLabel = findTimelineLabel(param1,["cp","property","buff","effect","attribute","support","skill","add3"]);
+         currentF = param1.currentFrame;
+         physStats = getActionLabelStats(param1,physLabel);
+         if(physStats == null)
+         {
+            physStats = getActionFrameStats(param1,1);
+         }
+         specStats = getActionLabelStats(param1,specLabel);
+         propStats = getActionLabelStats(param1,propLabel);
+         distinct = [];
+         for each(m in param2)
+         {
+            st = getActionLabelStats(param1,m);
+            if(st != null)
+            {
+               st.label = m;
+               isDup = false;
+               if(physStats != null && isDuplicateActionStats(st,physStats))
+               {
+                  isDup = true;
+               }
+               if(specStats != null && isDuplicateActionStats(st,specStats))
+               {
+                  isDup = true;
+               }
+               if(propStats != null && isDuplicateActionStats(st,propStats))
+               {
+                  isDup = true;
+               }
+               if(!isDup)
+               {
+                  distinct.push(st);
+               }
+            }
+         }
+         try
+         {
+            param1.gotoAndStop(currentF);
+         }
+         catch(ignored:*)
+         {
+         }
+         if(distinct.length == 0)
+         {
+            return [];
+         }
+         hasLaterFrame = false;
+         for each(distItem in distinct)
+         {
+            if(int(distItem.frame) > 1)
+            {
+               hasLaterFrame = true;
+               break;
+            }
+         }
+         pool = distinct;
+         if(hasLaterFrame)
+         {
+            nonFrame1 = [];
+            for each(candItem in distinct)
+            {
+               if(int(candItem.frame) > 1)
+               {
+                  nonFrame1.push(candItem);
+               }
+            }
+            if(nonFrame1.length > 0)
+            {
+               pool = nonFrame1;
+            }
+         }
+         multiFrameMoves = [];
+         for each(candItem in pool)
+         {
+            if(candItem != null && candItem.label != null && int(candItem.totalFrames) > 1)
+            {
+               lbl = String(candItem.label);
+               if(multiFrameMoves.indexOf(lbl) < 0)
+               {
+                  multiFrameMoves.push(lbl);
+               }
+            }
+         }
+         if(multiFrameMoves.length > 0)
+         {
+            return multiFrameMoves;
+         }
+         if(pool.length > 0)
+         {
+            fallbackMoves = [];
+            for each(candItem in pool)
+            {
+               if(candItem != null && candItem.label != null)
+               {
+                  lbl = String(candItem.label);
+                  if(fallbackMoves.indexOf(lbl) < 0)
+                  {
+                     fallbackMoves.push(lbl);
+                  }
+               }
+            }
+            return fallbackMoves;
+         }
+         return [];
+      }
+      
+      private function pickBestUltimateMove(param1:MovieClip, param2:Array) : String
+      {
+         var hasLaterFrame:Boolean;
+         var distItem:Object;
+         var nonFrame1:Array;
+         var candItem:Object;
+         var physLabel:String = null;
+         var specLabel:String = null;
+         var propLabel:String = null;
+         var currentF:int = 0;
+         var physStats:Object = null;
+         var specStats:Object = null;
+         var propStats:Object = null;
+         var distinct:Array = null;
+         var allStats:Array = null;
+         var m:String = null;
+         var st:Object = null;
+         var isDup:Boolean = false;
+         var pool:Array = null;
+         var best:Object = null;
+         var candidate:Object = null;
+         var bestScore:int = 0;
+         var candScore:int = 0;
+         if(param2 == null || param2.length == 0)
+         {
+            return "";
+         }
+         if(param1 == null)
+         {
+            return String(param2[0]);
+         }
+         physLabel = findTimelineLabel(param1,["attack","atk","attack1","at1","physical"]);
+         specLabel = findTimelineLabel(param1,["sa","special","magic","attack2","at2","add2"]);
+         propLabel = findTimelineLabel(param1,["cp","property","buff","effect","attribute","support","skill","add3"]);
+         currentF = param1.currentFrame;
+         physStats = getActionLabelStats(param1,physLabel);
+         if(physStats == null)
+         {
+            physStats = getActionFrameStats(param1,1);
+         }
+         specStats = getActionLabelStats(param1,specLabel);
+         propStats = getActionLabelStats(param1,propLabel);
+         distinct = [];
+         allStats = [];
+         for each(m in param2)
+         {
+            st = getActionLabelStats(param1,m);
+            if(st != null)
+            {
+               st.label = m;
+               allStats.push(st);
+               isDup = false;
+               if(physStats != null && isDuplicateActionStats(st,physStats))
+               {
+                  isDup = true;
+               }
+               if(specStats != null && isDuplicateActionStats(st,specStats))
+               {
+                  isDup = true;
+               }
+               if(propStats != null && isDuplicateActionStats(st,propStats))
+               {
+                  isDup = true;
+               }
+               if(!isDup)
+               {
+                  distinct.push(st);
+               }
+            }
+         }
+         try
+         {
+            param1.gotoAndStop(currentF);
+         }
+         catch(ignored:*)
+         {
+         }
+         if(distinct.length == 0)
+         {
+            return physLabel != "" ? physLabel : (findTimelineLabel(param1,["attack","atk","physical"]) != "" ? findTimelineLabel(param1,["attack","atk","physical"]) : "");
+         }
+         hasLaterFrame = false;
+         for each(distItem in distinct)
+         {
+            if(int(distItem.frame) > 1)
+            {
+               hasLaterFrame = true;
+               break;
+            }
+         }
+         pool = distinct;
+         if(hasLaterFrame)
+         {
+            nonFrame1 = [];
+            for each(candItem in distinct)
+            {
+               if(int(candItem.frame) > 1)
+               {
+                  nonFrame1.push(candItem);
+               }
+            }
+            if(nonFrame1.length > 0)
+            {
+               pool = nonFrame1;
+            }
+         }
+         best = pool[0];
+         for each(candidate in pool)
+         {
+            bestScore = this.scoreMoveCandidate(String(best.label),int(best.totalFrames),best.child as MovieClip);
+            candScore = this.scoreMoveCandidate(String(candidate.label),int(candidate.totalFrames),candidate.child as MovieClip);
+            if(candScore > bestScore)
+            {
+               best = candidate;
+            }
+         }
+         return String(best.label);
+      }
+      
+      private function scoreMoveCandidate(param1:String, param2:int, param3:MovieClip = null) : int
+      {
+         var hasHit:Boolean = false;
+         if(param3 != null)
+         {
+            try
+            {
+               if("hit" in param3 || "damage" in param3 || "beHit" in param3)
+               {
+                  hasHit = true;
+               }
+            }
+            catch(err:*)
+            {
+            }
+            if(!hasHit)
+            {
+               hasHit = this.findTimelineLabel(param3,["hit","damage","attack","atk"]) != "";
+            }
+         }
+         return (hasHit ? 1000000 : 0) + param2;
+      }
+      
+      private function getActionLabelStats(param1:MovieClip, param2:String) : Object
+      {
+         var f:int = 0;
+         var child:MovieClip = null;
+         var dur:int = 0;
+         var childFrames:int = 0;
+         var descFrames:int = 0;
+         var maxF:int = 0;
+         if(param1 == null || param2 == null || param2 == "")
+         {
+            return null;
+         }
+         f = frameForLabel(param1,param2);
+         if(f <= 0)
+         {
+            return null;
+         }
+         try
+         {
+            param1.gotoAndStop(f);
+         }
+         catch(e:*)
+         {
+            return null;
+         }
+         child = firstDirectMovieChild(param1);
+         dur = endFrameForLabel(param1,param2) - f + 1;
+         childFrames = child != null ? child.totalFrames : 1;
+         descFrames = child != null ? maxDescendantFrames(child) : 1;
+         maxF = Math.max(dur,childFrames,descFrames);
+         return {
+            "frame":f,
+            "child":child,
+            "totalFrames":maxF
+         };
+      }
+      
+      private function getActionFrameStats(param1:MovieClip, param2:int) : Object
+      {
+         var child:MovieClip = null;
+         var childFrames:int = 0;
+         var descFrames:int = 0;
+         var maxF:int = 0;
+         if(param1 == null || param2 <= 0)
+         {
+            return null;
+         }
+         try
+         {
+            param1.gotoAndStop(param2);
+         }
+         catch(e:*)
+         {
+            return null;
+         }
+         child = firstDirectMovieChild(param1);
+         childFrames = child != null ? child.totalFrames : 1;
+         descFrames = child != null ? maxDescendantFrames(child) : 1;
+         maxF = Math.max(1,childFrames,descFrames);
+         return {
+            "frame":param2,
+            "child":child,
+            "totalFrames":maxF
+         };
+      }
+      
+      private function isDuplicateActionStats(param1:Object, param2:Object) : Boolean
+      {
+         if(param1 == null || param2 == null)
+         {
+            return false;
+         }
+         var l1:String = param1.label != null ? String(param1.label).toLowerCase() : "";
+         var l2:String = param2.label != null ? String(param2.label).toLowerCase() : "";
+         if(l1 != "" && l2 != "" && l1 == l2)
+         {
+            return true;
+         }
+         if(param1.frame > 0 && param2.frame > 0 && param1.frame == param2.frame)
+         {
+            return true;
+         }
+         if(param1.child != null && param2.child != null)
+         {
+            if(param1.child === param2.child)
+            {
+               return true;
+            }
+            var symbolA:String = getQualifiedClassName(param1.child);
+            var symbolB:String = getQualifiedClassName(param2.child);
+            if(symbolA == symbolB)
+            {
+               if(symbolA != "flash.display::MovieClip" && param1.child.constructor === param2.child.constructor)
+               {
+                  return true;
+               }
+               if(param1.child.totalFrames > 1 && param1.child.totalFrames == param2.child.totalFrames)
+               {
+                  return true;
+               }
+            }
+         }
+         return false;
+      }
+      
+      private function firstDirectMovieChild(param1:DisplayObjectContainer) : MovieClip
+      {
+         var i:int = 0;
+         var clip:MovieClip = null;
+         if(param1 == null)
+         {
+            return null;
+         }
+         i = 0;
+         while(i < param1.numChildren)
+         {
+            clip = param1.getChildAt(i) as MovieClip;
+            if(clip != null)
+            {
+               return clip;
+            }
+            i++;
+         }
+         return null;
+      }
+      
+      private function maxDescendantFrames(param1:DisplayObjectContainer, param2:int = 0) : int
+      {
+         var maximum:int = 1;
+         var i:int = 0;
+         var child:DisplayObject = null;
+         var clip:MovieClip = null;
+         var nested:DisplayObjectContainer = null;
+         if(param1 == null || param2 > 6)
+         {
+            return maximum;
+         }
+         i = 0;
+         while(i < param1.numChildren)
+         {
+            child = param1.getChildAt(i);
+            clip = child as MovieClip;
+            if(clip != null)
+            {
+               maximum = Math.max(maximum,clip.totalFrames);
+            }
+            nested = child as DisplayObjectContainer;
+            if(nested != null)
+            {
+               maximum = Math.max(maximum,maxDescendantFrames(nested,param2 + 1));
+            }
+            i++;
+         }
+         return maximum;
+      }
+      
+      private function frameForLabel(param1:MovieClip, param2:String) : int
+      {
+         var item:Object = null;
+         if(param1 == null || param2 == null || param2 == "")
+         {
+            return 0;
+         }
+         for each(item in param1.currentLabels)
+         {
+            if(item != null && item.name != null && String(item.name).toLowerCase() == param2.toLowerCase())
+            {
+               return int(item.frame);
+            }
+         }
+         return 0;
+      }
+      
+      private function endFrameForLabel(param1:MovieClip, param2:String) : int
+      {
+         var i:int = 0;
+         var labels:Array = null;
+         if(param1 == null || param2 == null || param2 == "")
+         {
+            return 1;
+         }
+         labels = param1.currentLabels;
+         if(labels == null || labels.length == 0)
+         {
+            return param1.totalFrames;
+         }
+         i = 0;
+         while(i < labels.length)
+         {
+            if(labels[i] != null && labels[i].name != null && String(labels[i].name).toLowerCase() == param2.toLowerCase())
+            {
+               return i + 1 < labels.length ? Math.max(int(labels[i].frame),int(labels[i + 1].frame) - 1) : param1.totalFrames;
+            }
+            i++;
+         }
+         return param1.totalFrames;
       }
       
       private function findExternalAction(param1:MovieClip) : MovieClip
@@ -1586,13 +2266,10 @@ package animation.layer
          var pet:MovieClip = param1;
          var fighter:FightPet = param2;
          var bounds:Rectangle = null;
-         var action:MovieClip = null;
-         var subject:Object = null;
-         var centerX:Number = 0;
-         var bottom:Number = 0;
-         var legacyScene:Boolean = false;
          var fitScale:Number = 1;
          var targetBaselineY:Number = EXTERNAL_TARGET_BASELINE_Y;
+         var effectiveBaselineY:Number = EXTERNAL_TEMPLATE_BASELINE_Y;
+         var subject:Object = null;
          if(pet == null || fighter == null || externalPlaced[pet] === true || !isExternalCompactTimeline(pet))
          {
             return;
@@ -1607,28 +2284,20 @@ package animation.layer
             }
             if(isFinite(bounds.width) && isFinite(bounds.height) && bounds.width < 10000 && bounds.height < 10000)
             {
-               action = findExternalAction(pet);
-               subject = action == null ? null : measureStructuralSubject(pet,action,bounds);
-               centerX = subject == null ? bounds.x + bounds.width * 0.5 : Number(subject.centerX);
-               bottom = subject == null ? bounds.bottom : Number(subject.bottom);
-               legacyScene = isExternalLegacySceneTimeline(pet);
-               fitScale = legacyScene ? EXTERNAL_LEGACY_SCENE_SCALE : Math.min(1,EXTERNAL_MAX_RENDER_WIDTH / bounds.width,EXTERNAL_MAX_RENDER_HEIGHT / bounds.height) * UClientUniversalBattleAdapter.fitMultiplier(pet,bounds);
+               fitScale = Math.min(1,EXTERNAL_MAX_RENDER_WIDTH / bounds.width,EXTERNAL_MAX_RENDER_HEIGHT / bounds.height) * UClientUniversalBattleAdapter.fitMultiplier(pet,bounds);
                if(UClientUniversalBattleAdapter.supports(pet))
                {
                   targetBaselineY = EXTERNAL_UClient_TARGET_BASELINE_Y;
+                  subject = this.measureRenderedSubject(pet,bounds,pet);
+                  if(subject != null && !isNaN(Number(subject.bottom)) && Number(subject.bottom) >= 40 && Number(subject.bottom) <= 500)
+                  {
+                     effectiveBaselineY = Number(subject.bottom);
+                  }
                }
                pet.scaleX = fighter.scaleX * fitScale;
                pet.scaleY = fighter.scaleY * fitScale;
-               if(legacyScene)
-               {
-                  pet.x = fighter.x + (EXTERNAL_TARGET_CENTER_X - centerX * fitScale) * fighter.scaleX;
-                  pet.y = fighter.y + (targetBaselineY - bottom * fitScale) * fighter.scaleY;
-               }
-               else
-               {
-                  pet.x = fighter.x + (EXTERNAL_TARGET_CENTER_X - EXTERNAL_TEMPLATE_CENTER_X * fitScale) * fighter.scaleX;
-                  pet.y = fighter.y + (targetBaselineY - EXTERNAL_TEMPLATE_BASELINE_Y * fitScale) * fighter.scaleY;
-               }
+               pet.x = fighter.x + (EXTERNAL_TARGET_CENTER_X - EXTERNAL_TEMPLATE_CENTER_X * fitScale) * fighter.scaleX;
+               pet.y = fighter.y + (targetBaselineY - effectiveBaselineY * fitScale) * fighter.scaleY;
                externalPlaced[pet] = true;
                delete externalPlacementAttempts[pet];
             }
@@ -1716,6 +2385,138 @@ package animation.layer
          return int(best.count) >= 6 ? best : null;
       }
       
+      private function weightedAxisQuantile(param1:Array, param2:Number, param3:Number) : int
+      {
+         var target:Number = param2 * param3;
+         var sum:Number = 0;
+         var index:int = 0;
+         while(index < param1.length)
+         {
+            sum += Number(param1[index]);
+            if(sum >= target)
+            {
+               return index;
+            }
+            index++;
+         }
+         return Math.max(0,param1.length - 1);
+      }
+      
+      private function measureRenderedSubject(param1:MovieClip, param2:Rectangle, param3:MovieClip = null) : Object
+      {
+         var result:Object;
+         var bitmapCenter:Number;
+         var bitmapTop:Number;
+         var bitmapBottom:Number;
+         var useDetachedStructuralAnchor:Boolean;
+         var scale:Number;
+         var width:int;
+         var height:int;
+         var bitmap:BitmapData;
+         var matrix:Matrix;
+         var pixels:Vector.<uint>;
+         var xWeights:Array;
+         var yWeights:Array;
+         var total:Number;
+         var index:int;
+         var alpha:int;
+         var weight:Number;
+         var x:int;
+         var y:int;
+         var sampleLimit:Number = 320;
+         var resourceBytes:Number = 0;
+         var coordinateRoot:MovieClip = param3 == null ? param1 : param3;
+         var structural:Object = this.measureStructuralSubject(coordinateRoot,param1,param2);
+         try
+         {
+            resourceBytes = param1.loaderInfo.bytesTotal;
+         }
+         catch(metricsError:*)
+         {
+         }
+         if(resourceBytes >= 12 * 1024 * 1024)
+         {
+            sampleLimit = 96;
+         }
+         scale = Math.min(1,sampleLimit / Math.max(1,param2.width),sampleLimit / Math.max(1,param2.height));
+         width = Math.max(4,Math.ceil(param2.width * scale));
+         height = Math.max(4,Math.ceil(param2.height * scale));
+         bitmap = null;
+         matrix = null;
+         pixels = null;
+         xWeights = [];
+         yWeights = [];
+         total = 0;
+         index = 0;
+         alpha = 0;
+         weight = 0;
+         x = 0;
+         y = 0;
+         if(width > 512 || height > 512)
+         {
+            return null;
+         }
+         try
+         {
+            bitmap = new BitmapData(width,height,true,0);
+            matrix = coordinateRoot === param1 ? new Matrix() : param1.transform.matrix.clone();
+            matrix.a *= scale;
+            matrix.b *= scale;
+            matrix.c *= scale;
+            matrix.d *= scale;
+            matrix.tx = (matrix.tx - param2.x) * scale;
+            matrix.ty = (matrix.ty - param2.y) * scale;
+            bitmap.draw(param1,matrix,null,null,null,true);
+            pixels = bitmap.getVector(bitmap.rect);
+            while(x < width)
+            {
+               xWeights[x++] = 0;
+            }
+            while(y < height)
+            {
+               yWeights[y++] = 0;
+            }
+            while(index < pixels.length)
+            {
+               alpha = pixels[index] >>> 24 & 0xFF;
+               if(alpha >= 24)
+               {
+                  weight = alpha * alpha;
+                  x = index % width;
+                  y = int(index / width);
+                  xWeights[x] = Number(xWeights[x]) + weight;
+                  yWeights[y] = Number(yWeights[y]) + weight;
+                  total += weight;
+               }
+               index++;
+            }
+            if(total <= 0)
+            {
+               bitmap.dispose();
+               return null;
+            }
+            bitmapCenter = param2.x + (this.weightedAxisQuantile(xWeights,total,0.5) + 0.5) / scale;
+            bitmapTop = param2.y + (this.weightedAxisQuantile(yWeights,total,0.015) + 0.5) / scale;
+            bitmapBottom = param2.y + (this.weightedAxisQuantile(yWeights,total,0.985) + 0.5) / scale;
+            useDetachedStructuralAnchor = structural != null && param2.width >= 900 && param2.height >= 500 && (Math.abs(bitmapCenter - Number(structural.centerX)) >= 120 || Math.abs(bitmapBottom - Number(structural.bottom)) >= 80);
+            result = {
+               "centerX":(structural == null ? bitmapCenter : Number(structural.centerX)),
+               "top":bitmapTop,
+               "bottom":(useDetachedStructuralAnchor ? Number(structural.bottom) : bitmapBottom)
+            };
+            bitmap.dispose();
+            return result;
+         }
+         catch(ignored:*)
+         {
+            if(bitmap != null)
+            {
+               bitmap.dispose();
+            }
+            return null;
+         }
+      }
+      
       private function lazyApplyPet(param1:FightPet, param2:PetData, param3:int, param4:int, param5:Function, param6:int) : void
       {
          var url:String;
@@ -1798,7 +2599,6 @@ package animation.layer
                pet.scaleY = fighter.scaleY;
                fighter.url = url;
                fighter.pet = pet;
-               enableUClientBattleComposite(pet);
                UClientUniversalBattleAdapter.attach(pet);
                prewarmExternalAttackCover(pet);
                if(isExternalCompactTimeline(pet))
@@ -1808,7 +2608,9 @@ package animation.layer
                }
                if(present && Utils.hasLabel(pet,"个性出场"))
                {
+                  stopNativeAction(pet);
                   pet.gotoAndStop("个性出场");
+                  startNativeAction(pet,"个性出场");
                   onChild0Complete(pet,function():void
                   {
                      if(!checkVersion(version))
@@ -1880,21 +2682,6 @@ package animation.layer
             }
          });
       }
-
-      private function enableUClientBattleComposite(param1:MovieClip) : void
-      {
-         var target:Object = param1;
-         try
-         {
-            if(target != null && target["setUClientBattleCompositeMode"] is Function)
-            {
-               target["setUClientBattleCompositeMode"](true);
-            }
-         }
-         catch(ignored:*)
-         {
-         }
-      }
       
       private function checkVersion(param1:int) : Boolean
       {
@@ -1938,12 +2725,21 @@ package animation.layer
       
       private function onChild0Complete(param1:MovieClip, param2:Function) : void
       {
+         var handleEnterFrame:*;
          var pet:MovieClip = param1;
          var cb:Function = param2;
          var observed:MovieClip = null;
          var lastFrame:int = -1;
          var stalledTicks:int = 0;
-         var handleEnterFrame:* = function(param1:Event):void
+         if(isExternalIdleOnlyPose(pet))
+         {
+            setTimeout(function():void
+            {
+               cb();
+            },0);
+            return;
+         }
+         handleEnterFrame = function(param1:Event):void
          {
             var action:MovieClip = observed;
             if(action == null || action.parent == null)
@@ -2002,6 +2798,7 @@ package animation.layer
       private function findCompletionClip(param1:MovieClip) : MovieClip
       {
          var child:MovieClip = null;
+         var desc:MovieClip = null;
          if(param1 == null)
          {
             return null;
@@ -2019,7 +2816,7 @@ package animation.layer
             if(param1.numChildren > 0)
             {
                child = param1.getChildAt(0) as MovieClip;
-               if(child != null)
+               if(child != null && child.totalFrames > 1)
                {
                   return child;
                }
@@ -2028,23 +2825,186 @@ package animation.layer
          catch(ignored:*)
          {
          }
-         return findAnimatedDescendant(param1,0);
-      }
-      
-      private function startNativeAction(param1:MovieClip) : void
-      {
-         var action:MovieClip = findCompletionClip(param1);
-         if(action == null || action.totalFrames <= 1)
+         desc = findAnimatedDescendant(param1,0);
+         if(desc != null)
          {
-            return;
+            return desc;
          }
          try
          {
-            action.play();
+            if(param1.numChildren > 0)
+            {
+               return param1.getChildAt(0) as MovieClip;
+            }
          }
          catch(ignored:*)
          {
          }
+         return null;
+      }
+      
+      private function isNativeLoopingAction(param1:String) : Boolean
+      {
+         return param1 == "待机" || param1 == FighterActionType.IDLE;
+      }
+      
+      private function stopNativeAction(param1:MovieClip) : void
+      {
+         if(param1 == null)
+         {
+            return;
+         }
+         var state:Object = nativeActions[param1];
+         if(state != null)
+         {
+            if(state.handler != null)
+            {
+               param1.removeEventListener(Event.ENTER_FRAME,state.handler);
+            }
+            delete nativeActions[param1];
+         }
+      }
+      
+      private function startNativeAction(param1:MovieClip, param2:String = "") : void
+      {
+         var action:MovieClip;
+         var resolvedLabel:String;
+         var looping:Boolean;
+         var state:Object;
+         var handler:*;
+         var pet:MovieClip = param1;
+         var requestedLabel:String = param2;
+         if(pet == null || isExternalCompactTimeline(pet) || isExternalIdleOnlyPose(pet))
+         {
+            return;
+         }
+         stopNativeAction(pet);
+         action = findCompletionClip(pet);
+         if(action != null && action.totalFrames <= 1)
+         {
+            return;
+         }
+         resolvedLabel = requestedLabel != "" ? requestedLabel : pet.currentLabel || pet.currentFrameLabel || "";
+         looping = isNativeLoopingAction(resolvedLabel);
+         if(action != null)
+         {
+            try
+            {
+               action.stop();
+            }
+            catch(ignored:*)
+            {
+            }
+         }
+         state = {
+            "action":action,
+            "lastTime":getTimer(),
+            "accumulatedMs":0,
+            "isLooping":looping,
+            "handler":null
+         };
+         handler = function(param1:Event):void
+         {
+            var total:int;
+            var now:int;
+            var deltaMs:int;
+            var framesToAdvance:int;
+            var current:int;
+            var isLoop:Boolean;
+            var i:int;
+            var reachedEnd:Boolean;
+            var targetAction:MovieClip = state.action as MovieClip;
+            if(nativeActions[pet] == null || nativeActions[pet] !== state)
+            {
+               pet.removeEventListener(Event.ENTER_FRAME,handler);
+               return;
+            }
+            if(targetAction == null || targetAction.parent == null)
+            {
+               targetAction = findCompletionClip(pet);
+               if(targetAction == null)
+               {
+                  return;
+               }
+               state.action = targetAction;
+               try
+               {
+                  targetAction.stop();
+               }
+               catch(ignored:*)
+               {
+               }
+            }
+            total = targetAction.totalFrames;
+            if(total <= 1)
+            {
+               stopNativeAction(pet);
+               return;
+            }
+            now = getTimer();
+            deltaMs = now - int(state.lastTime);
+            state.lastTime = now;
+            if(deltaMs <= 0)
+            {
+               return;
+            }
+            if(deltaMs > 500)
+            {
+               deltaMs = 500;
+            }
+            state.accumulatedMs = Number(state.accumulatedMs) + deltaMs;
+            framesToAdvance = int(Number(state.accumulatedMs) / NATIVE_FRAME_INTERVAL_MS);
+            if(framesToAdvance <= 0)
+            {
+               return;
+            }
+            state.accumulatedMs = Number(state.accumulatedMs) - framesToAdvance * NATIVE_FRAME_INTERVAL_MS;
+            current = targetAction.currentFrame;
+            isLoop = Boolean(state.isLooping);
+            i = 0;
+            if(isLoop)
+            {
+               if(framesToAdvance > total)
+               {
+                  framesToAdvance %= total;
+               }
+               while(i < framesToAdvance)
+               {
+                  current++;
+                  if(current > total)
+                  {
+                     current = 1;
+                  }
+                  targetAction.gotoAndStop(current);
+                  i++;
+               }
+            }
+            else
+            {
+               reachedEnd = false;
+               while(i < framesToAdvance)
+               {
+                  current++;
+                  if(current >= total)
+                  {
+                     current = total;
+                     targetAction.gotoAndStop(current);
+                     reachedEnd = true;
+                     break;
+                  }
+                  targetAction.gotoAndStop(current);
+                  i++;
+               }
+               if(reachedEnd)
+               {
+                  stopNativeAction(pet);
+                  return;
+               }
+            }
+         };
+         state.handler = handler;
+         nativeActions[pet] = state;
+         pet.addEventListener(Event.ENTER_FRAME,handler,false,0,true);
       }
       
       private function findAnimatedDescendant(param1:DisplayObjectContainer, param2:int) : MovieClip
