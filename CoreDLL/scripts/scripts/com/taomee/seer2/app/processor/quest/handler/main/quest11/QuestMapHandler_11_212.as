@@ -9,7 +9,6 @@ package com.taomee.seer2.app.processor.quest.handler.main.quest11
    import com.taomee.seer2.app.processor.quest.handler.main.quest11.interactive.BloodBar;
    import com.taomee.seer2.app.quest.QuestManager;
    import com.taomee.seer2.app.utils.MovieClipUtil;
-   import com.taomee.seer2.app.utils.NpcUtil;
    import com.taomee.seer2.core.utils.DisplayObjectUtil;
    import com.taomee.seer2.core.utils.URLUtil;
    import flash.display.MovieClip;
@@ -194,68 +193,12 @@ package com.taomee.seer2.app.processor.quest.handler.main.quest11
       
       private function speekStory() : void
       {
-         this.addAnimation_4();
-         this._animation_4.gotoAndStop(1);
-         this._animation_4.addFrameScript(0,function():void
-         {
-            _animation_4.addFrameScript(0,null);
-            playMC(function():void
-            {
-               NpcDialog.show(NpcUtil.getSeerNpcId(),"我",[[4,"什么嘛！！！关键时候没办法射击了……（淘米你搞什么！）"]],["这下完了……"],[function():void
-               {
-                  _animation_4.gotoAndStop(2);
-                  _animation_4.addFrameScript(1,function():void
-                  {
-                     _animation_4.addFrameScript(1,null);
-                     playMC(function():void
-                     {
-                        NpcDialog.show(14,"S",[[2,"不就是个被驱逐出去的火幻氏族酋长嘛！你别神气！下次有你好受的！"]],["什么？巴尔卡？酋长？那……洛克呢？"],[function():void
-                        {
-                           _animation_4.gotoAndStop(3);
-                           _animation_4.addFrameScript(2,function():void
-                           {
-                              _animation_4.addFrameScript(2,null);
-                              playMC(function():void
-                              {
-                                 NpcDialog.show(NpcUtil.getSeerNpcId(),"我",[[3,"可恶！又让他逃走了！！！！"]],["巴尔卡你别走……"],[function():void
-                                 {
-                                    NpcDialog.show(31,"巴卡尔",[[2,"我没什么好说的……我只不过是个被驱逐的废材……"]],["不是……我们不是这个意思……"],[function():void
-                                    {
-                                       _animation_4.gotoAndStop(4);
-                                       _animation_4.addFrameScript(3,function():void
-                                       {
-                                          _animation_4.addFrameScript(3,null);
-                                          playMC(function():void
-                                          {
-                                             NpcDialog.show(NpcUtil.getSeerNpcId(),"我",[[0,"没想到……巴尔卡竟然是火幻氏族酋长……对了！脉灵兽你还好吧？我送你去我们实验室治疗吧！"]],["我看你伤势不轻……"],[function():void
-                                             {
-                                                removeAnimation_3();
-                                                _animation_4.gotoAndStop(5);
-                                                _animation_4.addFrameScript(4,function():void
-                                                {
-                                                   _animation_4.addFrameScript(4,null);
-                                                   playMC(function():void
-                                                   {
-                                                      DisplayObjectUtil.removeFromParent(_animation_4);
-                                                      NpcDialog.show(NpcUtil.getSeerNpcId(),"我",[[0,"我去向伊娃博士报告！看来要加紧对水脉氏族的巡逻工作了！这里交给你们了，我先回去！"]],["（返回实验室）"],[function():void
-                                                      {
-                                                         QuestManager.completeStep(_quest.id,5);
-                                                      }]);
-                                                   });
-                                                });
-                                             }]);
-                                          });
-                                       });
-                                    }]);
-                                 }]);
-                              });
-                           });
-                        }]);
-                     });
-                  });
-               }]);
-            });
-         });
+         /*
+          * Decompilation error
+          * Timeout (1 minute) was reached
+          * Instruction count: 20
+          */
+         throw new flash.errors.IllegalOperationError("Not decompiled due to timeout");
       }
       
       private function playMC(param1:Function) : void

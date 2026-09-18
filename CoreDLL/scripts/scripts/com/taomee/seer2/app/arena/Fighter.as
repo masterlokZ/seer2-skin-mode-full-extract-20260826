@@ -73,6 +73,8 @@ package com.taomee.seer2.app.arena
       
       private var _fighterBuffResultInfo:BuffResultInfo;
       
+      private var _appearTriggered:Boolean = false;
+      
       public function Fighter(param1:FighterInfo, param2:uint, param3:ArenaDataInfo, param4:Boolean = false)
       {
          super();
@@ -334,17 +336,31 @@ package com.taomee.seer2.app.arena
          super.action = this._currentAction;
       }
       
+      public function hasAppearAction() : Boolean
+      {
+         return this._fighterAnimation != null && this._fighterAnimation.hasAppearAction();
+      }
+      
+      override public function set visible(param1:Boolean) : void
+      {
+         var wasVisible:Boolean = super.visible;
+         super.visible = param1;
+         if(!wasVisible && param1 && this._fighterSide == 1 && !this._appearTriggered)
+         {
+            if(this.hasAppearAction())
+            {
+               this._appearTriggered = true;
+               this.action = "个性出场";
+            }
+         }
+      }
+      
       public function winAction() : void
       {
       }
       
       public function active() : void
       {
-         this._currentAction = "个性出场";
-         if(this._fighterInfo.hp <= 0)
-         {
-            this._currentAction = "失败";
-         }
          if(this._fighterAnimation == null)
          {
             this._fighterAnimation = new FighterAnimation();
@@ -372,6 +388,18 @@ package com.taomee.seer2.app.arena
                this._fighterAnimation.setup(this._fighterMC,this._fighterInfo.resourceId);
             }
             animation = this._fighterAnimation;
+         }
+         if(this._fighterSide == 1 && this.hasAppearAction())
+         {
+            this._currentAction = "待机";
+         }
+         else
+         {
+            this._currentAction = "个性出场";
+         }
+         if(this._fighterInfo.hp <= 0)
+         {
+            this._currentAction = "失败";
          }
          this.action = this._currentAction;
       }
