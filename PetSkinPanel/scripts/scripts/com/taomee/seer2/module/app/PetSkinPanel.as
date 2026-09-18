@@ -1,5 +1,6 @@
 package com.taomee.seer2.module.app
 {
+   import com.taomee.seer2.app.actor.ActorManager;
    import com.taomee.seer2.app.component.PetDemoDisplayer;
    import com.taomee.seer2.app.config.PetConfig;
    import com.taomee.seer2.app.config.PetSkinConfig;
@@ -18,6 +19,7 @@ package com.taomee.seer2.module.app
    import flash.display.Bitmap;
    import flash.display.BitmapData;
    import flash.display.DisplayObject;
+   import flash.display.DisplayObjectContainer;
    import flash.display.Loader;
    import flash.display.MovieClip;
    import flash.display.Shape;
@@ -30,6 +32,7 @@ package com.taomee.seer2.module.app
    import flash.events.SecurityErrorEvent;
    import flash.geom.Point;
    import flash.geom.Rectangle;
+   import flash.net.SharedObject;
    import flash.net.URLLoader;
    import flash.net.URLRequest;
    import flash.text.TextField;
@@ -143,6 +146,18 @@ package com.taomee.seer2.module.app
       
       private var _skinDisplayRevision:uint = 0;
       
+      private var _quickSelect:Boolean = true;
+      
+      private var _quickSelectBtn:Sprite;
+      
+      private var _quickSelectBox:Shape;
+      
+      private var _quickSelectTxt:TextField;
+      
+      private var _quickSelectHover:Boolean = false;
+      
+      private var _isUpdatingSkinVec:Boolean = false;
+      
       public function PetSkinPanel()
       {
          super();
@@ -217,6 +232,10 @@ package com.taomee.seer2.module.app
          this.clearLauncherSkinLoader();
          if(this._currPetInfo != null)
          {
+            if(this._morePanel != null && this._morePanel.visible && this._morePage == 0)
+            {
+               this._morePage = this.locateActiveSkinPage();
+            }
             this.updateSkinVec(true);
          }
       }
@@ -386,6 +405,8 @@ package com.taomee.seer2.module.app
          this._moreNextBtn.y = 5;
          this._morePanel.addChild(this._moreNextBtn);
          this._morePanel.addChild(this._collapseBtn);
+         this._quickSelect = this.readQuickSelectConfig();
+         this.createQuickSelectButton();
          this._morePage = 0;
          this._morePanel.visible = false;
          addChild(this._morePanel);
@@ -401,7 +422,7 @@ package com.taomee.seer2.module.app
          this._morePanel.graphics.lineStyle(1,1525726,0.9);
          this._morePanel.graphics.moveTo(14,34);
          this._morePanel.graphics.lineTo(666,34);
-         var _loc1_:TextField = this.createLabel(18,5,180,25,18,TextFormatAlign.LEFT,6750207);
+         var _loc1_:TextField = this.createLabel(18,5,80,25,18,TextFormatAlign.LEFT,6750207);
          _loc1_.text = String.fromCharCode(20840,37096,30382,32932);
          this._morePanel.addChild(_loc1_);
       }
@@ -723,6 +744,19 @@ package com.taomee.seer2.module.app
       
       private function updateSkinVec(param1:Boolean = false) : void
       {
+         this._isUpdatingSkinVec = true;
+         try
+         {
+            this.internalUpdateSkinVec(param1);
+         }
+         finally
+         {
+            this._isUpdatingSkinVec = false;
+         }
+      }
+      
+      private function internalUpdateSkinVec(param1:Boolean = false) : void
+      {
          var _loc2_:Array = null;
          var _loc3_:* = 0;
          var _loc4_:int = 0;
@@ -742,6 +776,22 @@ package com.taomee.seer2.module.app
             this.appendOfficialSkinIds(_loc2_,this._allSkinVec);
          }
          this.appendLauncherSkinIds(this._allSkinVec);
+         var basePetId:uint = uint(this._currPetInfo.resourceId);
+         var hasBasePet:Boolean = false;
+         var k:int = 0;
+         while(k < this._allSkinVec.length)
+         {
+            if(this._allSkinVec[k] == basePetId)
+            {
+               hasBasePet = true;
+               break;
+            }
+            k++;
+         }
+         if(!hasBasePet && basePetId > 0)
+         {
+            this._allSkinVec.unshift(basePetId);
+         }
          if(this._allSkinVec.length > 0)
          {
             _loc3_ = uint(PetSkinConfig.getSkinId(uint(this._currPetInfo.resourceId)));
@@ -766,7 +816,18 @@ package com.taomee.seer2.module.app
          {
             this._skinPage = _loc6_ - 1;
          }
-         if(this._morePage >= _loc7_)
+         if(this._morePanel != null && this._morePanel.visible)
+         {
+            if(!param1)
+            {
+               this._morePage = this.locateActiveSkinPage();
+            }
+            else if(this._morePage >= _loc7_)
+            {
+               this._morePage = _loc7_ - 1;
+            }
+         }
+         else if(this._morePage >= _loc7_)
          {
             this._morePage = _loc7_ - 1;
          }
@@ -839,6 +900,7 @@ package com.taomee.seer2.module.app
             return;
          }
          this.ensureMoreCells();
+         this._morePage = this.locateActiveSkinPage();
          this._morePanel.visible = true;
          this._moreBtn.visible = false;
          this._collapseBtn.visible = true;
@@ -896,6 +958,7 @@ package com.taomee.seer2.module.app
                if(cell != null)
                {
                   cell.reset();
+                  this.setCellHighlight(cell,false);
                }
                index++;
             }
@@ -996,6 +1059,7 @@ package com.taomee.seer2.module.app
       
       private function updateMoreCells() : void
       {
+         var cellSkinId:uint = 0;
          var _loc1_:int = 0;
          var _loc2_:uint = 0;
          var _loc3_:uint = this.getMorePageCount();
@@ -1004,6 +1068,7 @@ package com.taomee.seer2.module.app
          {
             return;
          }
+         var activeSkinId:uint = this.getActiveSkinId();
          _loc1_ = 0;
          while(_loc1_ < this._moreCells.length)
          {
@@ -1012,8 +1077,13 @@ package com.taomee.seer2.module.app
             _loc2_ = this._morePage * MORE_PAGE_SIZE + _loc1_;
             if(this._allSkinVec != null && _loc2_ < this._allSkinVec.length)
             {
-               _loc4_.setSkinInfo(this._currPetInfo,this._allSkinVec[_loc2_],this.isLauncherSkinId(this._allSkinVec[_loc2_]),this.getLauncherSkinName(this._allSkinVec[_loc2_]),this.getLauncherSkinAvatarKind(this._allSkinVec[_loc2_]),true,true);
-               _loc4_.selected = this._allSkinVec[_loc2_] == this._currSkinId;
+               cellSkinId = this._allSkinVec[_loc2_];
+               _loc4_.setSkinInfo(this._currPetInfo,cellSkinId,this.isLauncherSkinId(cellSkinId),this.getLauncherSkinName(cellSkinId),this.getLauncherSkinAvatarKind(cellSkinId),true,true);
+               this.setCellHighlight(_loc4_,cellSkinId == activeSkinId);
+            }
+            else
+            {
+               this.setCellHighlight(_loc4_,false);
             }
             _loc1_++;
          }
@@ -1058,17 +1128,290 @@ package com.taomee.seer2.module.app
          }
       }
       
-      private function selectMoreSkin(param1:MouseEvent) : void
+      private function createQuickSelectButton() : void
       {
-         var _loc2_:PetCell = param1.currentTarget as PetCell;
-         if(_loc2_ == null || _loc2_.skinId == 0)
+         this._quickSelectBtn = new Sprite();
+         this._quickSelectBtn.x = 104;
+         this._quickSelectBtn.y = 4;
+         this._quickSelectBtn.buttonMode = true;
+         this._quickSelectBtn.useHandCursor = true;
+         this._quickSelectBtn.mouseChildren = false;
+         this._quickSelectBox = new Shape();
+         this._quickSelectBtn.addChild(this._quickSelectBox);
+         this._quickSelectTxt = this.createLabel(23,1,64,22,12,TextFormatAlign.LEFT,6750207);
+         this._quickSelectTxt.text = String.fromCharCode(24555,36895,36873,25321);
+         this._quickSelectBtn.addChild(this._quickSelectTxt);
+         this._quickSelectBtn.addEventListener(MouseEvent.CLICK,this.onToggleQuickSelect);
+         this._quickSelectBtn.addEventListener(MouseEvent.MOUSE_OVER,this.onQuickSelectOver);
+         this._quickSelectBtn.addEventListener(MouseEvent.MOUSE_OUT,this.onQuickSelectOut);
+         this.updateQuickSelectUI();
+         this._morePanel.addChild(this._quickSelectBtn);
+      }
+      
+      private function onToggleQuickSelect(param1:MouseEvent) : void
+      {
+         this._quickSelect = !this._quickSelect;
+         this.writeQuickSelectConfig(this._quickSelect);
+         this.updateQuickSelectUI();
+      }
+      
+      private function onQuickSelectOver(param1:MouseEvent) : void
+      {
+         this._quickSelectHover = true;
+         this.updateQuickSelectUI();
+      }
+      
+      private function onQuickSelectOut(param1:MouseEvent) : void
+      {
+         this._quickSelectHover = false;
+         this.updateQuickSelectUI();
+      }
+      
+      private function updateQuickSelectUI() : void
+      {
+         if(this._quickSelectBtn == null || this._quickSelectBox == null || this._quickSelectTxt == null)
          {
             return;
          }
-         this._currSkinId = _loc2_.skinId;
-         this.closeMorePanel();
+         this._quickSelectBtn.graphics.clear();
+         var _loc1_:uint = 0;
+         var _loc2_:uint = 0;
+         var _loc3_:uint = 0;
+         var _loc4_:uint = 0;
+         var _loc5_:uint = 0;
+         if(this._quickSelect)
+         {
+            _loc1_ = this._quickSelectHover ? 10092543 : 6750207;
+            _loc2_ = this._quickSelectHover ? 726886 : 538244;
+            _loc3_ = 6750207;
+            _loc4_ = 68153;
+            _loc5_ = 6750207;
+         }
+         else
+         {
+            _loc1_ = this._quickSelectHover ? 6710886 : 4473924;
+            _loc2_ = this._quickSelectHover ? 657930 : 263695;
+            _loc3_ = 5592405;
+            _loc4_ = 263695;
+            _loc5_ = 8947848;
+         }
+         this._quickSelectBtn.graphics.lineStyle(1,_loc1_,0.95);
+         this._quickSelectBtn.graphics.beginFill(_loc2_,0.95);
+         this._quickSelectBtn.graphics.drawRoundRect(0,0,90,24,7,7);
+         this._quickSelectBtn.graphics.endFill();
+         this._quickSelectBox.graphics.clear();
+         this._quickSelectBox.graphics.lineStyle(1.2,_loc3_,1);
+         this._quickSelectBox.graphics.beginFill(_loc4_,1);
+         this._quickSelectBox.graphics.drawRoundRect(6,4,14,14,4,4);
+         this._quickSelectBox.graphics.endFill();
+         if(this._quickSelect)
+         {
+            this._quickSelectBox.graphics.lineStyle(2,6750207,1);
+            this._quickSelectBox.graphics.moveTo(8,11);
+            this._quickSelectBox.graphics.lineTo(12,15);
+            this._quickSelectBox.graphics.lineTo(18,7);
+         }
+         var _loc6_:TextFormat = this._quickSelectTxt.defaultTextFormat;
+         _loc6_.color = _loc5_;
+         this._quickSelectTxt.defaultTextFormat = _loc6_;
+         this._quickSelectTxt.text = String.fromCharCode(24555,36895,36873,25321);
+      }
+      
+      private function getQuickSelectStorageKey() : String
+      {
+         try
+         {
+            if(ActorManager.actorInfo != null && ActorManager.actorInfo.id != 0)
+            {
+               return "quickSelect_" + ActorManager.actorInfo.id;
+            }
+         }
+         catch(error:Error)
+         {
+         }
+         return "quickSelect_global";
+      }
+      
+      private function readQuickSelectConfig() : Boolean
+      {
+         return true;
+      }
+      
+      private function writeQuickSelectConfig(param1:Boolean) : void
+      {
+         var _loc2_:SharedObject = null;
+         var _loc3_:String = null;
+         try
+         {
+            _loc2_ = SharedObject.getLocal("Seer2_PetSkin_Config");
+            if(_loc2_ != null && _loc2_.data != null)
+            {
+               _loc3_ = this.getQuickSelectStorageKey();
+               _loc2_.data[_loc3_] = param1;
+               _loc2_.data["quickSelect"] = param1;
+               _loc2_.flush();
+            }
+         }
+         catch(error:Error)
+         {
+         }
+      }
+      
+      private function getSkinDisplayName(param1:uint) : String
+      {
+         var _loc2_:String = this.getLauncherSkinName(param1);
+         if(_loc2_ != null && _loc2_.length > 0)
+         {
+            return _loc2_;
+         }
+         var _loc3_:PetDefinition = PetConfig.getPetDefinition(param1);
+         if(_loc3_ != null && _loc3_.name != null && _loc3_.name.length > 0)
+         {
+            return _loc3_.name;
+         }
+         return "皮肤 " + param1;
+      }
+      
+      private function getActiveSkinId() : uint
+      {
+         if(this._currPetInfo == null)
+         {
+            return 0;
+         }
+         var activeSkinId:uint = uint(PetSkinConfig.getSkinId(uint(this._currPetInfo.resourceId)));
+         if(activeSkinId == 0)
+         {
+            activeSkinId = uint(this._currPetInfo.resourceId);
+         }
+         return activeSkinId;
+      }
+      
+      private function locateActiveSkinPage() : uint
+      {
+         var activeSkinId:uint = this.getActiveSkinId();
+         if(this._allSkinVec == null || this._allSkinVec.length == 0 || activeSkinId == 0)
+         {
+            return 0;
+         }
+         var index:int = 0;
+         while(index < this._allSkinVec.length)
+         {
+            if(this._allSkinVec[index] == activeSkinId)
+            {
+               return uint(index / MORE_PAGE_SIZE);
+            }
+            index++;
+         }
+         return 0;
+      }
+      
+      private function createHighlightSprite() : Sprite
+      {
+         var spr:Sprite = new Sprite();
+         spr.mouseEnabled = false;
+         spr.mouseChildren = false;
+         spr.graphics.clear();
+         spr.graphics.lineStyle(4,65535,0.45);
+         spr.graphics.drawRoundRect(-43.5,-43.5,87,87,8,8);
+         spr.graphics.lineStyle(2.5,16766720,1);
+         spr.graphics.drawRoundRect(-42,-42,84,84,6,6);
+         spr.graphics.lineStyle(1,16777130,0.6);
+         spr.graphics.drawRoundRect(-40.5,-40.5,81,81,4,4);
+         spr.graphics.lineStyle(1,16766720,1);
+         spr.graphics.beginFill(11081,0.95);
+         spr.graphics.drawRoundRect(-41,-41,32,16,4,4);
+         spr.graphics.endFill();
+         var txt:TextField = this.createLabel(-41,-42,32,16,10,TextFormatAlign.CENTER,16766720);
+         txt.text = String.fromCharCode(24403,21069);
+         spr.addChild(txt);
+         return spr;
+      }
+      
+      private function setCellHighlight(cell:PetCell, isHighlight:Boolean) : void
+      {
+         var ui:DisplayObjectContainer = null;
+         if(cell == null)
+         {
+            return;
+         }
+         cell.selected = isHighlight;
+         var container:DisplayObjectContainer = null;
+         try
+         {
+            if(cell.numChildren > 0)
+            {
+               ui = cell.getChildAt(0) as DisplayObjectContainer;
+               if(ui != null && "content" in ui && ui["content"] != null)
+               {
+                  container = ui["content"] as DisplayObjectContainer;
+               }
+            }
+         }
+         catch(error:Error)
+         {
+         }
+         if(container == null)
+         {
+            container = cell;
+         }
+         var hl:Sprite = container.getChildByName("_activeHighlight") as Sprite;
+         if(!isHighlight)
+         {
+            if(hl != null)
+            {
+               hl.visible = false;
+            }
+            return;
+         }
+         if(hl == null)
+         {
+            hl = this.createHighlightSprite();
+            hl.name = "_activeHighlight";
+            container.addChild(hl);
+         }
+         if(container == cell)
+         {
+            hl.x = 44;
+            hl.y = 65;
+         }
+         else
+         {
+            hl.x = 0;
+            hl.y = 0;
+         }
+         hl.visible = true;
+         container.setChildIndex(hl,container.numChildren - 1);
+      }
+      
+      private function applySkin(param1:uint) : void
+      {
+         if(this._currPetInfo == null || param1 == 0)
+         {
+            return;
+         }
+         this._currSkinId = param1;
          this.clearRightSkinSelection();
-         this.updateSkinDisplay();
+         PetSkinConfig.setPetSkin(uint(this._currPetInfo.resourceId),this._currSkinId);
+         this.updatePetDisplay();
+         this.updateSkinVec(true);
+         if(this._morePanel != null && this._morePanel.visible)
+         {
+            this._morePanel.visible = true;
+            this._moreBtn.visible = false;
+            this._collapseBtn.visible = true;
+            this._modelLayer.visible = false;
+         }
+      }
+      
+      private function selectMoreSkin(param1:MouseEvent) : void
+      {
+         var cell:PetCell = param1.currentTarget as PetCell;
+         if(cell == null || cell.skinId == 0)
+         {
+            return;
+         }
+         var targetSkinId:uint = cell.skinId;
+         this.applySkin(targetSkinId);
       }
       
       private function clearRightSkinSelection() : void
@@ -1077,7 +1420,7 @@ package com.taomee.seer2.module.app
          _loc1_ = 0;
          while(_loc1_ < this._skinCellVec.length)
          {
-            this._skinCellVec[_loc1_].selected = false;
+            this.setCellHighlight(this._skinCellVec[_loc1_],false);
             _loc1_++;
          }
       }
@@ -1099,9 +1442,11 @@ package com.taomee.seer2.module.app
       
       private function updateSkinCell() : void
       {
+         var targetPreviewSkinId:uint = 0;
+         var rSkinId:uint = 0;
+         var isRightActive:Boolean = false;
          var _loc1_:PetCell = null;
          var _loc2_:int = 0;
-         this._currSkinId = 0;
          DisplayObjectUtil.disableButton(this._nextBtn);
          DisplayObjectUtil.disableButton(this._preBtn);
          _loc2_ = 0;
@@ -1110,24 +1455,38 @@ package com.taomee.seer2.module.app
          {
             _loc1_ = this._skinCellVec[_loc2_];
             _loc1_.reset();
+            this.setCellHighlight(_loc1_,false);
             _loc2_++;
          }
+         var activeSkinId:uint = this.getActiveSkinId();
          if(this._skinVec.length > 0)
          {
+            targetPreviewSkinId = 0;
             _loc2_ = 0;
             _loc1_ = null;
             while(_loc2_ < 4 && _loc2_ + this._skinPage * 4 < this._skinVec.length)
             {
                _loc1_ = this._skinCellVec[_loc2_];
-               _loc1_.setSkinInfo(this._currPetInfo,this._skinVec[_loc2_ + this._skinPage * 4],this.isLauncherSkinId(this._skinVec[_loc2_ + this._skinPage * 4]),this.getLauncherSkinName(this._skinVec[_loc2_ + this._skinPage * 4]),this.getLauncherSkinAvatarKind(this._skinVec[_loc2_ + this._skinPage * 4]));
-               _loc1_.selected = false;
+               rSkinId = this._skinVec[_loc2_ + this._skinPage * 4];
+               _loc1_.setSkinInfo(this._currPetInfo,rSkinId,this.isLauncherSkinId(rSkinId),this.getLauncherSkinName(rSkinId),this.getLauncherSkinAvatarKind(rSkinId));
+               isRightActive = rSkinId == activeSkinId;
+               this.setCellHighlight(_loc1_,isRightActive);
+               if(isRightActive)
+               {
+                  targetPreviewSkinId = rSkinId;
+               }
                _loc2_++;
             }
-            this._currSkinId = this._skinCellVec[0].skinId;
-            this._skinCellVec[0].dispatchEvent(new MouseEvent("click"));
+            if(targetPreviewSkinId == 0)
+            {
+               targetPreviewSkinId = this._skinCellVec[0].skinId;
+            }
+            this._currSkinId = targetPreviewSkinId;
+            this.updateSkinDisplay();
          }
          else
          {
+            this._currSkinId = 0;
             this.updateSkinDisplay();
          }
          if(this._skinPage * 4 + 4 < this._skinVec.length)
@@ -1142,27 +1501,26 @@ package com.taomee.seer2.module.app
       
       private function selectSkin(param1:MouseEvent) : void
       {
-         var _loc2_:PetCell = null;
-         var _loc3_:int = 0;
-         _loc3_ = 0;
-         _loc2_ = null;
-         while(_loc3_ < this._skinCellVec.length)
+         var _loc2_:PetCell = param1.currentTarget as PetCell;
+         if(_loc2_ == null || _loc2_.skinId == 0)
          {
-            _loc2_ = this._skinCellVec[_loc3_];
-            _loc2_.selected = false;
-            _loc3_++;
+            return;
          }
-         _loc2_ = param1.currentTarget as PetCell;
-         _loc2_.selected = true;
-         this._currSkinId = _loc2_.skinId;
-         this.updateSkinDisplay();
+         var targetSkinId:uint = _loc2_.skinId;
+         if(this._isUpdatingSkinVec)
+         {
+            this._currSkinId = targetSkinId;
+            this.updateSkinDisplay();
+            return;
+         }
+         this.applySkin(targetSkinId);
       }
       
       private function selectPet(param1:MouseEvent) : void
       {
          var _loc2_:PetCell = null;
          var _loc3_:int = 0;
-         var _loc4_:Boolean = this._morePanel != null && this._morePanel.visible;
+         var isMorePanelOpen:Boolean = this._morePanel != null && this._morePanel.visible;
          _loc3_ = 0;
          _loc2_ = null;
          while(_loc3_ < this._petCellVec.length)
@@ -1174,20 +1532,34 @@ package com.taomee.seer2.module.app
          _loc2_ = param1.currentTarget as PetCell;
          _loc2_.selected = true;
          this._currPetInfo = _loc2_.petInfo;
-         this.updateSkinVec(true);
+         this.updateSkinVec(false);
+         if(isMorePanelOpen)
+         {
+            this._morePage = this.locateActiveSkinPage();
+            this.updateMoreCells();
+         }
          this.updatePetDisplay();
-         if(_loc4_)
+         if(isMorePanelOpen)
          {
             this._morePanel.visible = true;
             this._moreBtn.visible = false;
             this._collapseBtn.visible = true;
             this._modelLayer.visible = false;
+            if(this._morePanel.parent != null)
+            {
+               this._morePanel.parent.setChildIndex(this._morePanel,this._morePanel.parent.numChildren - 1);
+            }
+            if(this._collapseBtn.parent != null)
+            {
+               this._collapseBtn.parent.setChildIndex(this._collapseBtn,this._collapseBtn.parent.numChildren - 1);
+            }
          }
       }
       
       private function updatePetDisplay() : void
       {
          var revision:uint = 0;
+         revision = 0;
          revision = 0;
          revision = 0;
          revision = 0;
@@ -1215,6 +1587,7 @@ package com.taomee.seer2.module.app
       private function updateSkinDisplay() : void
       {
          var revision:uint = 0;
+         revision = 0;
          revision = 0;
          revision = 0;
          revision = 0;
@@ -1381,10 +1754,7 @@ package com.taomee.seer2.module.app
       
       private function onUse(param1:MouseEvent) : void
       {
-         this.closeMorePanel();
-         PetSkinConfig.setPetSkin(this._currPetInfo.resourceId,this._currSkinId);
-         this.updatePetDisplay();
-         this.updateSkinVec();
+         this.applySkin(this._currSkinId);
       }
       
       private function onSearch(param1:MouseEvent) : void
