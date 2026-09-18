@@ -2,6 +2,7 @@ package com.taomee.seer2.module.app
 {
    import com.taomee.seer2.app.actor.ActorManager;
    import com.taomee.seer2.app.component.PetDemoDisplayer;
+   import flash.net.SharedObject;
    import com.taomee.seer2.app.config.PetConfig;
    import com.taomee.seer2.app.config.PetSkinConfig;
    import com.taomee.seer2.app.config.PetSkinDefineConfig;
@@ -32,7 +33,6 @@ package com.taomee.seer2.module.app
    import flash.events.SecurityErrorEvent;
    import flash.geom.Point;
    import flash.geom.Rectangle;
-   import flash.net.SharedObject;
    import flash.net.URLLoader;
    import flash.net.URLRequest;
    import flash.text.TextField;
@@ -1059,7 +1059,6 @@ package com.taomee.seer2.module.app
       
       private function updateMoreCells() : void
       {
-         var cellSkinId:uint = 0;
          var _loc1_:int = 0;
          var _loc2_:uint = 0;
          var _loc3_:uint = this.getMorePageCount();
@@ -1077,7 +1076,7 @@ package com.taomee.seer2.module.app
             _loc2_ = this._morePage * MORE_PAGE_SIZE + _loc1_;
             if(this._allSkinVec != null && _loc2_ < this._allSkinVec.length)
             {
-               cellSkinId = this._allSkinVec[_loc2_];
+               var cellSkinId:uint = this._allSkinVec[_loc2_];
                _loc4_.setSkinInfo(this._currPetInfo,cellSkinId,this.isLauncherSkinId(cellSkinId),this.getLauncherSkinName(cellSkinId),this.getLauncherSkinAvatarKind(cellSkinId),true,true);
                this.setCellHighlight(_loc4_,cellSkinId == activeSkinId);
             }
@@ -1329,7 +1328,6 @@ package com.taomee.seer2.module.app
       
       private function setCellHighlight(cell:PetCell, isHighlight:Boolean) : void
       {
-         var ui:DisplayObjectContainer = null;
          if(cell == null)
          {
             return;
@@ -1340,7 +1338,7 @@ package com.taomee.seer2.module.app
          {
             if(cell.numChildren > 0)
             {
-               ui = cell.getChildAt(0) as DisplayObjectContainer;
+               var ui:DisplayObjectContainer = cell.getChildAt(0) as DisplayObjectContainer;
                if(ui != null && "content" in ui && ui["content"] != null)
                {
                   container = ui["content"] as DisplayObjectContainer;
@@ -1442,9 +1440,6 @@ package com.taomee.seer2.module.app
       
       private function updateSkinCell() : void
       {
-         var targetPreviewSkinId:uint = 0;
-         var rSkinId:uint = 0;
-         var isRightActive:Boolean = false;
          var _loc1_:PetCell = null;
          var _loc2_:int = 0;
          DisplayObjectUtil.disableButton(this._nextBtn);
@@ -1461,15 +1456,15 @@ package com.taomee.seer2.module.app
          var activeSkinId:uint = this.getActiveSkinId();
          if(this._skinVec.length > 0)
          {
-            targetPreviewSkinId = 0;
+            var targetPreviewSkinId:uint = 0;
             _loc2_ = 0;
             _loc1_ = null;
             while(_loc2_ < 4 && _loc2_ + this._skinPage * 4 < this._skinVec.length)
             {
                _loc1_ = this._skinCellVec[_loc2_];
-               rSkinId = this._skinVec[_loc2_ + this._skinPage * 4];
+               var rSkinId:uint = this._skinVec[_loc2_ + this._skinPage * 4];
                _loc1_.setSkinInfo(this._currPetInfo,rSkinId,this.isLauncherSkinId(rSkinId),this.getLauncherSkinName(rSkinId),this.getLauncherSkinAvatarKind(rSkinId));
-               isRightActive = rSkinId == activeSkinId;
+               var isRightActive:Boolean = (rSkinId == activeSkinId);
                this.setCellHighlight(_loc1_,isRightActive);
                if(isRightActive)
                {
@@ -1562,7 +1557,6 @@ package com.taomee.seer2.module.app
          revision = 0;
          revision = 0;
          revision = 0;
-         revision = 0;
          var url:String = null;
          revision = ++this._petDisplayRevision;
          this._petName.text = PetConfig.getPetDefinition(uint(this._currPetInfo.resourceId)).name;
@@ -1577,7 +1571,7 @@ package com.taomee.seer2.module.app
             }
             _modelLayer.addChild(_petDisplayer);
             _petDisplayer.mask = _petModelMask;
-            fitModelDisplayer(_petDisplayer,new Rectangle(18,65,344,250),180,200,uint(this._currPetInfo.resourceId));
+            fitModelDisplayer(_petDisplayer,new Rectangle(18,65,344,250),180,200);
             raiseInteractiveControls();
          });
          this._changeBtn.visible = Boolean(this._currPetInfo.getPetDefinition()) && this._currPetInfo.getPetDefinition().chgMonId != 0;
@@ -1587,7 +1581,6 @@ package com.taomee.seer2.module.app
       private function updateSkinDisplay() : void
       {
          var revision:uint = 0;
-         revision = 0;
          revision = 0;
          revision = 0;
          revision = 0;
@@ -1617,7 +1610,7 @@ package com.taomee.seer2.module.app
                }
                _modelLayer.addChild(_skinDisplayer);
                _skinDisplayer.mask = _skinModelMask;
-               fitModelDisplayer(_skinDisplayer,new Rectangle(382,65,330,250),520,200,this._currSkinId);
+               fitModelDisplayer(_skinDisplayer,new Rectangle(382,65,330,250),520,200);
                raiseInteractiveControls();
             });
          }
@@ -1635,10 +1628,8 @@ package com.taomee.seer2.module.app
          param1.y = param3;
       }
       
-      private function fitModelDisplayer(param1:PetDemoDisplayer, param2:Rectangle, defaultX:Number, defaultY:Number, resId:uint) : void
+      private function fitModelDisplayer(param1:PetDemoDisplayer, param2:Rectangle, defaultX:Number, defaultY:Number) : void
       {
-         var maxWidth:Number;
-         var maxHeight:Number;
          var displayer:PetDemoDisplayer = param1;
          var safeRect:Rectangle = param2;
          var bounds:Rectangle = null;
@@ -1654,10 +1645,6 @@ package com.taomee.seer2.module.app
          displayer.scaleX = displayer.scaleY = 1;
          displayer.x = defaultX;
          displayer.y = defaultY;
-         if(!this.isLauncherSkinId(resId) && resId < 70000)
-         {
-            return;
-         }
          try
          {
             bounds = displayer.getBounds(this._modelLayer);
@@ -1670,15 +1657,15 @@ package com.taomee.seer2.module.app
          {
             return;
          }
-         if(bounds.width >= 900 && bounds.height >= 500)
+         if(bounds.width >= 800 && bounds.height >= 450)
          {
             displayer.scaleX = displayer.scaleY = 1;
             displayer.x = defaultX;
             displayer.y = defaultY;
             return;
          }
-         maxWidth = right - left;
-         maxHeight = bottom - top;
+         var maxWidth:Number = right - left;
+         var maxHeight:Number = bottom - top;
          if(bounds.width > maxWidth || bounds.height > maxHeight)
          {
             fitScale = Math.min(1,maxWidth / bounds.width,maxHeight / bounds.height);
