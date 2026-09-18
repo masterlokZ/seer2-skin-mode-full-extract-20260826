@@ -1577,7 +1577,7 @@ package com.taomee.seer2.module.app
             }
             _modelLayer.addChild(_petDisplayer);
             _petDisplayer.mask = _petModelMask;
-            fitModelDisplayer(_petDisplayer,new Rectangle(18,65,344,250));
+            fitModelDisplayer(_petDisplayer,new Rectangle(18,65,344,250),180,200,uint(this._currPetInfo.resourceId));
             raiseInteractiveControls();
          });
          this._changeBtn.visible = Boolean(this._currPetInfo.getPetDefinition()) && this._currPetInfo.getPetDefinition().chgMonId != 0;
@@ -1617,7 +1617,7 @@ package com.taomee.seer2.module.app
                }
                _modelLayer.addChild(_skinDisplayer);
                _skinDisplayer.mask = _skinModelMask;
-               fitModelDisplayer(_skinDisplayer,new Rectangle(382,65,330,250));
+               fitModelDisplayer(_skinDisplayer,new Rectangle(382,65,330,250),520,200,this._currSkinId);
                raiseInteractiveControls();
             });
          }
@@ -1635,18 +1635,26 @@ package com.taomee.seer2.module.app
          param1.y = param3;
       }
       
-      private function fitModelDisplayer(param1:PetDemoDisplayer, param2:Rectangle) : void
+      private function fitModelDisplayer(param1:PetDemoDisplayer, param2:Rectangle, defaultX:Number, defaultY:Number, resId:uint) : void
       {
+         var maxWidth:Number;
+         var maxHeight:Number;
          var displayer:PetDemoDisplayer = param1;
          var safeRect:Rectangle = param2;
          var bounds:Rectangle = null;
-         var localBounds:Rectangle = null;
          var fitScale:Number = 1;
-         var left:Number = safeRect.left + MODEL_FIT_PADDING;
-         var right:Number = safeRect.right - MODEL_FIT_PADDING;
-         var top:Number = safeRect.top + MODEL_FIT_PADDING;
-         var bottom:Number = safeRect.bottom - MODEL_FIT_PADDING;
+         var left:Number = safeRect != null ? safeRect.left + MODEL_FIT_PADDING : 0;
+         var right:Number = safeRect != null ? safeRect.right - MODEL_FIT_PADDING : 0;
+         var top:Number = safeRect != null ? safeRect.top + MODEL_FIT_PADDING : 0;
+         var bottom:Number = safeRect != null ? safeRect.bottom - MODEL_FIT_PADDING : 0;
          if(displayer == null || safeRect == null || this._modelLayer == null || displayer.parent != this._modelLayer)
+         {
+            return;
+         }
+         displayer.scaleX = displayer.scaleY = 1;
+         displayer.x = defaultX;
+         displayer.y = defaultY;
+         if(!this.isLauncherSkinId(resId) && resId < 70000)
          {
             return;
          }
@@ -1662,43 +1670,23 @@ package com.taomee.seer2.module.app
          {
             return;
          }
-         if(bounds.width > right - left || bounds.height > bottom - top)
+         if(bounds.width >= 900 && bounds.height >= 500)
          {
-            try
-            {
-               localBounds = displayer.getBounds(displayer);
-            }
-            catch(localError:Error)
-            {
-               localBounds = null;
-            }
-            if(localBounds != null && localBounds.width > 1 && localBounds.height > 1)
-            {
-               fitScale = Math.min(1,(right - left) / localBounds.width,(bottom - top) / localBounds.height);
-               displayer.scaleX = displayer.scaleY = fitScale;
-               displayer.x = (left + right) * 0.5 - (localBounds.x + localBounds.width * 0.5) * fitScale;
-               displayer.y = bottom - localBounds.bottom * fitScale;
-               return;
-            }
+            displayer.scaleX = displayer.scaleY = 1;
+            displayer.x = defaultX;
+            displayer.y = defaultY;
+            return;
          }
-         if(bounds.left < left)
+         maxWidth = right - left;
+         maxHeight = bottom - top;
+         if(bounds.width > maxWidth || bounds.height > maxHeight)
          {
-            displayer.x += left - bounds.left;
-            bounds.offset(left - bounds.left,0);
-         }
-         if(bounds.right > right)
-         {
-            displayer.x -= bounds.right - right;
-            bounds.offset(-(bounds.right - right),0);
-         }
-         if(bounds.top < top)
-         {
-            displayer.y += top - bounds.top;
-            bounds.offset(0,top - bounds.top);
-         }
-         if(bounds.bottom > bottom)
-         {
-            displayer.y -= bounds.bottom - bottom;
+            fitScale = Math.min(1,maxWidth / bounds.width,maxHeight / bounds.height);
+            fitScale = Math.max(0.75,fitScale);
+            displayer.scaleX = displayer.scaleY = fitScale;
+            displayer.x = defaultX;
+            displayer.y = defaultY;
+            return;
          }
       }
       
