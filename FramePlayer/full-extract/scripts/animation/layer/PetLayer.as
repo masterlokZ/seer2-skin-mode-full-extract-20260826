@@ -64,6 +64,8 @@ package animation.layer
       
       private static const EXTERNAL_UClient_TARGET_BASELINE_Y:Number = 375;
       
+      private static const EXTERNAL_LEGACY_SCENE_SCALE:Number = 0.9;
+      
       private var nativeActions:Dictionary = new Dictionary(true);
       
       private var fighters:Vector.<FightPet>;
@@ -639,7 +641,7 @@ package animation.layer
          var pet:MovieClip = param1;
          var action:MovieClip = param2;
          var terminalHurtFallback:Boolean = param3;
-         var ownAction:Boolean = param4;
+         var ownAction:Boolean = param4 && !isExternalLegacySceneTimeline(pet);
          var continuousCover:Boolean = param5;
          var hitSent:Boolean = false;
          var lastFrame:int = -1;
@@ -1449,6 +1451,16 @@ package animation.layer
          }
          externalAttackCoverPending = new Dictionary(true);
          externalAttackCoverBounds = new Dictionary(true);
+         if(fighters != null)
+         {
+            for each(var fighterItem in fighters)
+            {
+               if(fighterItem != null && fighterItem.pet != null)
+               {
+                  disableUClientBattleBackdrop(fighterItem.pet);
+               }
+            }
+         }
       }
       
       private function hasAnimatedDescendant(param1:DisplayObject, param2:int) : Boolean
@@ -1792,6 +1804,10 @@ package animation.layer
          {
             return [String(param2[0])];
          }
+         if(param1 != null && UClientUniversalBattleAdapter.supports(param1))
+         {
+            return param2;
+         }
          physLabel = findTimelineLabel(param1,["attack","atk","attack1","at1","physical"]);
          specLabel = findTimelineLabel(param1,["sa","special","magic","attack2","at2","add2"]);
          propLabel = findTimelineLabel(param1,["cp","property","buff","effect","attribute","support","skill","add3"]);
@@ -2128,6 +2144,10 @@ package animation.layer
          {
             if(param1.child === param2.child)
             {
+               if(param1.child.parent is MovieClip && UClientUniversalBattleAdapter.supports(param1.child.parent as MovieClip))
+               {
+                  return false;
+               }
                return true;
             }
             var symbolA:String = getQualifiedClassName(param1.child);
@@ -2261,8 +2281,30 @@ package animation.layer
          return param1.numChildren > 0 ? param1.getChildAt(0) as MovieClip : null;
       }
       
+      private function isExternalLegacySceneTimeline(param1:MovieClip, param2:Rectangle = null) : Boolean
+      {
+         var action:MovieClip = null;
+         if(param1 == null || UClientUniversalBattleAdapter.supports(param1) || !isExternalCompactTimeline(param1))
+         {
+            return false;
+         }
+         action = findExternalAction(param1);
+         if(action == null || action.totalFrames <= 120 || findTimelineLabel(param1,["idle","stand","standby","wait","待机"]) != "")
+         {
+            return false;
+         }
+         var w:Number = param2 != null ? param2.width : param1.width;
+         var h:Number = param2 != null ? param2.height : param1.height;
+         return w >= 900 || h >= 550;
+      }
+      
       private function applyExternalPlacement(param1:MovieClip, param2:FightPet) : void
       {
+         var legacyScene:Boolean;
+         var scAction:MovieClip;
+         var scSubject:Object;
+         var scCenterX:Number;
+         var scBottom:Number;
          var pet:MovieClip = param1;
          var fighter:FightPet = param2;
          var bounds:Rectangle = null;
@@ -2284,7 +2326,8 @@ package animation.layer
             }
             if(isFinite(bounds.width) && isFinite(bounds.height) && bounds.width < 10000 && bounds.height < 10000)
             {
-               fitScale = Math.min(1,EXTERNAL_MAX_RENDER_WIDTH / bounds.width,EXTERNAL_MAX_RENDER_HEIGHT / bounds.height) * UClientUniversalBattleAdapter.fitMultiplier(pet,bounds);
+               legacyScene = isExternalLegacySceneTimeline(pet,bounds);
+               fitScale = legacyScene ? EXTERNAL_LEGACY_SCENE_SCALE : Math.min(1,EXTERNAL_MAX_RENDER_WIDTH / bounds.width,EXTERNAL_MAX_RENDER_HEIGHT / bounds.height) * UClientUniversalBattleAdapter.fitMultiplier(pet,bounds);
                if(UClientUniversalBattleAdapter.supports(pet))
                {
                   targetBaselineY = EXTERNAL_UClient_TARGET_BASELINE_Y;
@@ -2294,12 +2337,56 @@ package animation.layer
                      effectiveBaselineY = Number(subject.bottom);
                   }
                }
+               else if(legacyScene)
+               {
+                  scAction = findExternalAction(pet);
+                  scSubject = scAction == null ? null : measureStructuralSubject(pet,scAction,bounds);
+                  scCenterX = scSubject == null ? bounds.x + bounds.width * 0.5 : Number(scSubject.centerX);
+                  scBottom = scSubject == null ? bounds.bottom : Number(scSubject.bottom);
+                  pet.scaleX = fighter.scaleX * fitScale;
+                  pet.scaleY = fighter.scaleY * fitScale;
+                  pet.x = fighter.x + (EXTERNAL_TARGET_CENTER_X - scCenterX * fitScale) * fighter.scaleX;
+                  pet.y = fighter.y + (targetBaselineY - scBottom * fitScale) * fighter.scaleY;
+                  externalPlaced[pet] = true;
+                  delete externalPlacementAttempts[pet];
+                  return;
+               }
                pet.scaleX = fighter.scaleX * fitScale;
                pet.scaleY = fighter.scaleY * fitScale;
                pet.x = fighter.x + (EXTERNAL_TARGET_CENTER_X - EXTERNAL_TEMPLATE_CENTER_X * fitScale) * fighter.scaleX;
                pet.y = fighter.y + (targetBaselineY - effectiveBaselineY * fitScale) * fighter.scaleY;
                externalPlaced[pet] = true;
                delete externalPlacementAttempts[pet];
+            }
+         }
+         catch(ignored:*)
+         {
+         }
+      }
+      
+      private function setUClientBattleBackdropHostForPet(param1:MovieClip) : void
+      {
+         var target:Object = param1;
+         try
+         {
+            if(target != null && sceneProjectionLayer != null && target["setUClientBattleBackdropHost"] is Function)
+            {
+               target["setUClientBattleBackdropHost"](sceneProjectionLayer,param1);
+            }
+         }
+         catch(ignored:*)
+         {
+         }
+      }
+      
+      private function disableUClientBattleBackdrop(param1:MovieClip) : void
+      {
+         var target:Object = param1;
+         try
+         {
+            if(target != null && target["setUClientBattleBackdropHost"] is Function)
+            {
+               target["setUClientBattleBackdropHost"](null,param1);
             }
          }
          catch(ignored:*)
@@ -2557,6 +2644,7 @@ package animation.layer
             {
                if(param1)
                {
+                  disableUClientBattleBackdrop(param1);
                   if(first)
                   {
                      first = false;
@@ -2599,6 +2687,7 @@ package animation.layer
                pet.scaleY = fighter.scaleY;
                fighter.url = url;
                fighter.pet = pet;
+               setUClientBattleBackdropHostForPet(pet);
                UClientUniversalBattleAdapter.attach(pet);
                prewarmExternalAttackCover(pet);
                if(isExternalCompactTimeline(pet))

@@ -1401,6 +1401,10 @@ package com.taomee.seer2.app.arena
          {
             return [String(param2[0])];
          }
+         if((param1 != null && UClientUniversalBattleAdapter.supports(param1)) || (this._mc != null && UClientUniversalBattleAdapter.supports(this._mc)))
+         {
+            return param2;
+         }
          physLabel = this.findLabel(["attack","atk","attack1","at1","physical"]);
          specLabel = this.findLabel(["sa","special","magic","attack2","at2","add2"]);
          propLabel = this.findLabel(["cp","property","buff","effect","attribute","support","skill","add3"]);
@@ -1760,6 +1764,10 @@ package com.taomee.seer2.app.arena
          {
             if(param1.child === param2.child)
             {
+               if(param1.child.parent is MovieClip && UClientUniversalBattleAdapter.supports(param1.child.parent as MovieClip))
+               {
+                  return false;
+               }
                return true;
             }
             var symbolA:String = getQualifiedClassName(param1.child);
